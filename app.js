@@ -1,5 +1,5 @@
 /*
- * PanelWright v1.2 — panel schedule calculator (NEC design aid)
+ * PanelWright v1.5 — panel schedule calculator (NEC design aid)
  * Multi-panel projects + service-entrance rollup.
  * Zero dependencies. Pure core (Node-testable) + browser UI.
  * Built 2026-08-16 by Radloff Bot (an AI) for electricians & engineers.
@@ -400,6 +400,64 @@
     };
   }
 
+  // ---- NEC 220.42 General Lighting — demand factors, standard method Part III (v1.5) ----
+  // VERIFIED verbatim against the NFPA 70 2014 Article 220 PDF (Table 220.42 read
+  // directly with coordinate-level extraction; the dwelling/hotel/hotel-motel/warehouse
+  // tiers are unchanged through the 2017–2023 editions — cross-checked against the
+  // UpCodes 2017/2020/2023 section pages). 220.42 applies the demand factors to the
+  // general-illumination portion of the branch-circuit/feeder/service load; it does
+  // NOT apply when determining the NUMBER of lighting branch circuits (220.42 text).
+  //
+  // Table 220.42 Lighting Load Demand Factors (2017–2023):
+  //   Dwelling units:  first 3,000 VA @100% · 3,001–120,000 @35% · remainder >120,000 @25%
+  //   Hospitals:       first 50,000 VA @40% · remainder @20%   *(Ex. below)
+  //   Hotels & motels (incl. apts w/o tenant cooking): first 20,000 @50% · 20,001–100,000 @40% · remainder @30%  *(Ex. below)
+  //   Warehouses (storage): first 12,500 VA @100% · remainder @50%
+  //   All others:      total @100%
+  //   * Table note: the hotel/motel/hospital factors do NOT apply to areas where the
+  //     entire lighting is likely used at one time (operating rooms, ballrooms, dining rooms).
+  //
+  // Scope note (honest): this is the STANDARD-method feeder/service rule. The 220.82
+  // optional single-dwelling method instead takes 3 VA/sq ft at 100% (220.82(B)(1)) —
+  // 220.42 demand does NOT apply under the optional method. For non-dwelling work the
+  // lighting load typically comes from the actual fixture schedule (or a design VA/sq ft)
+  // — enter the total lighting VA below.
+  const LIT_TABLES = {
+    dwelling:   { label: 'Dwelling units (standard method)', tiers: [ [3000, 100], [120000, 35], [Infinity, 25] ] },
+    hospital:   { label: 'Hospitals*', tiers: [ [50000, 40], [Infinity, 20] ] },
+    hotel:      { label: 'Hotels & motels (incl. apts w/o tenant cooking)*', tiers: [ [20000, 50], [100000, 40], [Infinity, 30] ] },
+    warehouse:  { label: 'Warehouses (storage)', tiers: [ [12500, 100], [Infinity, 50] ] },
+    others:     { label: 'All others', tiers: [ [Infinity, 100] ] }
+  };
+
+  // Tiered demand: walk the table tiers; each tier's pct applies to the slice of the
+  // connected load that falls inside that tier (cumulative upper bounds).
+  function lightingDemand22042(o) {
+    o = o || {};
+    const key = (o.occupancy && LIT_TABLES[o.occupancy]) ? o.occupancy : 'others';
+    const table = LIT_TABLES[key];
+    const raw = o.totalVA;
+    const totalVA = (raw === undefined || raw === null || raw === '') ? 0 : Math.max(0, +raw || 0);
+    let lo = 0;
+    const tiers = table.tiers.map(t => {
+      const hi = t[0];
+      const span = Math.max(0, Math.min(totalVA, hi) - lo);
+      const va = round2(span * t[1] / 100);
+      lo = hi;
+      return { upTo: hi, pct: t[1], sliceVA: round2(span), demandVA: va };
+    });
+    const demandVA = round2(tiers.reduce((a, t) => a + t.demandVA, 0));
+    return {
+      occupancy: key,
+      occupancyLabel: table.label,
+      totalVA: round2(totalVA),
+      demandVA,
+      tiers,
+      // convenience: sq ft at 3 VA/sq ft (design-basis helper only — NOT a code value)
+      impliedSqft: totalVA > 0 ? round2(totalVA / 3) : 0
+    };
+  }
+
   // ---- CSV export ----
   function csvEscape(v) {
     v = String(v == null ? '' : v);
@@ -498,6 +556,20 @@
       L.push(['Note', 'Standard-method multi-dwelling dryer rule. 220.54 ≠ the single-dwelling 220.82(B)(3) nameplate treatment. The 2026 NEC renumbers this (→ 120.54) and revises the factors — verify against the adopted edition.']);
       L.push([]);
     }
+    const lt = (project && project.lt) ? lightingDemand22042(project.lt) : null;
+    if (lt && lt.totalVA > 0) {
+      L.push(['GENERAL LIGHTING LOAD DEMAND — NEC 220.42 + Table 220.42 (standard method, Part III; 2017-2023 code verified)', '']);
+      L.push(['Occupancy', lt.occupancyLabel]);
+      L.push(['Total general lighting load (VA)', lt.totalVA + ' VA']);
+      for (const t of lt.tiers) {
+        if (t.sliceVA > 0) {
+          L.push(['Tier: ' + (t.upTo === Infinity ? 'remainder @ ' + t.pct + '%' : 'up to ' + t.upTo + ' VA @ ' + t.pct + '%'), t.demandVA + ' VA']);
+        }
+      }
+      L.push(['Lighting demand load (VA)', lt.demandVA + ' VA']);
+      L.push(['Note', 'Standard-method Part III feeder/service rule. NOT used under the 220.82 optional single-dwelling method (that takes 3 VA/sq ft at 100%, 220.82(B)(1)). Demand factors do not apply when determining the number of lighting branch circuits (220.42). Hospital/hotel tiers carry the table exception for areas used entirely at one time. Verify against the adopted NEC edition.']);
+      L.push([]);
+    }
     L.push(['DWELLING UNIT MINIMUM CIRCUITS (NEC 210.11)', '']);
     L.push(['Requirement', 'Cite', 'Required', 'Auto-detected', 'Status', 'Result', 'Note']);
     const dws = dwStatus(project);
@@ -546,6 +618,7 @@
     panelTotals, autoBalance, projectTotals, emptyPanel, defaultProject,
     DW_DEFAULT_ITEMS, normalizeDw, dwStatus, serviceLoad22082,
     dryerFactorPct, dryerFactorLabel, dryerDemand22054,
+    LIT_TABLES, lightingDemand22042,
     toCSV, projectToCSV, toJSON, fromJSON, migrate, round2
   };
 
@@ -761,6 +834,38 @@
       `<span class="badge">${esc(dd.factorLabel)}</span>`;
   }
 
+  // ---- NEC 220.42 lighting load demand (v1.5) ----
+  function ltFields() {
+    const el = id => $('#lt' + id);
+    const n = x => (el(x) && el(x).value !== '') ? (+el(x).value || null) : null;
+    return {
+      totalVA: n('Total'),
+      occupancy: el('Occ') ? el('Occ').value : 'others'
+    };
+  }
+
+  function renderLtInputs() {
+    const l = state.lt || {};
+    const set = (id, v) => { const e = $('#lt' + id); if (e) e.value = (v == null ? '' : v); };
+    set('Total', l.totalVA);
+    const o = $('#ltOcc'); if (o) o.value = l.occupancy || 'others';
+  }
+
+  function renderLt() {
+    const l = ltFields();
+    if (!(l.totalVA > 0)) {
+      $('#ltSum').textContent = '—';
+      $('#ltBadges').innerHTML = '<span class="badge">Enter the total general lighting load (VA) to apply the Table 220.42 demand (standard method, Part III)</span>';
+      return;
+    }
+    const lt = lightingDemand22042(l);
+    $('#ltSum').textContent = `${lt.demandVA} VA lighting demand  (${lt.totalVA} VA connected, ${esc(lt.occupancyLabel)})`;
+    $('#ltBadges').innerHTML =
+      lt.tiers.filter(t => t.sliceVA > 0).map(t =>
+        `<span class="badge">${t.upTo === Infinity ? 'Remainder' : 'Up to ' + t.upTo.toLocaleString() + ' VA'} @ ${t.pct}% → ${t.demandVA.toLocaleString()} VA</span>`).join('') +
+      `<span class="badge ok">Table 220.42 (${esc(lt.occupancy)})</span>`;
+  }
+
   function renderDw() {
     const dw = dwStatus(state);
     const allMet = dw.metCount === dw.total;
@@ -796,7 +901,7 @@
     if (c) c.textContent = new Date().toLocaleDateString();
   }
 
-  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderDw(); renderPrintHdr(); }
+  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderLtInputs(); renderLt(); renderDw(); renderPrintHdr(); }
 
   // ---- actions ----
   function addCircuit() {
@@ -1016,6 +1121,15 @@
     $('#btnDdReset').onclick = () => {
       state.dd = null;
       saveState(); renderDdInputs(); renderDd();
+    };
+    $('#ltCard').addEventListener('input', e => {
+      if (!e.target.id || !e.target.id.startsWith('lt')) return;
+      state.lt = ltFields();
+      saveState(); renderLt();
+    });
+    $('#btnLtReset').onclick = () => {
+      state.lt = null;
+      saveState(); renderLtInputs(); renderLt();
     };
     $('#fileImport').onchange = e => {
       if (e.target.files && e.target.files[0]) importJSON(e.target.files[0]);

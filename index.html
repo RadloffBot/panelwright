@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PanelWright — Panel Schedule Calculator & Multi-Panel Load Rollup (NEC design aid)</title>
-<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), auto-balance, CSV & print/PDF. No account, no install.">
+<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 220.42 lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing, CSV & print/PDF. No account, no install.">
 <!-- og:url / canonical are placeholders until the GitHub Pages URL is known (see PUBLISH.md). -->
 <link rel="canonical" href="PUBLISH-PLACEHOLDER/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -19,14 +19,14 @@
 <meta name="twitter:description" content="Free in-browser panel schedule tool: multi-panel rollup, NEC 220.82 service-load calc, 210.11 checklist, phase balancing, CSV/PDF. No account, no install.">
 <meta name="twitter:image" content="PUBLISH-PLACEHOLDER/og-image.png">
 <meta name="theme-color" content="#0f1419">
-<meta name="keywords" content="panel schedule calculator, electrical panel schedule, load schedule, NEC 220.82, service load calculation, NEC 220.54, clothes dryer demand, Table 220.54, NEC 210.11, phase balancing, 408.3(C), breaker sizing, 210.20, 215.2, electrician tools, electrical engineering, subpanel schedule, load rollup">
+<meta name="keywords" content="panel schedule calculator, electrical panel schedule, load schedule, NEC 220.82, service load calculation, NEC 220.42, lighting load demand, Table 220.42, standard method load calc, NEC 220.54, clothes dryer demand, Table 220.54, NEC 210.11, phase balancing, 408.3(C), breaker sizing, 210.20, 215.2, electrician tools, electrical engineering, subpanel schedule, load rollup">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "PanelWright",
   "url": "PUBLISH-PLACEHOLDER/",
-  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 220.54 multi-dwelling clothes-dryer demand (Table 220.54), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
+  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 220.42 general lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling clothes-dryer demand (Table 220.54), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any (web browser)",
   "browserRequirements": "Requires JavaScript",
@@ -110,7 +110,7 @@
     <div class="tag">Panel schedules, phase balancing, service rollup & NEC 220.82 service load</div>
     <div class="savedat" id="savedAt"></div>
   </header>
-  <p class="disc">Free design aid (v1.3). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
+  <p class="disc">Free design aid (v1.5). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
   <div class="printhdr">
     <strong>PanelWright</strong> — Panel Schedule & Load Rollup<br>
     Project: <span id="prjNamePrint">—</span> &nbsp;·&nbsp; Service: <span id="svcAPrint">—</span> &nbsp;·&nbsp; Generated: <span id="printDate">—</span><br>
@@ -169,6 +169,27 @@
     <div class="svcsum" id="ddSum" style="margin-top:12px">—</div>
     <div class="badges" id="ddBadges"></div>
     <div class="btnrow"><button class="ghost" id="btnDdReset">Clear dryer inputs</button></div>
+  </section>
+
+  <section class="card no-print" id="ltCard">
+    <h2>NEC 220.42 — general lighting load demand, standard method (Table 220.42; 2017–2023 code verified)</h2>
+    <p class="dwnote" style="margin:0 0 10px">The <em>standard-method</em> Part III rule for the general-illumination portion of a feeder or service: the Table&nbsp;220.42 demand factors apply tier-by-tier to the connected lighting load (dwelling units: first 3,000&nbsp;VA @100%, 3,001–120,000 @35%, remainder @25%). <strong>This is not used under the 220.82 optional single-dwelling method</strong> — that method takes 3&nbsp;VA/sq&nbsp;ft at 100% (220.82(B)(1)) with no 220.42 demand. For non-dwelling work, enter the lighting VA from the fixture schedule or your design basis. The factors do <em>not</em> apply when determining the <em>number</em> of lighting branch circuits (220.42). Design aid only — verify against the adopted NEC edition.</p>
+    <div class="grid">
+      <div><label class="f" for="ltTotal">Total general lighting load (VA)</label><input id="ltTotal" type="number" min="0" step="10" placeholder="from fixture schedule or design basis"></div>
+      <div><label class="f" for="ltOcc">Occupancy (Table 220.42)</label>
+        <select id="ltOcc">
+          <option value="dwelling">Dwelling units — 3k@100% / 35% / 25%</option>
+          <option value="hospital">Hospitals* — 50k@40% / 20%</option>
+          <option value="hotel">Hotels &amp; motels* — 20k@50% / 40% / 30%</option>
+          <option value="warehouse">Warehouses (storage) — 12.5k@100% / 50%</option>
+          <option value="others" selected>All others — 100%</option>
+        </select>
+      </div>
+    </div>
+    <div class="svcsum" id="ltSum" style="margin-top:12px">—</div>
+    <div class="badges" id="ltBadges"></div>
+    <p class="dwnote" style="margin-top:8px">*Table note: the hospital and hotel/motel factors do not apply to areas where the entire lighting is likely to be used at one time (e.g., operating rooms, ballrooms, dining rooms) — size those at 100%.</p>
+    <div class="btnrow"><button class="ghost" id="btnLtReset">Clear lighting inputs</button></div>
   </section>
 
   <section class="card no-print" id="dwCard">

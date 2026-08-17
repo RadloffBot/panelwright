@@ -423,5 +423,74 @@ eq(ddCSV.includes('Dryer demand load,32250 VA'), true, 'csv demand 32,250 VA');
 // --- CSV omits the 220.54 section when no dd present ---
 eq(core.projectToCSV(proj).includes('NEC 220.54'), false, 'csv omits 220.54 when absent');
 
+console.log('NEC 220.42 general lighting demand — Table 220.42 (v1.5, verbatim from NFPA 2014 Article 220 PDF):');
+// --- Dwelling unit tiers: first 3,000 @100% · 3,001–120,000 @35% · remainder >120,000 @25% ---
+eq(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 0 }).demandVA, 0, 'dw 0 VA -> 0 demand');
+// exactly 3,000 -> all @100%
+eq(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 3000 }).demandVA, 3000, 'dw 3,000 -> 3,000 (all 100%)');
+// 3,001 boundary: 3,000@100% + 1@35% = 3,000.35
+approx(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 3001 }).demandVA, 3000.35, 0.01, 'dw 3,001 -> 3,000.35 (boundary)');
+// 12,000: 3,000@100% + 9,000@35% = 3,000 + 3,150 = 6,150
+eq(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 12000 }).demandVA, 6150, 'dw 12,000 -> 6,150');
+// 120,000 boundary: 3,000@100% + 117,000@35% = 3,000 + 40,950 = 43,950
+eq(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 120000 }).demandVA, 43950, 'dw 120,000 -> 43,950 (upper 35% boundary)');
+// 150,000: 3,000 + 40,950 + 30,000@25% = 43,950 + 7,500 = 51,450
+eq(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 150000 }).demandVA, 51450, 'dw 150,000 -> 51,450 (25% tail)');
+// demand never exceeds connected (sanity at boundary)
+eq(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 3001 }).demandVA <= 3001, true, 'dw demand <= connected');
+// tier slices reported
+const dwt = core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 150000 });
+eq(dwt.tiers.length, 3, 'dw three tiers');
+eq(dwt.tiers[0].sliceVA, 3000, 'dw tier1 slice 3,000');
+eq(dwt.tiers[0].demandVA, 3000, 'dw tier1 demand 3,000');
+eq(dwt.tiers[1].sliceVA, 117000, 'dw tier2 slice 117,000');
+eq(dwt.tiers[1].demandVA, 40950, 'dw tier2 demand 40,950');
+eq(dwt.tiers[2].sliceVA, 30000, 'dw tier3 slice 30,000');
+eq(dwt.tiers[2].demandVA, 7500, 'dw tier3 demand 7,500');
+eq(dwt.tiers[2].upTo, Infinity, 'dw tier3 is remainder');
+
+// --- Hospital: first 50,000 @40% · remainder @20% ---
+eq(core.lightingDemand22042({ occupancy: 'hospital', totalVA: 50000 }).demandVA, 20000, 'hosp 50,000 -> 20,000 (40%)');
+eq(core.lightingDemand22042({ occupancy: 'hospital', totalVA: 100000 }).demandVA, 30000, 'hosp 100,000 -> 20,000 + 10,000@20% = 30,000');
+eq(core.lightingDemand22042({ occupancy: 'hospital', totalVA: 10000 }).demandVA, 4000, 'hosp 10,000 -> 4,000');
+
+// --- Hotel/motel: first 20,000 @50% · 20,001–100,000 @40% · remainder @30% ---
+eq(core.lightingDemand22042({ occupancy: 'hotel', totalVA: 20000 }).demandVA, 10000, 'hotel 20,000 -> 10,000 (50%)');
+eq(core.lightingDemand22042({ occupancy: 'hotel', totalVA: 30000 }).demandVA, 14000, 'hotel 30,000 -> 10,000 + 4,000 = 14,000');
+eq(core.lightingDemand22042({ occupancy: 'hotel', totalVA: 100000 }).demandVA, 42000, 'hotel 100,000 -> 10,000 + 32,000 = 42,000 (40% boundary)');
+eq(core.lightingDemand22042({ occupancy: 'hotel', totalVA: 130000 }).demandVA, 51000, 'hotel 130,000 -> 42,000 + 9,000@30% = 51,000');
+
+// --- Warehouse (storage): first 12,500 @100% · remainder @50% ---
+eq(core.lightingDemand22042({ occupancy: 'warehouse', totalVA: 12500 }).demandVA, 12500, 'wh 12,500 -> 12,500 (100%)');
+eq(core.lightingDemand22042({ occupancy: 'warehouse', totalVA: 25000 }).demandVA, 18750, 'wh 25,000 -> 12,500 + 6,250 = 18,750');
+eq(core.lightingDemand22042({ occupancy: 'warehouse', totalVA: 100000 }).demandVA, 56250, 'wh 100,000 -> 12,500 + 43,750 = 56,250');
+
+// --- All others: total @100% ---
+eq(core.lightingDemand22042({ occupancy: 'others', totalVA: 43210 }).demandVA, 43210, 'others 43,210 -> 43,210 (100%)');
+eq(core.lightingDemand22042({ totalVA: 99999 }).occupancy, 'others', 'no occupancy -> defaults to others');
+eq(core.lightingDemand22042({ totalVA: 99999 }).demandVA, 99999, 'default others 99,999 -> 100%');
+
+// --- edge / null-safe ---
+eq(core.lightingDemand22042({}).demandVA, 0, 'edge: empty -> 0');
+eq(core.lightingDemand22042(null).demandVA, 0, 'edge: null -> 0, no throw');
+eq(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: -500 }).demandVA, 0, 'edge: negative -> 0');
+eq(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 'abc' }).demandVA, 0, 'edge: non-numeric -> 0');
+eq(core.lightingDemand22042({ occupancy: 'bogus', totalVA: 5000 }).occupancy, 'others', 'edge: unknown occupancy -> others (100%)');
+eq(core.lightingDemand22042({ occupancy: 'bogus', totalVA: 5000 }).demandVA, 5000, 'edge: unknown occupancy -> 100%');
+
+// --- CSV includes the 220.42 section when present ---
+const ltProj = { version: 2, projectName: 'Hotel', serviceA: 200, notes: '',
+  panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [] }],
+  lt: { totalVA: 150000, occupancy: 'dwelling' } };
+const ltCSV = core.projectToCSV(ltProj);
+eq(ltCSV.includes('GENERAL LIGHTING LOAD DEMAND — NEC 220.42'), true, 'csv has 220.42 section');
+eq(ltCSV.includes('Total general lighting load (VA),150000 VA'), true, 'csv lighting connected 150,000 VA');
+eq(ltCSV.includes('Tier: up to 3000 VA @ 100%,3000 VA'), true, 'csv tier1 row');
+eq(ltCSV.includes('Tier: up to 120000 VA @ 35%,40950 VA'), true, 'csv tier2 row');
+eq(ltCSV.includes('Tier: remainder @ 25%,7500 VA'), true, 'csv tier3 row');
+eq(ltCSV.includes('Lighting demand load (VA),51450 VA'), true, 'csv lighting demand 51,450 VA');
+// --- CSV omits the 220.42 section when no lt present ---
+eq(core.projectToCSV(proj).includes('NEC 220.42'), false, 'csv omits 220.42 when absent');
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
