@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PanelWright — Panel Schedule Calculator & Multi-Panel Load Rollup (NEC design aid)</title>
+<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), auto-balance, CSV & print/PDF. No account, no install.">
+<!-- og:url / canonical are placeholders until the GitHub Pages URL is known (see PUBLISH.md). -->
+<link rel="canonical" href="PUBLISH-PLACEHOLDER/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="PanelWright — Free Panel Schedule Calculator & Service-Load Rollup">
+<meta property="og:description" content="Free in-browser panel schedule tool for electricians: multi-panel rollup, NEC 220.82 dwelling service-load calc (optional method), 210.11 checklist, phase balancing, CSV/PDF export. No account, no install.">
+<meta property="og:url" content="PUBLISH-PLACEHOLDER/">
+<meta property="og:image" content="PUBLISH-PLACEHOLDER/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PanelWright — Free Panel Schedule Calculator & Service-Load Rollup">
+<meta name="twitter:description" content="Free in-browser panel schedule tool: multi-panel rollup, NEC 220.82 service-load calc, 210.11 checklist, phase balancing, CSV/PDF. No account, no install.">
+<meta name="twitter:image" content="PUBLISH-PLACEHOLDER/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="panel schedule calculator, electrical panel schedule, load schedule, NEC 220.82, service load calculation, NEC 210.11, phase balancing, 408.3(C), breaker sizing, 210.20, 215.2, electrician tools, electrical engineering, subpanel schedule, load rollup">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PanelWright",
+  "url": "PUBLISH-PLACEHOLDER/",
+  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "about": "https://www.nfpa.org/codes-and-standards/nfpa-70-standard-development/70"
+}
+</script>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #171e26; --panel2: #1c2530; --line: #2a3644;
+    --text: #e8eef4; --dim: #93a4b4; --accent: #ffb020; --accent2: #4da3ff;
+    --ok: #3ddc84; --bad: #ff5d5d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 system-ui, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 20px 16px 60px; }
+  header.app { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  header.app h1 { margin: 0; font-size: 26px; letter-spacing: .3px; }
+  header.app h1 span { color: var(--accent); }
+  .tag { color: var(--dim); font-size: 13px; }
+  .savedat { margin-left: auto; color: var(--dim); font-size: 12px; }
+  .disc { font-size: 12px; color: var(--dim); margin: 4px 0 18px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+  .card h2 { margin: 0 0 10px; font-size: 15px; color: var(--dim); text-transform: uppercase; letter-spacing: .7px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  label.f { display: block; font-size: 12px; color: var(--dim); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+  input, select { width: 100%; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; font: inherit; }
+  input:focus, select:focus { outline: 2px solid var(--accent2); border-color: transparent; }
+  .btnrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
+  button { background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 7px; padding: 8px 13px; font: inherit; cursor: pointer; }
+  button:hover { border-color: var(--accent2); }
+  button.primary { background: var(--accent); color: #14100a; border-color: var(--accent); font-weight: 600; }
+  button.primary:hover { filter: brightness(1.1); }
+  button.ghost { background: transparent; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .badge { font-size: 13px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel2); }
+  .badge.ok { border-color: #1e5c3d; color: var(--ok); }
+  .badge.bad { border-color: #6e2727; color: var(--bad); font-weight: 600; }
+  .badge.warn { border-color: #7a5a17; color: var(--accent); }
+  .btn-dw { padding: 4px 10px; font-size: 12.5px; }
+  .dwnote { font-size: 11px; color: var(--dim); margin-top: 4px; line-height: 1.35; }
+  .btn-dw.ok { border-color: #1e5c3d; color: var(--ok); }
+  .btn-dw.bad { border-color: #6e2727; color: var(--bad); font-weight: 600; }
+  .btn-dw.warn { border-color: #7a5a17; color: var(--accent); font-weight: 600; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tab { border: 1px solid var(--line); background: var(--panel2); color: var(--dim); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 14px; cursor: pointer; }
+  .tab:hover { color: var(--text); border-color: var(--accent2); }
+  .tab.active { background: var(--accent); color: #14100a; border-color: var(--accent); font-weight: 600; }
+  .svcsum { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; margin: 2px 0 8px; }
+  .tblwrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 900px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: var(--dim); }
+  td input, td select { padding: 5px 7px; font-size: 14px; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.ctr { text-align: center; }
+  td.rec { text-align: right; color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+  td.sum { font-weight: 700; font-size: 16px; }
+  .sumlabel { color: var(--dim); font-weight: 600; }
+  .empty { color: var(--dim); text-align: center; padding: 18px !important; }
+  .btn-del { background: transparent; border: none; color: var(--dim); font-size: 14px; cursor: pointer; }
+  .btn-del:hover { color: var(--bad); }
+  footer { margin-top: 22px; font-size: 12px; color: var(--dim); }
+  footer p { margin: 4px 0; }
+  @media print {
+    body { background: #fff; color: #000; }
+    .no-print { display: none !important; }
+    .card, table, th, td, .badges, .badge, .tabs, .tab, .btn-dw { background: #fff !important; color: #000 !important; border-color: #bbb !important; }
+    .wrap { max-width: none; padding: 0; }
+    td input, td select { border: none; color: #000; }
+    .printhdr { display: block !important; }
+  }
+  .printhdr { display: none; margin-bottom: 12px; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="app">
+    <h1>Panel<span>Wright</span></h1>
+    <div class="tag">Panel schedules, phase balancing, service rollup & NEC 220.82 service load</div>
+    <div class="savedat" id="savedAt"></div>
+  </header>
+  <p class="disc">Free design aid (v1.3). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
+  <div class="printhdr">
+    <strong>PanelWright</strong> — Panel Schedule & Load Rollup<br>
+    Project: <span id="prjNamePrint">—</span> &nbsp;·&nbsp; Service: <span id="svcAPrint">—</span> &nbsp;·&nbsp; Generated: <span id="printDate">—</span><br>
+    <em>Design aid only — verify against the adopted NEC edition and local code.</em>
+  </div>
+
+  <section class="card no-print">
+    <h2>Project</h2>
+    <div class="grid">
+      <div><label class="f" for="projectName">Project name</label><input id="projectName" value="Untitled Project"></div>
+      <div><label class="f" for="serviceA">Service rating (A)</label><input id="serviceA" type="number" min="0" step="1" placeholder="e.g. 800"></div>
+      <div><label class="f" for="projectNotes">Notes</label><input id="projectNotes" placeholder="address, permit #…"></div>
+    </div>
+  </section>
+
+  <section class="card no-print">
+    <h2>Service entrance rollup</h2>
+    <div class="svcsum" id="svcSum">—</div>
+    <div class="badges" id="svcPct"></div>
+  </section>
+
+  <section class="card no-print" id="lcCard">
+    <h2>NEC 220.82 — dwelling service load, optional method (single unit; 2017–2023 code verified)</h2>
+    <p class="dwnote" style="margin:0 0 10px">A real demand-factor load calc for one dwelling unit (≥100 A service). Sums general + appliance + motor loads, applies the 220.82(B) demand (first 10 kVA @100% + 40% of the rest), adds the <em>largest</em> heating/cooling option per 220.82(C), and sizes the service. Design aid only — neutral load per 220.61 is not included; verify against the adopted NEC edition.</p>
+    <div class="grid">
+      <div><label class="f" for="lcSqft">Floor area (sq ft) · 220.82(B)(1)</label><input id="lcSqft" type="number" min="0" step="1" placeholder="e.g. 1500"></div>
+      <div><label class="f" for="lcSmallApp">Small-appliance circs ×1500 VA</label><input id="lcSmallApp" type="number" min="0" max="20" step="1" value="2"></div>
+      <div><label class="f" for="lcLaundry">Laundry circs ×1500 VA</label><input id="lcLaundry" type="number" min="0" max="20" step="1" value="1"></div>
+      <div><label class="f" for="lcAppliances">Appliances nameplate (VA) · 220.82(B)(3)</label><input id="lcAppliances" type="number" min="0" step="10" placeholder="ranges/ovens/dryers/water heater…"></div>
+      <div><label class="f" for="lcMotors">Perman. motors (VA) · 220.82(B)(4)</label><input id="lcMotors" type="number" min="0" step="10" placeholder="fixed motors"></div>
+      <div><label class="f" for="lcVolt">Service voltage</label><select id="lcVolt"><option value="240" selected>240 V (120/240)</option><option value="208">208 V</option><option value="277">277 V</option><option value="480">480 V</option></select></div>
+    </div>
+    <p class="f" style="margin:12px 0 4px">Heating / cooling — enter whichever apply; the largest (220.82(C)) is used automatically</p>
+    <div class="grid">
+      <div><label class="f" for="lcAc">AC / cooling @100% (VA) · (C)(1)</label><input id="lcAc" type="number" min="0" step="10" placeholder="0"></div>
+      <div><label class="f" for="lcHpNoSupp">Heat pump, no supp @100% (VA) · (C)(2)</label><input id="lcHpNoSupp" type="number" min="0" step="10" placeholder="0"></div>
+      <div><label class="f" for="lcHpComp">HP compressor @100% (VA) · (C)(3)</label><input id="lcHpComp" type="number" min="0" step="10" placeholder="0"></div>
+      <div><label class="f" for="lcHpSupp">+ HP supplemental @65% (VA) · (C)(3)</label><input id="lcHpSupp" type="number" min="0" step="10" placeholder="0"></div>
+      <div><label class="f" for="lcSpace">Electric space heating (VA) · (C)(4/5)</label><input id="lcSpace" type="number" min="0" step="10" placeholder="0"></div>
+      <div><label class="f" for="lcSpaceUnits"># separately-controlled units</label><input id="lcSpaceUnits" type="number" min="0" step="1" placeholder="1–3 = 65% · 4+ = 40%"></div>
+      <div><label class="f" for="lcThermal">Thermal storage / continuous @100% (VA) · (C)(6)</label><input id="lcThermal" type="number" min="0" step="10" placeholder="0"></div>
+    </div>
+    <div class="svcsum" id="lcSum" style="margin-top:12px">—</div>
+    <div class="badges" id="lcBadges"></div>
+    <p class="dwnote" style="margin-top:8px"><strong>Not the same as 220.54.</strong> 220.82 is the <em>single-dwelling</em> optional method. 220.54 is the electric-clothes-<em>dryer</em> rule (5,000 VA min per dryer; Table 220.54 demand applies only when a building has 5+ dryers — a multi-dwelling calc). Don’t conflate them.</p>
+    <div class="btnrow"><button class="ghost" id="btnLcReset">Clear service-load inputs</button></div>
+  </section>
+
+  <section class="card no-print" id="dwCard">
+    <h2>NEC 210.11 — dwelling unit minimum circuits (2017–2023 code verified; editable)</h2>
+    <div class="badges" id="dwSummary"></div>
+    <div class="tblwrap" style="margin-top:10px">
+      <table>
+        <thead>
+          <tr>
+            <th>Requirement</th>
+            <th style="width:130px">NEC cite</th>
+            <th style="width:80px">Req. count</th>
+            <th style="width:110px">Auto-match</th>
+            <th style="width:130px">Status (click)</th>
+            <th>Match keywords (regex)</th>
+          </tr>
+        </thead>
+        <tbody id="dwBody"></tbody>
+      </table>
+    </div>
+    <div class="btnrow">
+      <button class="ghost" id="btnDwReset">Reset checklist to defaults</button>
+      <span style="color:var(--dim);font-size:12px">Auto-match suggests candidate circuits from names/notes across all panels. Click a status: auto → ✓ verified → ✗ missing. Checklists print in the rollup export.</span>
+    </div>
+  </section>
+
+  <section class="card no-print">
+    <div class="tabs" id="panelTabs"></div>
+    <div class="grid">
+      <div><label class="f" for="panelName">Panel name</label><input id="panelName" value="Main Panel"></div>
+      <div><label class="f" for="system">System</label><select id="system"></select></div>
+      <div><label class="f" for="ratingA">Panel rating (A)</label><input id="ratingA" type="number" min="0" step="1" placeholder="e.g. 400"></div>
+    </div>
+    <div class="btnrow">
+      <button id="btnAddPanel">＋ Panel</button>
+      <button class="ghost" id="btnDupPanel">Duplicate</button>
+      <button class="ghost" id="btnDelPanel">Delete panel</button>
+      <span style="flex:1"></span>
+      <button class="ghost" id="btnRollupCSV">Export rollup CSV</button>
+      <button class="ghost" id="btnPrint">🖨 Print / PDF</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="tblwrap" id="tableWrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:70px">Pos</th>
+            <th>Circuit</th>
+            <th style="width:210px">Type</th>
+            <th style="width:90px">Load (A)</th>
+            <th style="width:60px" class="ctr">Cont.</th>
+            <th style="width:110px">Rec. breaker</th>
+            <th style="width:90px">Actual</th>
+            <th>Notes</th>
+            <th style="width:40px"></th>
+          </tr>
+        </thead>
+        <tbody id="circuits"></tbody>
+        <tfoot><tr id="sumRow"></tr></tfoot>
+      </table>
+    </div>
+    <div class="btnrow no-print">
+      <button class="primary" id="btnAdd">＋ Add circuit</button>
+      <button id="btnBalance">⚖ Auto-balance this panel</button>
+      <button class="ghost" id="btnSample">Load sample</button>
+      <span style="flex:1"></span>
+      <button class="ghost" id="btnCSV">Export CSV (this panel)</button>
+      <button class="ghost" id="btnJSON">Save JSON</button>
+      <button class="ghost" id="btnImport">Open JSON…</button>
+      <button class="ghost" id="btnClear">Clear project</button>
+      <input type="file" id="fileImport" accept="application/json,.json" hidden>
+    </div>
+    <div class="badges no-print" id="badges"></div>
+  </section>
+
+  <footer>
+    <p><strong>About PanelWright.</strong> Free, open-source panel schedule tool. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max-deviation and the NEC 408.3(C) 5% neutral guideline (field approximation — verify with real load data & power factor). The service-entrance rollup sums panel phase currents without demand factors — a screening value. The NEC 220.82 service-load card is a real optional-method demand calc for a single dwelling unit (2017–2023 code verified) — neutral load per 220.61 is not included.</p>
+    <p>Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (no humans pretend to be the author). The code is plain HTML/JS — read it, fix it, share it (MIT). Data never leaves your browser.</p>
+  </footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
