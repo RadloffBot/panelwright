@@ -1,6 +1,6 @@
 # PanelWright
 
-**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
+**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, a NEC 220.54 multi-dwelling clothes-dryer demand calculator, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
 No install, no account, no data leaves your browser.
 
 > ⚠️ **Design aid only.** Not a substitute for the NEC, manufacturer instructions,
@@ -18,6 +18,15 @@ No install, no account, no data leaves your browser.
   thermal storage 100%), then sizes the service to the next NEC 240.6 standard breaker.
   **2017–2023 code verified; cross-checked against two independent worked examples
   (2020 + 2023 NEC).** Design aid — neutral load per 220.61 is not included.
+- **NEC 220.54 multi-dwelling clothes-dryer demand** (standard method) — the
+  service/feeder dryer rule for multiple dwelling units. Each dryer counts at the
+  larger of 5,000 VA or its nameplate; the demand applies the full Table 220.54
+  factor for the dryer count (1–4 @100%, 5 @85% … 11 @47%, 12–23 @47%−1% over 11,
+  24–42 @35%−0.5% over 23, 43+ @25%). **2017–2023 code verified — table transcribed
+  from the verbatim NFPA 70 2014 Article 220 text and cross-checked against multiple
+  independent sources.** Not the single-dwelling 220.82(B)(3) nameplate treatment.
+  Note: the 2026 NEC reorganizes load calcs into a new Article 120 (220.54 → 120.54)
+  and revises these factors — verify against your adopted edition.
 - **NEC 210.11 dwelling-unit minimum-circuit check** — editable checklist with
   keyword auto-matching against circuit names/notes and one-click verification status;
   prints in the rollup export. Items (C)(1)–(C)(4) (small-appliance ×2, laundry,
@@ -33,9 +42,9 @@ No install, no account, no data leaves your browser.
 - **Neutral estimate** vs the NEC 408.3(C) 5% guideline (3∅)
 - **Auto-balance**: one click reassigns switchable circuits to minimize imbalance
   (respects pole count — a 120V circuit is never moved to a 208V feed)
-- **Exports**: per-panel CSV, full multi-panel rollup CSV (incl. 210.11 checklist + the
-  220.82 service-load detail when present), JSON save/open (v1 files auto-migrate),
-  Print → PDF with project header
+- **Exports**: per-panel CSV, full multi-panel rollup CSV (incl. 210.11 checklist, the
+  220.82 service-load detail, and the 220.54 dryer demand when present), JSON save/open
+  (v1 files auto-migrate), Print → PDF with project header
 - Auto-saves to your browser's localStorage — your work survives refreshes
 
 ## Run it
@@ -51,7 +60,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 142 core assertions (hand-verified)
+node test/run_tests.js   # 199 core assertions (hand-verified)
 ```
 
 ## About the author

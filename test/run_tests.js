@@ -327,5 +327,101 @@ eq(lcCSV.includes('Recommended standard breaker (NEC 240.6),125 A'), true, 'csv 
 // --- CSV omits the 220.82 section when no lc present ---
 eq(core.projectToCSV(proj).includes('NEC 220.82 OPTIONAL METHOD'), false, 'csv omits 220.82 when absent');
 
+console.log('NEC 220.54 multi-dwelling dryer demand (v1.4, Table verified from NFPA 2014 PDF):');
+// --- Table 220.54 factor rows (verbatim from NFPA 70 2014 Article 220 PDF) ---
+eq(core.dryerFactorPct(1), 100, 't 1 dryer -> 100%');
+eq(core.dryerFactorPct(4), 100, 't 4 dryers -> 100%');
+eq(core.dryerFactorPct(5), 85, 't 5 dryers -> 85%');
+eq(core.dryerFactorPct(6), 75, 't 6 dryers -> 75%');
+eq(core.dryerFactorPct(7), 65, 't 7 dryers -> 65%');
+eq(core.dryerFactorPct(8), 60, 't 8 dryers -> 60%');
+eq(core.dryerFactorPct(9), 55, 't 9 dryers -> 55%');
+eq(core.dryerFactorPct(10), 50, 't 10 dryers -> 50%');
+eq(core.dryerFactorPct(11), 47, 't 11 dryers -> 47%');
+eq(core.dryerFactorPct(12), 46, 't 12 dryers -> 47% - 1 = 46%');
+eq(core.dryerFactorPct(15), 43, 't 15 dryers -> 47% - 4 = 43%');
+eq(core.dryerFactorPct(17), 41, 't 17 dryers -> 47% - 6 = 41%');
+eq(core.dryerFactorPct(23), 35, 't 23 dryers -> 47% - 12 = 35%');
+eq(core.dryerFactorPct(24), 34.5, 't 24 dryers -> 35% - 0.5 = 34.5%');
+eq(core.dryerFactorPct(30), 31.5, 't 30 dryers -> 35% - 3.5 = 31.5%');
+eq(core.dryerFactorPct(42), 25.5, 't 42 dryers -> 35% - 9.5 = 25.5%');
+eq(core.dryerFactorPct(43), 25, 't 43 dryers -> 25%');
+eq(core.dryerFactorPct(100), 25, 't 100 dryers -> 25% (43+ floor)');
+eq(core.dryerFactorPct(0), null, 't 0 dryers -> null factor');
+eq(core.dryerFactorPct(-2), null, 't negative -> null');
+eq(core.dryerFactorPct(null), null, 't null -> null');
+
+// --- 5,000 VA minimum rule (220.54) ---
+eq(core.dryerDemand22054({ count: 1 }).perDryerVA, 5000, 'min: no nameplate -> 5,000 VA each');
+eq(core.dryerDemand22054({ count: 3, nameplateVA: 4500 }).perDryerVA, 5000, 'min: nameplate 4,500 < 5,000 -> use 5,000');
+eq(core.dryerDemand22054({ count: 2, nameplateVA: 5200 }).perDryerVA, 5200, 'min: nameplate 5,200 > 5,000 -> use nameplate');
+eq(core.dryerDemand22054({ count: 2, nameplateVA: 5000 }).perDryerVA, 5000, 'min: nameplate = 5,000 -> 5,000');
+eq(core.dryerDemand22054({ count: 4, nameplateVA: 4500 }).connectedVA, 20000, 'connected: 4 x 5,000 (min applied) = 20,000');
+
+// --- WORKED EXAMPLE 1 (expertce): 15 dryers @ 5,000 VA ---
+// 15 x 5,000 = 75,000 connected; factor 47% - (15-11)% = 43%; 75,000 x 0.43 = 32,250 VA
+const de1 = core.dryerDemand22054({ count: 15 });
+eq(de1.count, 15, 'ex1 count 15');
+eq(de1.perDryerVA, 5000, 'ex1 per-dryer 5,000');
+eq(de1.connectedVA, 75000, 'ex1 connected 75,000');
+eq(de1.factorPct, 43, 'ex1 factor 43%');
+eq(de1.demandVA, 32250, 'ex1 demand 32,250 VA (matches expertce)');
+
+// --- WORKED EXAMPLE 2 (necmastery): 17 dryers @ 5,000 VA ---
+// 17 x 5,000 = 85,000 connected; factor 47% - (17-11)% = 41%; 85,000 x 0.41 = 34,850 VA
+const de2 = core.dryerDemand22054({ count: 17 });
+eq(de2.connectedVA, 85000, 'ex2 connected 85,000');
+eq(de2.factorPct, 41, 'ex2 factor 41%');
+eq(de2.demandVA, 34850, 'ex2 demand 34,850 VA (matches necmastery)');
+
+// --- WORKED EXAMPLE 3 (voltprep/roughlogic): 5 dryers @ 5,000 VA ---
+// 5 x 5,000 = 25,000 connected; factor 85%; 25,000 x 0.85 = 21,250 VA
+const de3 = core.dryerDemand22054({ count: 5 });
+eq(de3.factorPct, 85, 'ex3 factor 85%');
+eq(de3.demandVA, 21250, 'ex3 demand 21,250 VA');
+// and 4 dryers (100%, no reduction): 4 x 5,000 = 20,000 VA
+eq(core.dryerDemand22054({ count: 4, nameplateVA: 4500 }).demandVA, 20000, 'ex3b 4 dryers 100% -> 20,000 VA (roughlogic)');
+
+// --- 10 dryers (necmastery example): 10 x 5,000 = 50,000 @ 50% = 25,000 VA ---
+const de4 = core.dryerDemand22054({ count: 10 });
+eq(de4.factorPct, 50, 'ex4 factor 50%');
+eq(de4.demandVA, 25000, 'ex4 demand 25,000 VA (matches necmastery)');
+
+// --- high nameplate (mixed): 6 dryers @ 7,500 VA nameplate ---
+// 6 x 7,500 = 45,000 connected; factor 75%; 45,000 x 0.75 = 33,750 VA
+const de5 = core.dryerDemand22054({ count: 6, nameplateVA: 7500 });
+eq(de5.connectedVA, 45000, 'ex5 connected 45,000 (nameplate 7,500 each)');
+eq(de5.factorPct, 75, 'ex5 factor 75%');
+eq(de5.demandVA, 33750, 'ex5 demand 33,750 VA');
+
+// --- factor-label monotonic boundary check: no upward jumps at table seams ---
+// 11->47, 12->46 (down), 23->35, 24->34.5 (down), 42->25.5, 43->25 (down)
+const seq1 = [11, 12, 23, 24, 42, 43].map(n => core.dryerFactorPct(n));
+eq(seq1, [47, 46, 35, 34.5, 25.5, 25], 'boundary factors strictly non-increasing across seams');
+// the 12-23 branch must never exceed its 11-dryer neighbor (47): 12=46 < 47
+eq(core.dryerFactorPct(12) < core.dryerFactorPct(11), true, '12-dryer (46) < 11-dryer (47): no jump up');
+eq(core.dryerFactorPct(24) < core.dryerFactorPct(23), true, '24-dryer (34.5) < 23-dryer (35): no jump up');
+
+// --- edge / null-safe ---
+eq(core.dryerDemand22054({}).count, 0, 'edge: empty -> 0 dryers');
+eq(core.dryerDemand22054({}).demandVA, 0, 'edge: empty -> 0 VA demand');
+eq(core.dryerDemand22054(null).demandVA, 0, 'edge: null input -> 0 VA, no throw');
+eq(core.dryerDemand22054({ count: -3 }).count, 0, 'edge: negative count clamped to 0');
+eq(core.dryerDemand22054({ count: 4.9 }).count, 4, 'edge: fractional count floors (4.9 -> 4)');
+eq(core.dryerDemand22054({ count: 0, nameplateVA: 9000 }).connectedVA, 0, 'edge: 0 dryers -> 0 connected even w/ nameplate');
+
+// --- CSV includes the 220.54 section when present ---
+const ddProj = { version: 2, projectName: 'Apartment', serviceA: 200, notes: '',
+  panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [] }],
+  dd: { count: 15, nameplateVA: 5000 } };
+const ddCSV = core.projectToCSV(ddProj);
+eq(ddCSV.includes('MULTI-DWELLING CLOTHES DRYER LOAD — NEC 220.54'), true, 'csv has 220.54 section');
+eq(ddCSV.includes('Number of dryers,15'), true, 'csv dryer count row');
+eq(ddCSV.includes('Total connected dryer load,75000 VA'), true, 'csv connected 75,000 VA');
+eq(ddCSV.includes('Table 220.54 demand factor,43%'), true, 'csv factor 43%');
+eq(ddCSV.includes('Dryer demand load,32250 VA'), true, 'csv demand 32,250 VA');
+// --- CSV omits the 220.54 section when no dd present ---
+eq(core.projectToCSV(proj).includes('NEC 220.54'), false, 'csv omits 220.54 when absent');
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

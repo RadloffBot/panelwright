@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PanelWright — Panel Schedule Calculator & Multi-Panel Load Rollup (NEC design aid)</title>
-<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), auto-balance, CSV & print/PDF. No account, no install.">
+<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), auto-balance, CSV & print/PDF. No account, no install.">
 <!-- og:url / canonical are placeholders until the GitHub Pages URL is known (see PUBLISH.md). -->
 <link rel="canonical" href="PUBLISH-PLACEHOLDER/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -19,14 +19,14 @@
 <meta name="twitter:description" content="Free in-browser panel schedule tool: multi-panel rollup, NEC 220.82 service-load calc, 210.11 checklist, phase balancing, CSV/PDF. No account, no install.">
 <meta name="twitter:image" content="PUBLISH-PLACEHOLDER/og-image.png">
 <meta name="theme-color" content="#0f1419">
-<meta name="keywords" content="panel schedule calculator, electrical panel schedule, load schedule, NEC 220.82, service load calculation, NEC 210.11, phase balancing, 408.3(C), breaker sizing, 210.20, 215.2, electrician tools, electrical engineering, subpanel schedule, load rollup">
+<meta name="keywords" content="panel schedule calculator, electrical panel schedule, load schedule, NEC 220.82, service load calculation, NEC 220.54, clothes dryer demand, Table 220.54, NEC 210.11, phase balancing, 408.3(C), breaker sizing, 210.20, 215.2, electrician tools, electrical engineering, subpanel schedule, load rollup">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "PanelWright",
   "url": "PUBLISH-PLACEHOLDER/",
-  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
+  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 220.54 multi-dwelling clothes-dryer demand (Table 220.54), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any (web browser)",
   "browserRequirements": "Requires JavaScript",
@@ -157,6 +157,18 @@
     <div class="badges" id="lcBadges"></div>
     <p class="dwnote" style="margin-top:8px"><strong>Not the same as 220.54.</strong> 220.82 is the <em>single-dwelling</em> optional method. 220.54 is the electric-clothes-<em>dryer</em> rule (5,000 VA min per dryer; Table 220.54 demand applies only when a building has 5+ dryers — a multi-dwelling calc). Don’t conflate them.</p>
     <div class="btnrow"><button class="ghost" id="btnLcReset">Clear service-load inputs</button></div>
+  </section>
+
+  <section class="card no-print" id="ddCard">
+    <h2>NEC 220.54 — multi-dwelling clothes-dryer demand (Table 220.54; 2017–2023 code verified)</h2>
+    <p class="dwnote" style="margin:0 0 10px">The <em>standard-method</em> dryer rule for a service/feeder serving multiple dwelling units. Each electric dryer counts at the larger of 5,000&nbsp;VA or its nameplate; the demand is the connected load × the Table&nbsp;220.54 factor for the number of dryers. Design aid only — <strong>220.54 is not the single-dwelling 220.82(B)(3) nameplate treatment</strong>, and the <strong>2026 NEC renumbers this (→ 120.54) and revises the factors</strong>; verify against the edition adopted in the jurisdiction.</p>
+    <div class="grid">
+      <div><label class="f" for="ddCount">Number of dryers served</label><input id="ddCount" type="number" min="0" step="1" placeholder="e.g. 10"></div>
+      <div><label class="f" for="ddNameplate">Dryer nameplate (VA) · optional</label><input id="ddNameplate" type="number" min="0" step="10" placeholder="use if above 5,000 VA"></div>
+    </div>
+    <div class="svcsum" id="ddSum" style="margin-top:12px">—</div>
+    <div class="badges" id="ddBadges"></div>
+    <div class="btnrow"><button class="ghost" id="btnDdReset">Clear dryer inputs</button></div>
   </section>
 
   <section class="card no-print" id="dwCard">

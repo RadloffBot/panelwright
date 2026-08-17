@@ -337,6 +337,69 @@
     };
   }
 
+  // ---- NEC 220.54 Electric Clothes Dryers — multi-dwelling demand (v1.4) ----
+  // VERIFIED against the verbatim NFPA 70 2014 Article 220 PDF (220.54 text + full
+  // Table 220.54) and cross-checked against 5 independent sources (expertce,
+  // necmastery, voltprep, roughlogic, upcodes). 220.54 is the STANDARD-method
+  // dryer rule for a service/feeder serving multiple dwelling units; it is NOT
+  // the single-dwelling 220.82(B)(3) nameplate treatment — do not conflate.
+  //
+  // 220.54: each household electric dryer served = max(5,000 VA, nameplate).
+  // Total connected = per-dryer load × number of dryers. Demand = connected ×
+  // the Table 220.54 factor for that count.
+  //
+  // Table 220.54 Demand Factors for Household Electric Clothes Dryers (2017–2023):
+  //   1–4      100%
+  //   5        85%        8  60%        12–23  47% − 1% per dryer exceeding 11
+  //   6        75%        9  55%        24–42  35% − 0.5% per dryer exceeding 23
+  //   7        65%        10 50%        43 and over  25%
+  //   (boundaries are monotonic: 11→47, 12→46, 23→35, 24→34.5, 42→25.5, 43→25)
+  //
+  // NOTE (honest, edition-sensitive): the 2026 NEC reorganizes load calc into a new
+  // Article 120 (220.54 → 120.54) and appears to revise these factors (1–2 @100%,
+  // 3–5 @80% …). This calculator implements the 2017–2023 table; verify against the
+  // edition adopted in the jurisdiction.
+  function dryerFactorPct(count) {
+    if (!isFinite(count) || count <= 0) return null;
+    const n = Math.floor(count);
+    if (n <= 4) return 100;
+    const table = { 5: 85, 6: 75, 7: 65, 8: 60, 9: 55, 10: 50, 11: 47 };
+    if (table[n] != null) return table[n];
+    if (n >= 12 && n <= 23) return round2(47 - (n - 11));
+    if (n >= 24 && n <= 42) return round2(35 - 0.5 * (n - 23));
+    if (n >= 43) return 25;
+    return null;
+  }
+
+  function dryerFactorLabel(count) {
+    if (!isFinite(count) || count <= 0) return 'no dryers';
+    const n = Math.floor(count);
+    if (n <= 4) return '1–4 dryers: 100%';
+    if (n >= 5 && n <= 11) return n + ' dryers: ' + dryerFactorPct(n) + '%';
+    if (n >= 12 && n <= 23) return '12–23 dryers: 47% − 1% per dryer over 11 → ' + dryerFactorPct(n) + '%';
+    if (n >= 24 && n <= 42) return '24–42 dryers: 35% − 0.5% per dryer over 23 → ' + dryerFactorPct(n) + '%';
+    if (n >= 43) return '43 and over: 25%';
+    return '';
+  }
+
+  function dryerDemand22054(o) {
+    o = o || {};
+    const MIN = 5000; // NEC 220.54 minimum per dryer
+    const c = o.count;
+    const count = (c === undefined || c === null || c === '') ? 0 : Math.max(0, Math.floor(+c || 0));
+    const npRaw = o.nameplateVA;
+    const nameplateVA = (npRaw === undefined || npRaw === null || npRaw === '') ? 0 : Math.max(0, +npRaw || 0);
+    // 220.54: each dryer = the larger of 5,000 VA or its nameplate.
+    const perDryerVA = Math.max(nameplateVA, MIN);
+    const connectedVA = perDryerVA * count;
+    const factorPct = dryerFactorPct(count);
+    const demandVA = (count > 0 && factorPct != null) ? round2(connectedVA * factorPct / 100) : 0;
+    return {
+      count, perDryerVA, connectedVA, factorPct,
+      factorLabel: dryerFactorLabel(count), demandVA
+    };
+  }
+
   // ---- CSV export ----
   function csvEscape(v) {
     v = String(v == null ? '' : v);
@@ -424,6 +487,17 @@
       L.push(['Note', 'Design aid only — 220.82 is a single-dwelling-unit optional method; verify against the adopted NEC edition. Neutral load per 220.61 not included.']);
       L.push([]);
     }
+    const dd = (project && project.dd) ? dryerDemand22054(project.dd) : null;
+    if (dd && dd.count > 0) {
+      L.push(['MULTI-DWELLING CLOTHES DRYER LOAD — NEC 220.54 + Table 220.54 (2017-2023 code verified)', '']);
+      L.push(['Number of dryers', dd.count]);
+      L.push(['Per-dryer load (max of 5,000 VA or nameplate)', dd.perDryerVA + ' VA']);
+      L.push(['Total connected dryer load', dd.connectedVA + ' VA']);
+      L.push(['Table 220.54 demand factor', dd.factorPct + '%  (' + dd.factorLabel + ')']);
+      L.push(['Dryer demand load', dd.demandVA + ' VA']);
+      L.push(['Note', 'Standard-method multi-dwelling dryer rule. 220.54 ≠ the single-dwelling 220.82(B)(3) nameplate treatment. The 2026 NEC renumbers this (→ 120.54) and revises the factors — verify against the adopted edition.']);
+      L.push([]);
+    }
     L.push(['DWELLING UNIT MINIMUM CIRCUITS (NEC 210.11)', '']);
     L.push(['Requirement', 'Cite', 'Required', 'Auto-detected', 'Status', 'Result', 'Note']);
     const dws = dwStatus(project);
@@ -471,6 +545,7 @@
     STD_BREAKERS, SYSTEMS, nextStdBreaker, reqBreakerA, circuitContribution,
     panelTotals, autoBalance, projectTotals, emptyPanel, defaultProject,
     DW_DEFAULT_ITEMS, normalizeDw, dwStatus, serviceLoad22082,
+    dryerFactorPct, dryerFactorLabel, dryerDemand22054,
     toCSV, projectToCSV, toJSON, fromJSON, migrate, round2
   };
 
@@ -657,6 +732,35 @@
         ? `<span class="badge bad">Exceeds project service rating ${state.serviceA} A</span>` : '');
   }
 
+  // ---- NEC 220.54 multi-dwelling dryer demand (v1.4) ----
+  function ddFields() {
+    const el = id => $('#dd' + id);
+    const n = x => (el(x) && el(x).value !== '') ? (+el(x).value || null) : null;
+    return { count: n('Count'), nameplateVA: n('Nameplate') };
+  }
+
+  function renderDdInputs() {
+    const l = state.dd || {};
+    const set = (id, v) => { const e = $('#dd' + id); if (e) e.value = (v == null ? '' : v); };
+    set('Count', l.count);
+    set('Nameplate', l.nameplateVA);
+  }
+
+  function renderDd() {
+    const l = ddFields();
+    const count = (l.count === null) ? 0 : l.count;
+    if (!(count > 0)) {
+      $('#ddSum').textContent = '—';
+      $('#ddBadges').innerHTML = '<span class="badge">Enter the number of electric dryers served to apply Table 220.54 (2017–2023)</span>';
+      return;
+    }
+    const dd = dryerDemand22054(l);
+    $('#ddSum').textContent = `${dd.demandVA} VA dryer demand  (${dd.count} dryers @ ${dd.perDryerVA} VA each, ${dd.factorPct}% factor)`;
+    $('#ddBadges').innerHTML =
+      `<span class="badge">Connected ${dd.connectedVA} VA → ${dd.demandVA} VA (Table 220.54)</span>` +
+      `<span class="badge">${esc(dd.factorLabel)}</span>`;
+  }
+
   function renderDw() {
     const dw = dwStatus(state);
     const allMet = dw.metCount === dw.total;
@@ -692,7 +796,7 @@
     if (c) c.textContent = new Date().toLocaleDateString();
   }
 
-  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDw(); renderPrintHdr(); }
+  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderDw(); renderPrintHdr(); }
 
   // ---- actions ----
   function addCircuit() {
@@ -903,6 +1007,15 @@
     $('#btnLcReset').onclick = () => {
       state.lc = null;
       saveState(); renderLcInputs(); renderLc();
+    };
+    $('#ddCard').addEventListener('input', e => {
+      if (!e.target.id || !e.target.id.startsWith('dd')) return;
+      state.dd = ddFields();
+      saveState(); renderDd();
+    });
+    $('#btnDdReset').onclick = () => {
+      state.dd = null;
+      saveState(); renderDdInputs(); renderDd();
     };
     $('#fileImport').onchange = e => {
       if (e.target.files && e.target.files[0]) importJSON(e.target.files[0]);
