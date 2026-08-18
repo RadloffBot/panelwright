@@ -611,6 +611,62 @@
     return { valid: true, count, effectiveCount, ratingKW, baseKW, increaseKW, demandKW, demandVA: round2(demandKW * 1000) };
   }
 
+  // ---- NEC 220.61 feeder/service neutral load (v1.7) ----
+  // Text verified verbatim: NFPA 70 2014 Art. 220 PDF == NEC 2020 full-code text
+  // 2014 == 2020 (substantively identical — programmatic normalized diff of the A/B/C
+  // section bodies shows the only differences are OCR misreads in the 2020 source);
+  // the 2023 change analysis records no 220.61 change.
+  //
+  // (A) basic calc: neutral load = max unbalance = max net load between the neutral
+  //     and any one ungrounded conductor.
+  // (B)(1) permitted: 70% factor on the household cooking/dryer portion (loads
+  //     determined per Table 220.55 / 220.54).
+  // (B)(2) permitted: 70% factor on the portion of the unbalanced load over 200 A
+  //     (3-wire dc / 1∅ ac; 4-wire 3∅; 3-wire 2∅; 5-wire 2∅).
+  // (C) prohibited: 3-wire portions of 4-wire 3∅ wye circuits; nonlinear loads on
+  //     4-wire wye (harmonic risk) — no reduction applied here.
+  // 310.12(B): for a feeder or service supplying ONE dwelling unit, the minimum
+  //     ampacity of the grounded (neutral) conductor may be 83% of the calculated
+  //     neutral load. (Verified via a real 2023 worked calc: 279 A -> 83% = 232 A ->
+  //     250 Cu / 350 AL @ 75°C; the 2026 NEC renumbers Art. 220 -> Art. 120.)
+  // NOTE: the specific AWG/kcmil selection from Table 310.16 is intentionally NOT
+  // hardcoded here — it is deferred to v1.7.1 pending verbatim table verification.
+  // This tool reports the minimum neutral conductor AMPACITY (the number you look
+  // up in Table 310.16, then apply 310.15 adjustments), which is fully verifiable.
+
+  // o: { totalVA, cookingDryerVA, volt, applyB1, applyB2, dwelling }
+  // Returns the step-by-step 220.61 result (all amperes rounded to 2 dp).
+  function neutralLoad22061(o) {
+    o = o || {};
+    const volt = +o.volt;
+    if (!volt || !(volt > 0)) return { valid: false, reason: 'enter the phase-to-neutral voltage' };
+    const totalVA = o.totalVA == null || o.totalVA === '' ? 0 : (+o.totalVA || 0);
+    let cookVA = o.cookingDryerVA == null || o.cookingDryerVA === '' ? 0 : (+o.cookingDryerVA || 0);
+    if (cookVA < 0) cookVA = 0;
+    if (!(totalVA > 0)) return { valid: false, reason: 'enter the total neutral (unbalanced) load' };
+    if (cookVA > totalVA + 1e-9) return { valid: false, reason: 'cooking/dryer portion cannot exceed the total neutral load' };
+    if (cookVA > totalVA) cookVA = totalVA; // rounding clamp
+
+    const b1 = !!o.applyB1, b2 = !!o.applyB2, dw = !!o.dwelling;
+    // (B)(1): 70% on the cooking/dryer portion (only when it was demand-calculated
+    // per Table 220.55/220.54 — the checkbox asserts that).
+    const cookDemandVA = b1 ? cookVA * 0.70 : cookVA;
+    const basicVA = (totalVA - cookVA) + cookDemandVA;
+    const basicA = round2(basicVA / volt);
+    // (B)(2): 70% on the portion over 200 A.
+    const finalA = b2 && basicA > 200 ? round2(200 + (basicA - 200) * 0.70) : basicA;
+    // 310.12(B): one-dwelling service/feeder -> min neutral ampacity = 83%.
+    const minAmpA = dw ? round2(finalA * 0.83) : finalA;
+    return {
+      valid: true, totalVA, cookVA, volt,
+      b1, b2, dwelling: dw,
+      cookDemandVA: round2(cookDemandVA),
+      basicVA: round2(basicVA), basicA,
+      b2Applied: b2 && basicA > 200,
+      finalA, minAmpA
+    };
+  }
+
   // ---- CSV export ----
   function csvEscape(v) {
     v = String(v == null ? '' : v);
@@ -735,6 +791,20 @@
       L.push(['Note', 'kVA considered equivalent to kW (220.55). Column C used (default). Note 2 (unequal ratings >8¾ kW) and Note 3 (Column A/B factors) available in the UI; see README for worked examples. Verify against the adopted NEC edition.']);
       L.push([]);
     }
+    const nl = (project && project.nl) ? neutralLoad22061(project.nl) : null;
+    if (nl && nl.valid) {
+      L.push(['FEEDER / SERVICE NEUTRAL LOAD — NEC 220.61 (2014 = 2020 verbatim; no 2023 change)', '']);
+      L.push(['Total neutral (max unbalanced) load', nl.totalVA + ' VA']);
+      if (nl.cookVA > 0) L.push(['Cooking/dryer portion (220.55/220.54 demand)', nl.cookVA + ' VA']);
+      L.push(['Phase-to-neutral voltage', nl.volt + ' V']);
+      if (nl.b1) L.push(['220.61(B)(1) 70% applied to cooking/dryer portion', 'Y (→ ' + nl.cookDemandVA + ' VA)']);
+      L.push(['Basic neutral load (220.61(A))', nl.basicA + ' A']);
+      if (nl.b2Applied) L.push(['220.61(B)(2) 70% on portion over 200 A', 'Y']);
+      L.push(['Calculated neutral load (after reductions)', nl.finalA + ' A']);
+      if (nl.dwelling) L.push(['310.12(B) one-dwelling service: min neutral ampacity', nl.minAmpA + ' A (83% of calculated)']);
+      L.push(['Note', 'Select the conductor from Table 310.16 for the minimum neutral ampacity above (30°C ambient, ≤3 current-carrying conductors), then apply 310.15 adjustments (ambient/derating) as required. 220.61(C) prohibited reductions NOT applied: 3-wire portions of 4-wire 3-phase wye circuits and nonlinear loads on 4-wire wye must stay at 100% (harmonic neutral currents). Design aid only; verify against the adopted NEC edition (2026 NEC: Article 120 renumber).']);
+      L.push([]);
+    }
     L.push(['DWELLING UNIT MINIMUM CIRCUITS (NEC 210.11)', '']);
     L.push(['Requirement', 'Cite', 'Required', 'Auto-detected', 'Status', 'Result', 'Note']);
     const dws = dwStatus(project);
@@ -786,6 +856,7 @@
     LIT_TABLES, lightingDemand22042,
     COOK_C_KW, COOK_AB, cookingColumnCKW, cookingNote1Kw, cookingNote2,
     cookingABFactorPct, cookingNote3KW, cookingDemand22055,
+    neutralLoad22061,
     toCSV, projectToCSV, toJSON, fromJSON, migrate, round2
   };
 
@@ -1128,6 +1199,61 @@
       '<span class="badge ok">Note 3 (over 1¾ kW through 8¾ kW)</span>';
   }
 
+  // ---- NEC 220.61 neutral load (v1.7) ----
+  function nlFields() {
+    const el = id => $('#' + id);
+    const n = id => (el(id) && el(id).value !== '') ? (+el(id).value || null) : null;
+    return {
+      totalVA: n('nlTotal'),
+      cookingDryerVA: n('nlCook'),
+      volt: n('nlVolt'),
+      applyB1: !!(el('nlB1') && el('nlB1').checked),
+      applyB2: !!(el('nlB2') && el('nlB2').checked),
+      dwelling: !!(el('nlDw') && el('nlDw').checked)
+    };
+  }
+
+  function renderNlInputs() {
+    const l = state.nl || {};
+    const set = (id, v) => { const e = $('#nl' + id); if (e) e.value = (v == null ? '' : v); };
+    const chk = (id, v) => { const e = $('#nl' + id); if (e) e.checked = !!v; };
+    set('Total', l.totalVA);
+    set('Cook', l.cookingDryerVA);
+    set('Volt', l.volt);
+    // B2 defaults ON (most common); dwelling/B1 default OFF unless saved
+    chk('B1', l.applyB1);
+    chk('B2', l.applyB2 === undefined ? true : l.applyB2);
+    chk('Dw', l.dwelling);
+  }
+
+  function renderNl() {
+    const l = nlFields();
+    const sumEl = $('#nlSum'), badgesEl = $('#nlBadges');
+    if (!sumEl || !badgesEl) return;
+    if (!(l.totalVA > 0) || !(l.volt > 0)) {
+      sumEl.textContent = '—';
+      badgesEl.innerHTML = '<span class="badge">Enter the total neutral (max unbalanced) load + phase-to-neutral voltage to apply 220.61</span>';
+      return;
+    }
+    const r = neutralLoad22061(l);
+    if (!r.valid) {
+      sumEl.textContent = '—';
+      badgesEl.innerHTML = '<span class="badge bad">' + esc(r.reason) + '</span>';
+      return;
+    }
+    let s = `${r.finalA} A calculated neutral load`;
+    if (r.dwelling) s += `  →  min neutral ampacity ${r.minAmpA} A (310.12(B) 83%)`;
+    s += `  @ ${r.volt} V`;
+    sumEl.textContent = s;
+    let b = '';
+    if (r.b1 && r.cookVA > 0) b += `<span class="badge">220.61(B)(1): cooking/dryer ${r.cookVA} VA → ${r.cookDemandVA} VA (70%)</span>`;
+    b += `<span class="badge">220.61(A) basic: ${r.basicA} A</span>`;
+    if (r.b2Applied) b += `<span class="badge">220.61(B)(2): 70% on portion over 200 A → ${r.finalA} A</span>`;
+    b += `<span class="badge ok">Min neutral conductor ampacity: ${r.minAmpA} A — look up in Table 310.16</span>`;
+    b += '<span class="badge warn">220.61(C) prohibited reductions NOT applied (wye 3-wire + nonlinear @100%)</span>';
+    badgesEl.innerHTML = b;
+  }
+
   function renderDw() {
     const dw = dwStatus(state);
     const allMet = dw.metCount === dw.total;
@@ -1163,7 +1289,7 @@
     if (c) c.textContent = new Date().toLocaleDateString();
   }
 
-  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderDw(); renderPrintHdr(); }
+  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderDw(); renderPrintHdr(); }
 
   // ---- actions ----
   function addCircuit() {
@@ -1407,6 +1533,15 @@
     $('#btnCkReset').onclick = () => {
       state.ck = null;
       saveState(); renderCkInputs(); renderCk();
+    };
+    $('#nlCard').addEventListener('input', e => {
+      if (!e.target.id || !e.target.id.startsWith('nl')) return;
+      state.nl = nlFields();
+      saveState(); renderNl();
+    });
+    $('#btnNlReset').onclick = () => {
+      state.nl = null;
+      saveState(); renderNlInputs(); renderNl();
     };
     $('#fileImport').onchange = e => {
       if (e.target.files && e.target.files[0]) importJSON(e.target.files[0]);

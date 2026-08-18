@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PanelWright — Panel Schedule Calculator & Multi-Panel Load Rollup (NEC design aid)</title>
-<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 220.55 cooking appliance demand (Table 220.55, Column C + Notes 1/2/3), NEC 220.42 lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing, CSV & print/PDF. No account, no install.">
+<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 220.55 cooking appliance demand (Table 220.55, Column C + Notes 1/2/3), NEC 220.61 feeder/service neutral load (220.61(A)/(B)/(C) + 310.12(B) 83%), NEC 220.42 lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing, CSV & print/PDF. No account, no install.">
 <!-- og:url / canonical are placeholders until the GitHub Pages URL is known (see PUBLISH.md). -->
 <link rel="canonical" href="PUBLISH-PLACEHOLDER/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -19,14 +19,14 @@
 <meta name="twitter:description" content="Free in-browser panel schedule tool: multi-panel rollup, NEC 220.82 service-load calc, 210.11 checklist, phase balancing, CSV/PDF. No account, no install.">
 <meta name="twitter:image" content="PUBLISH-PLACEHOLDER/og-image.png">
 <meta name="theme-color" content="#0f1419">
-<meta name="keywords" content="panel schedule calculator, electrical panel schedule, load schedule, NEC 220.82, service load calculation, NEC 220.55, cooking appliance demand, electric range demand, Table 220.55, range demand factor, NEC 220.42, lighting load demand, Table 220.42, standard method load calc, NEC 220.54, clothes dryer demand, Table 220.54, NEC 210.11, phase balancing, 408.3(C), breaker sizing, 210.20, 215.2, electrician tools, electrical engineering, subpanel schedule, load rollup">
+<meta name="keywords" content="panel schedule calculator, electrical panel schedule, load schedule, NEC 220.82, service load calculation, NEC 220.55, cooking appliance demand, electric range demand, Table 220.55, range demand factor, NEC 220.61, neutral load, service neutral, neutral conductor sizing, 310.12(B), NEC 220.42, lighting load demand, Table 220.42, standard method load calc, NEC 220.54, clothes dryer demand, Table 220.54, NEC 210.11, phase balancing, 408.3(C), breaker sizing, 210.20, 215.2, electrician tools, electrical engineering, subpanel schedule, load rollup">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "PanelWright",
   "url": "PUBLISH-PLACEHOLDER/",
-  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 220.55 household cooking appliance demand (Table 220.55: Column C with Note 1, Note 2 unequal ratings, Note 3 Column A/B factors), NEC 220.42 general lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling clothes-dryer demand (Table 220.54), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
+  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 220.55 household cooking appliance demand (Table 220.55: Column C with Note 1, Note 2 unequal ratings, Note 3 Column A/B factors), NEC 220.61 feeder/service neutral load (basic calc, 70% reductions, 310.12(B) 83% one-dwelling minimum ampacity), NEC 220.42 general lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling clothes-dryer demand (Table 220.54), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any (web browser)",
   "browserRequirements": "Requires JavaScript",
@@ -107,10 +107,10 @@
 <div class="wrap">
   <header class="app">
     <h1>Panel<span>Wright</span></h1>
-    <div class="tag">Panel schedules, phase balancing, service rollup, NEC 220.82 service load & 220.55 cooking demand</div>
+    <div class="tag">Panel schedules, phase balancing, service rollup, NEC 220.82 service load, 220.55 cooking & 220.61 neutral</div>
     <div class="savedat" id="savedAt"></div>
   </header>
-  <p class="disc">Free design aid (v1.6). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
+  <p class="disc">Free design aid (v1.7). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
   <div class="printhdr">
     <strong>PanelWright</strong> — Panel Schedule & Load Rollup<br>
     Project: <span id="prjNamePrint">—</span> &nbsp;·&nbsp; Service: <span id="svcAPrint">—</span> &nbsp;·&nbsp; Generated: <span id="printDate">—</span><br>
@@ -218,6 +218,24 @@
     <div class="btnrow"><button class="ghost" id="btnCkReset">Clear cooking inputs</button></div>
   </section>
 
+  <section class="card no-print" id="nlCard">
+    <h2>NEC 220.61 — feeder / service neutral load (2014 = 2020 verbatim; no 2023 change)</h2>
+    <p class="dwnote" style="margin:0 0 10px">The neutral load is the <strong>maximum unbalance</strong> — the maximum net calculated load between the neutral conductor and any one ungrounded conductor (220.61(A)). Permitted reductions: <strong>220.61(B)(1)</strong> 70% applied to the household cooking/dryer portion (only when that load was demand-calculated per Table&nbsp;220.55 / Table&nbsp;220.54), and <strong>220.61(B)(2)</strong> 70% applied to the portion of the unbalanced load <em>over 200&nbsp;A</em> (3-wire dc / single-phase ac, 4-wire 3∅, 3- or 5-wire 2∅). For a service or feeder supplying <strong>one dwelling unit</strong>, the minimum ampacity of the neutral conductor may be <strong>83%</strong> of the calculated load (<strong>310.12(B)</strong>). <strong>220.61(C) prohibited reductions are never applied here:</strong> 3-wire portions of 4-wire 3∅ wye circuits and nonlinear loads on 4-wire wye systems stay at 100% (harmonic neutral currents). The tool reports the <strong>minimum neutral-conductor ampacity</strong> — select the conductor from Table&nbsp;310.16 (30&nbsp;°C ambient, ≤3 current-carrying conductors) and apply 310.15 adjustments as required. Design aid only — the 2026 NEC renumbers this (Article 120 area); verify against the adopted NEC edition.</p>
+    <div class="grid">
+      <div><label class="f" for="nlTotal">Total neutral load — max unbalance (VA) · 220.61(A)</label><input id="nlTotal" type="number" min="0" step="10" placeholder="from your phase-by-phase calc"></div>
+      <div><label class="f" for="nlCook">Cooking/dryer portion (VA) · 220.61(B)(1)</label><input id="nlCook" type="number" min="0" step="10" placeholder="demand per Table 220.55 / 220.54"></div>
+      <div><label class="f" for="nlVolt">Phase-to-neutral voltage (V)</label><input id="nlVolt" type="number" min="0" step="0.01" placeholder="120 for 120/240 or 208Y/120 · 277 for 480Y/277"></div>
+    </div>
+    <div class="grid" style="margin-top:10px">
+      <div><label class="f" for="nlB1">☑ 220.61(B)(1) — cooking/dryer demand was calc’d per Table 220.55/220.54 (apply 70%)</label><input id="nlB1" type="checkbox" style="width:auto"></div>
+      <div><label class="f" for="nlB2">☑ 220.61(B)(2) — apply 70% to the portion of the unbalanced load over 200 A</label><input id="nlB2" type="checkbox" style="width:auto" checked></div>
+      <div><label class="f" for="nlDw">☑ 310.12(B) — service/feeder supplies ONE dwelling unit (min neutral ampacity = 83%)</label><input id="nlDw" type="checkbox" style="width:auto"></div>
+    </div>
+    <div class="svcsum" id="nlSum" style="margin-top:12px">—</div>
+    <div class="badges" id="nlBadges"></div>
+    <div class="btnrow"><button class="ghost" id="btnNlReset">Clear neutral inputs</button></div>
+  </section>
+
   <section class="card no-print" id="dwCard">
     <h2>NEC 210.11 — dwelling unit minimum circuits (2017–2023 code verified; editable)</h2>
     <div class="badges" id="dwSummary"></div>
@@ -294,7 +312,7 @@
   </section>
 
   <footer>
-    <p><strong>About PanelWright.</strong> Free, open-source panel schedule tool. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max-deviation and the NEC 408.3(C) 5% neutral guideline (field approximation — verify with real load data & power factor). The service-entrance rollup sums panel phase currents without demand factors — a screening value. The NEC 220.82 service-load card is a real optional-method demand calc for a single dwelling unit (2017–2023 code verified) — neutral load per 220.61 is not included. The NEC 220.55 cooking card implements Table 220.55 (Column C + Notes 1/2/3) as verified verbatim against NFPA 70 2014 and NEC 2020 (identical; no 2023 change).</p>
+    <p><strong>About PanelWright.</strong> Free, open-source panel schedule tool. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max-deviation and the NEC 408.3(C) 5% neutral guideline (field approximation — verify with real load data & power factor). The service-entrance rollup sums panel phase currents without demand factors — a screening value. The NEC 220.82 service-load card is a real optional-method demand calc for a single dwelling unit (2017–2023 code verified). The NEC 220.55 cooking card implements Table 220.55 (Column C + Notes 1/2/3) as verified verbatim against NFPA 70 2014 and NEC 2020 (identical; no 2023 change). The NEC 220.61 neutral card implements the 220.61(A)/(B)/(C) reductions verbatim (2014 = 2020; no 2023 change) plus the 310.12(B) 83% one-dwelling minimum neutral ampacity; the Table 310.16 conductor pick is yours to make from the reported ampacity.</p>
     <p>Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (no humans pretend to be the author). The code is plain HTML/JS — read it, fix it, share it (MIT). Data never leaves your browser.</p>
   </footer>
 </div>

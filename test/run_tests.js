@@ -651,5 +651,76 @@ eq(ckCSV.includes('Demand load,27.5 kW (27500 VA)'), true, 'csv demand 27.5 kW /
 // --- CSV omits the 220.55 section when no ck present ---
 eq(core.projectToCSV(proj).includes('NEC 220.55'), false, 'csv omits 220.55 when absent');
 
+// --- NEC 220.61 feeder/service neutral load (v1.7) ---
+// 220.61(A) basic: neutral = max unbalance; (B)(1) 70% on cooking/dryer demand
+// portion; (B)(2) 70% on portion over 200 A; 310.12(B) 83% min ampacity for
+// a one-dwelling service/feeder. Text verified 2014 vs 2020 (substantively identical;
+// normalized diff shows only OCR artifacts), no 2023 change.
+console.log('neutralLoad22061:');
+// (A) only, no reductions: 24,000 VA @ 120 V = 200 A
+const n1 = core.neutralLoad22061({ totalVA: 24000, volt: 120 });
+eq(n1.valid, true, 'n1 valid');
+eq(n1.basicA, 200, 'n1 basic 200 A');
+eq(n1.b2Applied, false, 'n1 B2 not applied at exactly 200 A (must EXCEED)');
+eq(n1.finalA, 200, 'n1 final 200 A');
+eq(n1.minAmpA, 200, 'n1 no 310.12(B) (not one-dwelling) -> 200 A');
+// (B)(2) just over 200 A: 24,400 VA @ 120 = 203.33 A -> 200 + 3.33*0.70 = 202.33 A
+const n2 = core.neutralLoad22061({ totalVA: 24400, volt: 120, applyB2: true });
+eq(n2.basicA, 203.33, 'n2 basic 203.33 A');
+eq(n2.b2Applied, true, 'n2 B2 applied (over 200 A)');
+eq(n2.finalA, 202.33, 'n2 final 200 + 3.33x0.70 = 202.33 A');
+// (B)(2) not applied when disabled
+const n3 = core.neutralLoad22061({ totalVA: 24400, volt: 120, applyB2: false });
+eq(n3.finalA, 203.33, 'n3 B2 disabled -> 203.33 A');
+// (B)(1): total 10,000 VA @ 120 V, cooking/dryer 4,000 VA (demand per 220.55/54)
+const n4 = core.neutralLoad22061({ totalVA: 10000, cookingDryerVA: 4000, volt: 120, applyB1: true });
+eq(n4.cookDemandVA, 2800, 'n4 B1 cooking 4000 -> 2800 VA');
+eq(n4.basicVA, 8800, 'n4 basic 8800 VA');
+eq(n4.basicA, 73.33, 'n4 basic 73.33 A');
+const n5 = core.neutralLoad22061({ totalVA: 10000, cookingDryerVA: 4000, volt: 120, applyB1: false });
+eq(n5.basicA, 83.33, 'n5 B1 off -> 83.33 A');
+// Real 2023 worked example (terrylove_2023): total basic 75,212 VA @ 240 V,
+// (B)(1) already applied upstream, (B)(2) over 200 A. Source rounds to 313 / 279 / 232 A.
+const n6 = core.neutralLoad22061({ totalVA: 75212, volt: 240, applyB2: true, dwelling: true });
+eq(n6.basicA, 313.38, 'n6 (2023 worked ex) basic 313.38 A (source: 313)');
+eq(n6.finalA, 279.37, 'n6 (2023 worked ex) 200 + 113.38x0.70 = 279.37 A (source: 279)');
+eq(n6.minAmpA, 231.88, 'n6 (2023 worked ex) 310.12(B) 83% -> 231.88 A (source: 232 = ceil)');
+eq(Math.trunc(n6.basicA), 313, 'n6 trunc(basic) == source 313');
+eq(Math.trunc(n6.finalA), 279, 'n6 trunc(final) == source 279');
+eq(Math.ceil(n6.minAmpA), 232, 'n6 ceil(minAmp) == source 232');
+// Combined: 100,000 VA @ 240 V, cooking 40,000 VA, B1 + B2 + one-dwelling
+const n7 = core.neutralLoad22061({ totalVA: 100000, cookingDryerVA: 40000, volt: 240, applyB1: true, applyB2: true, dwelling: true });
+eq(n7.basicA, 366.67, 'n7 basic 88,000 VA / 240 = 366.67 A');
+eq(n7.finalA, 316.67, 'n7 B2: 200 + 166.67x0.70 = 316.67 A');
+eq(n7.minAmpA, 262.84, 'n7 310.12(B): 316.67 x 0.83 = 262.84 A');
+// 3-phase system, 277 V phase-neutral: 200,000 VA, B2 on
+const n8 = core.neutralLoad22061({ totalVA: 200000, volt: 277, applyB2: true });
+eq(n8.basicA, 722.02, 'n8 basic 200,000/277 = 722.02 A');
+eq(n8.finalA, 565.41, 'n8 B2: 200 + 522.02x0.70 = 565.41 A');
+// Guards
+eq(core.neutralLoad22061({ totalVA: 5000 }).valid, false, 'no voltage -> invalid');
+eq(core.neutralLoad22061({ volt: 120 }).valid, false, 'no total -> invalid');
+eq(core.neutralLoad22061({ totalVA: 5000, cookingDryerVA: 9000, volt: 120 }).valid, false, 'cooking > total -> invalid');
+eq(core.neutralLoad22061(null).valid, false, 'null -> invalid, no throw');
+eq(core.neutralLoad22061({ totalVA: 8000, cookingDryerVA: -50, volt: 120 }).basicA, 66.67, 'negative cooking clamped to 0 -> 66.67 A');
+// B1 boundary: cooking exactly equals total
+const n9 = core.neutralLoad22061({ totalVA: 12000, cookingDryerVA: 12000, volt: 120, applyB1: true });
+eq(n9.basicA, 70, 'n9 all-cooking B1: 12000x0.7/120 = 70 A');
+// --- CSV includes the 220.61 section when present ---
+const nlProj = { version: 2, projectName: 'Neutral', serviceA: 400, notes: '',
+  panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 400, notes: '', circuits: [] }],
+  nl: { totalVA: 75212, volt: 240, applyB2: true, dwelling: true } };
+const nlCSV = core.projectToCSV(nlProj);
+eq(nlCSV.includes('FEEDER / SERVICE NEUTRAL LOAD — NEC 220.61'), true, 'csv has 220.61 section');
+eq(nlCSV.includes('Total neutral (max unbalanced) load,75212 VA'), true, 'csv total row');
+eq(nlCSV.includes('Basic neutral load (220.61(A)),313.38 A'), true, 'csv basic row');
+eq(nlCSV.includes('220.61(B)(2) 70% on portion over 200 A,Y'), true, 'csv B2 row');
+eq(nlCSV.includes('310.12(B) one-dwelling service: min neutral ampacity,231.88 A (83% of calculated)'), true, 'csv 83% row');
+// --- CSV omits the 220.61 section when no nl present ---
+eq(core.projectToCSV(proj).includes('NEC 220.61'), false, 'csv omits 220.61 when absent');
+// JSON roundtrip preserves nl
+const nlRT = core.fromJSON(core.toJSON(nlProj));
+eq(nlRT.nl.totalVA, 75212, 'json roundtrip keeps nl.totalVA');
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

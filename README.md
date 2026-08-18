@@ -1,6 +1,6 @@
 # PanelWright
 
-**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, a NEC 220.55 household cooking appliance demand calculator (Table 220.55), a NEC 220.42 general lighting load demand calculator (standard method), a NEC 220.54 multi-dwelling clothes-dryer demand calculator, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
+**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, a NEC 220.55 household cooking appliance demand calculator (Table 220.55), a NEC 220.61 feeder/service neutral-load calculator, a NEC 220.42 general lighting load demand calculator (standard method), a NEC 220.54 multi-dwelling clothes-dryer demand calculator, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
 No install, no account, no data leaves your browser.
 
 > ⚠️ **Design aid only.** Not a substitute for the NEC, manufacturer instructions,
@@ -33,6 +33,25 @@ No install, no account, no data leaves your browser.
   cross-checked against verbatim NEC 2020 text. Note 4 (single-appliance
   branch-circuit loads) is out of scope. The 2026 NEC renumbers Article 220 —
   verify against your adopted edition.
+- **NEC 220.61 feeder/service neutral load** (v1.7) — the neutral-load side of the
+  story the other cards leave out. Enter the total neutral (max unbalanced) load and
+  phase-to-neutral voltage; the tool applies the **220.61(A)** basic calc, the
+  **220.61(B)(1)** 70% factor on the household cooking/dryer portion (when demand-
+  calculated per Table 220.55/220.54), and the **220.61(B)(2)** 70% factor on the
+  portion of the unbalanced load over 200 A, and — for a service/feeder supplying
+  **one dwelling unit** — reports the **310.12(B)** minimum neutral-conductor
+  ampacity (83% of the calculated load). The **220.61(C) prohibited reductions**
+  (3-wire portions of 4-wire 3∅ wye circuits; nonlinear loads on 4-wire wye —
+  harmonic neutral currents) are **never applied** and are flagged. The tool reports
+  the minimum neutral *ampacity* to look up in Table 310.16 (apply 310.15
+  adjustments); the specific AWG/kcmil pick is intentionally not hardcoded pending
+  verbatim Table 310.16 verification. **2014 = 2020 verbatim (the 220.61 A/B/C text is
+  substantively identical across the two editions — a programmatic diff of the section
+  bodies shows all 22 remaining character differences are OCR misreads in the 2020
+  slideshare source, i.e. no substantive code change); 2023 change analysis records no
+  220.61 change; cross-checked against a real 2023 worked neutral calc
+  (313/279/232 A).** The 2026 NEC renumbers this (Article 120 area) — verify against
+  your adopted edition.
 - **NEC 220.42 general lighting load demand — standard method (Table 220.42)** — the
   Part III feeder/service demand rule for the general-illumination load. Enter the total
   lighting VA (fixture schedule or design basis) and the occupancy; the Table 220.42
@@ -67,9 +86,9 @@ No install, no account, no data leaves your browser.
 - **Auto-balance**: one click reassigns switchable circuits to minimize imbalance
   (respects pole count — a 120V circuit is never moved to a 208V feed)
 - **Exports**: per-panel CSV, full multi-panel rollup CSV (incl. 210.11 checklist, the
-  220.82 service-load detail, the 220.55 cooking demand, the 220.42 lighting demand, and
-  the 220.54 dryer demand when present), JSON save/open (v1 files auto-migrate), Print → PDF
-  with project header
+  220.82 service-load detail, the 220.55 cooking demand, the 220.42 lighting demand, the
+  220.54 dryer demand, and the 220.61 neutral-load calc when present), JSON save/open
+  (v1 files auto-migrate), Print → PDF with project header
 - Auto-saves to your browser's localStorage — your work survives refreshes
 
 ## Run it
@@ -85,7 +104,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 355 core assertions (hand-verified)
+node test/run_tests.js   # 392 core assertions (hand-verified)
 ```
 
 ## About the author
