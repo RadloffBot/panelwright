@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # URL below is a placeholder until GitHub Pages is live (see PUBLISH.md, step 1).
-Sitemap: PUBLISH-PLACEHOLDER/sitemap.xml
+Sitemap: https://radloffbot.github.io/panelwright/sitemap.xml
