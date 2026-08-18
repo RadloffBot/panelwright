@@ -1,6 +1,6 @@
 # PanelWright
 
-**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, a NEC 220.42 general lighting load demand calculator (standard method), a NEC 220.54 multi-dwelling clothes-dryer demand calculator, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
+**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, a NEC 220.55 household cooking appliance demand calculator (Table 220.55), a NEC 220.42 general lighting load demand calculator (standard method), a NEC 220.54 multi-dwelling clothes-dryer demand calculator, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
 No install, no account, no data leaves your browser.
 
 > ⚠️ **Design aid only.** Not a substitute for the NEC, manufacturer instructions,
@@ -18,6 +18,21 @@ No install, no account, no data leaves your browser.
   thermal storage 100%), then sizes the service to the next NEC 240.6 standard breaker.
   **2017–2023 code verified; cross-checked against two independent worked examples
   (2020 + 2023 NEC).** Design aid — neutral load per 220.61 is not included.
+- **NEC 220.55 household cooking appliance demand (Table 220.55)** — the
+  feeder/service maximum-demand rule for household electric ranges, wall-mounted
+  ovens, counter-mounted cooking units, and other household cooking appliances
+  individually rated over 1¾ kW (kVA considered equivalent to kW). Three methods in
+  one card: **Column C + Note 1** (equal ratings over 12 kW: 5% per kW or major
+  fraction over 12 kW), **Note 2** (unequal ratings, all over 8¾ kW, none over
+  27 kW — average-based increase), and **Note 3** (Column A/B demand factors for
+  1¾–8¾ kW appliances, in lieu of Column C). Includes the 3-phase, 4-wire rule
+  (table count = 2 × max connected between any two phases).
+  **2014 = 2020 verbatim (programmatic diff: 0/30 row mismatches); 2023 change
+  analysis records no 220.55 change.** Table transcribed coordinate-level from the
+  verbatim NFPA 70 2014 Article 220 PDF (merged-cell geometry resolved) and
+  cross-checked against verbatim NEC 2020 text. Note 4 (single-appliance
+  branch-circuit loads) is out of scope. The 2026 NEC renumbers Article 220 —
+  verify against your adopted edition.
 - **NEC 220.42 general lighting load demand — standard method (Table 220.42)** — the
   Part III feeder/service demand rule for the general-illumination load. Enter the total
   lighting VA (fixture schedule or design basis) and the occupancy; the Table 220.42
@@ -52,8 +67,9 @@ No install, no account, no data leaves your browser.
 - **Auto-balance**: one click reassigns switchable circuits to minimize imbalance
   (respects pole count — a 120V circuit is never moved to a 208V feed)
 - **Exports**: per-panel CSV, full multi-panel rollup CSV (incl. 210.11 checklist, the
-  220.82 service-load detail, the 220.42 lighting demand, and the 220.54 dryer demand when
-  present), JSON save/open (v1 files auto-migrate), Print → PDF with project header
+  220.82 service-load detail, the 220.55 cooking demand, the 220.42 lighting demand, and
+  the 220.54 dryer demand when present), JSON save/open (v1 files auto-migrate), Print → PDF
+  with project header
 - Auto-saves to your browser's localStorage — your work survives refreshes
 
 ## Run it
@@ -69,7 +85,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 240 core assertions (hand-verified)
+node test/run_tests.js   # 355 core assertions (hand-verified)
 ```
 
 ## About the author

@@ -1,6 +1,8 @@
 /*
- * PanelWright v1.5 — panel schedule calculator (NEC design aid)
+ * PanelWright v1.6 — panel schedule calculator (NEC design aid)
  * Multi-panel projects + service-entrance rollup.
+ * v1.6: NEC 220.55 household cooking appliance demand (Table 220.55, Column C
+ *   + Notes 1/2/3) — table verified verbatim against NFPA 70 2014 + 2020 (identical).
  * Zero dependencies. Pure core (Node-testable) + browser UI.
  * Built 2026-08-16 by Radloff Bot (an AI) for electricians & engineers.
  * NOT a substitute for the NEC or a qualified electrical design.
@@ -458,6 +460,157 @@
     };
   }
 
+  // ---- NEC 220.55 Electric Cooking Appliances — demand (v1.6) ----
+  // VERIFIED verbatim against the NFPA 70 2014 Article 220 PDF (Table 220.55 read
+  // at coordinate level with pymupdf: cell geometry + row-line drawing) AND an
+  // independent verbatim NEC 2020 text source; a programmatic row-by-row diff of
+  // the two verbatim sources shows ALL 30 rows identical (labels + Column A +
+  // Column B + Column C incl. both merged formula cells). The 2020 NEC change
+  // analysis (Abernathy/Encore Wire) records no 220.55 change.
+  //
+  // NOTE (important, resolves the Session-9 hold): several free web sources claim
+  // the high band is "31+ ranges: 25 kW + 0.75 kW/range". That is WRONG per both
+  // verbatim editions: the 25 kW + ¾ kW formula cell SPANS 41–60 (and 61+) —
+  // merged-cell line geometry proves the 15 kW + 1 kW cell spans 26–40. Free
+  // sources were not trusted over verbatim text (the Session-4/5/8/9 discipline).
+  //
+  // 220.55: load for household electric ranges, wall-mounted ovens,
+  // counter-mounted cooking units, and other household cooking appliances
+  // individually rated in excess of 1¾ kW. kVA considered equivalent to kW.
+  // Where two or more single-phase ranges are supplied by a 3-phase, 4-wire
+  // feeder or service: total load = twice the maximum number connected between
+  // any two phases.
+  //
+  // Column C (base, "in all cases except as otherwise permitted in Note 3"):
+  //   1:8  2:11  3:14  4:17  5:20  6:21  7:22  8:23  9:24  10:25  11:26  12:27
+  //   13:28  14:29  15:30  16:31  17:32  18:33  19:34  20:35  21:36  22:37
+  //   23:38  24:39  25:40
+  //   26–40: 15 kW + 1 kW for each range        (merged cell, 26–40)
+  //   41–60 and 61+: 25 kW + ¾ kW for each range (merged cell, 41–60; 61 and over)
+  //   Band continuity (no jump at the seams): 25→40, 26→41, 40→55, 41→55.75,
+  //   60→70, 61→70.75.
+  // Column A / Column B demand factors (Note 3, in lieu of Column C), by count:
+  //   1:80/80  2:75/65  3:70/55  4:66/50  5:62/45  6:59/43  7:56/40  8:53/36
+  //   9:51/35  10:49/34  11:47/32  12:45/32  13:43/32  14:41/32  15:40/32
+  //   16:39/28  17:38/28  18:37/28  19:36/28  20:35/28  21:34/26  22:33/26
+  //   23:32/26  24:31/26  25:30/26  26–30:30/24  31–40:30/22  41–50:30/20
+  //   51–60:30/18  61+:30/16
+  // Note 1: over 12 kW through 27 kW, all same rating → Column C increased 5%
+  //   per additional kW (or major fraction) by which the rating exceeds 12 kW.
+  // Note 2: over 8¾ kW through 27 kW, unequal ratings → average = (sum of
+  //   ratings, using 12 kW for any range under 12 kW) / count; Column C
+  //   increased 5% per kW (or major fraction) by which the average exceeds 12.
+  // Note 3: over 1¾ kW through 8¾ kW → in lieu of Column C, sum nameplates per
+  //   column and multiply by the Column A or Column B factor for that count;
+  //   apply per column when ratings fall in both columns, then add.
+  // Note 4: branch-circuit load for one range may use Table 220.55 (out of
+  //   scope for this feeder/service calculator).
+  const COOK_C_KW = [8, 11, 14, 17, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]; // 1..25 ranges
+  const COOK_AB = [
+    [80, 80], [75, 65], [70, 55], [66, 50], [62, 45], [59, 43], [56, 40], [53, 36],
+    [51, 35], [49, 34], [47, 32], [45, 32], [43, 32], [41, 32], [40, 32],
+    [39, 28], [38, 28], [37, 28], [36, 28], [35, 28], [34, 26], [33, 26], [32, 26],
+    [31, 26], [30, 26], [30, 24], [30, 24], [30, 24], [30, 24], [30, 24], // 26–30 (A=30, B=24 for all of 26–30)
+    [30, 22], [30, 22], [30, 22], [30, 22], [30, 22], [30, 22], [30, 22], [30, 22], [30, 22], [30, 22], // 31–40
+    [30, 20], [30, 20], [30, 20], [30, 20], [30, 20], [30, 20], [30, 20], [30, 20], [30, 20], [30, 20], // 41–50
+    [30, 18], [30, 18], [30, 18], [30, 18], [30, 18], [30, 18], [30, 18], [30, 18], [30, 18], [30, 18], // 51–60
+    [30, 16] // 61+ (band factor; for 62+ the table's 61-and-over row applies)
+  ]; // index n-1, n = 1..61
+
+  function _cookCount(v) {
+    const n = Math.floor(+v);
+    return isFinite(n) && n > 0 ? n : 0;
+  }
+
+  // Column C base maximum demand (kW) for n ranges (1–25 table; 26–40: 15+1n;
+  // 41+: 25+0.75n). Returns null for n <= 0.
+  function cookingColumnCKW(n) {
+    n = _cookCount(n);
+    if (!n) return null;
+    if (n <= 25) return COOK_C_KW[n - 1];
+    if (n <= 40) return 15 + n;
+    return round2(25 + 0.75 * n);
+  }
+
+  // Note 1 increase: all same rating, over 12 through 27 kW → 5% per kW or
+  // major fraction over 12. Returns extra kW added to the Column C base.
+  function cookingNote1Kw(baseKW, ratingKW) {
+    if (!(ratingKW > 12) || ratingKW > 27 || !(baseKW > 0)) return 0;
+    const over = Math.ceil(ratingKW - 12); // each kW or major fraction thereof
+    return round2(baseKW * 0.05 * over);
+  }
+
+  // Note 2: unequal ratings all over 8¾ kW, none over 27 kW.
+  // ratingsKW = array of nameplate kW. average = (sum, using 12 kW for any
+  // range under 12 kW) / count. Increase = 5% per kW or major fraction by
+  // which the average exceeds 12 kW. Returns { valid, avgKW, baseKW, increaseKW, demandKW }.
+  function cookingNote2(ratingsKW) {
+    const arr = Array.isArray(ratingsKW) ? ratingsKW.map(x => +x).filter(x => isFinite(x) && x > 0) : [];
+    const n = arr.length;
+    if (!n) return { valid: false, reason: 'no ratings', avgKW: null, baseKW: null, increaseKW: null, demandKW: null };
+    if (arr.some(x => x <= 8.75)) return { valid: false, reason: 'Note 2 applies only to ranges individually rated OVER 8¾ kW', avgKW: null, baseKW: null, increaseKW: null, demandKW: null };
+    if (arr.some(x => x > 27)) return { valid: false, reason: 'Note 2 does not apply where any range exceeds 27 kW', avgKW: null, baseKW: null, increaseKW: null, demandKW: null };
+    if (arr.every(x => x === arr[0])) return { valid: false, reason: 'all ratings equal — use Note 1 (Column C with over-12 kW increase) instead', avgKW: null, baseKW: null, increaseKW: null, demandKW: null };
+    const sum = arr.reduce((a, x) => a + (x < 12 ? 12 : x), 0);
+    const avgExact = sum / n; // exact average (no premature rounding)
+    const avgKW = round2(avgExact);
+    const baseKW = cookingColumnCKW(n);
+    const over = avgExact > 12 + 1e-9 ? Math.ceil(avgExact - 12 - 1e-9) : 0; // each kW or major fraction thereof
+    const increaseKW = round2(baseKW * 0.05 * over);
+    return { valid: true, avgKW, baseKW, increaseKW, demandKW: round2(baseKW + increaseKW) };
+  }
+
+  // Note 3 (in lieu of Column C): Column A or Column B demand factor (%) for a
+  // count of 1..61+ appliances. Returns null for n <= 0.
+  function cookingABFactorPct(n, col) {
+    n = _cookCount(n);
+    if (!n) return null;
+    const idx = Math.min(n, 61) - 1;
+    const row = COOK_AB[idx];
+    return col === 'B' ? row[1] : row[0];
+  }
+
+  // Note 3 demand (kW): sum of nameplates per column × that column's factor.
+  // o: { countA, totalKWa, countB, totalKWb } — counts/totals for the
+  // <3.5 kW column (A) and the 3.5–8.75 kW column (B).
+  function cookingNote3KW(o) {
+    o = o || {};
+    const nA = _cookCount(o.countA), nB = _cookCount(o.countB);
+    if (!nA && !nB) return { demandKW: null, parts: [] };
+    const kwA = Math.max(0, +o.totalKWa || 0);
+    const kwB = Math.max(0, +o.totalKWb || 0);
+    let d = 0;
+    const parts = [];
+    if (nA) {
+      const f = cookingABFactorPct(nA, 'A');
+      d += kwA * f / 100;
+      parts.push(`${nA} @ <3.5 kW: ${kwA} kW × ${f}%`);
+    }
+    if (nB) {
+      const f = cookingABFactorPct(nB, 'B');
+      d += kwB * f / 100;
+      parts.push(`${nB} @ 3.5–8.75 kW: ${kwB} kW × ${f}%`);
+    }
+    return { demandKW: round2(d), parts };
+  }
+
+  // Primary mode: Column C with Note 1 (equal ratings, 1¾ < rating ≤ 27 kW).
+  // o: { count, ratingKW (default 12), threePhasePerPhaseMax }
+  // 3-phase 4-wire feeder: the table count = 2 × max connected between any two phases.
+  function cookingDemand22055(o) {
+    o = o || {};
+    const count = _cookCount(o.count);
+    const ratingKW = (o.ratingKW === undefined || o.ratingKW === null || o.ratingKW === '') ? 12 : Math.max(0, +o.ratingKW || 0);
+    const tp = _cookCount(o.threePhasePerPhaseMax);
+    const effectiveCount = tp ? 2 * tp : count;
+    if (!effectiveCount) return { valid: false, reason: 'enter the number of ranges (or the 3-phase per-phase max)', count: 0, effectiveCount: 0, ratingKW, baseKW: null, increaseKW: null, demandKW: null, demandVA: null };
+    if (ratingKW < 1.75 || ratingKW > 27) return { valid: false, reason: ratingKW < 1.75 ? '220.55 applies to cooking appliances rated in excess of 1¾ kW' : 'over 27 kW is outside Note 1/2 — sum per-range loads manually', count, effectiveCount, ratingKW, baseKW: null, increaseKW: null, demandKW: null, demandVA: null };
+    const baseKW = cookingColumnCKW(effectiveCount);
+    const increaseKW = cookingNote1Kw(baseKW, ratingKW);
+    const demandKW = round2(baseKW + increaseKW);
+    return { valid: true, count, effectiveCount, ratingKW, baseKW, increaseKW, demandKW, demandVA: round2(demandKW * 1000) };
+  }
+
   // ---- CSV export ----
   function csvEscape(v) {
     v = String(v == null ? '' : v);
@@ -570,6 +723,18 @@
       L.push(['Note', 'Standard-method Part III feeder/service rule. NOT used under the 220.82 optional single-dwelling method (that takes 3 VA/sq ft at 100%, 220.82(B)(1)). Demand factors do not apply when determining the number of lighting branch circuits (220.42). Hospital/hotel tiers carry the table exception for areas used entirely at one time. Verify against the adopted NEC edition.']);
       L.push([]);
     }
+    const ck = (project && project.ck) ? cookingDemand22055(project.ck) : null;
+    if (ck && ck.valid) {
+      L.push(['COOKING APPLIANCE LOAD — NEC 220.55 + Table 220.55 (2014 == 2020 verbatim; no 2023 change)', '']);
+      L.push(['Number of ranges / cooking appliances', ck.count]);
+      if (ck.effectiveCount !== ck.count) L.push(['3-phase 4-wire basis (2 × max per-phase)', ck.effectiveCount]);
+      L.push(['Individual rating (kW, equal ratings)', ck.ratingKW + ' kW']);
+      L.push(['Column C base maximum demand', ck.baseKW + ' kW']);
+      if (ck.increaseKW > 0) L.push(['Note 1 increase (5% per kW over 12 kW)', '+' + ck.increaseKW + ' kW']);
+      L.push(['Demand load', ck.demandKW + ' kW (' + ck.demandVA + ' VA)']);
+      L.push(['Note', 'kVA considered equivalent to kW (220.55). Column C used (default). Note 2 (unequal ratings >8¾ kW) and Note 3 (Column A/B factors) available in the UI; see README for worked examples. Verify against the adopted NEC edition.']);
+      L.push([]);
+    }
     L.push(['DWELLING UNIT MINIMUM CIRCUITS (NEC 210.11)', '']);
     L.push(['Requirement', 'Cite', 'Required', 'Auto-detected', 'Status', 'Result', 'Note']);
     const dws = dwStatus(project);
@@ -619,6 +784,8 @@
     DW_DEFAULT_ITEMS, normalizeDw, dwStatus, serviceLoad22082,
     dryerFactorPct, dryerFactorLabel, dryerDemand22054,
     LIT_TABLES, lightingDemand22042,
+    COOK_C_KW, COOK_AB, cookingColumnCKW, cookingNote1Kw, cookingNote2,
+    cookingABFactorPct, cookingNote3KW, cookingDemand22055,
     toCSV, projectToCSV, toJSON, fromJSON, migrate, round2
   };
 
@@ -866,6 +1033,101 @@
       `<span class="badge ok">Table 220.42 (${esc(lt.occupancy)})</span>`;
   }
 
+  // ---- NEC 220.55 cooking appliance demand (v1.6) ----
+  const CK_MODES = ['colC', 'note2', 'note3'];
+
+  function ckFields() {
+    const el = id => $('#ck' + id);
+    const n = x => (el(x) && el(x).value !== '') ? (+el(x).value || null) : null;
+    const s = x => (el(x) && el(x).value !== '') ? el(x).value : null;
+    return {
+      mode: el('Mode') ? el('Mode').value : 'colC',
+      count: n('Count'),
+      ratingKW: n('Rating'),
+      threePhasePerPhaseMax: n('Ph3Max'),
+      ratingsList: s('Ratings'),
+      countA: n('CountA'),
+      totalKWa: n('KwA'),
+      countB: n('CountB'),
+      totalKWb: n('KwB')
+    };
+  }
+
+  function parseRatingList(str) {
+    if (str == null) return [];
+    return String(str).split(/[\s,;]+/).map(x => +x).filter(x => isFinite(x) && x > 0);
+  }
+
+  function renderCkInputs() {
+    const l = state.ck || {};
+    const set = (id, v) => { const e = $('#ck' + id); if (e) e.value = (v == null ? '' : v); };
+    set('Mode', l.mode || 'colC');
+    set('Count', l.count);
+    set('Rating', l.ratingKW);
+    set('Ph3Max', l.threePhasePerPhaseMax);
+    set('Ratings', l.ratingsList);
+    set('CountA', l.countA);
+    set('KwA', l.totalKWa);
+    set('CountB', l.countB);
+    set('KwB', l.totalKWb);
+  }
+
+  function renderCk() {
+    const l = ckFields();
+    const mode = CK_MODES.indexOf(l.mode) >= 0 ? l.mode : 'colC';
+    ['Count', 'Rating', 'Ph3Max', 'Ratings', 'CountA', 'KwA', 'CountB', 'KwB'].forEach(id => {
+      const e = $('#ck' + id);
+      if (!e) return;
+      const show = (mode === 'colC' && id !== 'Ratings') ||
+                   (mode === 'note2' && id === 'Ratings') ||
+                   (mode === 'note3' && id !== 'Count' && id !== 'Rating' && id !== 'Ph3Max' && id !== 'Ratings');
+      e.style.display = show ? '' : 'none';
+    });
+    const sumEl = $('#ckSum'), badgesEl = $('#ckBadges');
+    if (!sumEl || !badgesEl) return;
+    if (mode === 'colC') {
+      const r = cookingDemand22055(l);
+      if (!r.valid) {
+        sumEl.textContent = '—';
+        badgesEl.innerHTML = '<span class="badge">' + esc(r.reason || 'Enter the number of ranges') + '</span>';
+        return;
+      }
+      sumEl.textContent = `${r.demandKW} kW demand (${r.effectiveCount} ${r.effectiveCount === 1 ? 'appliance' : 'appliances'} @ ${r.ratingKW} kW, Column C${r.increaseKW > 0 ? ' + Note 1' : ''})`;
+      badgesEl.innerHTML =
+        `<span class="badge">Column C base: ${r.baseKW} kW</span>` +
+        (r.increaseKW > 0 ? `<span class="badge">Note 1: +${r.increaseKW} kW (5% per kW over 12 kW)</span>` : '') +
+        (r.effectiveCount !== r.count ? `<span class="badge">3-phase 4-wire: 2 × max per-phase (${r.threePhasePerPhaseMax} → ${r.effectiveCount})</span>` : '') +
+        `<span class="badge">${r.demandVA} VA (kVA ≡ kW)</span>`;
+      return;
+    }
+    if (mode === 'note2') {
+      const ratings = parseRatingList(l.ratingsList);
+      const r = cookingNote2(ratings);
+      if (!r.valid) {
+        sumEl.textContent = '—';
+        badgesEl.innerHTML = '<span class="badge">' + esc(r.reason || 'Enter unequal ratings (kW), comma-separated') + '</span>';
+        return;
+      }
+      sumEl.textContent = `${r.demandKW} kW demand (${r.baseKW} kW base + ${r.increaseKW} kW Note 2 increase)`;
+      badgesEl.innerHTML =
+        `<span class="badge">${ratings.length} unequal ratings · average ${r.avgKW} kW</span>` +
+        `<span class="badge">Column C base: ${r.baseKW} kW</span>` +
+        `<span class="badge ok">Note 2 (unequal ratings &gt; 8¾ kW, none over 27 kW)</span>`;
+      return;
+    }
+    // note3
+    const o = { countA: l.countA, totalKWa: l.totalKWa, countB: l.countB, totalKWb: l.totalKWb };
+    const r = cookingNote3KW(o);
+    if (!r || !r.demandKW) {
+      sumEl.textContent = '—';
+      badgesEl.innerHTML = '<span class="badge">Enter nameplate counts + kW per column (appliances 1¾–8¾ kW)</span>';
+      return;
+    }
+    sumEl.textContent = `${r.demandKW} kW demand (Note 3, Column A/B factors — in lieu of Column C)`;
+    badgesEl.innerHTML = r.parts.map(p => `<span class="badge">${esc(p)}</span>`).join('') +
+      '<span class="badge ok">Note 3 (over 1¾ kW through 8¾ kW)</span>';
+  }
+
   function renderDw() {
     const dw = dwStatus(state);
     const allMet = dw.metCount === dw.total;
@@ -901,7 +1163,7 @@
     if (c) c.textContent = new Date().toLocaleDateString();
   }
 
-  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderLtInputs(); renderLt(); renderDw(); renderPrintHdr(); }
+  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderDw(); renderPrintHdr(); }
 
   // ---- actions ----
   function addCircuit() {
@@ -1130,6 +1392,21 @@
     $('#btnLtReset').onclick = () => {
       state.lt = null;
       saveState(); renderLtInputs(); renderLt();
+    };
+    $('#ckCard').addEventListener('input', e => {
+      if (!e.target.id || !e.target.id.startsWith('ck')) return;
+      state.ck = ckFields();
+      saveState(); renderCk();
+    });
+    $('#ckCard').addEventListener('change', e => {
+      if (e.target.id === 'ckMode') {
+        state.ck = ckFields();
+        saveState(); renderCk();
+      }
+    });
+    $('#btnCkReset').onclick = () => {
+      state.ck = null;
+      saveState(); renderCkInputs(); renderCk();
     };
     $('#fileImport').onchange = e => {
       if (e.target.files && e.target.files[0]) importJSON(e.target.files[0]);

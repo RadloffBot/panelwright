@@ -492,5 +492,164 @@ eq(ltCSV.includes('Lighting demand load (VA),51450 VA'), true, 'csv lighting dem
 // --- CSV omits the 220.42 section when no lt present ---
 eq(core.projectToCSV(proj).includes('NEC 220.42'), false, 'csv omits 220.42 when absent');
 
+console.log('NEC 220.55 cooking appliance demand — Table 220.55 (v1.6, 2014 = 2020 verbatim; programmatic diff 0/30 mismatches):');
+// --- Column C base maximum demand (kW) — rows 1..25 from the verbatim table ---
+eq(core.cookingColumnCKW(1), 8, 'C 1 range -> 8');
+eq(core.cookingColumnCKW(2), 11, 'C 2 -> 11');
+eq(core.cookingColumnCKW(4), 17, 'C 4 -> 17');
+eq(core.cookingColumnCKW(8), 23, 'C 8 -> 23');
+eq(core.cookingColumnCKW(12), 27, 'C 12 -> 27');
+eq(core.cookingColumnCKW(15), 30, 'C 15 -> 30');
+eq(core.cookingColumnCKW(20), 35, 'C 20 -> 35');
+eq(core.cookingColumnCKW(25), 40, 'C 25 -> 40');
+// --- Formula bands (merged cells: 26-40 = 15+1n; 41-60/61+ = 25+0.75n) ---
+eq(core.cookingColumnCKW(26), 41, 'C 26 -> 15+26 = 41');
+eq(core.cookingColumnCKW(30), 45, 'C 30 -> 45');
+eq(core.cookingColumnCKW(35), 50, 'C 35 -> 50');
+eq(core.cookingColumnCKW(40), 55, 'C 40 -> 55');
+eq(core.cookingColumnCKW(41), 55.75, 'C 41 -> 25+0.75*41 = 55.75');
+eq(core.cookingColumnCKW(50), 62.5, 'C 50 -> 62.5');
+eq(core.cookingColumnCKW(60), 70, 'C 60 -> 70');
+eq(core.cookingColumnCKW(61), 70.75, 'C 61 -> 70.75 (61-and-over row)');
+eq(core.cookingColumnCKW(100), 100, 'C 100 -> 100 (formula extends)');
+// --- Band seam continuity: no demand drop across 25/26, 40/41, 60/61 ---
+eq(core.cookingColumnCKW(26) > core.cookingColumnCKW(25), true, '26 (41) > 25 (40): no drop at 15 kW band seam');
+eq(core.cookingColumnCKW(41) > core.cookingColumnCKW(40), true, '41 (55.75) > 40 (55): no drop at 25 kW band seam');
+eq(core.cookingColumnCKW(61) > core.cookingColumnCKW(60), true, '61 (70.75) > 60 (70): no drop at 61+ row');
+// full-table monotonicity 1..61
+let cKwPrev = 0, monoOk = true;
+for (let n = 1; n <= 61; n++) { const v = core.cookingColumnCKW(n); if (v <= cKwPrev) { monoOk = false; break; } cKwPrev = v; }
+eq(monoOk, true, 'Column C strictly increasing 1..61');
+// --- Column C edges ---
+eq(core.cookingColumnCKW(0), null, 'C 0 -> null');
+eq(core.cookingColumnCKW(-3), null, 'C negative -> null');
+eq(core.cookingColumnCKW(null), null, 'C null -> null');
+eq(core.cookingColumnCKW(4.9), 17, 'C fractional floors (4.9 -> 4 -> 17)');
+
+// --- Note 1 (equal ratings, over 12 through 27 kW): 5% per kW or major fraction over 12 ---
+eq(core.cookingNote1Kw(11, 12), 0, 'N1 rating 12 -> no increase');
+eq(core.cookingNote1Kw(11, 12.1), 0.55, 'N1 2 ranges @12.1: 11 * 5% * 1 = 0.55');
+eq(core.cookingNote1Kw(20, 14), 2, 'N1 5 ranges @14: 20 * 5% * 2 = 2');
+eq(core.cookingNote1Kw(27, 12.25), 1.35, 'N1 12 ranges @12.25: 27 * 5% * 1 = 1.35');
+eq(core.cookingNote1Kw(27, 27), 20.25, 'N1 12 ranges @27: 27 * 5% * 15 = 20.25');
+eq(core.cookingNote1Kw(27, 27.5), 0, 'N1 over 27 kW -> no increase (out of Note 1 range)');
+eq(core.cookingNote1Kw(20, 1.75), 0, 'N1 low rating -> 0');
+
+// --- cookingDemand22055 primary mode (Column C + Note 1, kVA == kW) ---
+const ck1 = core.cookingDemand22055({ count: 1 });
+eq(ck1.valid, true, 'colC valid');
+eq(ck1.ratingKW, 12, 'colC default rating 12 kW');
+eq(ck1.baseKW, 8, 'colC 1 range base 8');
+eq(ck1.demandKW, 8, 'colC 1 range @12 kW -> 8 kW');
+eq(ck1.demandVA, 8000, 'colC 8 kW == 8,000 VA (kVA ~ kW)');
+eq(core.cookingDemand22055({ count: 4, ratingKW: 12 }).demandKW, 17, 'colC 4 ranges @12 -> 17');
+const ck10 = core.cookingDemand22055({ count: 10, ratingKW: 14 });
+eq(ck10.baseKW, 25, 'colC 10 ranges base 25');
+eq(ck10.increaseKW, 2.5, 'colC 10 ranges @14: +2.5 (Note 1)');
+eq(ck10.demandKW, 27.5, 'colC 10 ranges @14 -> 27.5 kW');
+eq(core.cookingDemand22055({ count: 26 }).demandKW, 41, 'colC 26 ranges @12 -> 41 (15 kW band)');
+eq(core.cookingDemand22055({ count: 40 }).demandKW, 55, 'colC 40 ranges @12 -> 55');
+eq(core.cookingDemand22055({ count: 41 }).demandKW, 55.75, 'colC 41 ranges @12 -> 55.75 (25 kW band)');
+eq(core.cookingDemand22055({ count: 60 }).demandKW, 70, 'colC 60 ranges @12 -> 70');
+eq(core.cookingDemand22055({ count: 61 }).demandKW, 70.75, 'colC 61 ranges @12 -> 70.75');
+// 3-phase 4-wire: table count = 2 x max connected between any two phases
+eq(core.cookingDemand22055({ threePhasePerPhaseMax: 4 }).effectiveCount, 8, '3ph: 4 per phase -> effective 8');
+eq(core.cookingDemand22055({ threePhasePerPhaseMax: 4 }).demandKW, 23, '3ph: effective 8 -> 23 kW');
+eq(core.cookingDemand22055({ count: 10, threePhasePerPhaseMax: 4 }).demandKW, 23, '3ph: per-phase input wins over count');
+// scope guards
+eq(core.cookingDemand22055({ count: 3, ratingKW: 1.5 }).valid, false, 'colC 1.5 kW -> invalid (must exceed 1.75)');
+eq(core.cookingDemand22055({ count: 5, ratingKW: 28 }).valid, false, 'colC 28 kW -> invalid (over 27)');
+eq(core.cookingDemand22055({ count: 0 }).valid, false, 'colC 0 ranges -> invalid');
+eq(core.cookingDemand22055({}).valid, false, 'colC empty -> invalid, no throw');
+eq(core.cookingDemand22055(null).valid, false, 'colC null -> invalid, no throw');
+eq(core.cookingDemand22055({ count: 4.9, ratingKW: 12 }).count, 4, 'colC fractional count floors');
+
+// --- Note 2 (unequal ratings, all over 8¾ kW, none over 27 kW) ---
+// worked: 10 + 12 + 14.25 -> sum uses 12 for the 10-kW unit: 12+12+14.25 = 38.25
+// avg 12.75 -> over 12 by 0.75 -> 1 kW step -> base C(3) = 14 -> +0.70 = 14.70
+const n2a = core.cookingNote2([10, 12, 14.25]);
+eq(n2a.valid, true, 'N2 valid');
+eq(n2a.avgKW, 12.75, 'N2 average 12.75 kW (10-kW unit counted at 12)');
+eq(n2a.baseKW, 14, 'N2 base C(3) = 14');
+eq(n2a.increaseKW, 0.7, 'N2 increase 0.70 (1 major fraction)');
+eq(n2a.demandKW, 14.7, 'N2 demand 14.7 kW');
+// average over 12 but just barely: 10.5 + 12.5 -> 12.5 + 12.5... no: 10.5<12 -> 12; sum 24.5, avg 12.25
+// -> 1 step -> base C(2) = 11 -> +0.55 = 11.55
+const n2b = core.cookingNote2([10.5, 12.5]);
+eq(n2b.avgKW, 12.25, 'N2 avg 12.25 (10.5-kW unit counted at 12)');
+eq(n2b.increaseKW, 0.55, 'N2 increase 0.55 (1 major fraction)');
+eq(n2b.demandKW, 11.55, 'N2 demand 11.55 (base 11 + 0.55)');
+// boundary: exactly 8.75 is NOT over 8¾
+eq(core.cookingNote2([8.75, 12]).valid, false, 'N2 8.75 -> invalid (must be OVER 8¾)');
+eq(core.cookingNote2([8.76, 12]).valid, true, 'N2 8.76 -> valid');
+eq(core.cookingNote2([8, 12]).valid, false, 'N2 8.0 -> invalid');
+eq(core.cookingNote2([10, 12, 30]).valid, false, 'N2 30 kW -> invalid (over 27)');
+eq(core.cookingNote2([12, 12]).valid, false, 'N2 all-equal -> invalid (use Note 1)');
+eq(core.cookingNote2([]).valid, false, 'N2 empty -> invalid');
+eq(core.cookingNote2(null).valid, false, 'N2 null -> invalid, no throw');
+// worked: 5 ranges 10,10.5,11,12,13 -> every unit under 12 counted at 12:
+// sum 12+12+12+12+13 = 61 -> avg 12.2 -> 1 step -> base C(5) = 20 -> +1.00 = 21
+const n2c = core.cookingNote2([10, 10.5, 11, 12, 13]);
+eq(n2c.avgKW, 12.2, 'N2 avg exactly 12.2 (all sub-12 units at 12)');
+eq(n2c.increaseKW, 1, 'N2 increase 1.00 (1 major fraction)');
+eq(n2c.demandKW, 21, 'N2 demand = base C(5) 20 + 1 = 21');
+// sub-12 average -> no increase (still Note 2 eligible): 9 + 10 -> 12+12 = 24, avg 12.0
+const n2d = core.cookingNote2([9, 10]);
+eq(n2d.avgKW, 12, 'N2 9,10 -> both at 12 -> avg 12.0');
+eq(n2d.increaseKW, 0, 'N2 avg 12.0 -> no increase');
+eq(n2d.demandKW, 11, 'N2 demand = base C(2) = 11');
+
+// --- Note 3: Column A/B demand factors (in lieu of Column C) ---
+eq(core.cookingABFactorPct(1, 'A'), 80, 'A 1 -> 80%');
+eq(core.cookingABFactorPct(1, 'B'), 80, 'B 1 -> 80%');
+eq(core.cookingABFactorPct(2, 'A'), 75, 'A 2 -> 75%');
+eq(core.cookingABFactorPct(2, 'B'), 65, 'B 2 -> 65%');
+eq(core.cookingABFactorPct(8, 'A'), 53, 'A 8 -> 53%');
+eq(core.cookingABFactorPct(8, 'B'), 36, 'B 8 -> 36%');
+eq(core.cookingABFactorPct(12, 'A'), 45, 'A 12 -> 45%');
+eq(core.cookingABFactorPct(12, 'B'), 32, 'B 12 -> 32%');
+eq(core.cookingABFactorPct(15, 'A'), 40, 'A 15 -> 40%');
+eq(core.cookingABFactorPct(15, 'B'), 32, 'B 15 -> 32%');
+eq(core.cookingABFactorPct(20, 'A'), 35, 'A 20 -> 35%');
+eq(core.cookingABFactorPct(20, 'B'), 28, 'B 20 -> 28%');
+eq(core.cookingABFactorPct(25, 'A'), 30, 'A 25 -> 30%');
+eq(core.cookingABFactorPct(25, 'B'), 26, 'B 25 -> 26%');
+eq(core.cookingABFactorPct(26, 'A'), 30, 'A 26 (26-30) -> 30%');
+eq(core.cookingABFactorPct(26, 'B'), 24, 'B 26 (26-30) -> 24%');
+eq(core.cookingABFactorPct(30, 'B'), 24, 'B 30 -> 24%');
+eq(core.cookingABFactorPct(31, 'B'), 22, 'B 31 (31-40) -> 22%');
+eq(core.cookingABFactorPct(40, 'B'), 22, 'B 40 -> 22%');
+eq(core.cookingABFactorPct(41, 'B'), 20, 'B 41 (41-50) -> 20%');
+eq(core.cookingABFactorPct(50, 'B'), 20, 'B 50 -> 20%');
+eq(core.cookingABFactorPct(51, 'B'), 18, 'B 51 (51-60) -> 18%');
+eq(core.cookingABFactorPct(60, 'B'), 18, 'B 60 -> 18%');
+eq(core.cookingABFactorPct(61, 'B'), 16, 'B 61+ -> 16%');
+eq(core.cookingABFactorPct(100, 'A'), 30, 'A 100 (61+) -> 30%');
+eq(core.cookingABFactorPct(100, 'B'), 16, 'B 100 (61+) -> 16%');
+eq(core.cookingABFactorPct(0, 'A'), null, 'A 0 -> null');
+eq(core.cookingABFactorPct(-2, 'B'), null, 'B negative -> null');
+// Note 3 demand: sum nameplates per column x that column's factor
+const n3a = core.cookingNote3KW({ countA: 4, totalKWa: 8 });
+eq(n3a.demandKW, 5.28, 'N3 4 @ <3.5 kW, 8 kW total -> 66% = 5.28');
+const n3b = core.cookingNote3KW({ countB: 6, totalKWb: 18 });
+eq(n3b.demandKW, 7.74, 'N3 6 @ 3.5-8.75 kW, 18 kW total -> 43% = 7.74');
+const n3c = core.cookingNote3KW({ countA: 2, totalKWa: 4, countB: 2, totalKWb: 8 });
+eq(n3c.demandKW, 8.2, 'N3 mixed: 4 kW @75% + 8 kW @65% = 3 + 5.2 = 8.2');
+eq(core.cookingNote3KW({}).demandKW, null, 'N3 empty -> null, no throw');
+eq(core.cookingNote3KW(null).demandKW, null, 'N3 null -> null, no throw');
+
+// --- CSV includes the 220.55 section when present ---
+const ckProj = { version: 2, projectName: 'Apartments', serviceA: 200, notes: '',
+  panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [] }],
+  ck: { mode: 'colC', count: 10, ratingKW: 14 } };
+const ckCSV = core.projectToCSV(ckProj);
+eq(ckCSV.includes('COOKING APPLIANCE LOAD — NEC 220.55'), true, 'csv has 220.55 section');
+eq(ckCSV.includes('Number of ranges / cooking appliances,10'), true, 'csv count row');
+eq(ckCSV.includes('Column C base maximum demand,25 kW'), true, 'csv base 25 kW');
+eq(ckCSV.includes('Note 1 increase (5% per kW over 12 kW),+2.5 kW'), true, 'csv Note 1 row');
+eq(ckCSV.includes('Demand load,27.5 kW (27500 VA)'), true, 'csv demand 27.5 kW / 27,500 VA');
+// --- CSV omits the 220.55 section when no ck present ---
+eq(core.projectToCSV(proj).includes('NEC 220.55'), false, 'csv omits 220.55 when absent');
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

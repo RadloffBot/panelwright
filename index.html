@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PanelWright — Panel Schedule Calculator & Multi-Panel Load Rollup (NEC design aid)</title>
-<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 220.42 lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing, CSV & print/PDF. No account, no install.">
+<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 220.55 cooking appliance demand (Table 220.55, Column C + Notes 1/2/3), NEC 220.42 lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing, CSV & print/PDF. No account, no install.">
 <!-- og:url / canonical are placeholders until the GitHub Pages URL is known (see PUBLISH.md). -->
 <link rel="canonical" href="PUBLISH-PLACEHOLDER/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -19,14 +19,14 @@
 <meta name="twitter:description" content="Free in-browser panel schedule tool: multi-panel rollup, NEC 220.82 service-load calc, 210.11 checklist, phase balancing, CSV/PDF. No account, no install.">
 <meta name="twitter:image" content="PUBLISH-PLACEHOLDER/og-image.png">
 <meta name="theme-color" content="#0f1419">
-<meta name="keywords" content="panel schedule calculator, electrical panel schedule, load schedule, NEC 220.82, service load calculation, NEC 220.42, lighting load demand, Table 220.42, standard method load calc, NEC 220.54, clothes dryer demand, Table 220.54, NEC 210.11, phase balancing, 408.3(C), breaker sizing, 210.20, 215.2, electrician tools, electrical engineering, subpanel schedule, load rollup">
+<meta name="keywords" content="panel schedule calculator, electrical panel schedule, load schedule, NEC 220.82, service load calculation, NEC 220.55, cooking appliance demand, electric range demand, Table 220.55, range demand factor, NEC 220.42, lighting load demand, Table 220.42, standard method load calc, NEC 220.54, clothes dryer demand, Table 220.54, NEC 210.11, phase balancing, 408.3(C), breaker sizing, 210.20, 215.2, electrician tools, electrical engineering, subpanel schedule, load rollup">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "PanelWright",
   "url": "PUBLISH-PLACEHOLDER/",
-  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 220.42 general lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling clothes-dryer demand (Table 220.54), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
+  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 220.55 household cooking appliance demand (Table 220.55: Column C with Note 1, Note 2 unequal ratings, Note 3 Column A/B factors), NEC 220.42 general lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling clothes-dryer demand (Table 220.54), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any (web browser)",
   "browserRequirements": "Requires JavaScript",
@@ -107,10 +107,10 @@
 <div class="wrap">
   <header class="app">
     <h1>Panel<span>Wright</span></h1>
-    <div class="tag">Panel schedules, phase balancing, service rollup & NEC 220.82 service load</div>
+    <div class="tag">Panel schedules, phase balancing, service rollup, NEC 220.82 service load & 220.55 cooking demand</div>
     <div class="savedat" id="savedAt"></div>
   </header>
-  <p class="disc">Free design aid (v1.5). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
+  <p class="disc">Free design aid (v1.6). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
   <div class="printhdr">
     <strong>PanelWright</strong> — Panel Schedule & Load Rollup<br>
     Project: <span id="prjNamePrint">—</span> &nbsp;·&nbsp; Service: <span id="svcAPrint">—</span> &nbsp;·&nbsp; Generated: <span id="printDate">—</span><br>
@@ -192,6 +192,32 @@
     <div class="btnrow"><button class="ghost" id="btnLtReset">Clear lighting inputs</button></div>
   </section>
 
+  <section class="card no-print" id="ckCard">
+    <h2>NEC 220.55 — household cooking appliance demand (Table 220.55; 2014 = 2020 verbatim, no 2023 change)</h2>
+    <p class="dwnote" style="margin:0 0 10px">Maximum demand for household electric ranges, wall-mounted ovens, counter-mounted cooking units, and other household cooking appliances <em>individually rated over 1¾ kW</em> (kVA is considered equivalent to kW). Default is <strong>Column C</strong> (base maximum demand per number of appliances, with the <strong>Note 1</strong> 5%-per-kW-over-12-kW increase for equal ratings over 12 kW). <strong>Note 2</strong> handles unequal ratings (all over 8¾ kW, none over 27 kW); <strong>Note 3</strong> is an alternative method for appliances 1¾–8¾ kW using the Column A/B demand factors (in lieu of Column C). For a 3-phase, 4-wire feeder/service, the table count is <strong>twice the maximum number connected between any two phases</strong>. Design aid only — the 2026 NEC renumbers Article 220 (cooking → 120.55 area); verify against the adopted NEC edition.</p>
+    <div class="grid">
+      <div><label class="f" for="ckMode">Method</label>
+        <select id="ckMode">
+          <option value="colC" selected>Column C + Note 1 (equal ratings, over 1¾ kW through 27 kW)</option>
+          <option value="note2">Note 2 — unequal ratings (all &gt; 8¾ kW, none &gt; 27 kW)</option>
+          <option value="note3">Note 3 — Column A/B factors (appliances 1¾–8¾ kW, in lieu of Column C)</option>
+        </select>
+      </div>
+      <div><label class="f" for="ckCount">Number of ranges / appliances</label><input id="ckCount" type="number" min="0" step="1" placeholder="e.g. 4"></div>
+      <div><label class="f" for="ckRating">Individual rating (kW) — equal ratings</label><input id="ckRating" type="number" min="0" step="0.25" placeholder="12"></div>
+      <div><label class="f" for="ckPh3Max">3∅ 4-wire: max connected between any two phases (optional)</label><input id="ckPh3Max" type="number" min="0" step="1" placeholder="count becomes 2× this"></div>
+      <div style="grid-column: 1 / -1"><label class="f" for="ckRatings">Note 2 — nameplate ratings (kW), comma-separated</label><input id="ckRatings" placeholder="e.g. 10, 12, 14.25 (all over 8¾ kW, unequal, none over 27 kW)"></div>
+      <div><label class="f" for="ckCountA">Note 3 — appliances rated under 3½ kW (count)</label><input id="ckCountA" type="number" min="0" step="1" placeholder="0"></div>
+      <div><label class="f" for="ckKwA">…their nameplate total (kW)</label><input id="ckKwA" type="number" min="0" step="0.25" placeholder="0"></div>
+      <div><label class="f" for="ckCountB">Note 3 — appliances 3½–8¾ kW (count)</label><input id="ckCountB" type="number" min="0" step="1" placeholder="0"></div>
+      <div><label class="f" for="ckKwB">…their nameplate total (kW)</label><input id="ckKwB" type="number" min="0" step="0.25" placeholder="0"></div>
+    </div>
+    <div class="svcsum" id="ckSum" style="margin-top:12px">—</div>
+    <div class="badges" id="ckBadges"></div>
+    <p class="dwnote" style="margin-top:8px"><strong>Verified:</strong> Column C + A/B factors transcribed coordinate-level from the verbatim NFPA 70 2014 Article 220 PDF and cross-checked verbatim against NEC 2020 — the two editions are row-for-row identical (26–40: 15 kW + 1 kW/range; 41+: 25 kW + ¾ kW/range), and the 2023 change analysis records no 220.55 change. Note 4 (single-range branch-circuit loads) is out of scope for this feeder/service calculator. Verify against the adopted NEC edition.</p>
+    <div class="btnrow"><button class="ghost" id="btnCkReset">Clear cooking inputs</button></div>
+  </section>
+
   <section class="card no-print" id="dwCard">
     <h2>NEC 210.11 — dwelling unit minimum circuits (2017–2023 code verified; editable)</h2>
     <div class="badges" id="dwSummary"></div>
@@ -268,7 +294,7 @@
   </section>
 
   <footer>
-    <p><strong>About PanelWright.</strong> Free, open-source panel schedule tool. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max-deviation and the NEC 408.3(C) 5% neutral guideline (field approximation — verify with real load data & power factor). The service-entrance rollup sums panel phase currents without demand factors — a screening value. The NEC 220.82 service-load card is a real optional-method demand calc for a single dwelling unit (2017–2023 code verified) — neutral load per 220.61 is not included.</p>
+    <p><strong>About PanelWright.</strong> Free, open-source panel schedule tool. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max-deviation and the NEC 408.3(C) 5% neutral guideline (field approximation — verify with real load data & power factor). The service-entrance rollup sums panel phase currents without demand factors — a screening value. The NEC 220.82 service-load card is a real optional-method demand calc for a single dwelling unit (2017–2023 code verified) — neutral load per 220.61 is not included. The NEC 220.55 cooking card implements Table 220.55 (Column C + Notes 1/2/3) as verified verbatim against NFPA 70 2014 and NEC 2020 (identical; no 2023 change).</p>
     <p>Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (no humans pretend to be the author). The code is plain HTML/JS — read it, fix it, share it (MIT). Data never leaves your browser.</p>
   </footer>
 </div>
