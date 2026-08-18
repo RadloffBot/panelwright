@@ -33,7 +33,7 @@ No install, no account, no data leaves your browser.
   cross-checked against verbatim NEC 2020 text. Note 4 (single-appliance
   branch-circuit loads) is out of scope. The 2026 NEC renumbers Article 220 —
   verify against your adopted edition.
-- **NEC 220.61 feeder/service neutral load** (v1.7) — the neutral-load side of the
+- **NEC 220.61 feeder/service neutral load** (v1.7, +v1.8) — the neutral-load side of the
   story the other cards leave out. Enter the total neutral (max unbalanced) load and
   phase-to-neutral voltage; the tool applies the **220.61(A)** basic calc, the
   **220.61(B)(1)** 70% factor on the household cooking/dryer portion (when demand-
@@ -42,16 +42,23 @@ No install, no account, no data leaves your browser.
   **one dwelling unit** — reports the **310.12(B)** minimum neutral-conductor
   ampacity (83% of the calculated load). The **220.61(C) prohibited reductions**
   (3-wire portions of 4-wire 3∅ wye circuits; nonlinear loads on 4-wire wye —
-  harmonic neutral currents) are **never applied** and are flagged. The tool reports
-  the minimum neutral *ampacity* to look up in Table 310.16 (apply 310.15
-  adjustments); the specific AWG/kcmil pick is intentionally not hardcoded pending
-  verbatim Table 310.16 verification. **2014 = 2020 verbatim (the 220.61 A/B/C text is
-  substantively identical across the two editions — a programmatic diff of the section
-  bodies shows all 22 remaining character differences are OCR misreads in the 2020
-  slideshare source, i.e. no substantive code change); 2023 change analysis records no
-  220.61 change; cross-checked against a real 2023 worked neutral calc
-  (313/279/232 A).** The 2026 NEC renumbers this (Article 120 area) — verify against
-  your adopted edition.
+  harmonic neutral currents) are **never applied** and are flagged. **(v1.8)** The
+  tool now also **picks the neutral conductor automatically from NEC Table 310.16**
+  (smallest size whose ampacity in the chosen material + termination-temperature
+  column ≥ the minimum neutral ampacity) for your selected Cu/Al and 60/75/90 °C
+  column, with the 240.4(D) small-conductor overcurrent cap and 110.14(C) column
+  notes shown; if the load exceeds the table it says so and points to parallel
+  conductors (310.4). The pick uses Table 310.16 **base values** (30 °C ambient, ≤3
+  current-carrying conductors) — apply 310.15 adjustments yourself. **Table 310.16
+  verified at coordinate level (pymupdf cell geometry) from a verbatim 2023-NEC
+  print: 0/168 cell mismatches across all 28 sizes × 6 columns, cross-checked
+  against 4 independent live references.** **2014 = 2020 verbatim (the 220.61 A/B/C
+  text is substantively identical across the two editions — a programmatic diff of
+  the section bodies shows all 22 remaining character differences are OCR misreads
+  in the 2020 slideshare source, i.e. no substantive code change); 2023 change
+  analysis records no 220.61 change; cross-checked against a real 2023 worked
+  neutral calc (313/279/232 A → 250 kcmil Cu / 350 kcmil Al @ 75 °C).** The 2026
+  NEC renumbers this (Article 120 area) — verify against your adopted edition.
 - **NEC 220.42 general lighting load demand — standard method (Table 220.42)** — the
   Part III feeder/service demand rule for the general-illumination load. Enter the total
   lighting VA (fixture schedule or design basis) and the occupancy; the Table 220.42
@@ -104,7 +111,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 392 core assertions (hand-verified)
+node test/run_tests.js   # 433 core assertions (hand-verified)
 ```
 
 ## About the author

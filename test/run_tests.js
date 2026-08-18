@@ -722,5 +722,91 @@ eq(core.projectToCSV(proj).includes('NEC 220.61'), false, 'csv omits 220.61 when
 const nlRT = core.fromJSON(core.toJSON(nlProj));
 eq(nlRT.nl.totalVA, 75212, 'json roundtrip keeps nl.totalVA');
 
+// --- NEC Table 310.16 conductor pick (v1.8) ---
+// Table verified at coordinate level from a verbatim 2023-NEC print
+// (codeelec_2023.pdf) + 4 independent live references (see LOG 2026-08-18 s12).
+console.log('T31016 table integrity:');
+eq(core.T31016.length, 28, '28 conductor sizes (14 AWG .. 2000 kcmil; 16/18 AWG are dash-only rows)');
+{
+  // monotonic non-decreasing within each of the 6 columns
+  let mono = true;
+  for (let c = 0; c < 6; c++) {
+    let prev = 0;
+    for (const row of core.T31016) {
+      const v = row.cu[c];
+      if (v == null) continue;
+      if (v < prev) mono = false;
+      prev = v;
+    }
+  }
+  eq(mono, true, 'all 6 columns monotonic non-decreasing');
+}
+eq(core.T31016[0].cu, [15, 20, 25, null, null, null], 'row 14 AWG (no Al columns)');
+eq(core.T31016.find(r => r.s === '12').cu, [20, 25, 30, 15, 20, 25], 'row 12 AWG');
+eq(core.T31016.find(r => r.s === '4/0').cu, [195, 230, 260, 150, 180, 205], 'row 4/0');
+eq(core.T31016.find(r => r.s === '250').cu, [215, 255, 290, 170, 205, 230], 'row 250 kcmil');
+eq(core.T31016.find(r => r.s === '500').cu, [320, 380, 430, 260, 310, 350], 'row 500 kcmil');
+eq(core.T31016.find(r => r.s === '750').cu, [400, 475, 535, 320, 385, 435], 'row 750 kcmil');
+eq(core.T31016.find(r => r.s === '2000').cu, [555, 665, 750, 470, 560, 630], 'row 2000 kcmil');
+
+console.log('conductorLabel:');
+eq(core.conductorLabel('14'), '14 AWG', '14 AWG');
+eq(core.conductorLabel('8'), '8 AWG', '8 AWG');
+eq(core.conductorLabel('4/0'), '4/0 AWG', '4/0 AWG');
+eq(core.conductorLabel('250'), '250 kcmil', '250 kcmil');
+eq(core.conductorLabel('2000'), '2000 kcmil', '2000 kcmil');
+
+console.log('pickConductor31016:');
+// The 2023 worked neutral example: 231.88 A min ampacity
+eq(core.pickConductor31016(231.88, 'cu', 75), 
+   { size: '250', amp: 255, label: '250 kcmil Cu', over: null, notes: ['75 °C column (>100 A circuits per 110.14(C)(1)(b), or 75 °C-rated terminations)'] },
+   '231.88 A Cu @ 75 -> 250 kcmil (255 A) — the 2023 worked example');
+eq(core.pickConductor31016(232, 'al', 75).size, '350', '232 A Al @ 75 -> 350 kcmil (250 A; 300=230 is short)');
+eq(core.pickConductor31016(231.88, 'cu', 60).size, '300', '231.88 A Cu @ 60 -> 300 kcmil (240 A; 250=215 short)');
+eq(core.pickConductor31016(231.88, 'cu', 90).size, '4/0', '231.88 A Cu @ 90 -> 4/0 AWG (260 A)');
+eq(core.pickConductor31016(231.88, 'al', 90).size, '300', '231.88 A Al @ 90 -> 300 kcmil (260 A; 250=230 is short)');
+// exact-boundary: required == table ampacity picks that size (>=)
+eq(core.pickConductor31016(255, 'cu', 75).size, '250', '255 A Cu @ 75 -> exactly 250 kcmil');
+eq(core.pickConductor31016(255.01, 'cu', 75).size, '300', '255.01 A Cu @ 75 -> 300 kcmil (next up)');
+// small-conductor picks + 240.4(D) cap note
+eq(core.pickConductor31016(15, 'cu', 60).size, '14', '15 A Cu @ 60 -> 14 AWG');
+eq(core.pickConductor31016(15, 'cu', 60).notes[0], '240.4(D): overcurrent device for this size is capped at 15 A', '14 AWG 240.4(D) note');
+eq(core.pickConductor31016(20, 'cu', 60).size, '12', '20 A Cu @ 60 -> 12 AWG (14=15 short)');
+eq(core.pickConductor31016(20, 'cu', 75).size, '14', '20 A Cu @ 75 -> 14 AWG (20 A)');
+eq(core.pickConductor31016(20, 'al', 75).size, '12', '20 A Al @ 75 -> 12 AWG (14 not listed for Al)');
+eq(core.pickConductor31016(25, 'al', 75).size, '10', '25 A Al @ 75 -> 10 AWG (12 AWG AL = 20 A short; 10 = 30 A)');
+eq(core.pickConductor31016(20, 'al', 60).size, '10', '20 A Al @ 60 -> 10 AWG (12=15 short, 14 not listed)');
+// over the table
+eq(core.pickConductor31016(800, 'cu', 75).size, null, '800 A Cu @ 75 -> none (max 750)');
+eq(core.pickConductor31016(800, 'cu', 75).over.indexOf('parallel conductors') >= 0, true, 'over-table note suggests 310.4');
+eq(core.pickConductor31016(700, 'al', 90).size, null, '700 A Al @ 90 -> none (max 630)');
+// guards
+eq(core.pickConductor31016(0, 'cu', 75).size, null, '0 A -> invalid');
+eq(core.pickConductor31016(-5, 'cu', 75).size, null, 'negative -> invalid');
+eq(core.pickConductor31016(100, 'cu', 85).over, 'pick a temperature column (60/75/90)', 'bogus temp -> invalid');
+eq(core.pickConductor31016(100, 'gold', 75).label.indexOf('Cu') >= 0, true, 'unknown material defaults to copper');
+// 90°C note wording (derating base)
+eq(core.pickConductor31016(100, 'cu', 90).notes[0].indexOf('DERATING base') >= 0, true, '90 C note flags derating base');
+
+// --- CSV neutral section now carries the conductor pick (v1.8) ---
+const nlProj2 = { version: 2, projectName: 'Neutral', serviceA: 400, notes: '',
+  panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 400, notes: '', circuits: [] }],
+  nl: { totalVA: 75212, volt: 240, applyB2: true, dwelling: true, mat: 'cu', temp: 75 } };
+const nlCSV2 = core.projectToCSV(nlProj2);
+eq(nlCSV2.includes('"Neutral conductor (Table 310.16, 75 °C, copper)",250 kcmil Cu — 255 A'), true, 'csv conductor pick row (Cu 75C; comma label is quoted)');
+const nlProj3 = { version: 2, projectName: 'Neutral', serviceA: 400, notes: '',
+  panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 400, notes: '', circuits: [] }],
+  nl: { totalVA: 75212, volt: 240, applyB2: true, dwelling: true, mat: 'al', temp: 90 } };
+const nlCSV3 = core.projectToCSV(nlProj3);
+eq(nlCSV3.includes('Neutral conductor (Table 310.16, 90 °C, aluminum),3/0 AWG Al — 175 A'), false, 'csv Al 90C: 231.88 > 175 so 3/0 is NOT the pick (sanity)');
+{
+  const al90 = core.pickConductor31016(231.88, 'al', 90);
+  eq(nlCSV3.includes(`"Neutral conductor (Table 310.16, 90 °C, aluminum)",${al90.label} — ${al90.amp} A`), true, 'csv Al 90C pick matches core (' + al90.label + ')');
+}
+// JSON roundtrip preserves mat/temp
+const nlRT2 = core.fromJSON(core.toJSON(nlProj2));
+eq(nlRT2.nl.mat, 'cu', 'json roundtrip keeps nl.mat');
+eq(nlRT2.nl.temp, 75, 'json roundtrip keeps nl.temp');
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

@@ -629,10 +629,8 @@
   //     ampacity of the grounded (neutral) conductor may be 83% of the calculated
   //     neutral load. (Verified via a real 2023 worked calc: 279 A -> 83% = 232 A ->
   //     250 Cu / 350 AL @ 75°C; the 2026 NEC renumbers Art. 220 -> Art. 120.)
-  // NOTE: the specific AWG/kcmil selection from Table 310.16 is intentionally NOT
-  // hardcoded here — it is deferred to v1.7.1 pending verbatim table verification.
-  // This tool reports the minimum neutral conductor AMPACITY (the number you look
-  // up in Table 310.16, then apply 310.15 adjustments), which is fully verifiable.
+  // v1.8: the AWG/kcmil selection is now provided inline via pickConductor31016()
+  // using the verified Table 310.16 (see T31016 above).
 
   // o: { totalVA, cookingDryerVA, volt, applyB1, applyB2, dwelling }
   // Returns the step-by-step 220.61 result (all amperes rounded to 2 dp).
@@ -665,6 +663,92 @@
       b2Applied: b2 && basicA > 200,
       finalA, minAmpA
     };
+  }
+
+  // ---- NEC Table 310.16 allowable ampacities (v1.8) ----
+  // Table verified at COORDINATE level (pymupdf cell geometry) from a verbatim
+  // 2023-NEC print (codeelec_2023.pdf, "Calculations for the Electrical Exam",
+  // first printing Jan 2023, "Based on the 2023 NEC"), then cross-checked
+  // programmatically against 4 independent live references (wiresizes.com
+  // 2023-edition table, voltdropcalc.com, ecalpro.com, zing2.app 2020 table —
+  // all agree; see income-lab LOG 2026-08-18 Session 12). The 2023 change
+  // analysis (nec2023_pdh.txt) records no 310.16 change; 2014==2020==2023 for
+  // these values (the 2026 NEC keeps the ampacity values per zing2's
+  // 2023-vs-2026 note). 30°C ambient, ≤3 current-carrying conductors.
+  //
+  // Each row: size + [cu60, cu75, cu90, al60, al75, al90] (null = not listed;
+  // 14 AWG has no aluminum columns; 16/18 AWG are all-dash rows in the table
+  // so they are omitted — nothing to pick from).
+  const T31016 = [
+    { s: '14',  cu: [15,  20,  25,  null, null, null], small: true },
+    { s: '12',  cu: [20,  25,  30,  15,  20,  25],     small: true },
+    { s: '10',  cu: [30,  35,  40,  25,  30,  35],     small: true },
+    { s: '8',   cu: [40,  50,  55,  35,  40,  45] },
+    { s: '6',   cu: [55,  65,  75,  40,  50,  55] },
+    { s: '4',   cu: [70,  85,  95,  55,  65,  75] },
+    { s: '3',   cu: [85,  100, 115, 65,  75,  85] },
+    { s: '2',   cu: [95,  115, 130, 75,  90,  100] },
+    { s: '1',   cu: [110, 130, 145, 85,  100, 115] },
+    { s: '1/0', cu: [125, 150, 170, 100, 120, 135] },
+    { s: '2/0', cu: [145, 175, 195, 115, 135, 150] },
+    { s: '3/0', cu: [165, 200, 225, 130, 155, 175] },
+    { s: '4/0', cu: [195, 230, 260, 150, 180, 205] },
+    { s: '250', cu: [215, 255, 290, 170, 205, 230] },
+    { s: '300', cu: [240, 285, 320, 195, 230, 260] },
+    { s: '350', cu: [260, 310, 350, 210, 250, 280] },
+    { s: '400', cu: [280, 335, 380, 225, 270, 305] },
+    { s: '500', cu: [320, 380, 430, 260, 310, 350] },
+    { s: '600', cu: [350, 420, 475, 285, 340, 385] },
+    { s: '700', cu: [385, 460, 520, 315, 375, 425] },
+    { s: '750', cu: [400, 475, 535, 320, 385, 435] },
+    { s: '800', cu: [410, 490, 555, 330, 395, 445] },
+    { s: '900', cu: [435, 520, 585, 355, 425, 480] },
+    { s: '1000', cu: [455, 545, 615, 375, 445, 500] },
+    { s: '1250', cu: [495, 590, 665, 405, 485, 545] },
+    { s: '1500', cu: [525, 625, 705, 435, 520, 585] },
+    { s: '1750', cu: [545, 650, 735, 455, 545, 615] },
+    { s: '2000', cu: [555, 665, 750, 470, 560, 630] }
+  ];
+  const T31016_COLS = { 60: [0, 3], 75: [1, 4], 90: [2, 5] }; // [cuIdx, alIdx]
+
+  // conductorLabel: "2/0 AWG" or "250 kcmil"
+  const AWG_SIZES = ['14', '12', '10', '8', '6', '4', '3', '2', '1'];
+  function conductorLabel(s) {
+    if (AWG_SIZES.indexOf(s) >= 0 || /^\d+\/0$/.test(s)) return s + ' AWG';
+    return s + ' kcmil';
+  }
+
+  // Pick the smallest Table 310.16 conductor whose ampacity in the given
+  // termination-temperature column >= requiredA, for the given material.
+  // mat: 'cu' | 'al'; temp: 60 | 75 | 90.
+  // Returns { size, amp, label, over, notes } or { size: null, over: '...' }.
+  function pickConductor31016(requiredA, mat, temp) {
+    requiredA = +requiredA;
+    if (!(requiredA > 0)) return { size: null, over: 'enter a required ampacity' };
+    mat = mat === 'al' ? 'al' : 'cu';
+    if (temp !== 60 && temp !== 75 && temp !== 90) return { size: null, over: 'pick a temperature column (60/75/90)' };
+    const [cuIdx, alIdx] = T31016_COLS[temp];
+    const idx = mat === 'cu' ? cuIdx : alIdx;
+    for (const row of T31016) {
+      const amp = row.cu[idx];
+      if (amp == null) continue; // not listed for this material/temp (e.g. 14 AWG al)
+      if (amp >= requiredA) {
+        const notes = [];
+        // 240.4(D) small-conductor overcurrent caps — informational only:
+        // this tool sizes by AMPACITY, but the OCPD is capped for 14/12/10.
+        if (row.small) {
+          const cap = mat === 'cu' ? ({ '14': 15, '12': 20, '10': 30 })[row.s]
+                                   : ({ '12': 15, '10': 25 })[row.s];
+          if (cap) notes.push(`240.4(D): overcurrent device for this size is capped at ${cap} A`);
+        }
+        if (temp === 60) notes.push('60 °C column (≤100 A circuits per 110.14(C)(1)(a) unless marked otherwise)');
+        else if (temp === 75) notes.push('75 °C column (>100 A circuits per 110.14(C)(1)(b), or 75 °C-rated terminations)');
+        else notes.push('90 °C column — use only as a DERATING base (310.15); final ampacity must still respect the termination rating');
+        return { size: row.s, amp, label: conductorLabel(row.s) + ' ' + (mat === 'cu' ? 'Cu' : 'Al'), over: null, notes };
+      }
+    }
+    const last = T31016[T31016.length - 1].cu[idx];
+    return { size: null, amp: last, label: null, over: `exceeds Table 310.16 (${last} A max for ${mat === 'cu' ? 'copper' : 'aluminum'} at ${temp} °C) — parallel conductors (310.4) or larger system` };
   }
 
   // ---- CSV export ----
@@ -793,6 +877,8 @@
     }
     const nl = (project && project.nl) ? neutralLoad22061(project.nl) : null;
     if (nl && nl.valid) {
+      const nlState = (project && project.nl) || {};
+      const nlPick = pickConductor31016(nl.minAmpA, nlState.mat || 'cu', +(nlState.temp || 75));
       L.push(['FEEDER / SERVICE NEUTRAL LOAD — NEC 220.61 (2014 = 2020 verbatim; no 2023 change)', '']);
       L.push(['Total neutral (max unbalanced) load', nl.totalVA + ' VA']);
       if (nl.cookVA > 0) L.push(['Cooking/dryer portion (220.55/220.54 demand)', nl.cookVA + ' VA']);
@@ -802,7 +888,13 @@
       if (nl.b2Applied) L.push(['220.61(B)(2) 70% on portion over 200 A', 'Y']);
       L.push(['Calculated neutral load (after reductions)', nl.finalA + ' A']);
       if (nl.dwelling) L.push(['310.12(B) one-dwelling service: min neutral ampacity', nl.minAmpA + ' A (83% of calculated)']);
-      L.push(['Note', 'Select the conductor from Table 310.16 for the minimum neutral ampacity above (30°C ambient, ≤3 current-carrying conductors), then apply 310.15 adjustments (ambient/derating) as required. 220.61(C) prohibited reductions NOT applied: 3-wire portions of 4-wire 3-phase wye circuits and nonlinear loads on 4-wire wye must stay at 100% (harmonic neutral currents). Design aid only; verify against the adopted NEC edition (2026 NEC: Article 120 renumber).']);
+      if (!nlPick.over && nlPick.size) {
+        L.push(['Neutral conductor (Table 310.16, ' + (nlState.temp || 75) + ' °C, ' + (nlState.mat === 'al' ? 'aluminum' : 'copper') + ')', nlPick.label + ' — ' + nlPick.amp + ' A']);
+        nlPick.notes.forEach(nt => L.push(['Conductor note', nt]));
+      } else if (nlPick.over) {
+        L.push(['Neutral conductor (Table 310.16)', 'NONE — ' + nlPick.over]);
+      }
+      L.push(['Note', 'Table 310.16 base values (30 °C ambient, ≤3 current-carrying conductors) — apply 310.15 adjustments (ambient/derating) as required. 220.61(C) prohibited reductions NOT applied: 3-wire portions of 4-wire 3-phase wye circuits and nonlinear loads on 4-wire wye must stay at 100% (harmonic neutral currents). Table verified from a verbatim 2023-NEC print; design aid only — verify against the adopted NEC edition (2026 NEC: Article 120 renumber).']);
       L.push([]);
     }
     L.push(['DWELLING UNIT MINIMUM CIRCUITS (NEC 210.11)', '']);
@@ -857,6 +949,7 @@
     COOK_C_KW, COOK_AB, cookingColumnCKW, cookingNote1Kw, cookingNote2,
     cookingABFactorPct, cookingNote3KW, cookingDemand22055,
     neutralLoad22061,
+    T31016, T31016_COLS, AWG_SIZES, conductorLabel, pickConductor31016,
     toCSV, projectToCSV, toJSON, fromJSON, migrate, round2
   };
 
@@ -1209,7 +1302,9 @@
       volt: n('nlVolt'),
       applyB1: !!(el('nlB1') && el('nlB1').checked),
       applyB2: !!(el('nlB2') && el('nlB2').checked),
-      dwelling: !!(el('nlDw') && el('nlDw').checked)
+      dwelling: !!(el('nlDw') && el('nlDw').checked),
+      mat: (el('nlMat') && el('nlMat').value === 'al') ? 'al' : 'cu',
+      temp: (el('nlTemp') && ['60', '75', '90'].indexOf(el('nlTemp').value) >= 0) ? +el('nlTemp').value : 75
     };
   }
 
@@ -1224,6 +1319,9 @@
     chk('B1', l.applyB1);
     chk('B2', l.applyB2 === undefined ? true : l.applyB2);
     chk('Dw', l.dwelling);
+    const selM = $('#nlMat'), selT = $('#nlTemp');
+    if (selM) selM.value = l.mat || 'cu';
+    if (selT) selT.value = String(l.temp || 75);
   }
 
   function renderNl() {
@@ -1245,11 +1343,24 @@
     if (r.dwelling) s += `  →  min neutral ampacity ${r.minAmpA} A (310.12(B) 83%)`;
     s += `  @ ${r.volt} V`;
     sumEl.textContent = s;
+    // Conductor pick from the verified Table 310.16 (v1.8)
+    const pick = pickConductor31016(r.minAmpA, l.mat || 'cu', +(l.temp || 75));
+    if (!pick.over && pick.size) {
+      s = sumEl.textContent + `  →  ${pick.label} neutral (Table 310.16, ${pick.amp} A @ ${l.temp || 75} °C)`;
+      sumEl.textContent = s;
+    }
     let b = '';
     if (r.b1 && r.cookVA > 0) b += `<span class="badge">220.61(B)(1): cooking/dryer ${r.cookVA} VA → ${r.cookDemandVA} VA (70%)</span>`;
     b += `<span class="badge">220.61(A) basic: ${r.basicA} A</span>`;
     if (r.b2Applied) b += `<span class="badge">220.61(B)(2): 70% on portion over 200 A → ${r.finalA} A</span>`;
-    b += `<span class="badge ok">Min neutral conductor ampacity: ${r.minAmpA} A — look up in Table 310.16</span>`;
+    b += `<span class="badge ok">Min neutral conductor ampacity: ${r.minAmpA} A</span>`;
+    if (!pick.over && pick.size) {
+      b += `<span class="badge ok">${pick.label} — ${pick.amp} A in the ${l.temp || 75} °C column (Table 310.16)</span>`;
+      pick.notes.forEach(n => { b += `<span class="badge">${esc(n)}</span>`; });
+    } else if (pick.over) {
+      b += `<span class="badge warn">${esc(pick.over)}</span>`;
+    }
+    b += '<span class="badge">310.15 ambient/derating adjustments not applied — Table 310.16 base values (30 °C, ≤3 CCC)</span>';
     b += '<span class="badge warn">220.61(C) prohibited reductions NOT applied (wye 3-wire + nonlinear @100%)</span>';
     badgesEl.innerHTML = b;
   }
@@ -1536,6 +1647,12 @@
     };
     $('#nlCard').addEventListener('input', e => {
       if (!e.target.id || !e.target.id.startsWith('nl')) return;
+      state.nl = nlFields();
+      saveState(); renderNl();
+    });
+    // selects (mat/temp) fire 'change'; re-render so the pick updates reliably
+    $('#nlCard').addEventListener('change', e => {
+      if (e.target.id !== 'nlMat' && e.target.id !== 'nlTemp') return;
       state.nl = nlFields();
       saveState(); renderNl();
     });
