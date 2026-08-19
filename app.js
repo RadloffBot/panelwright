@@ -278,7 +278,8 @@
   //        (4) space heating, <4 separately controlled units: 65%
   //        (5) space heating, >=4 separately controlled units: 40%
   //        (6) electric thermal storage / continuous: 100%
-  //   Amps = total VA / service voltage.  Neutral per 220.61 (out of scope here).
+  //   Amps = total VA / service voltage.  Neutral load is handled by the
+  //   220.61 card (separate) — this method does not include it.
   //   This is a dwelling-unit method: NOT for multi-unit (that's 220.84, standard
   //   method). Dryer demand factors in Table 220.54 are a DIFFERENT rule (5+
   //   dryers in a building) — do not conflate; noted in UI to prevent misciting.
@@ -835,7 +836,7 @@
       L.push(['Service voltage', lc.volt + ' V']);
       L.push(['Service current (VA/V)', lc.amps + ' A']);
       L.push(['Recommended standard breaker (NEC 240.6)', (lc.recommendedBreakerA || '—') + ' A']);
-      L.push(['Note', 'Design aid only — 220.82 is a single-dwelling-unit optional method; verify against the adopted NEC edition. Neutral load per 220.61 not included.']);
+      L.push(['Note', 'Design aid only — 220.82 is a single-dwelling-unit optional method; verify against the adopted NEC edition. Neutral load is computed by the 220.61 card (not part of this method).']);
       L.push([]);
     }
     const dd = (project && project.dd) ? dryerDemand22054(project.dd) : null;
