@@ -808,5 +808,130 @@ const nlRT2 = core.fromJSON(core.toJSON(nlProj2));
 eq(nlRT2.nl.mat, 'cu', 'json roundtrip keeps nl.mat');
 eq(nlRT2.nl.temp, 75, 'json roundtrip keeps nl.temp');
 
+// ================= v1.9: printReportHTML (branded PDF report core) =================
+console.log('printReportHTML (v1.9):');
+eq(typeof core.printReportHTML, 'function', 'exported as a function');
+{
+  const lcObj = { sqft: 2000, smallApplianceCircuits: 2, laundryCircuits: 1, appliancesVA: 3500, motorsVA: null, volt: 240, acVA: null, hpNoSuppVA: null, hpCompressorVA: null, hpSuppVA: null, spaceHeatingVA: null, spaceUnits: null, thermalStorageVA: null };
+  const projFull = {
+    version: 2, projectName: 'Print Test House', serviceA: 600, notes: 'v1.9 test fixture',
+    panels: [
+      { name: 'Main LBO', system: '208-120-3ph', ratingA: 400, notes: '', circuits: [
+        { pos: '1', name: 'kitchen counter', type: 'L1N', loadA: 10, breaker: 20 },
+        { pos: '2', name: 'kitchen counter 2', type: 'L2N', loadA: 10, breaker: 20 },
+        { pos: '3', name: 'laundry', type: 'L3N', loadA: 10, breaker: 20 },
+        { pos: '4', name: 'bath', type: 'L1N', loadA: 10, breaker: 20 },
+        { pos: '5', name: 'garage', type: 'L2N', loadA: 10, breaker: 20 },
+        { pos: '6', name: 'outdoor', type: 'L3N', loadA: 10, breaker: 20 },
+        { pos: '7', name: 'lighting 1', type: 'L1N', loadA: 10, breaker: 20 },
+        { pos: '8', name: 'lighting 2', type: 'L2N', loadA: 10, breaker: 20 }
+      ] },
+      { name: 'Sub', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [
+        { pos: '1', name: 'range', type: 'L1L2', loadA: 30 }
+      ] }
+    ],
+    lc: lcObj, dd: { count: 6 }, lt: { totalVA: 12000, occupancy: 'dwelling' },
+    ck: { mode: 'colC', count: 6, ratingKW: 12 },
+    nl: { totalVA: 75212, cookingDryerVA: 0, volt: 240, applyB1: false, applyB2: true, dwelling: true, mat: 'cu', temp: 75 }
+  };
+  const fixedDate = new Date(Date.UTC(2026, 7, 27, 12, 0, 0));
+  const html = core.printReportHTML(projFull, fixedDate);
+  eq(typeof html, 'string', 'returns a string');
+  // branded header
+  eq(html.includes('Panel<span>Wright</span>'), true, 'brand title');
+  eq(html.includes('<svg'), true, 'brand mark svg');
+  eq(html.includes('Panel Schedule &amp; Load Rollup'), true, 'report subtitle');
+  eq(html.includes('2026-08-27'), true, 'UTC report date');
+  // project block
+  eq(html.includes('Print Test House'), true, 'project name');
+  eq(html.includes('v1.9 test fixture'), true, 'project notes');
+  eq(html.includes('>600 A<'), true, 'service rating 600 A');
+  // service rollup — numbers from the same core functions
+  const pt = core.projectTotals(projFull);
+  eq(pt.L1, 60, 'fixture: service L1 = 60');
+  eq(pt.L2, 60, 'fixture: service L2 = 60');
+  eq(pt.L3, 20, 'fixture: service L3 = 20');
+  eq(pt.total, 140, 'fixture: service total = 140');
+  eq(html.includes('<td class="num">60</td><td class="num">60</td><td class="num">20</td><td class="num">140</td>'), true, 'service rollup footer 60/60/20/140');
+  eq(html.includes('Main LBO'), true, 'panel 1 in report');
+  eq(html.includes('L1-N (120V)'), true, 'circuit type label');
+  eq(html.includes('kitchen counter'), true, 'circuit name');
+  eq(html.includes('L1 30'), true, 'panel L1 total 30');
+  eq(html.includes('L3 20'), true, 'panel L3 total 20');
+  // 220.82 — same core numbers as the UI card
+  const lcR = core.serviceLoad22082(lcObj);
+  eq(lcR.totalVA, 11600, 'fixture: 220.82 total 11600 VA');
+  eq(html.includes('NEC 220.82'), true, '220.82 section present');
+  eq(html.includes(lcR.totalVA + ' VA'), true, '220.82 total matches core');
+  eq(html.includes(lcR.amps + ' A'), true, '220.82 amps match core');
+  eq(html.includes(lcR.recommendedBreakerA + ' A'), true, '220.82 recommended breaker matches core');
+  // 220.54
+  const ddR = core.dryerDemand22054({ count: 6 });
+  eq(html.includes('NEC 220.54'), true, '220.54 section present');
+  eq(html.includes(ddR.demandVA + ' VA'), true, '220.54 demand matches core');
+  eq(html.includes(ddR.factorPct + '%'), true, '220.54 factor matches core');
+  // 220.42 (report formats with toLocaleString like the UI)
+  const ltR = core.lightingDemand22042({ totalVA: 12000, occupancy: 'dwelling' });
+  eq(html.includes('NEC 220.42'), true, '220.42 section present');
+  eq(html.includes(ltR.totalVA.toLocaleString() + ' VA'), true, '220.42 connected load matches core');
+  eq(html.includes(ltR.demandVA.toLocaleString() + ' VA'), true, '220.42 demand matches core');
+  eq(html.includes(ltR.occupancyLabel), true, '220.42 occupancy label');
+  // 220.55 Column C + Note 1
+  const ckR = core.cookingDemand22055({ mode: 'colC', count: 6, ratingKW: 12 });
+  eq(html.includes('NEC 220.55'), true, '220.55 section present');
+  eq(html.includes(ckR.demandKW + ' kW (' + ckR.demandVA + ' VA)'), true, '220.55 demand matches core');
+  // 220.61 + 310.16 pick
+  const nlR = core.neutralLoad22061(projFull.nl);
+  eq(nlR.valid, true, 'fixture: 220.61 valid');
+  eq(html.includes('NEC 220.61'), true, '220.61 section present');
+  eq(html.includes(nlR.basicA + ' A'), true, '220.61 basic A matches core');
+  eq(html.includes(nlR.finalA + ' A'), true, '220.61 final A matches core');
+  eq(html.includes(nlR.minAmpA + ' A'), true, '220.61 min ampacity matches core');
+  const nlPick = core.pickConductor31016(nlR.minAmpA, 'cu', 75);
+  eq(html.includes(nlPick.label + ' — ' + nlPick.amp + ' A'), true, '310.16 conductor pick matches core');
+  // 210.11 checklist — fixture circuit names satisfy all 6 default rows
+  eq(html.includes('NEC 210.11'), true, '210.11 section present');
+  eq(html.includes('6 of 6'), true, 'checklist 6 of 6 met');
+  // AI disclosure + design-aid footer
+  eq(html.includes('Radloff Bot, an AI software assistant'), true, 'AI disclosure in footer');
+  eq(html.includes('https://radloffbot.github.io/panelwright/'), true, 'app URL in footer');
+  eq(html.includes('Design aid only'), true, 'design-aid disclaimer');
+  // no app chrome in the print document
+  eq(html.includes('app-ui'), false, 'no app UI class in report');
+  eq(html.includes('btnPrint'), false, 'no app buttons in report');
+  eq(html.includes('<input'), false, 'no inputs in report');
+  // pure & deterministic
+  eq(html, core.printReportHTML(projFull, fixedDate), true, 'deterministic for a fixed date');
+  // escaping
+  const htmlEsc = core.printReportHTML(Object.assign({}, projFull, { projectName: 'A & <B> "C"' }), fixedDate);
+  eq(htmlEsc.includes('A &amp; &lt;B&gt; &quot;C&quot;'), true, 'project name is HTML-escaped');
+  eq(htmlEsc.includes('<B>'), false, 'no raw <B> tag leaks');
+}
+console.log('printReportHTML edge cases:');
+{
+  const htmlEmpty = core.printReportHTML();
+  eq(htmlEmpty.includes('Untitled Project'), true, 'no-args project -> untitled');
+  eq(htmlEmpty.includes('not set'), true, 'no-args project -> service rating not set');
+  eq(htmlEmpty.includes('0 of 6'), true, 'no-args project -> 0 of 6 requirements met');
+  eq(htmlEmpty.includes('Service rating not set'), true, 'no-args project -> service % guidance');
+  const htmlNoCirc = core.printReportHTML({ version: 2, projectName: 'EmptyPanel', serviceA: null, notes: '',
+    panels: [{ name: 'P', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [] }] });
+  eq(htmlNoCirc.includes('No circuits'), true, 'empty panel -> No circuits row');
+  const over = { version: 2, projectName: 'Over', serviceA: 20, notes: '', panels: [
+    { name: 'Main', system: '208-120-3ph', ratingA: 400, notes: '', circuits: [
+      { type: 'L1N', loadA: 60 }
+    ] }
+  ] };
+  const htmlOver = core.printReportHTML(over);
+  eq(htmlOver.includes('exceeds rating'), true, 'service % > 100 flagged');
+  const note2 = { version: 2, projectName: 'N2', serviceA: 200, notes: '', panels: [
+    { name: 'Main', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [] }
+  ], ck: { mode: 'note2', count: 6, ratingKW: 12, ratingsList: '11,12,13' } };
+  const htmlN2 = core.printReportHTML(note2);
+  const ckColC = core.cookingDemand22055({ count: 6, ratingKW: 12 });
+  eq(htmlN2.includes(ckColC.demandKW + ' kW'), true, 'note2 mode: prints Column C demand');
+  eq(htmlN2.includes('Note 2'), true, 'note2 mode: note names the selected mode');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PanelWright — Panel Schedule Calculator & Multi-Panel Load Rollup (NEC design aid)</title>
-<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 220.55 cooking appliance demand (Table 220.55, Column C + Notes 1/2/3), NEC 220.61 feeder/service neutral load (220.61(A)/(B)/(C) + 310.12(B) 83%) with automatic Table 310.16 neutral conductor pick, NEC 220.42 lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing, CSV & print/PDF. No account, no install.">
+<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method), NEC 220.55 cooking appliance demand (Table 220.55, Column C + Notes 1/2/3), NEC 220.61 feeder/service neutral load (220.61(A)/(B)/(C) + 310.12(B) 83%) with automatic Table 310.16 neutral conductor pick, NEC 220.42 lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), NEC 210.11 checklist, phase balancing (408.3(C)), breaker sizing, CSV export and branded PDF report export. No account, no install.">
 <!-- og:url / canonical below point at the live GitHub Pages origin (published 2026-08-18). -->
 <link rel="canonical" href="https://radloffbot.github.io/panelwright/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -31,7 +31,7 @@
   "@type": "WebApplication",
   "name": "PanelWright",
   "url": "https://radloffbot.github.io/panelwright/",
-  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 220.55 household cooking appliance demand (Table 220.55: Column C with Note 1, Note 2 unequal ratings, Note 3 Column A/B factors), NEC 220.61 feeder/service neutral load (basic calc, 70% reductions, 310.12(B) 83% one-dwelling minimum ampacity, automatic Table 310.16 conductor pick), NEC 220.42 general lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling clothes-dryer demand (Table 220.54), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV and print/PDF export.",
+  "description": "Free, in-browser panel schedule calculator for electricians and engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load calculator (optional method), NEC 220.55 household cooking appliance demand (Table 220.55: Column C with Note 1, Note 2 unequal ratings, Note 3 Column A/B factors), NEC 220.61 feeder/service neutral load (basic calc, 70% reductions, 310.12(B) 83% one-dwelling minimum ampacity, automatic Table 310.16 conductor pick), NEC 220.42 general lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling clothes-dryer demand (Table 220.54), NEC 210.11 minimum-circuit checklist, phase balancing (408.3(C)), breaker sizing (210.20/215.2), CSV export and branded PDF report export of the full project.",
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any (web browser)",
   "browserRequirements": "Requires JavaScript",
@@ -97,30 +97,53 @@
   .btn-del:hover { color: var(--bad); }
   footer { margin-top: 22px; font-size: 12px; color: var(--dim); }
   footer p { margin: 4px 0; }
+  @page { size: A4; margin: 12mm 12mm 14mm 12mm; }
+  /* v1.9 print swap: hide the whole app UI, show the generated report.
+     The report is a plain-HTML document (no app chrome, no inputs) so the
+     browser's native "Save as PDF" renders a clean branded A4 report. */
   @media print {
-    body { background: #fff; color: #000; }
-    .no-print { display: none !important; }
-    .card, table, th, td, .badges, .badge, .tabs, .tab, .btn-dw { background: #fff !important; color: #000 !important; border-color: #bbb !important; }
-    .wrap { max-width: none; padding: 0; }
-    td input, td select { border: none; color: #000; }
-    .printhdr { display: block !important; }
+    body { background: #fff; color: #111; }
+    .app-ui { display: none !important; }
+    #printReport { display: block !important; }
   }
-  .printhdr { display: none; margin-bottom: 12px; font-size: 15px; }
+  /* ---- print report document (v1.9) ---- */
+  #printReport { display: none; color: #111; font: 13px/1.5 system-ui, "Segoe UI", Roboto, sans-serif; }
+  #printReport .pr-brand { display: flex; align-items: center; gap: 12px; border-bottom: 3px solid #0f1419; padding-bottom: 10px; margin-bottom: 14px; }
+  #printReport .pr-mark svg { display: block; }
+  #printReport .pr-title { font-size: 22px; font-weight: 700; letter-spacing: .3px; }
+  #printReport .pr-title span { color: #b97900; }
+  #printReport .pr-sub { font-size: 11px; color: #555; margin-top: 2px; }
+  #printReport .pr-sec { margin-bottom: 14px; break-inside: auto; page-break-inside: auto; }
+  #printReport .pr-kicker { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #8a6100; font-weight: 700; margin-bottom: 2px; }
+  #printReport h2 { font-size: 14px; margin: 0 0 8px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+  #printReport .pr-meta { border-collapse: collapse; width: 100%; margin-bottom: 6px; }
+  #printReport .pr-meta td { border: none; border-bottom: 1px solid #e3e3e3; padding: 3.5px 8px 3.5px 0; vertical-align: top; }
+  #printReport .pr-meta td.val { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #printReport .pr-meta td.val.big { font-weight: 700; font-size: 14px; }
+  #printReport .pr-tbl { border-collapse: collapse; width: 100%; font-size: 12px; }
+  #printReport .pr-tbl th { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #555; border-bottom: 1.5px solid #444; padding: 4px 6px; text-align: left; }
+  #printReport .pr-tbl td { border-bottom: 1px solid #ddd; padding: 3.5px 6px; }
+  #printReport .pr-tbl th.num, #printReport .pr-tbl td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  #printReport .pr-tbl th.ctr, #printReport .pr-tbl td.ctr { text-align: center; }
+  #printReport .pr-tbl td.notes { color: #444; font-size: 11px; }
+  #printReport .pr-tbl .empty { text-align: center; color: #888; padding: 12px !important; }
+  #printReport .pr-tbl tfoot.sum td { border-top: 2px solid #111; border-bottom: 2px solid #111; font-weight: 700; }
+  #printReport .pr-tbl .sumlabel { text-align: left; color: #333; }
+  #printReport .pr-badges { font-size: 12px; margin: 6px 0 0; }
+  #printReport .pr-note { font-size: 10.5px; color: #555; margin: 6px 0 0; line-height: 1.45; }
+  #printReport .pr-panel { break-inside: avoid; page-break-inside: avoid; }
+  #printReport .pr-foot { border-top: 1px solid #999; margin-top: 16px; padding-top: 8px; font-size: 10.5px; color: #555; }
+  #printReport .pr-foot p { margin: 4px 0; }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap app-ui">
   <header class="app">
     <h1>Panel<span>Wright</span></h1>
     <div class="tag">Panel schedules, phase balancing, service rollup, NEC 220.82 service load, 220.55 cooking & 220.61 neutral</div>
     <div class="savedat" id="savedAt"></div>
   </header>
-  <p class="disc">Free design aid (v1.8.1). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
-  <div class="printhdr">
-    <strong>PanelWright</strong> — Panel Schedule & Load Rollup<br>
-    Project: <span id="prjNamePrint">—</span> &nbsp;·&nbsp; Service: <span id="svcAPrint">—</span> &nbsp;·&nbsp; Generated: <span id="printDate">—</span><br>
-    <em>Design aid only — verify against the adopted NEC edition and local code.</em>
-  </div>
+  <p class="disc">Free design aid (v1.9). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
 
   <section class="card no-print">
     <h2>Project</h2>
@@ -293,7 +316,7 @@
       <button class="ghost" id="btnDelPanel">Delete panel</button>
       <span style="flex:1"></span>
       <button class="ghost" id="btnRollupCSV">Export rollup CSV</button>
-      <button class="ghost" id="btnPrint">🖨 Print / PDF</button>
+      <button class="ghost" id="btnPrint">🖨 Print / export PDF report</button>
     </div>
   </section>
 
@@ -332,10 +355,11 @@
   </section>
 
   <footer>
-    <p><strong>About PanelWright.</strong> Free, open-source panel schedule tool. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max-deviation and the NEC 408.3(C) 5% neutral guideline (field approximation — verify with real load data & power factor). The service-entrance rollup sums panel phase currents without demand factors — a screening value. The NEC 220.82 service-load card is a real optional-method demand calc for a single dwelling unit (2017–2023 code verified). The NEC 220.55 cooking card implements Table 220.55 (Column C + Notes 1/2/3) as verified verbatim against NFPA 70 2014 and NEC 2020 (identical; no 2023 change). The NEC 220.61 neutral card implements the 220.61(A)/(B)/(C) reductions verbatim (2014 = 2020; no 2023 change) plus the 310.12(B) 83% one-dwelling minimum neutral ampacity, and picks the neutral conductor automatically from Table 310.16 for your chosen material + temperature column (base values, 30 °C ambient, ≤3 CCC; 310.15 adjustments are yours).</p>
+    <p><strong>About PanelWright.</strong> Free, open-source panel schedule tool. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max-deviation and the NEC 408.3(C) 5% neutral guideline (field approximation — verify with real load data & power factor). The service-entrance rollup sums panel phase currents without demand factors — a screening value. The NEC 220.82 service-load card is a real optional-method demand calc for a single dwelling unit (2017–2023 code verified). The NEC 220.55 cooking card implements Table 220.55 (Column C + Notes 1/2/3) as verified verbatim against NFPA 70 2014 and NEC 2020 (identical; no 2023 change). The NEC 220.61 neutral card implements the 220.61(A)/(B)/(C) reductions verbatim (2014 = 2020; no 2023 change) plus the 310.12(B) 83% one-dwelling minimum neutral ampacity, and picks the neutral conductor automatically from Table 310.16 for your chosen material + temperature column (base values, 30 °C ambient, ≤3 CCC; 310.15 adjustments are yours). Print / PDF export renders the full project (rollup, every NEC card, every panel, the 210.11 checklist) as a branded report using the browser's own PDF engine — no third-party scripts, ever.</p>
     <p>Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (no humans pretend to be the author). The code is plain HTML/JS — read it, fix it, share it (MIT). Data never leaves your browser.</p>
   </footer>
 </div>
+<div id="printReport"></div>
 <script src="app.js"></script>
 </body>
 </html>

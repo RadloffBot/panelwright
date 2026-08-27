@@ -96,7 +96,12 @@ No install, no account, no data leaves your browser.
 - **Exports**: per-panel CSV, full multi-panel rollup CSV (incl. 210.11 checklist, the
   220.82 service-load detail, the 220.55 cooking demand, the 220.42 lighting demand, the
   220.54 dryer demand, and the 220.61 neutral-load calc when present), JSON save/open
-  (v1 files auto-migrate), Print → PDF with project header
+  (v1 files auto-migrate), and a **branded PDF report of the full project** (v1.9):
+  branded header, project block, service-entrance rollup, every NEC card, every panel
+  schedule, and the 210.11 checklist — rendered as a plain-HTML document and printed
+  through the browser's own PDF engine (no third-party scripts). A `beforeprint` hook
+  regenerates the report from the live state before every print, so a stale report
+  can never be printed.
 - Auto-saves to your browser's localStorage — your work survives refreshes
 
 ## Run it
@@ -112,7 +117,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 433 core assertions (hand-verified)
+node test/run_tests.js   # 491 core assertions (hand-verified)
 ```
 
 ## About the author

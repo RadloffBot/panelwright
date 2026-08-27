@@ -916,6 +916,247 @@
     return L.map(row => row.map(csvEscape).join(',')).join('\n');
   }
 
+  // ---- Branded PDF / print report (v1.9) ----
+  // Builds the FULL-project print document as an HTML string, computed ONLY from
+  // the project state — every number comes from the same core functions that
+  // power the on-screen cards and the rollup CSV, so the printed report can
+  // never drift from the app. Pure: no DOM access, no third-party anything.
+  // The UI wraps the output in a hidden container that swaps in for the app
+  // under @media print (see index.html) — the browser's own "Save as PDF" is
+  // the PDF engine, so the page still ships zero third-party scripts.
+  // Scope note (same as the CSV rollup): 220.55 is always reported in its
+  // default Column C + Note 1 method (the rollup CSV does the same); the
+  // printed note says so instead of silently dropping the user's Note 2/3 input.
+  const PRINT_APP_URL = 'https://radloffbot.github.io/panelwright/';
+
+  function escH(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function prjDateStr(d) {
+    try {
+      const p = n => String(n).padStart(2, '0');
+      return d.getUTCFullYear() + '-' + p(d.getUTCMonth() + 1) + '-' + p(d.getUTCDate());
+    } catch (e) { return ''; }
+  }
+
+  function panelReportHTML(p) {
+    const sys = SYSTEMS[p.system] || { label: p.system, options: [] };
+    const typeLabel = id => { const o = sys.options.find(o => o.id === id); return o ? o.label : (id || ''); };
+    const t = panelTotals(p.circuits, p.system, p.ratingA);
+    const rows = (p.circuits || []).map(c => {
+      const req = reqBreakerA(c.loadA, c.continuous);
+      const rec = req != null ? (nextStdBreaker(req) || '—') : '—';
+      return '<tr><td class="num">' + escH(c.pos || '') + '</td>' +
+        '<td>' + escH(c.name || '—') + '</td>' +
+        '<td>' + escH(typeLabel(c.type)) + '</td>' +
+        '<td class="num">' + (c.loadA != null ? c.loadA : '—') + '</td>' +
+        '<td class="ctr">' + (c.continuous ? '☑' : '') + '</td>' +
+        '<td class="num">' + rec + '</td>' +
+        '<td class="num">' + (c.breaker != null ? c.breaker : '—') + '</td>' +
+        '<td class="notes">' + escH(c.notes || '') + '</td></tr>';
+    }).join('');
+    const meta = (label, val) => '<tr><td>' + label + '</td><td class="val">' + val + '</td></tr>';
+    return '<section class="pr-sec pr-panel">' +
+      '<h2>' + escH(p.name || 'Panel') + '</h2>' +
+      '<table class="pr-meta"><tbody>' +
+      meta('System', escH(sys.label)) +
+      meta('Panel rating', (p.ratingA != null ? p.ratingA + ' A' : 'not set')) +
+      (p.notes ? meta('Notes', escH(p.notes)) : '') +
+      '</tbody></table>' +
+      '<table class="pr-tbl"><thead><tr>' +
+      '<th class="num">Pos</th><th>Circuit</th><th>Type</th><th class="num">Load (A)</th>' +
+      '<th class="ctr">Cont.</th><th class="num">Req. brk (A)</th><th class="num">Actual (A)</th><th>Notes</th>' +
+      '</tr></thead><tbody>' + (rows || '<tr><td colspan="8" class="empty">No circuits</td></tr>') + '</tbody>' +
+      '<tfoot><tr class="sum">' +
+      '<td colspan="3" class="sumlabel">Totals (A)</td>' +
+      '<td class="num">L1 ' + t.L1 + '</td>' +
+      '<td class="num">L2 ' + t.L2 + '</td>' +
+      '<td class="num">' + (t.is3ph ? 'L3 ' + t.L3 : '—') + '</td>' +
+      '<td class="num">' + t.totalLoadA + '</td>' +
+      '<td></td>' +
+      '</tr></tfoot></table>' +
+      '<p class="pr-badges">' +
+      'Load ' + (t.loadPct != null ? t.loadPct + '% of rating' : '— (no rating)') +
+      ' · Imbalance ' + (t.imbalancePct != null ? t.imbalancePct + '%' : '—') + (t.is3ph ? '' : ' (max−min)/max') +
+      (t.is3ph ? ' · Neutral ≈' + t.neutralEst + ' A' + (t.neutralLimit != null ? ' (limit ' + t.neutralLimit + ' A, NEC 408.3(C) 5%)' : '') + (t.neutralOk === false ? ' — <strong>408.3(C) exceeded</strong>' : '') : '') +
+      '</p></section>';
+  }
+
+  function reportSec(kicker, title, inner) {
+    return '<section class="pr-sec"><div class="pr-kicker">' + escH(kicker) + '</div><h2>' + escH(title) + '</h2>' + inner + '</section>';
+  }
+
+  function prRow(label, value, cls) {
+    return '<tr><td>' + escH(label) + '</td><td class="val' + (cls ? ' ' + cls : '') + '">' + value + '</td></tr>';
+  }
+
+  function printReportHTML(project, date) {
+    project = project || { projectName: 'Untitled Project', serviceA: null, notes: '', panels: [] };
+    date = date || new Date();
+    const dstr = prjDateStr(date);
+    const dt = date.toLocaleString();
+    const t = projectTotals(project);
+    const out = [];
+    // ---- branded header ----
+    out.push('<div class="pr-brand">');
+    out.push('<div class="pr-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="34" height="34"><rect width="64" height="64" rx="12" fill="#0f1419"/><rect x="8" y="8" width="48" height="48" rx="8" fill="#171e26" stroke="#2a3644" stroke-width="2"/><g fill="none" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round"><line x1="20" y1="18" x2="20" y2="46"/><line x1="32" y1="18" x2="32" y2="46"/><line x1="44" y1="18" x2="44" y2="46"/><path d="M14 24 h10 M14 32 h10 M14 40 h10" stroke="#4da3ff" stroke-width="2.5"/><path d="M26 24 h12 M26 40 h12" stroke-width="2.5" opacity=".85"/><path d="M38 32 h12" stroke-width="2.5" opacity=".85"/></g></svg></div>');
+    out.push('<div class="pr-title">Panel<span>Wright</span> — Panel Schedule &amp; Load Rollup</div>');
+    out.push('<div class="pr-sub">Free design aid · no install · no account · data stays in your browser</div>');
+    out.push('</div>');
+    // ---- project block ----
+    out.push('<section class="pr-sec">');
+    out.push('<table class="pr-meta"><tbody>');
+    out.push(prRow('Project', escH(project.projectName || 'Untitled Project'), 'big'));
+    if (project.notes) out.push(prRow('Notes', escH(project.notes)));
+    out.push(prRow('Service rating', project.serviceA ? project.serviceA + ' A' : 'not set'));
+    out.push(prRow('Generated', dt));
+    out.push('</tbody></table></section>');
+    // ---- service entrance rollup ----
+    {
+      const rows = t.perPanel.map(p =>
+        '<tr><td>' + escH(p.name) + '</td><td>' + escH(SYSTEMS[p.system] ? SYSTEMS[p.system].label : p.system) + '</td>' +
+        '<td class="num">' + p.L1 + '</td><td class="num">' + p.L2 + '</td>' +
+        '<td class="num">' + (p.is3ph ? p.L3 : '—') + '</td><td class="num">' + p.total + '</td>' +
+        '<td class="num">' + p.imbalancePct + '</td></tr>').join('');
+      let bad = '';
+      if (t.servicePct != null) {
+        bad = '<p class="pr-badges">Max phase is <strong>' + t.servicePct + '%</strong> of the service rating' +
+          (t.servicePct > 100 ? ' — <strong>exceeds rating</strong>' : '') + '</p>';
+      } else {
+        bad = '<p class="pr-badges">Service rating not set — enter it to check load %</p>';
+      }
+      out.push(reportSec('Service entrance', 'Service-entrance rollup (screening value — no demand factors)',
+        '<table class="pr-tbl"><thead><tr><th>Panel</th><th>System</th><th class="num">L1 (A)</th><th class="num">L2 (A)</th>' +
+        '<th class="num">L3 (A)</th><th class="num">Total (A)</th><th class="num">Imbalance %</th></tr></thead><tbody>' + rows + '</tbody>' +
+        '<tfoot><tr class="sum"><td colspan="2" class="sumlabel">Service entrance</td>' +
+        '<td class="num">' + t.L1 + '</td><td class="num">' + t.L2 + '</td><td class="num">' + t.L3 + '</td>' +
+        '<td class="num">' + t.total + '</td><td></td></tr></tfoot></table>' + bad));
+    }
+    // ---- NEC 220.82 ----
+    const lc = project.lc ? serviceLoad22082(project.lc) : null;
+    if (lc) {
+      const any = [project.lc.sqft, project.lc.appliancesVA, project.lc.motorsVA, project.lc.acVA,
+        project.lc.hpNoSuppVA, project.lc.hpCompressorVA, project.lc.hpSuppVA,
+        project.lc.spaceHeatingVA, project.lc.thermalStorageVA].some(x => x != null && x > 0);
+      if (any) {
+        out.push(reportSec('NEC 220.82', 'Dwelling service load — optional method (single unit; 2017–2023 code verified)',
+          '<table class="pr-meta"><tbody>' +
+          prRow('General lighting + receptacles, 3 VA/sq ft (220.82(B)(1))', lc.lightingVA + ' VA') +
+          prRow('Small-appliance circuits ×1,500 VA (220.82(B)(2))', lc.smallApplianceVA + ' VA') +
+          prRow('Laundry circuits ×1,500 VA (220.82(B)(2))', lc.laundryVA + ' VA') +
+          prRow('Appliances nameplate (220.82(B)(3))', lc.appliancesVA + ' VA') +
+          prRow('Permanently connected motors (220.82(B)(4))', lc.motorsVA + ' VA') +
+          prRow('General connected load', lc.generalConnectedVA + ' VA') +
+          prRow('General demand (first 10 kVA @100% + 40% of remainder)', lc.generalDemandVA + ' VA') +
+          prRow('Largest heating/cooling (220.82(C))', lc.hvacDemandVA + ' VA') +
+          prRow('Total demand load', lc.totalVA + ' VA', 'big') +
+          prRow('Service current @ ' + lc.volt + ' V', lc.amps + ' A', 'big') +
+          prRow('Recommended standard service (NEC 240.6)', (lc.recommendedBreakerA || '—') + ' A', 'big') +
+          '</tbody></table>' +
+          (project.serviceA && lc.amps > project.serviceA
+            ? '<p class="pr-badges"><strong>Exceeds the project service rating of ' + project.serviceA + ' A</strong></p>' : '') +
+          '<p class="pr-note">220.82 is the optional single-dwelling-unit method; the neutral load for it is computed by the 220.61 section below, not by 220.82 itself. Design aid only — verify against the adopted NEC edition (2026 NEC: Article 120 renumber).</p>'));
+      }
+    }
+    // ---- NEC 220.54 ----
+    const dd = project.dd ? dryerDemand22054(project.dd) : null;
+    if (dd && dd.count > 0) {
+      out.push(reportSec('NEC 220.54', 'Multi-dwelling clothes-dryer demand (Table 220.54; 2017–2023 code verified)',
+        '<table class="pr-meta"><tbody>' +
+        prRow('Number of dryers served', dd.count) +
+        prRow('Per-dryer load (larger of 5,000 VA or nameplate)', dd.perDryerVA + ' VA') +
+        prRow('Total connected dryer load', dd.connectedVA + ' VA') +
+        prRow('Table 220.54 demand factor', dd.factorPct + '% — ' + escH(dd.factorLabel)) +
+        prRow('Dryer demand load', dd.demandVA + ' VA', 'big') +
+        '</tbody></table>' +
+        '<p class="pr-note">Standard-method multi-dwelling dryer rule — not the single-dwelling 220.82(B)(3) nameplate treatment. The 2026 NEC renumbers this (→ 120.54) and revises the factors; verify against the adopted edition.</p>'));
+    }
+    // ---- NEC 220.42 ----
+    const lt = project.lt ? lightingDemand22042(project.lt) : null;
+    if (lt && lt.totalVA > 0) {
+      const tiers = lt.tiers.filter(x => x.sliceVA > 0).map(x =>
+        prRow('Tier: ' + (x.upTo === Infinity ? 'remainder @ ' + x.pct + '%' : 'up to ' + x.upTo.toLocaleString() + ' VA @ ' + x.pct + '%'), x.demandVA.toLocaleString() + ' VA')).join('');
+      out.push(reportSec('NEC 220.42', 'General lighting load demand — standard method (Table 220.42; 2017–2023 code verified)',
+        '<table class="pr-meta"><tbody>' +
+        prRow('Occupancy', escH(lt.occupancyLabel)) +
+        prRow('Total general lighting load', lt.totalVA.toLocaleString() + ' VA') +
+        tiers +
+        prRow('Lighting demand load', lt.demandVA.toLocaleString() + ' VA', 'big') +
+        '</tbody></table>' +
+        '<p class="pr-note">Standard-method Part III feeder/service rule — NOT used under the 220.82 optional single-dwelling method (that takes 3 VA/sq ft at 100%, 220.82(B)(1)). The factors do not apply when determining the number of lighting branch circuits (220.42). Hospital/hotel tiers carry the table exception for areas likely used entirely at one time. Design aid only.</p>'));
+    }
+    // ---- NEC 220.55 (always Column C + Note 1; mirrors the rollup CSV) ----
+    const ck = project.ck ? cookingDemand22055(project.ck) : null;
+    if (ck && ck.valid) {
+      let inner = '<table class="pr-meta"><tbody>' +
+        prRow('Number of ranges / cooking appliances', ck.count) +
+        (ck.effectiveCount !== ck.count ? prRow('3-phase, 4-wire basis (2 × max between any two phases)', ck.effectiveCount) : '') +
+        prRow('Individual rating (equal ratings)', ck.ratingKW + ' kW') +
+        prRow('Column C base maximum demand', ck.baseKW + ' kW') +
+        (ck.increaseKW > 0 ? prRow('Note 1 increase (5% per kW over 12 kW)', '+' + ck.increaseKW + ' kW') : '') +
+        prRow('Demand load', ck.demandKW + ' kW (' + ck.demandVA + ' VA)', 'big') +
+        '</tbody></table>';
+      const mode = project.ck.mode;
+      if (mode === 'note2' || mode === 'note3') {
+        inner += '<p class="pr-badges">Note: the report prints the Column C + Note 1 method (the rollup CSV does the same); the app card shows your selected ' +
+          (mode === 'note2' ? 'Note 2' : 'Note 3') + ' result.</p>';
+      }
+      inner += '<p class="pr-note">Applies to household cooking appliances individually rated over 1¾ kW (kVA considered equivalent to kW). Verified 2014 = 2020 verbatim (row-for-row identical); no 2023 change recorded. Note 4 (single-appliance branch-circuit loads) is out of scope. Design aid only — verify against the adopted edition.</p>';
+      out.push(reportSec('NEC 220.55', 'Household cooking appliance demand (Table 220.55; 2014 = 2020 verbatim)', inner));
+    }
+    // ---- NEC 220.61 ----
+    const nl = project.nl ? neutralLoad22061(project.nl) : null;
+    if (nl && nl.valid) {
+      const nlS = project.nl || {};
+      const pick = pickConductor31016(nl.minAmpA, nlS.mat || 'cu', +(nlS.temp || 75));
+      const matName = nlS.mat === 'al' ? 'aluminum' : 'copper';
+      let inner = '<table class="pr-meta"><tbody>' +
+        prRow('Total neutral load — max unbalance (220.61(A))', nl.totalVA + ' VA') +
+        (nl.cookVA > 0 ? prRow('Cooking/dryer portion (220.61(B)(1) 70% when demand-calculated)', nl.cookVA + ' VA' + (nl.b1 ? ' → ' + nl.cookDemandVA + ' VA' : '')) : '') +
+        prRow('Phase-to-neutral voltage', nl.volt + ' V') +
+        prRow('Basic neutral load (220.61(A))', nl.basicA + ' A') +
+        (nl.b2Applied ? prRow('220.61(B)(2): 70% on portion over 200 A', 'applied') : (nl.b2 ? prRow('220.61(B)(2) selected', 'not applied — load does not exceed 200 A') : '')) +
+        prRow('Calculated neutral load (after reductions)', nl.finalA + ' A', 'big') +
+        (nl.dwelling ? prRow('310.12(B) one-dwelling service — minimum neutral ampacity (83%)', nl.minAmpA + ' A', 'big') : '') +
+        '</tbody></table>';
+      if (!pick.over && pick.size) {
+        inner += '<table class="pr-meta"><tbody>' +
+          prRow('Neutral conductor — Table 310.16 (' + matName + ', ' + (nlS.temp || 75) + ' °C column)', pick.label + ' — ' + pick.amp + ' A', 'big') +
+          '</tbody></table><p class="pr-badges">' + pick.notes.map(escH).join(' · ') + '</p>';
+      } else if (pick.over) {
+        inner += '<p class="pr-badges"><strong>' + escH(pick.over) + '</strong></p>';
+      }
+      inner += '<p class="pr-note">Table 310.16 base values (30 °C ambient, ≤3 current-carrying conductors) — apply 310.15 ambient/derating adjustments as required. 220.61(C) prohibited reductions are NOT applied: 3-wire portions of 4-wire 3-phase wye circuits and nonlinear loads on 4-wire wye stay at 100% (harmonic neutral currents). Table verified from a verbatim 2023-NEC print; design aid only — verify against the adopted NEC edition (2026 NEC: Article 120 renumber).</p>';
+      out.push(reportSec('NEC 220.61', 'Feeder / service neutral load (2014 = 2020 verbatim; no 2023 change)', inner));
+    }
+    // ---- NEC 210.11 checklist ----
+    {
+      const dws = dwStatus(project);
+      const rows = dws.items.map(it => {
+        const st = it.status === 'ok' ? '✓ verified' : it.status === 'missing' ? '✗ missing' : ('auto · ' + it.auto + ' matched');
+        return '<tr><td>' + escH(it.label) + '</td><td>' + escH(it.cite) + '</td><td class="num">' + it.min + '</td>' +
+          '<td class="num">' + it.auto + '</td><td class="ctr">' + st + '</td>' +
+          '<td class="ctr">' + (it.met ? 'MET' : 'REVIEW') + '</td></tr>';
+      }).join('');
+      out.push(reportSec('NEC 210.11', 'Dwelling-unit minimum circuits (2017–2023 code verified; user-verified checklist)',
+        '<table class="pr-tbl"><thead><tr><th>Requirement</th><th>NEC cite</th><th class="num">Req.</th>' +
+        '<th class="num">Auto-match</th><th class="ctr">Status</th><th class="ctr">Result</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+        '<p class="pr-badges">Requirements met: <strong>' + dws.metCount + ' of ' + dws.total + '</strong></p>' +
+        '<p class="pr-note">Auto-match is a keyword suggestion, never a verdict. Outdoor and lighting rows are design-practice items (210.11 has no outdoor dedicated-circuit mandate; 210.11(B) is load balancing, not a lighting requirement).</p>'));
+    }
+    // ---- panels ----
+    out.push('<section class="pr-sec"><div class="pr-kicker">Panels</div><h2>Panel schedules</h2></section>');
+    (project.panels || []).forEach(p => out.push(panelReportHTML(p)));
+    // ---- footer ----
+    out.push('<div class="pr-foot">' +
+      '<p><strong>Design aid only.</strong> Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max deviation and the 408.3(C) 5% neutral guideline (field approximation). Verify against the adopted NEC edition and local code.</p>' +
+      '<p>Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (AI-built and disclosed). Plain HTML/JS, MIT licensed — ' + PRINT_APP_URL + '</p>' +
+      '<p>Generated by PanelWright on ' + escH(dt) + ' · report date ' + dstr + '</p></div>');
+    return out.join('');
+  }
+
   // ---- JSON roundtrip (project, v2) + v1 migration ----
   function toJSON(project) {
     return JSON.stringify(Object.assign({}, project, { app: 'PanelWright', generatedAt: new Date().toISOString() }), null, 2);
@@ -951,7 +1192,7 @@
     cookingABFactorPct, cookingNote3KW, cookingDemand22055,
     neutralLoad22061,
     T31016, T31016_COLS, AWG_SIZES, conductorLabel, pickConductor31016,
-    toCSV, projectToCSV, toJSON, fromJSON, migrate, round2
+    toCSV, projectToCSV, printReportHTML, toJSON, fromJSON, migrate, round2
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = core;
@@ -1394,14 +1635,17 @@
     });
   }
 
-  function renderPrintHdr() {
-    const a = $('#prjNamePrint'), b = $('#svcAPrint'), c = $('#printDate');
-    if (a) a.textContent = state.projectName || 'Untitled Project';
-    if (b) b.textContent = state.serviceA ? state.serviceA + ' A' : 'not set';
-    if (c) c.textContent = new Date().toLocaleDateString();
+  // ---- Branded print report (v1.9): the full project, from state, into #printReport ----
+  // The browser hides .app-ui and shows #printReport under @media print; the
+  // user's "Save as PDF" then produces the branded report. Rebuilt on every
+  // render so print output always matches the live screen.
+  function renderPrintReport() {
+    const el = $('#printReport');
+    if (!el) return;
+    el.innerHTML = printReportHTML(state);
   }
 
-  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderDw(); renderPrintHdr(); }
+  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderDw(); renderPrintReport(); }
 
   // ---- actions ----
   function addCircuit() {
@@ -1571,13 +1815,16 @@
     $('#btnCSV').onclick = exportPanelCSV;
     $('#btnJSON').onclick = exportJSON;
     $('#btnImport').onclick = () => $('#fileImport').click();
-    $('#btnPrint').onclick = () => window.print();
+    $('#btnPrint').onclick = () => { renderPrintReport(); window.print(); };
     $('#btnClear').onclick = clearAll;
     $('#btnSample').onclick = loadSample;
     $('#btnAddPanel').onclick = addPanel;
     $('#btnDupPanel').onclick = duplicatePanel;
     $('#btnDelPanel').onclick = deletePanel;
     $('#btnRollupCSV').onclick = exportProjectCSV;
+    // Regenerate the report on every print, even direct Ctrl+P (not just the button),
+    // so a stale report can never be printed. renderPrintReport is idempotent/pure.
+    window.addEventListener('beforeprint', renderPrintReport);
     $('#dwCard').addEventListener('input', e => {
       const el = e.target;
       if (el.dataset.i == null) return;
