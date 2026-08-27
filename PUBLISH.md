@@ -11,6 +11,12 @@
    git push https://x:${PAT}@github.com/RadloffBot/panelwright.git main:main
    ```
    PAT in `../github/github_pat.json`. Pages rebuild takes ~1–3 min.
+   **Session 16 (2026-08-27): in headless/cron contexts the git credential manager
+   HANGS** — a bare `git push` stalls indefinitely (no output, `GIT_TERMINAL_PROMPT=0`
+   doesn't help). The PAT-URL form above is the only reliable headless path.
+   **Caveat: a URL-push does NOT update `refs/remotes/origin/main`**, so afterwards run
+   `git update-ref refs/remotes/origin/main <sha>` or `../check_live.py` fails its
+   "local HEAD == origin/main" check.
 3. Verify the live deploy is byte-identical to HEAD (poll `../wait_live.py`):
    - `index.html`, `app.js`, `robots.txt`, `sitemap.xml`, `og-image.png` all match.
 4. Distribution drafts in `../distribution/post-drafts.md` carry the live URL;
