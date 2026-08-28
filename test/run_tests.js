@@ -1045,5 +1045,58 @@ console.log('NEC 230.42 / 310.16 service-line (ungrounded) conductor pick (v1.11
   eq(core.projectToCSV(projSvc0).includes('Service-line (ungrounded) required ampacity'), false, 'csv omits svc-line when no lc load');
 }
 
+console.log('NEC 220.53 fixed-appliance demand (v1.12, 2017-2023 code verified):');
+{
+  const F = core.applianceDemand22053;
+  // 4 or more appliances -> 75% of combined nameplate
+  const f1 = F({ count: 6, totalVA: 8000 });
+  eq(f1.eligible, true, '6 appliances -> eligible');
+  eq(f1.factorPct, 75, '6 appliances -> 75% factor');
+  eq(f1.demandVA, 6000, '8,000 VA x 75% = 6,000 VA demand');
+  eq(f1.savingsVA, 2000, 'savings 2,000 VA (25%)');
+  eq(F({ count: 4, totalVA: 4000 }).demandVA, 3000, 'boundary: exactly 4 -> 75% (4,000 -> 3,000)');
+  // fewer than 4 -> factor not permitted, 100%
+  const f3 = F({ count: 3, totalVA: 3000 });
+  eq(f3.eligible, false, '3 appliances -> not eligible');
+  eq(f3.factorPct, 100, '3 appliances -> 100%');
+  eq(f3.demandVA, 3000, '3,000 VA x 100% = 3,000 VA');
+  eq(f3.savingsVA, 0, 'no savings under 4');
+  eq(F({ count: 1, totalVA: 1200 }).demandVA, 1200, '1 appliance -> 100%');
+  // rounding
+  eq(F({ count: 5, totalVA: 1000 }).demandVA, 750, '1,000 VA x 75% = 750 VA');
+  eq(F({ count: 5, totalVA: 1010 }).demandVA, 757.5, '1,010 VA x 75% = 757.5 VA (round2)');
+  // edge / invalid inputs (no throw, clamp to 0)
+  eq(F({}).count, 0, 'empty -> 0 count');
+  eq(F({}).demandVA, 0, 'empty -> 0 VA');
+  eq(F(null).demandVA, 0, 'null -> 0 VA, no throw');
+  eq(F({ count: -3 }).count, 0, 'negative count clamped to 0');
+  eq(F({ count: 4.9 }).count, 4, 'fractional count floors (4.9 -> 4)');
+  eq(F({ count: 4, totalVA: 0 }).demandVA, 0, '4 appliances, 0 VA -> 0');
+  eq(F({ count: 0, totalVA: 9000 }).demandVA, 0, '0 appliances -> 0 demand even w/ VA');
+  eq(F({ count: 5, totalVA: -500 }).totalVA, 0, 'negative VA clamped to 0');
+  // CSV surface
+  const projFa = { version: 2, projectName: 'Fa22053', panels: [{ name: 'M', system: '120-240-1ph', ratingA: 200, circuits: [] }],
+    fa: { count: 6, totalVA: 8000 } };
+  const csvFa = core.projectToCSV(projFa);
+  eq(csvFa.includes('FIXED APPLIANCE LOAD — NEC 220.53'), true, 'csv has 220.53 section header');
+  eq(csvFa.includes('220.53 demand factor'), true, 'csv has factor row');
+  eq(csvFa.includes('75% (4 or more appliances)'), true, 'csv states 75% (4+)');
+  eq(csvFa.includes('6000 VA'), true, 'csv has 6000 VA demand (raw number in CSV)');
+  eq(csvFa.includes('220.82(B)(3)'), true, 'csv notes exclude cooking (220.55) / dryers');
+  // under-4 case flags in CSV
+  const csvFa3 = core.projectToCSV(Object.assign({}, projFa, { fa: { count: 3, totalVA: 3000 } }));
+  eq(csvFa3.includes('fewer than 4 — factor not permitted; counted at 100%'), true, 'csv flags under-4 at 100%');
+  // print report surface
+  const htmlFa = core.printReportHTML(projFa);
+  eq(htmlFa.includes('NEC 220.53'), true, 'print has 220.53 section');
+  eq(htmlFa.includes('Fixed-appliance demand'), true, 'print has 220.53 title');
+  eq(htmlFa.includes('75% (4 or more appliances)'), true, 'print states 75% (4+)');
+  eq(htmlFa.includes('− 2,000 VA'), true, 'print shows 25% reduction');
+  // CSV + print omit the section when no appliances
+  const projFa0 = { version: 2, projectName: 'Fa0', panels: [{ name: 'M', system: '120-240-1ph', ratingA: 200, circuits: [] }] };
+  eq(core.projectToCSV(projFa0).includes('FIXED APPLIANCE LOAD'), false, 'csv omits 220.53 when no fa');
+  eq(core.printReportHTML(projFa0).includes('Fixed-appliance demand'), false, 'print omits 220.53 when no fa');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

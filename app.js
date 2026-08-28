@@ -1,6 +1,11 @@
 /*
- * PanelWright v1.11 — panel schedule calculator (NEC design aid)
+ * PanelWright v1.12 — panel schedule calculator (NEC design aid)
  * Multi-panel projects + service-entrance rollup.
+ * v1.12: NEC 220.53 fixed-appliance demand — 75% demand factor for four or more
+ *   appliances rated 1/4 hp or 500 W or greater, fastened in place, served by the
+ *   same feeder or service in a one/two/multifamily dwelling (dwelling-unit
+ *   standard-method rule; 2020 wording verified verbatim, 2017 rule identical
+ *   minus the rating qualifier; cooking/dryer/space-heat/AC excluded).
  * v1.11: 220.82 service-line (ungrounded) conductor pick — sizes the ungrounded
  *   service conductors from the calculated 220.82 service current (230.42(A)(2),
  *   100% of the calculated load; 230.79(C) 100 A one-family floor; 110.14(C)
@@ -387,6 +392,40 @@
     const reqA = Math.max(+lc.amps, dwMinA);
     const pick = pickConductor31016(reqA, (mat === 'al') ? 'al' : 'cu', (temp === 60 || temp === 90) ? temp : 75);
     return { valid: true, calcA: round2(+lc.amps), dwMinA, reqA: round2(reqA), pick };
+  }
+
+  // ---- NEC 220.53 Appliance Load — Dwelling Unit(s) (v1.12) ----
+  // VERIFIED verbatim against the NEC 2020 full-code text on disk
+  // (slideshare_nec2020.txt): "It shall be permissible to apply a demand factor
+  // of 75 percent to the nameplate rating load of four or more appliances rated
+  // 1/4 hp or greater, or 500 watts or greater, that are fastened in place, and
+  // that are served by the same feeder or service in a one-family, two-family, or
+  // multifamily dwelling. This demand factor shall not apply to: (1) Household
+  // electric cooking equipment that is fastened in place (2) Clothes dryers
+  // (3) Space heating equipment (4) Air-conditioning equipment."
+  // The 2014 verbatim Art. 220 PDF carries the same rule in pre-2020 wording
+  // (four or more appliances fastened in place, "other than electric ranges,
+  // clothes dryers, space-heating equipment, or air-conditioning equipment") —
+  // the 2020 revision adds the 1/4 hp / 500 W rating qualifier (excludes small
+  // fans etc., which belong in the general load). This card implements the
+  // 2017–2023 rule as written in the 2020 text. The 2023 change analysis
+  // records no 220.53 change.
+  //
+  // o: { count, totalVA } — number of eligible fastened-in-place appliances
+  //     (≥ ¼ hp or ≥ 500 W each; NOT cooking/dryer/space-heat/AC) and their
+  //     combined nameplate load (VA). kVA is equivalent to kW as elsewhere.
+  // Demand = 75% of the connected nameplate load when count >= 4; with 1–3
+  // appliances the factor is not permitted (count at 100%, flagged).
+  function applianceDemand22053(o) {
+    o = o || {};
+    const c = o.count;
+    const count = (c === undefined || c === null || c === '') ? 0 : Math.max(0, Math.floor(+c || 0));
+    const raw = o.totalVA;
+    const totalVA = (raw === undefined || raw === null || raw === '') ? 0 : Math.max(0, +raw || 0);
+    const eligible = count >= 4;
+    const factorPct = eligible ? 75 : 100;
+    const demandVA = count === 0 ? 0 : round2(totalVA * factorPct / 100);
+    return { count, totalVA, eligible, factorPct, demandVA, savingsVA: count === 0 ? 0 : round2(totalVA - demandVA) };
   }
 
   // ---- NEC 220.54 Electric Clothes Dryers — multi-dwelling demand (v1.4) ----
@@ -901,6 +940,17 @@
       L.push(['Note', 'Design aid only \u2014 220.82 is a single-dwelling-unit optional method; verify against the adopted NEC edition. Neutral load is computed by the 220.61 card (not part of this method). 310.12(A) 83% ungrounded service-conductor reduction NOT applied (flagged in UI); 310.15 ambient/derating adjustments are yours.']);
       L.push([]);
     }
+    const fa = (project && project.fa) ? applianceDemand22053(project.fa) : null;
+    if (fa && fa.count > 0) {
+      L.push(['FIXED APPLIANCE LOAD — NEC 220.53 (dwelling units; 2017-2023 code verified)', '']);
+      L.push(['Eligible fastened-in-place appliances (each 1/4 hp or 500 W or greater)', fa.count]);
+      L.push(['Total connected appliance load (VA)', fa.totalVA + ' VA']);
+      L.push(['220.53 demand factor', fa.factorPct + '%' + (fa.eligible ? ' (4 or more appliances)' : ' (fewer than 4 — factor not permitted; counted at 100%)')]);
+      L.push(['Appliance demand load', fa.demandVA + ' VA']);
+      if (fa.eligible && fa.savingsVA > 0) L.push(['Reduction (25%)', fa.savingsVA + ' VA']);
+      L.push(['Note', '220.53 permits a 75% demand factor on the nameplate load of four or more appliances rated 1/4 hp or greater, or 500 watts or greater, fastened in place and served by the same feeder or service in a one-family, two-family, or multifamily dwelling. NOT applicable to: household electric cooking equipment (use 220.55), clothes dryers (220.54 / 220.82(B)(3)), space heating equipment, or air-conditioning equipment (220.82(C)). The 2026 NEC renumbers Article 220; verify against the adopted edition.']);
+      L.push([]);
+    }
     const dd = (project && project.dd) ? dryerDemand22054(project.dd) : null;
     if (dd && dd.count > 0) {
       L.push(['MULTI-DWELLING CLOTHES DRYER LOAD — NEC 220.54 + Table 220.54 (2017-2023 code verified)', '']);
@@ -1138,6 +1188,19 @@
           '<p class="pr-note">220.82 is the optional single-dwelling-unit method; the neutral load for it is computed by the 220.61 section below, not by 220.82 itself. Design aid only — verify against the adopted NEC edition (2026 NEC: Article 120 renumber).</p>'));
       }
     }
+    // ---- NEC 220.53 (fixed appliances) ----
+    const fa = project.fa ? applianceDemand22053(project.fa) : null;
+    if (fa && fa.count > 0) {
+      out.push(reportSec('NEC 220.53', 'Fixed-appliance demand — dwelling units (2017–2023 code verified)',
+        '<table class="pr-meta"><tbody>' +
+        prRow('Eligible fastened-in-place appliances (each ¼ hp or 500 W or greater)', fa.count) +
+        prRow('Total connected appliance load', fa.totalVA.toLocaleString() + ' VA') +
+        prRow('220.53 demand factor', fa.factorPct + '%' + (fa.eligible ? ' (4 or more appliances)' : ' (fewer than 4 — not permitted; 100%)')) +
+        prRow('Appliance demand load', fa.demandVA.toLocaleString() + ' VA', 'big') +
+        (fa.eligible && fa.savingsVA > 0 ? prRow('Reduction (25%)', '− ' + fa.savingsVA.toLocaleString() + ' VA') : '') +
+        '</tbody></table>' +
+        '<p class="pr-note">220.53 permits a 75% demand factor on the nameplate load of four or more appliances rated ¼ hp or greater, or 500 W or greater, fastened in place and served by the same feeder or service in a one-family, two-family, or multifamily dwelling. Not applicable to household electric cooking equipment (220.55), clothes dryers (220.54 / 220.82(B)(3)), space heating, or air-conditioning (220.82(C)). Design aid only — verify against the adopted edition (2026 NEC: Article 120 renumber).</p>'));
+    }
     // ---- NEC 220.54 ----
     const dd = project.dd ? dryerDemand22054(project.dd) : null;
     if (dd && dd.count > 0) {
@@ -1265,6 +1328,7 @@
     panelTotals, autoBalance, projectTotals, emptyPanel, defaultProject,
     DW_DEFAULT_ITEMS, normalizeDw, dwStatus, serviceLoad22082,
     serviceLineConductor22082,
+    applianceDemand22053,
     dryerFactorPct, dryerFactorLabel, dryerDemand22054,
     LIT_TABLES, lightingDemand22042,
     COOK_C_KW, COOK_AB, cookingColumnCKW, cookingNote1Kw, cookingNote2,
@@ -1552,6 +1616,40 @@
       `<span class="badge">${esc(dd.factorLabel)}</span>`;
   }
 
+  // ---- NEC 220.53 fixed-appliance demand (v1.12) ----
+  function faFields() {
+    const el = id => $('#fa' + id);
+    const n = x => (el(x) && el(x).value !== '') ? (+el(x).value || null) : null;
+    return { count: n('Count'), totalVA: n('Total') };
+  }
+
+  function renderFaInputs() {
+    const l = state.fa || {};
+    const set = (id, v) => { const e = $('#fa' + id); if (e) e.value = (v == null ? '' : v); };
+    set('Count', l.count);
+    set('Total', l.totalVA);
+  }
+
+  function renderFa() {
+    const l = faFields();
+    const count = (l.count === null) ? 0 : l.count;
+    if (!(count > 0)) {
+      $('#faSum').textContent = '—';
+      $('#faBadges').innerHTML = '<span class="badge">Enter the count of fastened-in-place appliances (each ¼ hp or 500 W or greater) to apply 220.53 (2017–2023)</span>';
+      return;
+    }
+    const fa = applianceDemand22053(l);
+    $('#faSum').textContent = fa.eligible
+      ? `${fa.totalVA} VA connected → ${fa.demandVA} VA appliance demand  (${fa.count} appliances, 75% factor)`
+      : `${fa.totalVA} VA connected → ${fa.demandVA} VA appliance demand  (${fa.count} appliance(s) — fewer than 4, factor not permitted)`;
+    let badges =
+      `<span class="badge">Eligible appliances: ${fa.count} (each ¼ hp or 500 W or greater)</span>` +
+      `<span class="badge">220.53 factor: ${fa.factorPct}%${fa.eligible ? ' (4 or more appliances)' : ' (not permitted — under 4)'}</span>`;
+    if (fa.eligible && fa.savingsVA > 0) badges += `<span class="badge ok">Demand reduction: −${fa.savingsVA} VA (25%)</span>`;
+    if (!fa.eligible) badges += `<span class="badge warn">220.53 requires four or more eligible appliances on the same feeder/service to apply the 75% factor</span>`;
+    $('#faBadges').innerHTML = badges;
+  }
+
   // ---- NEC 220.42 lighting load demand (v1.5) ----
   function ltFields() {
     const el = id => $('#lt' + id);
@@ -1790,7 +1888,7 @@
     el.innerHTML = printReportHTML(state);
   }
 
-  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderDw(); renderPrintReport(); }
+  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderFaInputs(); renderFa(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderDw(); renderPrintReport(); }
 
   // ---- actions ----
   function addCircuit() {
@@ -2020,6 +2118,15 @@
     $('#btnDdReset').onclick = () => {
       state.dd = null;
       saveState(); renderDdInputs(); renderDd();
+    };
+    $('#faCard').addEventListener('input', e => {
+      if (!e.target.id || !e.target.id.startsWith('fa')) return;
+      state.fa = faFields();
+      saveState(); renderFa();
+    });
+    $('#btnFaReset').onclick = () => {
+      state.fa = null;
+      saveState(); renderFaInputs(); renderFa();
     };
     $('#ltCard').addEventListener('input', e => {
       if (!e.target.id || !e.target.id.startsWith('lt')) return;

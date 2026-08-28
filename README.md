@@ -34,6 +34,21 @@ No install, no account, no data leaves your browser.
   the calculated load per 230.42(A)(2) is the safe, citable minimum; 310.15
   ambient/derating adjustments are yours. The neutral load for this method is still
   computed by the 220.61 card, not by 220.82 itself.
+- **NEC 220.53 fixed-appliance demand — dwelling units** (v1.12) — where a
+  dwelling unit has **four or more** appliances rated **¼ hp or greater, or
+  500 W or greater**, fastened in place and served by the same feeder or
+  service, 220.53 permits a **75% demand factor** on their combined nameplate
+  rating load (one-family, two-family, or multifamily dwellings). The factor
+  does **not** apply to household electric cooking equipment (220.55 card),
+  clothes dryers (220.54 / 220.82(B)(3)), space-heating equipment, or
+  air-conditioning equipment (220.82(C)) — the card's UI tells you to keep
+  those out of the count. With fewer than 4 eligible appliances the factor is
+  not permitted; the card then counts the load at 100% and flags it.
+  **2017–2023 code verified** — the rule is stable across those editions; the
+  2020 edition added the ¼ hp / 500 W rating qualifier (the 2014 wording had
+  none), so the card implements the 2017–2023 wording as written in the 2020
+  text, and the 2023 change analysis records no 220.53 change. The 2026 NEC
+  renumbers Article 220 — verify against your adopted edition.
 - **NEC 220.55 household cooking appliance demand (Table 220.55)** — the
   feeder/service maximum-demand rule for household electric ranges, wall-mounted
   ovens, counter-mounted cooking units, and other household cooking appliances
@@ -109,7 +124,8 @@ No install, no account, no data leaves your browser.
 - **Auto-balance**: one click reassigns switchable circuits to minimize imbalance
   (respects pole count — a 120V circuit is never moved to a 208V feed)
 - **Exports**: per-panel CSV, full multi-panel rollup CSV (incl. 210.11 checklist, the
-  220.82 service-load detail, the 220.55 cooking demand, the 220.42 lighting demand, the
+  220.82 service-load detail, the 220.55 cooking demand, the 220.53 fixed-appliance
+  demand, the 220.42 lighting demand, the
   220.54 dryer demand, and the 220.61 neutral-load calc when present), JSON save/open
   (v1 files auto-migrate), and a **branded PDF report of the full project** (v1.9):
   branded header, project block, service-entrance rollup, every NEC card, every panel
@@ -132,7 +148,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 544 core assertions (hand-verified)
+node test/run_tests.js   # 576 core assertions (hand-verified)
 ```
 
 ## About the author
