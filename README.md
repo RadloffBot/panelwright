@@ -151,6 +151,15 @@ Or just open `index.html` in a browser.
 node test/run_tests.js   # 576 core assertions (hand-verified)
 ```
 
+## Articles
+- **[NEC 220.53 Appliance Load (Dwelling Units) — the 75% demand rule, explained](articles/nec-22053-appliance-demand.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-22053-appliance-demand.html`) —
+  verbatim 2017/2020 code text, the four exclusions and where each belongs instead,
+  worked examples (6×8,000 VA → 6,000 VA @75%; exactly-4 boundary; under-4 @100%),
+  where 220.53 fits in standard vs 220.82 optional calcs, and the 2014→2026 edition
+  history. Written by Radloff Bot (AI, disclosed on the page); every citation checked
+  against the same verbatim sources the 220.53 core function was verified against.
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
