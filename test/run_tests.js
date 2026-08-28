@@ -997,5 +997,53 @@ console.log('printReportHTML edge cases:');
   eq(htmlN2.includes('Note 2'), true, 'note2 mode: note names the selected mode');
 }
 
+console.log('NEC 230.42 / 310.16 service-line (ungrounded) conductor pick (v1.11, 220.82 card):');
+{
+  const S = core.serviceLineConductor22082;
+  // invalid / no-load cases
+  eq(S(null), { valid: false, reason: 'enter the 220.82 service load' }, 'null lc -> invalid');
+  eq(S({}), { valid: false, reason: 'enter the 220.82 service load' }, 'no amps -> invalid');
+  eq(S({ amps: 0 }), { valid: false, reason: 'enter the 220.82 service load' }, '0 A -> invalid');
+  // 230.79(C) 100 A one-family floor dominates small loads
+  const floor95 = S({ amps: 95 }, 'cu', 75);
+  eq(floor95.reqA, 100, '95 A calc -> 100 A required (230.79(C) floor)');
+  eq(floor95.pick.size, '3', '95 A calc Cu 75C -> 3 AWG (100 A exactly meets floor; 4 AWG=85 short)');
+  eq(S({ amps: 95 }, 'al', 75).pick.size, '1', '95 A calc Al 75C -> 1 AWG (100 A; 2 AWG=90 short)');
+  // above-floor: 230.42(A)(2) 100% of calculated load
+  const big = S({ amps: 124.7 }, 'cu', 75);
+  eq(big.reqA, 124.7, '124.7 A calc -> 124.7 A required (no floor)');
+  eq(big.pick.size, '1', '124.7 A Cu 75C -> 1 AWG (130 A; 2/0? 2 AWG=115 short)');
+  eq(S({ amps: 231.88 }, 'cu', 75).pick.size, '250', '231.88 A Cu 75C -> 250 kcmil (255 A; 2/0=175 short)');
+  eq(S({ amps: 231.88 }, 'cu', 60).pick.size, '300', '231.88 A Cu 60C -> 300 kcmil (240 A; 250=215 short)');
+  eq(S({ amps: 231.88 }, 'cu', 90).pick.size, '4/0', '231.88 A Cu 90C -> 4/0 AWG (260 A)');
+  eq(S({ amps: 232 }, 'al', 75).pick.size, '350', '232 A Al 75C -> 350 kcmil (250 A; 300=230 short)');
+  // defaults: mat->cu, temp->75
+  eq(S({ amps: 100 }).pick.size, '3', 'defaults Cu 75C, req 100 -> 3 AWG (100 A)');
+  eq(S({ amps: 100 }, 'bogus', 'bogus').pick.size, '3', 'bad mat/temp default to Cu 75C -> 3 AWG');
+  // over table
+  const over = S({ amps: 5000 }, 'cu', 90);
+  eq(over.pick.over, 'exceeds Table 310.16 (750 A max for copper at 90 °C) — parallel conductors (310.4) or larger system', '5000 A -> over table');
+  // end-to-end: serviceLoad22082 -> serviceLineConductor22082
+  const lc = core.serviceLoad22082({ sqft: 2000, acVA: 12000, volt: 240 });
+  const e2e = S(lc, 'cu', 75);
+  eq(e2e.valid, true, 'e2e valid');
+  eq(e2e.reqA, Math.max(lc.amps, 100), 'e2e reqA = max(amps,100)');
+  // CSV + print report surface the pick
+  const projSvc = { version: 2, projectName: 'SvcLine', serviceA: 200, notes: '',
+    panels: [{ name: 'M', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [] }],
+    lc: { sqft: 2000, acVA: 12000, volt: 240, mat: 'cu', temp: 75 } };
+  const csvSvc = core.projectToCSV(projSvc);
+  eq(csvSvc.includes('Service-line (ungrounded) required ampacity'), true, 'csv has svc-line required-ampacity row');
+  eq(csvSvc.includes('Service-line (ungrounded) conductor (Table 310.16'), true, 'csv has svc-line conductor row');
+  eq(csvSvc.includes('310.12(A) 83% ungrounded service-conductor reduction NOT applied'), true, 'csv notes 310.12(A) not applied');
+  const htmlSvc = core.printReportHTML(projSvc);
+  eq(htmlSvc.includes('Service-line (ungrounded) required ampacity'), true, 'print has svc-line required-ampacity row');
+  eq(htmlSvc.includes('Service-line (ungrounded) conductor (Table 310.16'), true, 'print has svc-line conductor row');
+  eq(htmlSvc.includes('310.12(A) 83% ungrounded service-conductor reduction NOT applied'), true, 'print notes 310.12(A) not applied');
+  // CSV omits the svc-line rows when no load
+  const projSvc0 = { version: 2, projectName: 'Svc0', panels: [{ name: 'M', system: '120-240-1ph', ratingA: 200, circuits: [] }] };
+  eq(core.projectToCSV(projSvc0).includes('Service-line (ungrounded) required ampacity'), false, 'csv omits svc-line when no lc load');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

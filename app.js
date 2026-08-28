@@ -1,8 +1,13 @@
 /*
- * PanelWright v1.6 — panel schedule calculator (NEC design aid)
+ * PanelWright v1.11 — panel schedule calculator (NEC design aid)
  * Multi-panel projects + service-entrance rollup.
- * v1.6: NEC 220.55 household cooking appliance demand (Table 220.55, Column C
- *   + Notes 1/2/3) — table verified verbatim against NFPA 70 2014 + 2020 (identical).
+ * v1.11: 220.82 service-line (ungrounded) conductor pick — sizes the ungrounded
+ *   service conductors from the calculated 220.82 service current (230.42(A)(2),
+ *   100% of the calculated load; 230.79(C) 100 A one-family floor; 110.14(C)
+ *   temperature column) using the verified Table 310.16 + pickConductor31016.
+ *   310.12(A) 83% ungrounded reduction is flagged in the UI, not applied (its
+ *   verbatim text is not on disk).
+ * v1.10: NEC 220.82 appliance/motor nameplate entry in VA or kW.
  * Zero dependencies. Pure core (Node-testable) + browser UI.
  * Built 2026-08-16 by Radloff Bot (an AI) for electricians & engineers.
  * NOT a substitute for the NEC or a qualified electrical design.
@@ -346,6 +351,42 @@
       amps: round2(amps),
       recommendedBreakerA: nextStdBreaker(amps)
     };
+  }
+
+  // ---- v1.11: 220.82 service-line (ungrounded) conductor pick ----
+  // Sizing rule (VERIFIED verbatim against the NEC 2020 full-code text on disk,
+  // slideshare_nec2020.txt — logged in LOG Session 19 + README):
+  //   230.42(A)(2): "The minimum service-entrance conductor size shall have an
+  //     ampacity not less than the maximum load to be served after the application
+  //     of any adjustment or correction factors." For the 220.82 optional method the
+  //     maximum load = the calculated service current (totalVA / volt).
+  //   230.42(A): "Ampacity shall be determined from 310.14 and shall comply with
+  //     110.14(C)." 230.42(A)(1) (non-continuous + 125% continuous) does not
+  //     separately identify a continuous portion under the 220.82 optional method,
+  //     so we size at 100% of the calculated service load per 230.42(A)(2) —
+  //     conservative and code-compliant.
+  //   230.42(B): "In addition to ... 230.42(A), the minimum ampacity for
+  //     ungrounded conductors ... shall not be less than the rating of the service
+  //     disconnecting means specified in 230.79(A) through (D)." 230.79(C): a
+  //     one-family dwelling disconnect is rated NOT LESS THAN 100 A. The 220.82
+  //     method is a single-dwelling method, so the ungrounded conductors carry a
+  //     100 A minimum-ampacity floor (max(calculated amps, 100 A)).
+  //   Table 310.16 (verified 0/168 cells, v1.8) supplies the ampacity; the pick is
+  //     the smallest size in the chosen material + 110.14(C) temperature column
+  //     whose ampacity >= required.
+  //   310.12(A) — the ungrounded service-conductor reduction to 83% of the service
+  //     DISCONNECT rating for a 1∅ 100–400 A service — is a SEPARATE allowance on
+  //     the disconnect rating, NOT on the calculated load, and its verbatim text is
+  //     NOT on disk, so it is intentionally NOT applied here (flagged in UI/README);
+  //     applying 230.42(A)(2) at 100% of the calculated load is the safe, citable
+  //     minimum. 310.15 ambient/derating adjustments remain the user's.
+  // Returns { valid, calcA, dwMinA, reqA, pick } (pick = pickConductor31016 result).
+  function serviceLineConductor22082(lc, mat, temp) {
+    if (!lc || !(+lc.amps > 0)) return { valid: false, reason: 'enter the 220.82 service load' };
+    const dwMinA = 100; // 230.79(C) one-family dwelling disconnect floor (230.42(B))
+    const reqA = Math.max(+lc.amps, dwMinA);
+    const pick = pickConductor31016(reqA, (mat === 'al') ? 'al' : 'cu', (temp === 60 || temp === 90) ? temp : 75);
+    return { valid: true, calcA: round2(+lc.amps), dwMinA, reqA: round2(reqA), pick };
   }
 
   // ---- NEC 220.54 Electric Clothes Dryers — multi-dwelling demand (v1.4) ----
@@ -846,7 +887,18 @@
       L.push(['Service voltage', lc.volt + ' V']);
       L.push(['Service current (VA/V)', lc.amps + ' A']);
       L.push(['Recommended standard breaker (NEC 240.6)', (lc.recommendedBreakerA || '—') + ' A']);
-      L.push(['Note', 'Design aid only — 220.82 is a single-dwelling-unit optional method; verify against the adopted NEC edition. Neutral load is computed by the 220.61 card (not part of this method).']);
+      // v1.11: ungrounded service-line conductor pick (230.42(A)(2) + 230.79(C) 100 A floor)
+      const lcSvc = serviceLineConductor22082(lc, npSrc.mat || 'cu', +(npSrc.temp || 75));
+      if (lcSvc.valid) {
+        L.push(['Service-line (ungrounded) required ampacity (230.42(A)(2) + 230.79(C) 100 A floor)', lcSvc.reqA + ' A']);
+        if (lcSvc.pick && !lcSvc.pick.over && lcSvc.pick.size) {
+          L.push(['Service-line (ungrounded) conductor (Table 310.16, ' + (npSrc.temp || 75) + ' \u00b0C, ' + (npSrc.mat === 'al' ? 'aluminum' : 'copper') + ')', lcSvc.pick.label + ' \u2014 ' + lcSvc.pick.amp + ' A']);
+          (lcSvc.pick.notes || []).forEach(nt => L.push(['Service-line conductor note', nt]));
+        } else if (lcSvc.pick && lcSvc.pick.over) {
+          L.push(['Service-line (ungrounded) conductor (Table 310.16)', 'NONE \u2014 ' + lcSvc.pick.over]);
+        }
+      }
+      L.push(['Note', 'Design aid only \u2014 220.82 is a single-dwelling-unit optional method; verify against the adopted NEC edition. Neutral load is computed by the 220.61 card (not part of this method). 310.12(A) 83% ungrounded service-conductor reduction NOT applied (flagged in UI); 310.15 ambient/derating adjustments are yours.']);
       L.push([]);
     }
     const dd = (project && project.dd) ? dryerDemand22054(project.dd) : null;
@@ -1067,6 +1119,19 @@
           prRow('Total demand load', lc.totalVA + ' VA', 'big') +
           prRow('Service current @ ' + lc.volt + ' V', lc.amps + ' A', 'big') +
           prRow('Recommended standard service (NEC 240.6)', (lc.recommendedBreakerA || '—') + ' A', 'big') +
+          (function () {
+            const lcSvc = serviceLineConductor22082(lc, project.lc.mat || 'cu', +(project.lc.temp || 75));
+            if (!lcSvc.valid) return '';
+            let h = prRow('Service-line (ungrounded) required ampacity (230.42(A)(2) + 230.79(C) 100 A floor)', lcSvc.reqA + ' A', 'big');
+            if (lcSvc.pick && !lcSvc.pick.over && lcSvc.pick.size) {
+              h += prRow('Service-line (ungrounded) conductor (Table 310.16, ' + (project.lc.temp || 75) + ' \u00b0C, ' + (project.lc.mat === 'al' ? 'aluminum' : 'copper') + ')', lcSvc.pick.label + ' \u2014 ' + lcSvc.pick.amp + ' A', 'big');
+              (lcSvc.pick.notes || []).forEach(nt => { h += '<p class="pr-note">' + escH(nt) + '</p>'; });
+            } else if (lcSvc.pick && lcSvc.pick.over) {
+              h += prRow('Service-line (ungrounded) conductor (Table 310.16)', 'NONE \u2014 ' + escH(lcSvc.pick.over));
+            }
+            h += '<p class="pr-note">230.42(A)(2): ungrounded service conductors sized at 100% of the calculated 220.82 service current, floored at the 230.79(C) 100 A one-family disconnect rating; ampacity from Table 310.16 at the 110.14(C) temperature column. <strong>310.12(A) 83% ungrounded service-conductor reduction NOT applied</strong> (a separate allowance on the disconnect rating; its verbatim text is not on disk \u2014 apply it yourself if adopted). 310.15 ambient/derating adjustments are yours.</p>';
+            return h;
+          })() +
           '</tbody></table>' +
           (project.serviceA && lc.amps > project.serviceA
             ? '<p class="pr-badges"><strong>Exceeds the project service rating of ' + project.serviceA + ' A</strong></p>' : '') +
@@ -1199,6 +1264,7 @@
     STD_BREAKERS, SYSTEMS, nextStdBreaker, reqBreakerA, circuitContribution,
     panelTotals, autoBalance, projectTotals, emptyPanel, defaultProject,
     DW_DEFAULT_ITEMS, normalizeDw, dwStatus, serviceLoad22082,
+    serviceLineConductor22082,
     dryerFactorPct, dryerFactorLabel, dryerDemand22054,
     LIT_TABLES, lightingDemand22042,
     COOK_C_KW, COOK_AB, cookingColumnCKW, cookingNote1Kw, cookingNote2,
@@ -1357,6 +1423,9 @@
     f.nameplateUnit = unit;
     if (unit === 'kw') { f.appliancesKW = n('Appliances'); f.motorsKW = n('Motors'); }
     else { f.appliancesVA = n('Appliances'); f.motorsVA = n('Motors'); }
+    // v1.11: service-line (ungrounded) conductor pick — material + 110.14(C) column
+    f.mat = (el('SvcMat') && el('SvcMat').value === 'al') ? 'al' : 'cu';
+    f.temp = (el('SvcTemp') && ['60', '75', '90'].indexOf(el('SvcTemp').value) >= 0) ? +el('SvcTemp').value : 75;
     return f;
   }
 
@@ -1402,6 +1471,8 @@
     set('Thermal', l.thermalStorageVA);
     const u = $('#lcUnit'); if (u) u.value = unit;
     const v = $('#lcVolt'); if (v && l.volt) v.value = String(l.volt);
+    const sm = $('#lcSvcMat'); if (sm) sm.value = l.mat || 'cu';
+    const st = $('#lcSvcTemp'); if (st) st.value = String(l.temp || 75);
     setLcUnitLabels(unit);
   }
 
@@ -1426,13 +1497,30 @@
       return;
     }
     const lc = serviceLoad22082(l);
-    $('#lcSum').textContent = `Total demand ${lc.totalVA} VA  →  ${lc.amps} A @ ${lc.volt} V`;
-    $('#lcBadges').innerHTML =
+    const lcSvc = serviceLineConductor22082(lc, l.mat || 'cu', +(l.temp || 75));
+    let sumText = `Total demand ${lc.totalVA} VA  →  ${lc.amps} A @ ${lc.volt} V`;
+    if (lcSvc.valid && lcSvc.pick && !lcSvc.pick.over && lcSvc.pick.size) {
+      sumText += `  →  ${lcSvc.pick.label} service-line (Table 310.16, ${lcSvc.pick.amp} A @ ${l.temp || 75} °C)`;
+    }
+    $('#lcSum').textContent = sumText;
+    let badges =
       `<span class="badge">General ${lc.generalConnectedVA} VA → ${lc.generalDemandVA} VA (220.82(B))</span>` +
       `<span class="badge">Largest HVAC ${lc.hvacDemandVA} VA (220.82(C))</span>` +
-      `<span class="badge ok">Recommended service: ${lc.recommendedBreakerA || '—'} A (NEC 240.6)</span>` +
-      ((state.serviceA && lc.amps > state.serviceA)
-        ? `<span class="badge bad">Exceeds project service rating ${state.serviceA} A</span>` : '');
+      `<span class="badge ok">Recommended service: ${lc.recommendedBreakerA || '—'} A (NEC 240.6)</span>`;
+    if (lcSvc.valid) {
+      if (lcSvc.pick && !lcSvc.pick.over && lcSvc.pick.size) {
+        badges += `<span class="badge ok">Service-line (ungrounded): ${lcSvc.pick.label} — ${lcSvc.pick.amp} A in the ${l.temp || 75} °C column (Table 310.16, req. ${lcSvc.reqA} A)</span>`;
+        (lcSvc.pick.notes || []).forEach(nt => { badges += `<span class="badge">${esc(nt)}</span>`; });
+      } else if (lcSvc.pick && lcSvc.pick.over) {
+        badges += `<span class="badge warn">${esc(lcSvc.pick.over)}</span>`;
+      }
+      badges += `<span class="badge">310.12(A) 83% ungrounded reduction NOT applied (separate allowance on the disconnect rating — verify against adopted NEC)</span>`;
+      badges += '<span class="badge">Table 310.16 base values (30 °C, ≤3 CCC) — 310.15 ambient/derating adjustments not applied</span>';
+    }
+    if (state.serviceA && lc.amps > state.serviceA) {
+      badges += `<span class="badge bad">Exceeds project service rating ${state.serviceA} A</span>`;
+    }
+    $('#lcBadges').innerHTML = badges;
   }
 
   // ---- NEC 220.54 multi-dwelling dryer demand (v1.4) ----
@@ -1911,6 +1999,12 @@
     $('#lcCard').addEventListener('input', e => {
       if (!e.target.id || !e.target.id.startsWith('lc')) return;
       if (e.target.id === 'lcUnit') { lcUnitChanged(); return; }
+      state.lc = lcFields();
+      saveState(); renderLc();
+    });
+    // v1.11: service-line material/temperature selects fire 'change'
+    $('#lcCard').addEventListener('change', e => {
+      if (e.target.id !== 'lcSvcMat' && e.target.id !== 'lcSvcTemp') return;
       state.lc = lcFields();
       saveState(); renderLc();
     });

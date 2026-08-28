@@ -19,8 +19,21 @@ No install, no account, no data leaves your browser.
   **2017–2023 code verified; cross-checked against two independent worked examples
   (2020 + 2023 NEC).** The appliance/motor nameplate inputs accept **VA or kW**
   (v1.10 — “Nameplate units” select; kW is converted ×1,000 to VA, matching how
-  nameplates are actually rated; the code math stays in VA). Design aid — the
-  neutral load for this method is computed by the 220.61 card, not by 220.82 itself.
+  nameplates are actually rated; the code math stays in VA). **(v1.11)** The card
+  now also **picks the ungrounded service-line (service-entrance) conductor from
+  NEC Table 310.16**: the required ampacity is the calculated 220.82 service current
+  (**230.42(A)(2)** — “ampacity not less than the maximum load to be served,” i.e.
+  100% of the calculated load under the optional method), floored at the
+  **230.79(C) 100 A one-family dwelling disconnect rating** (**230.42(B)**), and the
+  pick is the smallest size in the chosen Cu/Al + 60/75/90 °C **110.14(C)** column
+  whose ampacity ≥ the requirement (the same verified Table 310.16 + `pickConductor31016`
+  engine as the 220.61 neutral card — 0/168 cell mismatches). **Honest scope:** the
+  **310.12(A) 83% ungrounded service-conductor reduction** is a *separate* allowance on
+  the service **disconnect** rating (1∅ 100–400 A services), and its verbatim text is
+  **not** on disk, so it is **flagged in the UI but not applied** — sizing at 100% of
+  the calculated load per 230.42(A)(2) is the safe, citable minimum; 310.15
+  ambient/derating adjustments are yours. The neutral load for this method is still
+  computed by the 220.61 card, not by 220.82 itself.
 - **NEC 220.55 household cooking appliance demand (Table 220.55)** — the
   feeder/service maximum-demand rule for household electric ranges, wall-mounted
   ovens, counter-mounted cooking units, and other household cooking appliances
@@ -119,7 +132,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 491 core assertions (hand-verified)
+node test/run_tests.js   # 544 core assertions (hand-verified)
 ```
 
 ## About the author
