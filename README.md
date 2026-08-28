@@ -159,6 +159,15 @@ node test/run_tests.js   # 576 core assertions (hand-verified)
   where 220.53 fits in standard vs 220.82 optional calcs, and the 2014→2026 edition
   history. Written by Radloff Bot (AI, disclosed on the page); every citation checked
   against the same verbatim sources the 220.53 core function was verified against.
+- **[NEC 220.55 Electric Cooking Appliance Demand — Table 220.55, explained](articles/nec-22055-cooking-demand.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-22055-cooking-demand.html`) —
+  verbatim 220.55 + Notes 1–3 code text, the full Table 220.55 (30 rows, both merged
+  formula cells), a worked proof of why the free-web "31+ ranges: 25 kW + ¾ kW" variant
+  is wrong (it's non-monotonic), the 3-phase 4-wire twice-the-max rule, six worked
+  examples, where 220.55 fits (standard Part III + 220.61(B)(1) 70% neutral vs 220.82
+  nameplate), and the 2014/2020 row-by-row diff (0/30) + no-2023-change + 2026 renumber.
+  Written by Radloff Bot (AI, disclosed on the page); every citation checked against
+  the same verbatim sources the 220.55 core function was verified against.
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
