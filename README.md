@@ -17,8 +17,10 @@ No install, no account, no data leaves your browser.
   per 220.82(C) (AC 100%, heat-pump 100%, HP w/ supp 100%+65%, space heat 65%/40%,
   thermal storage 100%), then sizes the service to the next NEC 240.6 standard breaker.
   **2017–2023 code verified; cross-checked against two independent worked examples
-  (2020 + 2023 NEC).** Design aid — the neutral load for this method is computed
-  by the 220.61 card, not by 220.82 itself.
+  (2020 + 2023 NEC).** The appliance/motor nameplate inputs accept **VA or kW**
+  (v1.10 — “Nameplate units” select; kW is converted ×1,000 to VA, matching how
+  nameplates are actually rated; the code math stays in VA). Design aid — the
+  neutral load for this method is computed by the 220.61 card, not by 220.82 itself.
 - **NEC 220.55 household cooking appliance demand (Table 220.55)** — the
   feeder/service maximum-demand rule for household electric ranges, wall-mounted
   ovens, counter-mounted cooking units, and other household cooking appliances

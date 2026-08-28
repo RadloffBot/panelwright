@@ -143,7 +143,7 @@
     <div class="tag">Panel schedules, phase balancing, service rollup, NEC 220.82 service load, 220.55 cooking & 220.61 neutral</div>
     <div class="savedat" id="savedAt"></div>
   </header>
-  <p class="disc">Free design aid (v1.9). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
+  <p class="disc">Free design aid (v1.10). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
 
   <section class="card no-print">
     <h2>Project</h2>
@@ -162,13 +162,14 @@
 
   <section class="card no-print" id="lcCard">
     <h2>NEC 220.82 — dwelling service load, optional method (single unit; 2017–2023 code verified)</h2>
-    <p class="dwnote" style="margin:0 0 10px">A real demand-factor load calc for one dwelling unit (≥100 A service). Sums general + appliance + motor loads, applies the 220.82(B) demand (first 10 kVA @100% + 40% of the rest), adds the <em>largest</em> heating/cooling option per 220.82(C), and sizes the service. Design aid only — the 220.61 card below handles the neutral load for this method; verify against the adopted NEC edition.</p>
+    <p class="dwnote" style="margin:0 0 10px">A real demand-factor load calc for one dwelling unit (≥100 A service). Sums general + appliance + motor loads, applies the 220.82(B) demand (first 10 kVA @100% + 40% of the rest), adds the <em>largest</em> heating/cooling option per 220.82(C), and sizes the service. The appliance/motor nameplate fields accept <strong>VA or kW</strong> (switch with the “Nameplate units” select — kW is converted at ×1,000, the code calc stays in VA; kVA is considered equivalent to kW). Design aid only — the 220.61 card below handles the neutral load for this method; verify against the adopted NEC edition.</p>
     <div class="grid">
       <div><label class="f" for="lcSqft">Floor area (sq ft) · 220.82(B)(1)</label><input id="lcSqft" type="number" min="0" step="1" placeholder="e.g. 1500"></div>
       <div><label class="f" for="lcSmallApp">Small-appliance circs ×1500 VA</label><input id="lcSmallApp" type="number" min="0" max="20" step="1" value="2"></div>
       <div><label class="f" for="lcLaundry">Laundry circs ×1500 VA</label><input id="lcLaundry" type="number" min="0" max="20" step="1" value="1"></div>
-      <div><label class="f" for="lcAppliances">Appliances nameplate (VA) · 220.82(B)(3)</label><input id="lcAppliances" type="number" min="0" step="10" placeholder="ranges/ovens/dryers/water heater…"></div>
-      <div><label class="f" for="lcMotors">Perman. motors (VA) · 220.82(B)(4)</label><input id="lcMotors" type="number" min="0" step="10" placeholder="fixed motors"></div>
+      <div><label class="f" for="lcAppliances" id="lcAppliancesL">Appliances nameplate (VA) · 220.82(B)(3)</label><input id="lcAppliances" type="number" min="0" step="10" placeholder="ranges/ovens/dryers/water heater…"></div>
+      <div><label class="f" for="lcMotors" id="lcMotorsL">Perman. motors (VA) · 220.82(B)(4)</label><input id="lcMotors" type="number" min="0" step="10" placeholder="fixed motors"></div>
+      <div><label class="f" for="lcUnit">Nameplate units</label><select id="lcUnit"><option value="va" selected>VA (as-is)</option><option value="kw">kW (nameplate — ×1,000 → VA)</option></select></div>
       <div><label class="f" for="lcVolt">Service voltage</label><select id="lcVolt"><option value="240" selected>240 V (120/240)</option><option value="208">208 V</option><option value="277">277 V</option><option value="480">480 V</option></select></div>
     </div>
     <p class="f" style="margin:12px 0 4px">Heating / cooling — enter whichever apply; the largest (220.82(C)) is used automatically</p>

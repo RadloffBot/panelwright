@@ -298,8 +298,15 @@
     const lightingVA = sqft * 3;                    // 220.82(B)(1)
     const saVA = smallApplianceCircuits * 1500;     // 220.82(B)(2)
     const laundryVA = laundryCircuits * 1500;       // 220.82(B)(2)
-    const appliancesVA = num(o.appliancesVA);       // 220.82(B)(3) nameplate, incl. dryers NOT on laundry branch
-    const motorsVA = num(o.motorsVA);               // 220.82(B)(4) permanently connected
+    // v1.10: appliance/motor nameplate inputs may be entered in kW (the typical
+    // nameplate unit) — converted at 1 kW = 1000 VA (kVA is considered equivalent
+    // to kW; the calc itself stays in VA exactly as the code tables require).
+    // Default (unit unspecified) is VA: the legacy appliancesVA/motorsVA keys.
+    const nameplateUnit = (o.nameplateUnit === 'kw') ? 'kw' : 'va';
+    const appliancesVA = (nameplateUnit === 'kw') ? num(o.appliancesKW) * 1000   // 220.82(B)(3) nameplate, incl. dryers NOT on laundry branch
+                                                  : num(o.appliancesVA);
+    const motorsVA = (nameplateUnit === 'kw') ? num(o.motorsKW) * 1000           // 220.82(B)(4) permanently connected
+                                              : num(o.motorsVA);
     const generalConnected = lightingVA + saVA + laundryVA + appliancesVA + motorsVA;
     // Tiered demand: first 10 kVA at 100% + 40% of the remainder. Below 10 kVA the
     // demand equals the connected load (a demand factor never exceeds connected).
@@ -325,6 +332,7 @@
     const volt = (o.volt === 208 || o.volt === 240 || o.volt === 480 || o.volt === 277) ? o.volt : 240;
     const amps = totalVA / volt;
     return {
+      nameplateUnit,
       lightingVA: round2(lightingVA),
       smallApplianceVA: round2(saVA),
       laundryVA: round2(laundryVA),
@@ -827,8 +835,10 @@
       L.push(['General lighting + receptacles, 3 VA/sq ft (220.82B1)', lc.lightingVA + ' VA']);
       L.push(['Small-appliance circuits ×1500 VA (220.82B2)', lc.smallApplianceVA + ' VA']);
       L.push(['Laundry circuits ×1500 VA (220.82B2)', lc.laundryVA + ' VA']);
-      L.push(['Appliances nameplate (220.82B3)', lc.appliancesVA + ' VA']);
-      L.push(['Permanently connected motors (220.82B4)', lc.motorsVA + ' VA']);
+      const npSrc = (project && project.lc) || {};
+      const kwNote = (k, v) => (npSrc.nameplateUnit === 'kw' && v != null) ? ` (entered as ${v} kW)` : '';
+      L.push(['Appliances nameplate (220.82B3)', lc.appliancesVA + ' VA' + kwNote('appliancesKW', npSrc.appliancesKW)]);
+      L.push(['Permanently connected motors (220.82B4)', lc.motorsVA + ' VA' + kwNote('motorsKW', npSrc.motorsKW)]);
       L.push(['General connected load', lc.generalConnectedVA + ' VA']);
       L.push(['General demand (first 10k @100% + 40% of remainder)', lc.generalDemandVA + ' VA']);
       L.push(['Largest heating/cooling (220.82C)', lc.hvacDemandVA + ' VA']);
@@ -1037,7 +1047,8 @@
     // ---- NEC 220.82 ----
     const lc = project.lc ? serviceLoad22082(project.lc) : null;
     if (lc) {
-      const any = [project.lc.sqft, project.lc.appliancesVA, project.lc.motorsVA, project.lc.acVA,
+      const anyNp = lcNameplateVA(project.lc);
+      const any = [project.lc.sqft, anyNp[0], anyNp[1], project.lc.acVA,
         project.lc.hpNoSuppVA, project.lc.hpCompressorVA, project.lc.hpSuppVA,
         project.lc.spaceHeatingVA, project.lc.thermalStorageVA].some(x => x != null && x > 0);
       if (any) {
@@ -1046,8 +1057,10 @@
           prRow('General lighting + receptacles, 3 VA/sq ft (220.82(B)(1))', lc.lightingVA + ' VA') +
           prRow('Small-appliance circuits ×1,500 VA (220.82(B)(2))', lc.smallApplianceVA + ' VA') +
           prRow('Laundry circuits ×1,500 VA (220.82(B)(2))', lc.laundryVA + ' VA') +
-          prRow('Appliances nameplate (220.82(B)(3))', lc.appliancesVA + ' VA') +
-          prRow('Permanently connected motors (220.82(B)(4))', lc.motorsVA + ' VA') +
+          prRow('Appliances nameplate (220.82(B)(3))', lc.appliancesVA + ' VA' +
+            ((project.lc.nameplateUnit === 'kw' && project.lc.appliancesKW != null) ? ' <span class="pr-sub">(entered as ' + escH(String(project.lc.appliancesKW)) + ' kW)</span>' : '')) +
+          prRow('Permanently connected motors (220.82(B)(4))', lc.motorsVA + ' VA' +
+            ((project.lc.nameplateUnit === 'kw' && project.lc.motorsKW != null) ? ' <span class="pr-sub">(entered as ' + escH(String(project.lc.motorsKW)) + ' kW)</span>' : '')) +
           prRow('General connected load', lc.generalConnectedVA + ' VA') +
           prRow('General demand (first 10 kVA @100% + 40% of remainder)', lc.generalDemandVA + ' VA') +
           prRow('Largest heating/cooling (220.82(C))', lc.hvacDemandVA + ' VA') +
@@ -1320,16 +1333,14 @@
       : '<span class="badge">Set service rating to check load %</span>';
   }
 
-  // ---- NEC 220.82 service load (v1.3) ----
+  // ---- NEC 220.82 service load (v1.3; v1.10 kW nameplate entry) ----
   function lcFields() {
     const el = id => $('#lc' + id);
     const n = x => (el(x) && el(x).value !== '') ? (+el(x).value || null) : null;
-    return {
+    const f = {
       sqft: n('Sqft'),
       smallApplianceCircuits: (el('SmallApp') && el('SmallApp').value !== '') ? +el('SmallApp').value : 2,
       laundryCircuits: (el('Laundry') && el('Laundry').value !== '') ? +el('Laundry').value : 1,
-      appliancesVA: n('Appliances'),
-      motorsVA: n('Motors'),
       volt: el('Volt') ? +el('Volt').value : 240,
       acVA: n('Ac'),
       hpNoSuppVA: n('HpNoSupp'),
@@ -1339,16 +1350,49 @@
       spaceUnits: n('SpaceUnits'),
       thermalStorageVA: n('Thermal')
     };
+    // v1.10: the appliances/motor inputs hold values in the currently selected
+    // unit; store them under the matching key so the core (and JSON round-trips)
+    // know how to read them. Default = VA (legacy behavior).
+    const unit = (el('Unit') && el('Unit').value === 'kw') ? 'kw' : 'va';
+    f.nameplateUnit = unit;
+    if (unit === 'kw') { f.appliancesKW = n('Appliances'); f.motorsKW = n('Motors'); }
+    else { f.appliancesVA = n('Appliances'); f.motorsVA = n('Motors'); }
+    return f;
+  }
+
+  // v1.10: keep the appliances/motor labels honest when the unit toggle changes.
+  function setLcUnitLabels(unit) {
+    unit = unit || (($('#lcUnit') && $('#lcUnit').value === 'kw') ? 'kw' : 'va');
+    const u = (unit === 'kw') ? 'kW' : 'VA';
+    const a = $('#lcAppliancesL'), m = $('#lcMotorsL');
+    if (a) a.textContent = 'Appliances nameplate (' + u + ') · 220.82(B)(3)';
+    if (m) m.textContent = 'Perman. motors (' + u + ') · 220.82(B)(4)';
+  }
+
+  // v1.10: unit toggle — convert the values already in the fields (VA↔kW, no
+  // drift: divide for display, round to whole VA on the way back), then re-save.
+  function lcUnitChanged() {
+    const toKw = $('#lcUnit').value === 'kw';
+    const conv = el => { if (el && el.value !== '') el.value = toKw ? String(+el.value / 1000) : String(Math.round(+el.value * 1000)); };
+    conv($('#lcAppliances')); conv($('#lcMotors'));
+    setLcUnitLabels();
+    state.lc = lcFields(); saveState(); renderLc();
   }
 
   function renderLcInputs() {
     const l = state.lc || {};
     const set = (id, v) => { const e = $('#lc' + id); if (e) e.value = (v == null ? '' : v); };
+    const unit = (l.nameplateUnit === 'kw') ? 'kw' : 'va';
     set('Sqft', l.sqft);
     set('SmallApp', l.smallApplianceCircuits != null ? l.smallApplianceCircuits : 2);
     set('Laundry', l.laundryCircuits != null ? l.laundryCircuits : 1);
-    set('Appliances', l.appliancesVA);
-    set('Motors', l.motorsVA);
+    if (unit === 'kw') {
+      set('Appliances', l.appliancesKW);
+      set('Motors', l.motorsKW);
+    } else {
+      set('Appliances', l.appliancesVA);
+      set('Motors', l.motorsVA);
+    }
     set('Ac', l.acVA);
     set('HpNoSupp', l.hpNoSuppVA);
     set('HpComp', l.hpCompressorVA);
@@ -1356,12 +1400,25 @@
     set('Space', l.spaceHeatingVA);
     set('SpaceUnits', l.spaceUnits);
     set('Thermal', l.thermalStorageVA);
+    const u = $('#lcUnit'); if (u) u.value = unit;
     const v = $('#lcVolt'); if (v && l.volt) v.value = String(l.volt);
+    setLcUnitLabels(unit);
+  }
+
+  // v1.10: the nameplate inputs may be in kW — resolve them to VA for the check.
+  function lcNameplateVA(l) {
+    l = l || {};
+    if (l.nameplateUnit === 'kw') {
+      return [l.appliancesKW != null ? l.appliancesKW * 1000 : null,
+              l.motorsKW != null ? l.motorsKW * 1000 : null];
+    }
+    return [l.appliancesVA, l.motorsVA];
   }
 
   function renderLc() {
     const l = lcFields();
-    const any = [l.sqft, l.appliancesVA, l.motorsVA, l.acVA, l.hpNoSuppVA, l.hpCompressorVA,
+    const np = lcNameplateVA(l);
+    const any = [l.sqft, np[0], np[1], l.acVA, l.hpNoSuppVA, l.hpCompressorVA,
       l.hpSuppVA, l.spaceHeatingVA, l.thermalStorageVA].some(x => x != null && x > 0);
     if (!any) {
       $('#lcSum').textContent = '—';
@@ -1853,6 +1910,7 @@
     };
     $('#lcCard').addEventListener('input', e => {
       if (!e.target.id || !e.target.id.startsWith('lc')) return;
+      if (e.target.id === 'lcUnit') { lcUnitChanged(); return; }
       state.lc = lcFields();
       saveState(); renderLc();
     });

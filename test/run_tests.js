@@ -327,6 +327,70 @@ eq(lcCSV.includes('Recommended standard breaker (NEC 240.6),125 A'), true, 'csv 
 // --- CSV omits the 220.82 section when no lc present ---
 eq(core.projectToCSV(proj).includes('NEC 220.82 OPTIONAL METHOD'), false, 'csv omits 220.82 when absent');
 
+console.log('NEC 220.82 kW nameplate entry (v1.10):');
+// --- kW input converts at ×1,000 to VA, identical to the equivalent VA call ---
+const kwEq = core.serviceLoad22082({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1,
+  nameplateUnit: 'kw', appliancesKW: 19.6, motorsKW: 0, volt: 240, hpCompressorVA: 6720, hpSuppVA: 7000 });
+eq(kwEq.nameplateUnit, 'kw', 'result reports nameplateUnit kw');
+eq(kwEq.appliancesVA, 19600, '19.6 kW -> 19,600 VA appliances');
+eq(kwEq.generalConnectedVA, 28600, 'kw-mode general connected 28,600 (same as ex1 VA input)');
+eq(kwEq.totalVA, 28710, 'kw-mode total demand 28,710 (== ex1)');
+eq(kwEq.amps, 119.63, 'kw-mode amps 119.63 (== ex1)');
+eq(kwEq.recommendedBreakerA, 125, 'kw-mode breaker rec 125 (== ex1)');
+// --- fractional kW ---
+const kwFrac = core.serviceLoad22082({ nameplateUnit: 'kw', appliancesKW: 12.5, volt: 240 });
+eq(kwFrac.appliancesVA, 12500, '12.5 kW -> 12,500 VA (fractional kW)');
+// --- in kW mode the legacy VA keys are ignored (unit is authoritative) ---
+eq(core.serviceLoad22082({ nameplateUnit: 'kw', appliancesKW: 1, appliancesVA: 99999 }).appliancesVA, 1000,
+  'kw mode: appliancesVA key ignored (1 kW -> 1,000 VA)');
+// --- in VA mode (explicit or default) kW keys are ignored ---
+eq(core.serviceLoad22082({ nameplateUnit: 'va', appliancesVA: 1, appliancesKW: 99999 }).appliancesVA, 1,
+  'va mode: appliancesKW key ignored');
+eq(core.serviceLoad22082({ appliancesVA: 1, appliancesKW: 99999 }).appliancesVA, 1,
+  'unit omitted: legacy VA behavior (1 VA, kW key ignored)');
+eq(core.serviceLoad22082({ nameplateUnit: 'va' }).nameplateUnit, 'va', 'explicit va reported');
+eq(core.serviceLoad22082({}).nameplateUnit, 'va', 'unit omitted defaults to va');
+// --- zero/negative/blank kW values behave like the VA path ---
+eq(core.serviceLoad22082({ nameplateUnit: 'kw', appliancesKW: 0 }).appliancesVA, 0, '0 kW -> 0 VA');
+eq(core.serviceLoad22082({ nameplateUnit: 'kw', appliancesKW: -5 }).appliancesVA, 0, 'negative kW -> 0 VA');
+eq(core.serviceLoad22082({ nameplateUnit: 'kw', appliancesKW: '' }).appliancesVA, 0, "empty kW -> 0 VA");
+// --- motors in kW ---
+eq(core.serviceLoad22082({ nameplateUnit: 'kw', motorsKW: 3.5 }).motorsVA, 3500, '3.5 kW motors -> 3,500 VA');
+// --- JSON roundtrip keeps the unit + kW values ---
+{
+  const pKw = { version: 2, projectName: 'KW House', serviceA: 200, notes: '',
+    panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [] }],
+    lc: { nameplateUnit: 'kw', appliancesKW: 19.6, motorsKW: 3.5, sqft: 1500, volt: 240 } };
+  const pBack = core.fromJSON(core.toJSON(pKw));
+  eq(pBack.lc.nameplateUnit, 'kw', 'json roundtrip keeps unit kw');
+  eq(pBack.lc.appliancesKW, 19.6, 'json roundtrip keeps appliancesKW 19.6');
+  eq(pBack.lc.motorsKW, 3.5, 'json roundtrip keeps motorsKW 3.5');
+  eq(core.serviceLoad22082(pBack.lc).appliancesVA, 19600, 'recomputed from imported kW state = 19,600 VA');
+}
+// --- CSV shows the converted VA and notes the kW entry ---
+const lcKwCSV = core.projectToCSV({ version: 2, projectName: 'KW CSV', serviceA: 200, notes: '',
+  panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [] }],
+  lc: { nameplateUnit: 'kw', appliancesKW: 12, motorsKW: 0.5, sqft: 1000, volt: 240 } });
+eq(lcKwCSV.includes('Appliances nameplate (220.82B3),12000 VA (entered as 12 kW)'), true, 'csv kw appliances row');
+eq(lcKwCSV.includes('Permanently connected motors (220.82B4),500 VA (entered as 0.5 kW)'), true, 'csv kw motors row');
+eq(lcKwCSV.includes('entered as') === true, true, 'csv carries the kw note');
+// VA-mode CSV unchanged (no kw note)
+eq(core.projectToCSV(lcCSVProj).includes('entered as'), false, 'csv va mode has no kw note');
+// --- print report shows the same converted numbers + the kW note ---
+{
+  const pKwR = { version: 2, projectName: 'KW Print', serviceA: 200, notes: '',
+    panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 200, notes: '', circuits: [] }],
+    lc: { nameplateUnit: 'kw', appliancesKW: 12, motorsKW: 0.5, sqft: 1000, volt: 240 } };
+  const htmlKw = core.printReportHTML(pKwR, new Date(Date.UTC(2026, 7, 27, 12, 0, 0)));
+  const lcKwR = core.serviceLoad22082(pKwR.lc);
+  eq(htmlKw.includes('NEC 220.82'), true, 'kw-mode print report has 220.82 section');
+  eq(htmlKw.includes(lcKwR.totalVA + ' VA'), true, 'kw-mode print total matches core');
+  eq(htmlKw.includes('entered as 12 kW'), true, 'kw-mode print report notes appliances kW entry');
+  eq(htmlKw.includes('entered as 0.5 kW'), true, 'kw-mode print report notes motors kW entry');
+  const htmlVa = core.printReportHTML(Object.assign({}, pKwR, { lc: { nameplateUnit: 'va', appliancesVA: 12000, motorsVA: 500, sqft: 1000, volt: 240 } }), new Date(Date.UTC(2026, 7, 27, 12, 0, 0)));
+  eq(htmlVa.includes('entered as'), false, 'va-mode print report has no kW note');
+}
+
 console.log('NEC 220.54 multi-dwelling dryer demand (v1.4, Table verified from NFPA 2014 PDF):');
 // --- Table 220.54 factor rows (verbatim from NFPA 70 2014 Article 220 PDF) ---
 eq(core.dryerFactorPct(1), 100, 't 1 dryer -> 100%');
