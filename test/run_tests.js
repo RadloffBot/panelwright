@@ -1098,6 +1098,86 @@ console.log('NEC 220.53 fixed-appliance demand (v1.12, 2017-2023 code verified):
   eq(core.printReportHTML(projFa0).includes('Fixed-appliance demand'), false, 'print omits 220.53 when no fa');
 }
 
+console.log('NEC 220.56 commercial kitchen equipment demand (v1.14, 2014 = 2020 verbatim):');
+{
+  const K = core.kitchenDemand22056;
+  // Table 220.56 factors (verified: 2014 PDF coordinate extraction == 2020 text;
+  // no 2023 change; independent live cross-check expertce.com)
+  eq(K({ count: 1, totalVA: 10000 }).factorPct, 100, '1 unit -> 100%');
+  eq(K({ count: 2, totalVA: 10000 }).factorPct, 100, '2 units -> 100%');
+  eq(K({ count: 3, totalVA: 10000 }).factorPct, 90, '3 units -> 90%');
+  eq(K({ count: 4, totalVA: 10000 }).factorPct, 80, '4 units -> 80%');
+  eq(K({ count: 5, totalVA: 10000 }).factorPct, 70, '5 units -> 70%');
+  eq(K({ count: 6, totalVA: 10000 }).factorPct, 65, '6 units -> 65%');
+  eq(K({ count: 12, totalVA: 10000 }).factorPct, 65, '12 units (over 6) -> 65%');
+  eq(K({ count: 6, totalVA: 10000 }).factorLabel, '6 and over: 65%', 'label for 6+');
+  // Independent live worked example (expertce.com, 6 units @ 57 kW = 57,000 VA):
+  // 65% factor -> 37.05 kW; two largest sum 29 kW -> factor result governs
+  const live = K({ count: 6, totalVA: 57000, largestVA: 16000, secondVA: 13000 });
+  eq(live.rawDemandVA, 37050, '57,000 VA x 65% = 37,050 VA (live vector: 37.05 kW)');
+  eq(live.twoLargestVA, 29000, 'two largest = 29,000 VA (live vector: 29 kW)');
+  eq(live.demandVA, 37050, 'factor result 37,050 VA governs (floor 29,000 <= factored)');
+  eq(live.floorApplied, false, 'floor not applied when it is below the factored load');
+  eq(live.savingsVA, 19950, 'savings 19,950 VA (35%)');
+  // Two-largest floor governs: 4 units @ 80% of 20,000 = 16,000; two largest 12,000+10,000=22,000
+  const floorCase = K({ count: 4, totalVA: 20000, largestVA: 12000, secondVA: 10000 });
+  eq(floorCase.rawDemandVA, 16000, '20,000 VA x 80% = 16,000 VA');
+  eq(floorCase.twoLargestVA, 22000, 'two largest = 22,000 VA');
+  eq(floorCase.demandVA, 22000, 'demand = 22,000 VA (two-largest floor governs)');
+  eq(floorCase.floorApplied, true, 'floorApplied flagged when floor > factored');
+  eq(floorCase.savingsVA, -2000, 'savings negative when the floor exceeds the total (flag, do not hide)');
+  // 100% factors: demand = connected (no savings possible)
+  eq(K({ count: 2, totalVA: 42000 }).demandVA, 42000, '2 units 100% -> full connected');
+  // One largest given but not the second: floor NOT applied (needs both), flagged
+  const oneSide = K({ count: 3, totalVA: 20000, largestVA: 9000 });
+  eq(oneSide.hasTwoLargest, false, 'single largest -> no floor data');
+  eq(oneSide.demandVA, 18000, '3 units 90% -> 18,000 VA (floor not applied)');
+  // Edge / invalid inputs (no throw, clamp to 0)
+  eq(K({}).count, 0, 'empty -> 0 count');
+  eq(K({}).demandVA, 0, 'empty -> 0 VA');
+  eq(K(null).demandVA, 0, 'null -> 0 VA, no throw');
+  eq(K({ count: -2 }).count, 0, 'negative count clamped to 0');
+  eq(K({ count: 5.9 }).count, 5, 'fractional count floors (5.9 -> 5)');
+  eq(K({ count: 0, totalVA: 9000 }).demandVA, 0, '0 units -> 0 demand even w/ VA');
+  eq(K({ count: 3, totalVA: -500 }).totalVA, 0, 'negative VA clamped to 0');
+  eq(K({ count: 3, totalVA: 1000 }).factorPct, 90, '3 units -> 90% factor (sanity at small total)');
+  // CSV surface
+  const projK56 = { version: 2, projectName: 'K56', panels: [{ name: 'M', system: '120-240-1ph', ratingA: 200, circuits: [] }],
+    k56: { count: 6, totalVA: 57000, largestVA: 16000, secondVA: 13000 } };
+  const csvK56 = core.projectToCSV(projK56);
+  eq(csvK56.includes('COMMERCIAL KITCHEN EQUIPMENT LOAD — NEC 220.56'), true, 'csv has 220.56 section header');
+  eq(csvK56.includes('Table 220.56 demand factor'), true, 'csv has factor row');
+  eq(csvK56.includes('65%'), true, 'csv states 65% factor');
+  eq(csvK56.includes('37050 VA'), true, 'csv has 37,050 VA factored demand (raw number in CSV)');
+  eq(csvK56.includes('29000 VA'), true, 'csv has two-largest floor 29,000 VA');
+  eq(csvK56.includes('EXCLUDED'), true, 'csv notes space-heating/ventilating/AC exclusion');
+  // Floor-governing case in CSV
+  const csvK56Floor = core.projectToCSV(Object.assign({}, projK56,
+    { k56: { count: 4, totalVA: 20000, largestVA: 12000, secondVA: 10000 } }));
+  eq(csvK56Floor.includes('two-largest floor 22000 VA (exceeds the factored demand)'), true, 'csv flags the governing floor');
+  // Not-entered two-largest wording
+  const csvK56No2 = core.projectToCSV(Object.assign({}, projK56, { k56: { count: 3, totalVA: 20000 } }));
+  eq(csvK56No2.includes('not entered — verify the factor result against the sum of your two largest units'), true, 'csv flags missing two-largest');
+  // Print report surface
+  const htmlK56 = core.printReportHTML(projK56);
+  eq(htmlK56.includes('NEC 220.56'), true, 'print has 220.56 section');
+  eq(htmlK56.includes('Commercial kitchen equipment demand'), true, 'print has 220.56 title');
+  eq(htmlK56.includes('37,050 VA'), true, 'print shows 37,050 VA factored demand (formatted)');
+  eq(htmlK56.includes('29,000 VA'), true, 'print shows 29,000 VA floor (formatted)');
+  eq(core.printReportHTML(Object.assign({}, projK56,
+    { k56: { count: 4, totalVA: 20000, largestVA: 12000, secondVA: 10000 } })).includes('GOVERNS'), true, 'print flags the governing floor');
+  // Omission when the card is untouched
+  const projK560 = { version: 2, projectName: 'K0', panels: [{ name: 'M', system: '120-240-1ph', ratingA: 200, circuits: [] }] };
+  eq(core.projectToCSV(projK560).includes('COMMERCIAL KITCHEN'), false, 'csv omits 220.56 when no k56');
+  eq(core.printReportHTML(projK560).includes('Commercial kitchen equipment demand'), false, 'print omits 220.56 when no k56');
+  // JSON roundtrip keeps the card state
+  const rtK56 = core.fromJSON(core.toJSON(projK56));
+  eq(rtK56.k56.count, 6, 'JSON roundtrip keeps k56.count');
+  eq(rtK56.k56.totalVA, 57000, 'JSON roundtrip keeps k56.totalVA');
+  eq(rtK56.k56.largestVA, 16000, 'JSON roundtrip keeps k56.largestVA');
+  eq(rtK56.k56.secondVA, 13000, 'JSON roundtrip keeps k56.secondVA');
+}
+
 console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):');
 {
   // Table integrity (28 sizes; values verified vs zing2 2023 / nordix / voltagelab + codeelec 2023 print)

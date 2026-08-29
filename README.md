@@ -1,6 +1,6 @@
 # PanelWright
 
-**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, a NEC 220.55 household cooking appliance demand calculator (Table 220.55), a NEC 220.61 feeder/service neutral-load calculator, a NEC 220.42 general lighting load demand calculator (standard method), a NEC 220.54 multi-dwelling clothes-dryer demand calculator, a voltage-drop check (NEC Ch. 9 Table 8) against the 3%/5% informational notes, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
+**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, a NEC 220.55 household cooking appliance demand calculator (Table 220.55), a NEC 220.56 commercial kitchen equipment demand calculator (Table 220.56, other than dwelling units), a NEC 220.61 feeder/service neutral-load calculator, a NEC 220.42 general lighting load demand calculator (standard method), a NEC 220.54 multi-dwelling clothes-dryer demand calculator, a voltage-drop check (NEC Ch. 9 Table 8) against the 3%/5% informational notes, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
 No install, no account, no data leaves your browser.
 
 > ⚠️ **Design aid only.** Not a substitute for the NEC, manufacturer instructions,
@@ -49,6 +49,23 @@ No install, no account, no data leaves your browser.
   none), so the card implements the 2017–2023 wording as written in the 2020
   text, and the 2023 change analysis records no 220.53 change. The 2026 NEC
   renumbers Article 220 — verify against your adopted edition.
+- **NEC 220.56 commercial kitchen equipment load demand (Table 220.56, other
+  than dwelling units)** (v1.14) — the maximum-demand rule for a service or
+  feeder supplying **commercial kitchen equipment**: the Table 220.56 demand
+  factors apply to equipment with **thermostatic control or intermittent use**
+  (1–2 units @100%, 3 @90%, 4 @80%, 5 @70%, 6+ @65%), **excluding
+  space-heating, ventilating, and air-conditioning equipment**. The card also
+  enforces 220.56's floor — *in no case less than the sum of the two largest
+  individual kitchen equipment loads* — entering the two largest loads,
+  flagging which governs. **2014 = 2020 verbatim** (programmatic word-level
+  diff of both section bodies; Table 220.56 transcribed coordinate-level from
+  the verbatim NFPA 70 2014 Article 220 PDF and matched against the 2020 text:
+  0 mismatches), the 2023 change analysis records no 220.56 change, and the
+  factors were cross-checked against an independent live worked example
+  (6 units × 57 kW → 65% = 37.05 kW, two-largest check 29 kW). Not the
+  household 220.55 cooking rule — keep household ranges/ovens out of it. The
+  2026 NEC renumbers this (Article 120 area) — verify against your adopted
+  edition.
 - **Voltage drop — one circuit run** (v1.13) — the drop-check the load cards
   lead into. Enter the load current, one-way length, system voltage (L-N or
   L-L), conductor size (14 AWG … 2000 kcmil), material, and single-phase vs
@@ -138,7 +155,7 @@ No install, no account, no data leaves your browser.
   (respects pole count — a 120V circuit is never moved to a 208V feed)
 - **Exports**: per-panel CSV, full multi-panel rollup CSV (incl. 210.11 checklist, the
   220.82 service-load detail, the 220.55 cooking demand, the 220.53 fixed-appliance
-  demand, the 220.42 lighting demand, the
+  demand, the 220.56 commercial kitchen demand, the 220.42 lighting demand, the
   220.54 dryer demand, the 220.61 neutral-load calc, and the voltage-drop
   check when present), JSON save/open
   (v1 files auto-migrate), and a **branded PDF report of the full project** (v1.9):
@@ -162,7 +179,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 644 core assertions (hand-verified)
+node test/run_tests.js   # 692 core assertions (hand-verified)
 ```
 
 ## Articles
@@ -188,7 +205,7 @@ node test/run_tests.js   # 644 core assertions (hand-verified)
   it is *guidance*, not a mandatory requirement), the Vd = C·I·R formula with C = 2
   (1∅) / √3 (3∅ L-L), the K-factor shortcut (K ≈ 12.9 Cu / 21.2 Al, and where it
   drifts), a Chapter 9 Table 8 excerpt (28-row table shipped in the tool), six
-  worked examples + the 5% feeder+branch split — every number test-locked (644/644),
+  worked examples + the 5% feeder+branch split — every number test-locked (692/692),
   and the honest scope (drop check, not ampacity; Table 8 DC @75 °C). Written by
   Radloff Bot (AI, disclosed on the page); every citation checked against the same
   verbatim sources + three independent 2023-edition live sources the voltage-drop

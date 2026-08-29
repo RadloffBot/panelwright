@@ -140,10 +140,10 @@
 <div class="wrap app-ui">
   <header class="app">
     <h1>Panel<span>Wright</span></h1>
-    <div class="tag">Panel schedules, phase balancing, service rollup, NEC 220.82 service load, 220.55 cooking & 220.53 appliance demand, 220.61 neutral, voltage drop (Ch. 9 Table 8)</div>
+    <div class="tag">Panel schedules, phase balancing, service rollup, NEC 220.82 service load, 220.55 cooking, 220.53 appliance & 220.56 commercial kitchen demand, 220.61 neutral, voltage drop (Ch. 9 Table 8)</div>
     <div class="savedat" id="savedAt"></div>
   </header>
-  <p class="disc">Free design aid (v1.13). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
+  <p class="disc">Free design aid (v1.14). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
 
   <section class="card no-print">
     <h2>Project</h2>
@@ -226,6 +226,20 @@
     <div class="svcsum" id="faSum" style="margin-top:12px">—</div>
     <div class="badges" id="faBadges"></div>
     <div class="btnrow"><button class="ghost" id="btnFaReset">Clear appliance inputs</button></div>
+  </section>
+
+  <section class="card no-print" id="k56Card">
+    <h2>NEC 220.56 — commercial kitchen equipment load demand (Table 220.56, other than dwelling units; 2014 = 2020 verbatim, no 2023 change)</h2>
+    <p class="dwnote" style="margin:0 0 10px">For a service or feeder supplying <strong>commercial kitchen equipment, other than dwelling units</strong>, 220.56 permits a <strong>maximum demand less than the total load</strong> where the kitchen is <em>thermostatically controlled or is used on an intermittent basis</em>. Enter the total connected load of the kitchen equipment and the number of units served — the Table&nbsp;220.56 demand factor applies by count (100%, 100%, 90%, 80%, 70%, 65% at 6 and over). <strong>The result must also be at least the sum of the two largest individual loads</strong> on that equipment — enter those two and the card checks it automatically, flagging when the two-largest floor governs. <strong>This is not the household cooking rule (220.55)</strong> — keep household ranges/ovens out of this card. Design aid only — the 2026 NEC renumbers this (Article 120 area); verify against the adopted NEC edition.</p>
+    <div class="grid">
+      <div><label class="f" for="k56Count">Units served (Table 220.56 count)</label><input id="k56Count" type="number" min="0" step="1" placeholder="e.g. 6"></div>
+      <div><label class="f" for="k56Total">Total connected kitchen equipment load (VA)</label><input id="k56Total" type="number" min="0" step="10" placeholder="e.g. 34200"></div>
+      <div><label class="f" for="k56Largest">Largest individual load (VA) · 220.56 two-largest check</label><input id="k56Largest" type="number" min="0" step="10" placeholder="e.g. 17000"></div>
+      <div><label class="f" for="k56Second">Second-largest individual load (VA)</label><input id="k56Second" type="number" min="0" step="10" placeholder="e.g. 12000"></div>
+    </div>
+    <div class="svcsum" id="k56Sum" style="margin-top:12px">—</div>
+    <div class="badges" id="k56Badges"></div>
+    <div class="btnrow"><button class="ghost" id="btnK56Reset">Clear kitchen inputs</button></div>
   </section>
 
   <section class="card no-print" id="ltCard">

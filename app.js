@@ -1,6 +1,15 @@
 /*
- * PanelWright v1.13 — panel schedule calculator (NEC design aid)
+ * PanelWright v1.14 — panel schedule calculator (NEC design aid)
  * Multi-panel projects + service-entrance rollup.
+ * v1.14: NEC 220.56 commercial kitchen equipment load demand (Table 220.56,
+ *   other than dwelling units) — demand factors 1–2 @100%, 3 @90%, 4 @80%,
+ *   5 @70%, 6+ @65% on equipment with thermostatic control or intermittent use
+ *   (space-heating/ventilating/AC excluded), plus the two-largest floor (in no
+ *   case less than the sum of the largest two kitchen equipment loads).
+ *   2014 = 2020 verbatim (programmatic word-level diff + coordinate-level table
+ *   extraction from the verbatim 2014 Article 220 PDF); no 2023 change;
+ *   cross-checked against an independent live worked example (expertce.com:
+ *   6 units × 57 kW → 37.05 kW @65%; two-largest 29 kW; factor governs).
  * v1.13: Voltage drop — one circuit run (NEC Ch. 9 Table 8 DC resistance, 75 °C)
  *   checked against the 210.19(A)/215.2(A) informational-note 3% branch / 5%
  *   feeder recommendations. Single-phase (2·R·I·D) and 3-phase (√3·R·I·D) L-L.
@@ -432,6 +441,70 @@
     const factorPct = eligible ? 75 : 100;
     const demandVA = count === 0 ? 0 : round2(totalVA * factorPct / 100);
     return { count, totalVA, eligible, factorPct, demandVA, savingsVA: count === 0 ? 0 : round2(totalVA - demandVA) };
+  }
+
+  // ---- NEC 220.56 Kitchen Equipment — Other Than Dwelling Unit(s) (v1.14) ----
+  // VERIFIED verbatim against TWO on-disk editions:
+  //   NEC 2020 full-code text (slideshare_nec2020.txt): "It shall be permissible
+  //   to calculate the load for commercial electric cooking equipment, dishwasher
+  //   booster heaters, water heaters, and other kitchen equipment in accordance
+  //   with Table 220.56. These demand factors shall be applied to all equipment
+  //   that has either thermostatic control or intermittent use as kitchen
+  //   equipment. These demand factors shall not apply to space-heating,
+  //   ventilating, or air-conditioning equipment. However, in no case shall the
+  //   feeder or service calculated load be less than the sum of the largest two
+  //   kitchen equipment loads."
+  //   NFPA 70 2014 Article 220 verbatim PDF (nec220_2014.pdf) — programmatic
+  //   normalized word-level diff of the section bodies (verify_22056_diff.py):
+  //   substantively identical (only OCR artifacts differ). Table 220.56 read at
+  //   coordinate level (pymupdf) from the 2014 PDF and matched against the 2020
+  //   text row order — 0 mismatches. 2023 change analysis (nec2023_pdh.txt)
+  //   records no 220.56 change. Cross-checked against one independent live
+  //   source (expertce.com 220.56 article: <=2 units 100%, 6 units 65%, plus a
+  //   full worked example used as a test vector below).
+  //
+  // Table 220.56 Demand Factors for Kitchen Equipment — Other Than Dwelling Unit(s)
+  // (2014 = 2020 verbatim; edition-stable 2017–2023):
+  //   1 unit: 100%   2: 100%   3: 90%   4: 80%   5: 70%   6 and over: 65%
+  //
+  // Semantics:
+  //   - The factors apply to the SUM of the nameplate ratings of the covered
+  //     equipment (thermostatic control or intermittent use as kitchen
+  //     equipment). kVA is considered equivalent to kW as in 220.54/220.55.
+  //   - Space-heating, ventilating, or air-conditioning equipment is EXCLUDED —
+  //     keep it out of the total (the factors shall not apply to it).
+  //   - "Two-largest" floor: in no case is the feeder/service calculated load
+  //     less than the sum of the largest two individual kitchen equipment
+  //     loads. So demand = max(factor × connected, twoLargest).
+  //   - This is a PERMISSIBLE method (the code allows it); it is the demand
+  //     factor for commercial kitchens — NOT the dwelling 220.55 household
+  //     cooking rule and NOT 220.53 fixed appliances.
+  //   - o: { count, totalVA, largestVA, secondVA } — totalVA = sum of covered
+  //     nameplate ratings; largestVA/secondVA = the two largest individual
+  //     loads (the floor). Either may be omitted; the floor is applied only
+  //     when both are present (otherwise the user's own two-largest sum stands,
+  //     and the UI flags that it is needed).
+  function kitchenDemand22056(o) {
+    o = o || {};
+    const c = o.count;
+    const count = (c === undefined || c === null || c === '') ? 0 : Math.max(0, Math.floor(+c || 0));
+    const raw = o.totalVA;
+    const totalVA = (raw === undefined || raw === null || raw === '') ? 0 : Math.max(0, +raw || 0);
+    const T2056 = { 1: 100, 2: 100, 3: 90, 4: 80, 5: 70, 6: 65 };
+    const factorPct = count === 0 ? null : T2056[Math.min(count, 6)];
+    const factorLabel = count === 0 ? 'no units'
+      : count <= 5 ? count + ' unit' + (count === 1 ? '' : 's') + ': ' + factorPct + '%'
+      : '6 and over: 65%';
+    const rawDemandVA = (count > 0) ? round2(totalVA * factorPct / 100) : 0;
+    const hasTwoLargest = isFinite(+o.largestVA) && +o.largestVA > 0 && isFinite(+o.secondVA) && +o.secondVA > 0;
+    const twoLargestVA = hasTwoLargest ? round2(Math.max(0, +o.largestVA) + Math.max(0, +o.secondVA)) : null;
+    // 220.56 last sentence: the calculated load shall not be less than the sum
+    // of the largest two kitchen equipment loads.
+    const demandVA = count === 0 ? 0 : Math.max(rawDemandVA, hasTwoLargest ? twoLargestVA : 0);
+    const floorApplied = count > 0 && hasTwoLargest && twoLargestVA > rawDemandVA;
+    return { count, totalVA, factorPct, factorLabel, rawDemandVA, twoLargestVA, demandVA,
+             floorApplied, hasTwoLargest,
+             savingsVA: count === 0 ? 0 : round2(totalVA - demandVA) };
   }
 
   // ---- NEC 220.54 Electric Clothes Dryers — multi-dwelling demand (v1.4) ----
@@ -1104,6 +1177,23 @@
       L.push(['Note', 'kVA considered equivalent to kW (220.55). Column C used (default). Note 2 (unequal ratings >8¾ kW) and Note 3 (Column A/B factors) available in the UI; see README for worked examples. Verify against the adopted NEC edition.']);
       L.push([]);
     }
+    const k56 = (project && project.k56) ? kitchenDemand22056(project.k56) : null;
+    if (k56 && k56.count > 0) {
+      L.push(['COMMERCIAL KITCHEN EQUIPMENT LOAD — NEC 220.56 + Table 220.56 (other than dwelling units; 2014 = 2020 verbatim)', '']);
+      L.push(['Number of kitchen equipment units (thermostatic control or intermittent use)', k56.count]);
+      L.push(['Total connected kitchen equipment load (VA)', k56.totalVA + ' VA']);
+      L.push(['Table 220.56 demand factor', k56.factorPct + '%  (' + k56.factorLabel + ')']);
+      L.push(['Demand load (factor applied)', k56.rawDemandVA + ' VA']);
+      if (k56.hasTwoLargest) {
+        L.push(['Sum of the two largest individual loads (220.56 floor)', k56.twoLargestVA + ' VA']);
+        if (k56.floorApplied) L.push(['Governing value', 'two-largest floor ' + k56.demandVA + ' VA (exceeds the factored demand)']);
+      } else {
+        L.push(['Sum of the two largest individual loads (220.56 floor)', 'not entered — verify the factor result against the sum of your two largest units']);
+      }
+      L.push(['Kitchen equipment demand load', k56.demandVA + ' VA']);
+      L.push(['Note', '220.56 is a permissible method for commercial electric cooking equipment, dishwasher booster heaters, water heaters, and other kitchen equipment with thermostatic control or intermittent use. Space-heating, ventilating, and air-conditioning equipment are EXCLUDED from the total. Not the dwelling-unit 220.55 household cooking rule. 2014 = 2020 verbatim; no 2023 change recorded; 2026 NEC renumbers Article 220 — verify against the adopted edition.']);
+      L.push([]);
+    }
     const nl = (project && project.nl) ? neutralLoad22061(project.nl) : null;
     if (nl && nl.valid) {
       const nlState = (project && project.nl) || {};
@@ -1382,6 +1472,22 @@
       inner += '<p class="pr-note">Applies to household cooking appliances individually rated over 1¾ kW (kVA considered equivalent to kW). Verified 2014 = 2020 verbatim (row-for-row identical); no 2023 change recorded. Note 4 (single-appliance branch-circuit loads) is out of scope. Design aid only — verify against the adopted edition.</p>';
       out.push(reportSec('NEC 220.55', 'Household cooking appliance demand (Table 220.55; 2014 = 2020 verbatim)', inner));
     }
+    // ---- NEC 220.56 (commercial kitchen equipment; v1.14) ----
+    const k56 = project.k56 ? kitchenDemand22056(project.k56) : null;
+    if (k56 && k56.count > 0) {
+      let inner = '<table class="pr-meta"><tbody>' +
+        prRow('Kitchen equipment units (thermostatic control or intermittent use)', k56.count) +
+        prRow('Total connected kitchen equipment load', k56.totalVA.toLocaleString() + ' VA') +
+        prRow('Table 220.56 demand factor', k56.factorPct + '% — ' + escH(k56.factorLabel)) +
+        prRow('Demand load (factor applied)', k56.rawDemandVA.toLocaleString() + ' VA') +
+        (k56.hasTwoLargest
+          ? prRow('Sum of the two largest individual loads (220.56 floor)', k56.twoLargestVA.toLocaleString() + ' VA' + (k56.floorApplied ? ' — GOVERNS' : ''))
+          : prRow('Sum of the two largest individual loads (220.56 floor)', 'not entered — verify manually')) +
+        prRow('Kitchen equipment demand load', k56.demandVA.toLocaleString() + ' VA', 'big') +
+        '</tbody></table>';
+      inner += '<p class="pr-note">220.56 is a permissible method for commercial electric cooking equipment, dishwasher booster heaters, water heaters, and other kitchen equipment with thermostatic control or intermittent use (other than dwelling units). In no case is the feeder/service calculated load less than the sum of the largest two kitchen equipment loads. Space-heating, ventilating, and air-conditioning equipment are excluded from the total. Not the dwelling-unit 220.55 household cooking rule. 2014 = 2020 verbatim; no 2023 change recorded; 2026 NEC renumbers Article 220 — verify against the adopted edition. Design aid only.</p>';
+      out.push(reportSec('NEC 220.56', 'Commercial kitchen equipment demand (Table 220.56; other than dwelling units; 2014 = 2020 verbatim)', inner));
+    }
     // ---- NEC 220.61 ----
     const nl = project.nl ? neutralLoad22061(project.nl) : null;
     if (nl && nl.valid) {
@@ -1487,6 +1593,7 @@
     DW_DEFAULT_ITEMS, normalizeDw, dwStatus, serviceLoad22082,
     serviceLineConductor22082,
     applianceDemand22053,
+    kitchenDemand22056,
     dryerFactorPct, dryerFactorLabel, dryerDemand22054,
     LIT_TABLES, lightingDemand22042,
     COOK_C_KW, COOK_AB, cookingColumnCKW, cookingNote1Kw, cookingNote2,
@@ -1809,6 +1916,47 @@
     $('#faBadges').innerHTML = badges;
   }
 
+  // ---- NEC 220.56 commercial kitchen equipment demand (v1.14) ----
+  function k56Fields() {
+    const el = id => $('#k56' + id);
+    const n = x => (el(x) && el(x).value !== '') ? (+el(x).value || null) : null;
+    return { count: n('Count'), totalVA: n('Total'), largestVA: n('Largest'), secondVA: n('Second') };
+  }
+
+  function renderK56Inputs() {
+    const l = state.k56 || {};
+    const set = (id, v) => { const e = $('#k56' + id); if (e) e.value = (v == null ? '' : v); };
+    set('Count', l.count);
+    set('Total', l.totalVA);
+    set('Largest', l.largestVA);
+    set('Second', l.secondVA);
+  }
+
+  function renderK56() {
+    const l = k56Fields();
+    const count = (l.count === null) ? 0 : l.count;
+    if (!(count > 0)) {
+      $('#k56Sum').textContent = '—';
+      $('#k56Badges').innerHTML = '<span class="badge">Enter the number of kitchen-equipment units (thermostatic control or intermittent use) to apply Table 220.56 (2014 = 2020 verbatim)</span>';
+      return;
+    }
+    const k = kitchenDemand22056(l);
+    $('#k56Sum').textContent =
+      `${k.totalVA} VA connected → ${k.demandVA} VA kitchen demand  (${k.count} unit${k.count === 1 ? '' : 's'}, ${k.factorPct}% factor${k.floorApplied ? ', two-largest floor governs' : ''})`;
+    let badges =
+      `<span class="badge">Table 220.56: ${esc(k.factorLabel)}</span>` +
+      `<span class="badge">Factor applied: ${k.rawDemandVA} VA</span>`;
+    if (k.hasTwoLargest) {
+      badges += k.floorApplied
+        ? `<span class="badge warn">Two-largest floor governs: ${k.twoLargestVA} VA &gt; factored ${k.rawDemandVA} VA</span>`
+        : `<span class="badge ok">Two-largest check passes: floor ${k.twoLargestVA} VA ≤ factored ${k.rawDemandVA} VA</span>`;
+    } else {
+      badges += `<span class="badge warn">Enter the two largest individual loads — 220.56 requires the result to be at least their sum</span>`;
+    }
+    if (k.savingsVA > 0) badges += `<span class="badge ok">Demand reduction: −${k.savingsVA} VA</span>`;
+    $('#k56Badges').innerHTML = badges;
+  }
+
   // ---- NEC 220.42 lighting load demand (v1.5) ----
   function ltFields() {
     const el = id => $('#lt' + id);
@@ -2103,7 +2251,7 @@
     el.innerHTML = printReportHTML(state);
   }
 
-  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderFaInputs(); renderFa(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderVdInputs(); renderVd(); renderDw(); renderPrintReport(); }
+  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderFaInputs(); renderFa(); renderK56Inputs(); renderK56(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderVdInputs(); renderVd(); renderDw(); renderPrintReport(); }
 
   // ---- actions ----
   function addCircuit() {
@@ -2347,6 +2495,16 @@
     $('#btnFaReset').onclick = () => {
       state.fa = null;
       saveState(); renderFaInputs(); renderFa();
+    };
+    // v1.14: commercial kitchen equipment demand card
+    $('#k56Card').addEventListener('input', e => {
+      if (!e.target.id || !e.target.id.startsWith('k56')) return;
+      state.k56 = k56Fields();
+      saveState(); renderK56();
+    });
+    $('#btnK56Reset').onclick = () => {
+      state.k56 = null;
+      saveState(); renderK56Inputs(); renderK56();
     };
     $('#ltCard').addEventListener('input', e => {
       if (!e.target.id || !e.target.id.startsWith('lt')) return;
