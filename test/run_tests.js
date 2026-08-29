@@ -509,6 +509,32 @@ eq(de5.connectedVA, 45000, 'ex5 connected 45,000 (nameplate 7,500 each)');
 eq(de5.factorPct, 75, 'ex5 factor 75%');
 eq(de5.demandVA, 33750, 'ex5 demand 33,750 VA');
 
+// --- article (Session 30) boundary-seam demands: demand VA at each table seam ---
+// 11 x 5,000 = 55,000 @ 47% = 25,850 ; 12 x 5,000 = 60,000 @ 46% = 27,600
+eq(core.dryerDemand22054({ count: 11 }).demandVA, 25850, 'art 11 dryers 47% -> 25,850 VA');
+eq(core.dryerDemand22054({ count: 12 }).demandVA, 27600, 'art 12 dryers 46% -> 27,600 VA (seam 11->12)');
+// 23 x 5,000 = 115,000 @ 35% = 40,250 ; 24 x 5,000 = 120,000 @ 34.5% = 41,400
+eq(core.dryerDemand22054({ count: 23 }).demandVA, 40250, 'art 23 dryers 35% -> 40,250 VA (bottom of 12-23 band)');
+eq(core.dryerDemand22054({ count: 24 }).demandVA, 41400, 'art 24 dryers 34.5% -> 41,400 VA (seam 23->24)');
+// 42 x 5,000 = 210,000 @ 25.5% = 53,550 ; 43 x 5,000 = 215,000 @ 25% = 53,750
+eq(core.dryerDemand22054({ count: 42 }).demandVA, 53550, 'art 42 dryers 25.5% -> 53,550 VA (bottom of 24-42 band)');
+eq(core.dryerDemand22054({ count: 43 }).demandVA, 53750, 'art 43 dryers 25% -> 53,750 VA (seam 42->43)');
+// 43 and over holds the 25% floor: 50 x 5,000 = 250,000 @ 25% = 62,500
+eq(core.dryerDemand22054({ count: 50 }).demandVA, 62500, 'art 50 dryers 25% floor -> 62,500 VA');
+// demand in VA must be monotonic non-decreasing 11..50 even while the factor drops
+const seamVA = [];
+for (let n = 11; n <= 50; n++) seamVA.push(core.dryerDemand22054({ count: n }).demandVA);
+let seamMonotone = true;
+for (let i = 1; i < seamVA.length; i++) if (seamVA[i] < seamVA[i - 1]) seamMonotone = false;
+eq(seamMonotone, true, 'art demand VA monotonic non-decreasing 11..50 dryers');
+// --- article: 3-phase 4-wire effective count (max 4 between any two phases -> 8) ---
+const de3ph = core.dryerDemand22054({ count: 8 });
+eq(de3ph.connectedVA, 40000, 'art 3ph effective 8 connected 40,000 VA');
+eq(de3ph.factorPct, 60, 'art 3ph effective 8 factor 60%');
+eq(de3ph.demandVA, 24000, 'art 3ph effective 8 demand 24,000 VA');
+// --- article: nameplate below the 5,000 VA minimum still floors at 5,000 each ---
+eq(core.dryerDemand22054({ count: 4, nameplateVA: 3000 }).demandVA, 20000, 'art 4 dryers @3,000 nameplate -> 5,000 each -> 20,000 VA @100%');
+
 // --- factor-label monotonic boundary check: no upward jumps at table seams ---
 // 11->47, 12->46 (down), 23->35, 24->34.5 (down), 42->25.5, 43->25 (down)
 const seq1 = [11, 12, 23, 24, 42, 43].map(n => core.dryerFactorPct(n));

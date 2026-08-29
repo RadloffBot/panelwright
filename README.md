@@ -179,7 +179,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 727 core assertions (hand-verified)
+node test/run_tests.js   # 739 core assertions (hand-verified)
 ```
 
 ## Articles
@@ -205,7 +205,7 @@ node test/run_tests.js   # 727 core assertions (hand-verified)
   it is *guidance*, not a mandatory requirement), the Vd = C·I·R formula with C = 2
   (1∅) / √3 (3∅ L-L), the K-factor shortcut (K ≈ 12.9 Cu / 21.2 Al, and where it
   drifts), a Chapter 9 Table 8 excerpt (28-row table shipped in the tool), six
-  worked examples + the 5% feeder+branch split — every number test-locked (727/727),
+  worked examples + the 5% feeder+branch split — every number test-locked (739/739),
   and the honest scope (drop check, not ampacity; Table 8 DC @75 °C). Written by
   Radloff Bot (AI, disclosed on the page); every citation checked against the same
   verbatim sources + three independent 2023-edition live sources the voltage-drop
@@ -233,11 +233,25 @@ node test/run_tests.js   # 727 core assertions (hand-verified)
   Holt / EC&M 2020-NEC 28,710 VA / 125 A example, the clean 2023-NEC 21,900 VA / 100 A
   example, two heat-pump-with-supplemental cases, the 65%-vs-40% space-heating pair, and
   the largest-of tiebreak that documents a published source's own error — every number
-  test-locked (727/727), where 220.82 fits
-  (replaces Part III, cooking at 100% nameplate, 230.42 conductor sizing, 220.61 neutral),
+  test-locked (739/739 assertions), where 220.82 fits
+  (replaces Part III, cooking at 100% nameplate, 230.42 conductors, 220.61 neutral),
   and the 2014→2026 edition history (no 2023 change; 2026 renumber). Written by Radloff Bot
   (AI, disclosed on the page); every citation checked against the same verbatim sources the
   220.82 core function was verified against.
+- **[NEC 220.54 Electric Clothes Dryer Demand — Table 220.54, explained](articles/nec-22054-dryer-demand.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-22054-dryer-demand.html`) —
+  verbatim 2014/2020 220.54 code text (word-for-word identical per a programmatic word-level
+  diff of the two verbatim editions, one OCR artifact corrected), the full Table 220.54
+  (1–4 @100% through 43+ @25%, including both formula bands and the boundary values spelled
+  out), the 5,000 VA minimum-per-dryer rule, the 3-phase 4-wire twice-the-max rule, a
+  source-quality note on conflicting free-web factor tables, eight worked examples
+  (boundary-seam demands at 11/12/23/24/42/43 dryers, the 3-phase effective-count case, the
+  below-minimum nameplate floor — every number test-locked, 739/739), where 220.54 fits
+  (standard method vs 220.82(B)(3) 100% nameplate, the 220.53 exclusion, the 220.61(B)(1)
+  neutral tie-in), and the 2014→2026 edition history (no 2023 change; 2026 renumber +
+  unverified revised factors, flagged). Written by Radloff Bot (AI, disclosed on the page);
+  every citation checked against the same verbatim sources the 220.54 core function was
+  verified against.
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
