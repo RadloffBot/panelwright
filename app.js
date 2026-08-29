@@ -1,6 +1,12 @@
 /*
- * PanelWright v1.12 — panel schedule calculator (NEC design aid)
+ * PanelWright v1.13 — panel schedule calculator (NEC design aid)
  * Multi-panel projects + service-entrance rollup.
+ * v1.13: Voltage drop — one circuit run (NEC Ch. 9 Table 8 DC resistance, 75 °C)
+ *   checked against the 210.19(A)/215.2(A) informational-note 3% branch / 5%
+ *   feeder recommendations. Single-phase (2·R·I·D) and 3-phase (√3·R·I·D) L-L.
+ *   Table cross-checked against three independent 2023-edition sources (Session
+ *   25, 2026-08-28). Suggests the smallest standard size ≤ 3%. 3%/5% are
+ *   recommendations, not mandatory limits — flagged in the UI, CSV, and print.
  * v1.12: NEC 220.53 fixed-appliance demand — 75% demand factor for four or more
  *   appliances rated 1/4 hp or 500 W or greater, fastened in place, served by the
  *   same feeder or service in a one/two/multifamily dwelling (dwelling-unit
@@ -840,6 +846,116 @@
     return { size: null, amp: last, label: null, over: `exceeds Table 310.16 (${last} A max for ${mat === 'cu' ? 'copper' : 'aluminum'} at ${temp} °C) — parallel conductors (310.4) or larger system` };
   }
 
+  // ---- Voltage drop — NEC Chapter 9, Table 8 (v1.13) ----
+  // VERIFIED (Session 25, 2026-08-28): CH9_T8 DC resistance (ohms per 1,000 ft
+  // at 75 °C) cross-checked against THREE independent live sources:
+  //   1. zing2.app/tables/nec-ch9-table-8-properties (NEC 2023, "2020/2023/2026
+  //      compliant") — 0 mismatches, all 28 sizes (fetched 2026-08-28);
+  //   2. nordixhq.com/reference/wire-resistance-chart (NEC Ch 9 Table 8) —
+  //      identical for every size 8 AWG through 4/0 in both materials;
+  //   3. voltagelab.com NEC Ch 9 Table 8 explainer — 0.308 (4 AWG), 0.491 (6),
+  //      0.194 (2), 0.122 (1/0), 0.0967 (2/0), 0.0766 (3/0), 0.0608 (4/0) ✓.
+  // On-disk anchor: codeelec_2023.pdf ("Calculations for the Electrical Exam",
+  // based on the 2023 NEC) cites "#4 uncoated copper … 0.308 ohms per
+  // thousand feet (Table 8, Chapter 9)". K-factor consistency: R × CM / 1,000
+  // ≈ 12.9 (Cu) / 21.2 (Al) for 8 AWG through 4/0 — the standard K constants.
+  // Scope: DC resistance at 75 °C; the K-factor shortcut (12.9/21.2) is an
+  // approximation that drifts for large kcmil sizes — this tool uses the table
+  // values directly (exact), and reports the K-equivalent for reference.
+  // The 3% / 5% limits are INFORMATIONAL NOTE recommendations (210.19(A) Info
+  // Note No. 3 branch circuits; 215.2(A)(1) Info Note No. 2 feeders — verbatim
+  // in slideshare_nec2020.txt on disk), not mandatory requirements.
+  const CH9_T8 = [
+    { s: '14',   cm: 4110,     cu: 3.07,    al: 5.04 },
+    { s: '12',   cm: 6530,     cu: 1.93,    al: 3.17 },
+    { s: '10',   cm: 10380,    cu: 1.21,    al: 1.99 },
+    { s: '8',    cm: 16510,    cu: 0.778,   al: 1.28 },
+    { s: '6',    cm: 26240,    cu: 0.491,   al: 0.808 },
+    { s: '4',    cm: 41740,    cu: 0.308,   al: 0.508 },
+    { s: '3',    cm: 52620,    cu: 0.245,   al: 0.403 },
+    { s: '2',    cm: 66360,    cu: 0.194,   al: 0.319 },
+    { s: '1',    cm: 83690,    cu: 0.154,   al: 0.253 },
+    { s: '1/0',  cm: 105600,   cu: 0.122,   al: 0.201 },
+    { s: '2/0',  cm: 133100,   cu: 0.0967,  al: 0.159 },
+    { s: '3/0',  cm: 167800,   cu: 0.0766,  al: 0.126 },
+    { s: '4/0',  cm: 211600,   cu: 0.0608,  al: 0.100 },
+    { s: '250',  cm: 250000,   cu: 0.0515,  al: 0.0847 },
+    { s: '300',  cm: 300000,   cu: 0.0435,  al: 0.0715 },
+    { s: '350',  cm: 350000,   cu: 0.0378,  al: 0.0620 },
+    { s: '400',  cm: 400000,   cu: 0.0336,  al: 0.0551 },
+    { s: '500',  cm: 500000,   cu: 0.0276,  al: 0.0453 },
+    { s: '600',  cm: 600000,   cu: 0.0223,  al: 0.0366 },
+    { s: '700',  cm: 700000,   cu: 0.0189,  al: 0.0310 },
+    { s: '750',  cm: 750000,   cu: 0.0176,  al: 0.0289 },
+    { s: '800',  cm: 800000,   cu: 0.0166,  al: 0.0272 },
+    { s: '900',  cm: 900000,   cu: 0.0147,  al: 0.0241 },
+    { s: '1000', cm: 1000000,  cu: 0.0132,  al: 0.0216 },
+    { s: '1250', cm: 1250000,  cu: 0.0106,  al: 0.0174 },
+    { s: '1500', cm: 1500000,  cu: 0.00883, al: 0.0145 },
+    { s: '1750', cm: 1750000,  cu: 0.00756, al: 0.0124 },
+    { s: '2000', cm: 2000000,  cu: 0.00662, al: 0.0108 }
+  ];
+
+  function ch9Row(size) {
+    return CH9_T8.find(r => r.s === String(size == null ? '' : size)) || null;
+  }
+
+  // Voltage drop for one circuit run:
+  //   Vd = C × I × R(one-way)   where C = 2 (1∅ 2/3-wire, L-N or L-L split)
+  //   or C = √3 (3∅ 4-wire, L-L). R = Table 8 ohms/kft × one-way ft / 1000.
+  // Equivalent to the K-formula E = C·K·I·D / CM with K = R·CM/1000 (reported
+  // as kEff for reference; the standard 12.9/21.2 are approximations of that).
+  // o: { amps, lengthFt, volt, size, mat: 'cu'|'al', config: '1ph'|'3ph' }
+  // Returns { valid:false, reason } or { valid:true, … vdV, pctV, status,
+  // rPerKft, rOneWay, kEff, size, label, mat, threePhase, amps, lengthFt, volt }.
+  function voltageDrop(o) {
+    o = o || {};
+    const amps = +o.amps;
+    const len = +o.lengthFt;
+    const volt = +o.volt;
+    const mat = o.mat === 'al' ? 'al' : 'cu';
+    const threePhase = o.config === '3ph';
+    const row = ch9Row(o.size);
+    if (!(isFinite(amps) && amps > 0)) return { valid: false, reason: 'enter the load current (A)' };
+    if (!(isFinite(len) && len > 0)) return { valid: false, reason: 'enter the one-way length (ft)' };
+    if (!(isFinite(volt) && volt > 0)) return { valid: false, reason: 'enter the voltage (V)' };
+    if (!row) return { valid: false, reason: 'pick a conductor size' };
+    const rPerKft = row[mat];
+    const rOneWay = rPerKft * len / 1000;
+    const c = threePhase ? Math.sqrt(3) : 2;
+    const vdV = c * amps * rOneWay;
+    const pctV = vdV / volt * 100;
+    let status = 'ok';
+    if (pctV > 5) status = 'bad';
+    else if (pctV > 3) status = 'warn';
+    return {
+      valid: true,
+      amps: round2(amps), lengthFt: len, volt,
+      size: row.s,
+      label: conductorLabel(row.s) + (mat === 'cu' ? ' Cu' : ' Al'),
+      mat, threePhase,
+      rPerKft, rOneWay: +rOneWay.toFixed(4),
+      kEff: round2(rPerKft * row.cm / 1000),
+      vdV: round2(vdV), pctV: round2(pctV), status
+    };
+  }
+
+  // Smallest CH9_T8 size whose drop is within targetPct (default 3).
+  // o: { amps, lengthFt, volt, mat, config, targetPct }
+  // Returns { valid:true, targetPct, pick, over } or { valid:false, reason }.
+  function sizeForVoltageDrop(o) {
+    o = o || {};
+    const targetPct = (o.targetPct != null && isFinite(+o.targetPct) && +o.targetPct > 0) ? +o.targetPct : 3;
+    const probe = voltageDrop({ amps: o.amps, lengthFt: o.lengthFt, volt: o.volt, mat: o.mat, config: o.config, size: CH9_T8[0].s });
+    if (!probe.valid) return { valid: false, reason: probe.reason, targetPct };
+    for (const row of CH9_T8) {
+      const r = voltageDrop({ amps: o.amps, lengthFt: o.lengthFt, volt: o.volt, mat: o.mat, config: o.config, size: row.s });
+      if (r.pctV <= targetPct) return { valid: true, targetPct, pick: r, over: null };
+    }
+    const last = voltageDrop({ amps: o.amps, lengthFt: o.lengthFt, volt: o.volt, mat: o.mat, config: o.config, size: CH9_T8[CH9_T8.length - 1].s });
+    return { valid: true, targetPct, pick: null, over: 'exceeds 2000 kcmil at ' + last.pctV + '% — parallel sets (310.4) or a different design' };
+  }
+
   // ---- CSV export ----
   function csvEscape(v) {
     v = String(v == null ? '' : v);
@@ -1008,6 +1124,25 @@
         L.push(['Neutral conductor (Table 310.16)', 'NONE — ' + nlPick.over]);
       }
       L.push(['Note', 'Table 310.16 base values (30 °C ambient, ≤3 current-carrying conductors) — apply 310.15 adjustments (ambient/derating) as required. 220.61(C) prohibited reductions NOT applied: 3-wire portions of 4-wire 3-phase wye circuits and nonlinear loads on 4-wire wye must stay at 100% (harmonic neutral currents). Table verified from a verbatim 2023-NEC print; design aid only — verify against the adopted NEC edition (2026 NEC: Article 120 renumber).']);
+      L.push([]);
+    }
+    const vd = (project && project.vd) ? voltageDrop(project.vd) : null;
+    if (vd && vd.valid) {
+      L.push(['VOLTAGE DROP — ONE CIRCUIT RUN (NEC Ch.9 Table 8; 210.19(A)/215.2(A) info-note 3%/5%)', '']);
+      L.push(['Load current (A)', vd.amps]);
+      L.push(['One-way length (ft)', vd.lengthFt]);
+      L.push(['Voltage (V)', vd.volt + (vd.threePhase ? ' (3-phase L-L)' : '')]);
+      L.push(['Conductor', vd.label + ' — ' + vd.rPerKft + ' ohm/kft @ 75 °C (Ch.9 Table 8)']);
+      L.push(['One-way resistance (ohm)', vd.rOneWay]);
+      L.push(['K-equivalent (ohm-cm/kft)', vd.kEff + ' (reference; the 12.9/21.2 constants are approximations of this)']);
+      L.push(['Voltage drop (V)', vd.vdV]);
+      L.push(['Voltage drop (%)', vd.pctV + '% (' + (vd.status === 'ok' ? 'within the 3% recommendation' : vd.status === 'warn' ? 'between 3% and 5% — review' : 'exceeds the 5% total feeder + branch recommendation') + ')']);
+      if (vd.status !== 'ok') {
+        const sz = sizeForVoltageDrop(project.vd);
+        if (sz.valid && sz.pick) L.push(['Smallest size at ≤ ' + sz.targetPct + '%', sz.pick.label + ' (' + sz.pick.pctV + '%)']);
+        else if (sz.over) L.push(['Smallest size at ≤ ' + sz.targetPct + '%', 'NONE — ' + sz.over]);
+      }
+      L.push(['Note', 'Vd = C × I × R with C = 2 (single-phase) or √3 (three-phase). 3% per branch circuit / 5% feeder + branch combined are INFORMATIONAL NOTE recommendations (210.19(A) Info Note 3, 215.2(A)(1) Info Note 2 — NEC 2020 text on disk), not mandatory limits. Table 8 DC values at 75 °C — verify against the adopted NEC edition (2026 NEC: Ch. 9 unchanged for these values). Design aid only.']);
       L.push([]);
     }
     L.push(['DWELLING UNIT MINIMUM CIRCUITS (NEC 210.11)', '']);
@@ -1272,6 +1407,29 @@
       inner += '<p class="pr-note">Table 310.16 base values (30 °C ambient, ≤3 current-carrying conductors) — apply 310.15 ambient/derating adjustments as required. 220.61(C) prohibited reductions are NOT applied: 3-wire portions of 4-wire 3-phase wye circuits and nonlinear loads on 4-wire wye stay at 100% (harmonic neutral currents). Table verified from a verbatim 2023-NEC print; design aid only — verify against the adopted NEC edition (2026 NEC: Article 120 renumber).</p>';
       out.push(reportSec('NEC 220.61', 'Feeder / service neutral load (2014 = 2020 verbatim; no 2023 change)', inner));
     }
+    // ---- Voltage drop (v1.13) ----
+    const vd = project.vd ? voltageDrop(project.vd) : null;
+    if (vd && vd.valid) {
+      let inner = '<table class="pr-meta"><tbody>' +
+        prRow('Load current', vd.amps + ' A') +
+        prRow('One-way length', vd.lengthFt + ' ft') +
+        prRow('Voltage', vd.volt + ' V' + (vd.threePhase ? ' (3-phase, L-L drop)' : ' (single-phase)')) +
+        prRow('Conductor', escH(vd.label) + ' — ' + vd.rPerKft + ' Ω/kft @ 75 °C (Ch. 9 Table 8)') +
+        prRow('One-way resistance', vd.rOneWay + ' Ω') +
+        prRow('Voltage drop', vd.vdV + ' V', 'big') +
+        prRow('Voltage drop', vd.pctV + '% of ' + vd.volt + ' V (' +
+          (vd.status === 'ok' ? 'within the 3% recommendation' : vd.status === 'warn' ? 'between 3% and 5% — review' : 'exceeds the 5% feeder + branch recommendation') + ')', 'big') +
+        '</tbody></table>';
+      if (vd.status !== 'ok') {
+        const sz = sizeForVoltageDrop(project.vd);
+        if (sz.valid && sz.pick) inner += '<table class="pr-meta"><tbody>' +
+          prRow('Smallest size at ≤ ' + sz.targetPct + '%', escH(sz.pick.label) + ' — ' + sz.pick.pctV + '%', 'big') +
+          '</tbody></table>';
+        else if (sz.over) inner += '<p class="pr-badges"><strong>' + escH(sz.over) + '</strong></p>';
+      }
+      inner += '<p class="pr-note">Vd = C × I × R with C = 2 (single-phase, one round trip) or √3 (three-phase line-to-line). The 3% (branch) / 5% (feeder + branch combined) figures are INFORMATIONAL NOTE recommendations — 210.19(A) Info Note No. 3 and 215.2(A)(1) Info Note No. 2 (NEC 2020 text) — not mandatory limits. Chapter 9 Table 8 DC resistance at 75 °C; verify against the adopted NEC edition. Design aid only.</p>';
+      out.push(reportSec('Voltage drop', 'Voltage drop — one circuit run (NEC Ch. 9 Table 8; 210.19(A)/215.2(A) info-note 3%/5%)', inner));
+    }
     // ---- NEC 210.11 checklist ----
     {
       const dws = dwStatus(project);
@@ -1335,6 +1493,7 @@
     cookingABFactorPct, cookingNote3KW, cookingDemand22055,
     neutralLoad22061,
     T31016, T31016_COLS, AWG_SIZES, conductorLabel, pickConductor31016,
+    CH9_T8, ch9Row, voltageDrop, sizeForVoltageDrop,
     toCSV, projectToCSV, printReportHTML, toJSON, fromJSON, migrate, round2
   };
 
@@ -1850,6 +2009,62 @@
     badgesEl.innerHTML = b;
   }
 
+  // ---- Voltage drop (v1.13) ----
+  const VD_SIZES = CH9_T8.map(r => r.s);
+
+  function vdFields() {
+    const el = id => $('#vd' + id);
+    const n = x => (el(x) && el(x).value !== '') ? (+el(x).value || null) : null;
+    return {
+      amps: n('Amps'),
+      lengthFt: n('Len'),
+      volt: n('Volt'),
+      size: el('Size') && el('Size').value !== '' ? el('Size').value : null,
+      mat: (el('Mat') && el('Mat').value === 'al') ? 'al' : 'cu',
+      config: el('Config') && el('Config').value === '3ph' ? '3ph' : '1ph'
+    };
+  }
+
+  function renderVdInputs() {
+    const l = state.vd || {};
+    const set = (id, v) => { const e = $('#vd' + id); if (e) e.value = (v == null ? '' : v); };
+    set('Amps', l.amps);
+    set('Len', l.lengthFt);
+    set('Volt', l.volt);
+    set('Size', l.size);
+    set('Mat', l.mat || 'cu');
+    set('Config', l.config || '1ph');
+  }
+
+  function renderVd() {
+    const l = vdFields();
+    const sumEl = $('#vdSum'), badgesEl = $('#vdBadges');
+    if (!sumEl || !badgesEl) return;
+    if (!(l.amps > 0) || !(l.lengthFt > 0) || !(l.volt > 0) || !l.size) {
+      sumEl.textContent = '—';
+      badgesEl.innerHTML = '<span class="badge">Enter current, one-way length, voltage + conductor size to check the drop (Ch. 9 Table 8, 75 °C DC values)</span>';
+      return;
+    }
+    const vd = voltageDrop(l);
+    if (!vd.valid) {
+      sumEl.textContent = '—';
+      badgesEl.innerHTML = '<span class="badge bad">' + esc(vd.reason) + '</span>';
+      return;
+    }
+    sumEl.textContent = `${vd.vdV} V drop (${vd.pctV}% of ${vd.volt} V) — ${vd.label}, ${vd.lengthFt} ft @ ${vd.amps} A`;
+    const cls = vd.status === 'ok' ? 'ok' : vd.status === 'warn' ? 'warn' : 'bad';
+    let b = `<span class="badge ${cls}">${vd.pctV}% drop — ${vd.status === 'ok' ? 'within the 3% recommendation' : vd.status === 'warn' ? 'over 3%, under the 5% total — review' : 'exceeds the 5% feeder + branch total'}</span>`;
+    b += `<span class="badge">${esc(vd.label)} — ${vd.rPerKft} Ω/kft (one-way ${vd.rOneWay} Ω)</span>`;
+    b += `<span class="badge">C = ${vd.threePhase ? '√3 (3-phase L-L)' : '2 (single-phase round trip)'} · K-eff ${vd.kEff}</span>`;
+    if (vd.status !== 'ok') {
+      const sz = sizeForVoltageDrop(l);
+      if (sz.valid && sz.pick) b += `<span class="badge ok">Smallest size ≤ 3%: ${esc(sz.pick.label)} (${sz.pick.pctV}%)</span>`;
+      else if (sz.over) b += `<span class="badge warn">${esc(sz.over)}</span>`;
+    }
+    b += '<span class="badge">3%/5% = informational-note recommendations (210.19(A) / 215.2(A)) — not mandatory limits</span>';
+    badgesEl.innerHTML = b;
+  }
+
   function renderDw() {
     const dw = dwStatus(state);
     const allMet = dw.metCount === dw.total;
@@ -1888,7 +2103,7 @@
     el.innerHTML = printReportHTML(state);
   }
 
-  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderFaInputs(); renderFa(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderDw(); renderPrintReport(); }
+  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderFaInputs(); renderFa(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderVdInputs(); renderVd(); renderDw(); renderPrintReport(); }
 
   // ---- actions ----
   function addCircuit() {
@@ -2046,6 +2261,11 @@
     state = loadState();
     state.dw = normalizeDw(state.dw);
     cur = 0;
+    // v1.13: fill the voltage-drop conductor-size select from the verified table
+    {
+      const sel = $('#vdSize');
+      if (sel) sel.innerHTML = VD_SIZES.map(s => `<option value="${s}">${conductorLabel(s)}</option>`).join('');
+    }
     renderAll();
     updateSavedAt();
 
@@ -2166,6 +2386,21 @@
     $('#btnNlReset').onclick = () => {
       state.nl = null;
       saveState(); renderNlInputs(); renderNl();
+    };
+    // v1.13: voltage-drop card
+    $('#vdCard').addEventListener('input', e => {
+      if (!e.target.id || !e.target.id.startsWith('vd')) return;
+      state.vd = vdFields();
+      saveState(); renderVd();
+    });
+    $('#vdCard').addEventListener('change', e => {
+      if (e.target.id !== 'vdSize' && e.target.id !== 'vdMat' && e.target.id !== 'vdConfig') return;
+      state.vd = vdFields();
+      saveState(); renderVd();
+    });
+    $('#btnVdReset').onclick = () => {
+      state.vd = null;
+      saveState(); renderVdInputs(); renderVd();
     };
     $('#fileImport').onchange = e => {
       if (e.target.files && e.target.files[0]) importJSON(e.target.files[0]);

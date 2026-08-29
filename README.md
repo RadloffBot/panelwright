@@ -1,6 +1,6 @@
 # PanelWright
 
-**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, a NEC 220.55 household cooking appliance demand calculator (Table 220.55), a NEC 220.61 feeder/service neutral-load calculator, a NEC 220.42 general lighting load demand calculator (standard method), a NEC 220.54 multi-dwelling clothes-dryer demand calculator, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
+**Free, in-browser panel schedule calculator with multi-panel load rollup, a NEC 220.82 dwelling service-load (optional method) calculator, a NEC 220.55 household cooking appliance demand calculator (Table 220.55), a NEC 220.61 feeder/service neutral-load calculator, a NEC 220.42 general lighting load demand calculator (standard method), a NEC 220.54 multi-dwelling clothes-dryer demand calculator, a voltage-drop check (NEC Ch. 9 Table 8) against the 3%/5% informational notes, and a NEC 210.11 dwelling-circuit check — for electricians & engineers.**
 No install, no account, no data leaves your browser.
 
 > ⚠️ **Design aid only.** Not a substitute for the NEC, manufacturer instructions,
@@ -49,6 +49,19 @@ No install, no account, no data leaves your browser.
   none), so the card implements the 2017–2023 wording as written in the 2020
   text, and the 2023 change analysis records no 220.53 change. The 2026 NEC
   renumbers Article 220 — verify against your adopted edition.
+- **Voltage drop — one circuit run** (v1.13) — the drop-check the load cards
+  lead into. Enter the load current, one-way length, system voltage (L-N or
+  L-L), conductor size (14 AWG … 2000 kcmil), material, and single-phase vs
+  3-phase; the tool computes the drop from the **NEC Chapter 9, Table 8 DC
+  resistance at 75 °C** (single-phase `Vd = 2·R·I·D`, 3-phase L-L
+  `Vd = √3·R·I·D`) and reports it as a % of system voltage against the
+  **210.19(A) / 215.2(A) informational notes** (3% branch / 5% feeder —
+  recommendations, not mandatory limits; flagged in the UI, CSV, and print).
+  It also suggests the **smallest standard size that lands ≤ 3%**. Honest
+  scope: base Table 8 values (75 °C); it is a voltage-drop check, **not an
+  ampacity check** — a conductor can pass 3% and still be under-sized for the
+  load. **Table 8 cross-checked against three independent 2023-edition live
+  sources (Session 25) plus the on-disk 2023-NEC print's worked example.**
 - **NEC 220.55 household cooking appliance demand (Table 220.55)** — the
   feeder/service maximum-demand rule for household electric ranges, wall-mounted
   ovens, counter-mounted cooking units, and other household cooking appliances
@@ -126,7 +139,8 @@ No install, no account, no data leaves your browser.
 - **Exports**: per-panel CSV, full multi-panel rollup CSV (incl. 210.11 checklist, the
   220.82 service-load detail, the 220.55 cooking demand, the 220.53 fixed-appliance
   demand, the 220.42 lighting demand, the
-  220.54 dryer demand, and the 220.61 neutral-load calc when present), JSON save/open
+  220.54 dryer demand, the 220.61 neutral-load calc, and the voltage-drop
+  check when present), JSON save/open
   (v1 files auto-migrate), and a **branded PDF report of the full project** (v1.9):
   branded header, project block, service-entrance rollup, every NEC card, every panel
   schedule, and the 210.11 checklist — rendered as a plain-HTML document and printed
@@ -148,7 +162,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 576 core assertions (hand-verified)
+node test/run_tests.js   # 644 core assertions (hand-verified)
 ```
 
 ## Articles

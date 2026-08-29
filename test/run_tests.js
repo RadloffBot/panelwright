@@ -1098,5 +1098,117 @@ console.log('NEC 220.53 fixed-appliance demand (v1.12, 2017-2023 code verified):
   eq(core.printReportHTML(projFa0).includes('Fixed-appliance demand'), false, 'print omits 220.53 when no fa');
 }
 
+console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):');
+{
+  // Table integrity (28 sizes; values verified vs zing2 2023 / nordix / voltagelab + codeelec 2023 print)
+  eq(core.CH9_T8.length, 28, 'CH9_T8 has 28 sizes (14 AWG … 2000 kcmil)');
+  eq(core.ch9Row('14'), { s: '14', cm: 4110, cu: 3.07, al: 5.04 }, '14 AWG row 3.07/5.04');
+  eq(core.ch9Row('4').cu, 0.308, '4 AWG Cu 0.308 (codeelec 2023 print anchor)');
+  eq(core.ch9Row('4').al, 0.508, '4 AWG Al 0.508');
+  eq(core.ch9Row('4/0'), { s: '4/0', cm: 211600, cu: 0.0608, al: 0.100 }, '4/0 row 0.0608/0.100');
+  eq(core.ch9Row('2000').cu, 0.00662, '2000 kcmil Cu 0.00662');
+  eq(core.ch9Row('2000').al, 0.0108, '2000 kcmil Al 0.0108');
+  eq(core.ch9Row('12').cm, 6530, '12 AWG 6,530 CM');
+  eq(core.ch9Row('99'), null, 'unknown size -> null');
+
+  const V = core.voltageDrop;
+  // Worked example (matches the K-formula method used in field references):
+  // 120 V, 12 AWG Cu, 16 A, 75 ft one-way. R = 1.93 x .075 = .14475 ohm
+  // Vd = 2 x 16 x .14475 = 4.632 V -> 3.86% (over 3%, under 5%)
+  const v1 = V({ amps: 16, lengthFt: 75, volt: 120, size: '12', mat: 'cu', config: '1ph' });
+  eq(v1.valid, true, '12 AWG case valid');
+  eq(v1.rPerKft, 1.93, 'R = 1.93 ohm/kft');
+  eq(v1.rOneWay, 0.1447, 'one-way R = 0.1447 ohm (4 dp)');
+  eq(v1.vdV, 4.63, 'Vd = 4.63 V');
+  eq(v1.pctV, 3.86, '3.86% of 120 V');
+  eq(v1.status, 'warn', '3.86% -> warn band');
+  eq(v1.kEff, 12.6, 'K-eff = 1.93 x 6530 / 1000 = 12.6');
+  eq(v1.label, '12 AWG Cu', 'label 12 AWG Cu');
+  // 240 V L-L, 4 AWG Cu, 25 A, 150 ft: R = .0462; Vd = 2.31 V = 0.96% (ok)
+  const v2 = V({ amps: 25, lengthFt: 150, volt: 240, size: '4', mat: 'cu', config: '1ph' });
+  eq(v2.rOneWay, 0.0462, 'one-way R 0.0462');
+  eq(v2.vdV, 2.31, 'Vd 2.31 V');
+  eq(v2.pctV, 0.96, '0.96%');
+  eq(v2.status, 'ok', '0.96% -> ok');
+  // 3-phase L-L: 480 V, 8 AWG Cu, 20 A, 100 ft: R = .0778; Vd = sqrt(3) x 20 x .0778 = 2.6951
+  const v3 = V({ amps: 20, lengthFt: 100, volt: 480, size: '8', mat: 'cu', config: '3ph' });
+  eq(v3.threePhase, true, '3ph flagged');
+  approx(v3.vdV, 2.7, 0.01, '3ph Vd ≈ 2.7 V (sqrt3 factor)');
+  approx(v3.pctV, 0.56, 0.01, '3ph pct ≈ 0.56%');
+  // Over-5% case: 120 V, 14 AWG Cu, 15 A, 120 ft: R = .3684; Vd = 11.052 = 9.21%
+  const v4 = V({ amps: 15, lengthFt: 120, volt: 120, size: '14', mat: 'cu', config: '1ph' });
+  eq(v4.vdV, 11.05, 'Vd 11.05 V');
+  eq(v4.pctV, 9.21, '9.21%');
+  eq(v4.status, 'bad', '9.21% -> bad band');
+  // Aluminum: 120 V, 12 AWG Al, 10 A, 60 ft: R = 3.17 x .06 = .1902; Vd = 3.804 = 3.17%
+  const v5 = V({ amps: 10, lengthFt: 60, volt: 120, size: '12', mat: 'al', config: '1ph' });
+  eq(v5.mat, 'al', 'mat al');
+  eq(v5.vdV, 3.8, 'Al Vd 3.8 V');
+  eq(v5.pctV, 3.17, 'Al 3.17% -> warn');
+  eq(v5.status, 'warn', 'Al warn band');
+  // K-equivalent consistency for the 8 AWG–4/0 range (~12.9 Cu / ~21.2 Al)
+  approx(V({ amps: 1, lengthFt: 1000, volt: 120, size: '8', mat: 'cu' }).kEff, 12.84, 0.02, 'K-eff 8 AWG Cu ≈ 12.8 (12.9 handbook approx)');
+  approx(V({ amps: 1, lengthFt: 1000, volt: 120, size: '2', mat: 'al' }).kEff, 21.15, 0.05, 'K-eff 2 AWG Al ≈ 21.2');
+  // Invalid inputs (no throw)
+  eq(V({}).valid, false, 'empty -> invalid');
+  eq(V({ amps: 10, lengthFt: 50, volt: 120 }).valid, false, 'no size -> invalid');
+  eq(V({ amps: 0, lengthFt: 50, volt: 120, size: '12' }).valid, false, 'zero amps -> invalid');
+  eq(V({ amps: 10, lengthFt: 0, volt: 120, size: '12' }).valid, false, 'zero length -> invalid');
+  eq(V({ amps: 10, lengthFt: 50, volt: 0, size: '12' }).valid, false, 'zero volts -> invalid');
+  eq(V(null).valid, false, 'null -> invalid, no throw');
+  eq(V({ amps: -5, lengthFt: 50, volt: 120, size: '12' }).valid, false, 'negative amps -> invalid');
+
+  // Size-for-drop picker (default target 3%)
+  const S = core.sizeForVoltageDrop;
+  const s1 = S({ amps: 15, lengthFt: 120, volt: 120, mat: 'cu', config: '1ph' });
+  eq(s1.valid, true, 'sizer valid');
+  eq(s1.targetPct, 3, 'default target 3%');
+  eq(s1.pick.size, '8', '15 A / 120 ft @120 V -> 8 AWG Cu (2.33%)');
+  eq(s1.pick.pctV, 2.33, '8 AWG = 2.33%');
+  // 12 AWG (5.79%) and 10 AWG (3.63%) must both be rejected at the 3% target
+  eq(V({ amps: 15, lengthFt: 120, volt: 120, size: '12' }).pctV, 5.79, '12 AWG 5.79% (rejected)');
+  eq(V({ amps: 15, lengthFt: 120, volt: 120, size: '10' }).pctV, 3.63, '10 AWG 3.63% (rejected)');
+  // Custom target 5% -> 10 AWG (3.63%)
+  const s2 = S({ amps: 15, lengthFt: 120, volt: 120, mat: 'cu', config: '1ph', targetPct: 5 });
+  eq(s2.pick.size, '10', 'target 5% -> 10 AWG Cu');
+  // Aluminum sizer: 15 A / 120 ft @120 V -> 8 AWG Al (0.778->1.28: 2×15×1.28×.12/120 = 3.84% no;
+  // 6 AWG Al 0.808: 2×15×0.808×.12/120 = 2.42% yes)
+  const s3 = S({ amps: 15, lengthFt: 120, volt: 120, mat: 'al', config: '1ph' });
+  eq(s3.pick.size, '6', 'aluminum -> 6 AWG Al (2.42%)');
+  eq(s3.pick.pctV, 2.42, '6 AWG Al = 2.42%');
+  // Over-table: 400 A / 1000 ft @120 V — even 2000 kcmil Cu is 4.41%
+  const s4 = S({ amps: 400, lengthFt: 1000, volt: 120, mat: 'cu', config: '1ph' });
+  eq(s4.pick, null, 'over-table -> no pick');
+  eq(typeof s4.over, 'string', 'over-table message present');
+  eq(s4.over.includes('2000 kcmil'), true, 'over message names 2000 kcmil');
+  eq(V({ amps: 400, lengthFt: 1000, volt: 120, size: '2000' }).pctV, 4.41, '2000 kcmil still 4.41% (sanity)');
+
+  // CSV surface
+  const projVd = { version: 2, projectName: 'Vd113', panels: [{ name: 'M', system: '120-240-1ph', ratingA: 200, circuits: [] }],
+    vd: { amps: 16, lengthFt: 75, volt: 120, size: '12', mat: 'cu', config: '1ph' } };
+  const csvVd = core.projectToCSV(projVd);
+  eq(csvVd.includes('VOLTAGE DROP — ONE CIRCUIT RUN'), true, 'csv has vd section header');
+  eq(csvVd.includes('Voltage drop (%)'), true, 'csv has pct row');
+  eq(csvVd.includes('3.86% (between 3% and 5%'), true, 'csv states 3.86% warn wording');
+  eq(csvVd.includes('1.93 ohm/kft @ 75 °C'), true, 'csv cites Table 8 R value');
+  eq(csvVd.includes('Smallest size at ≤ 3%'), true, 'csv suggests the ≤3% size');
+  eq(csvVd.includes('10 AWG Cu (2.42%)'), true, 'csv names 10 AWG Cu pick (16 A/75 ft: 12 AWG=3.86%, 10 AWG=2.42%)');
+  eq(csvVd.includes('INFORMATIONAL NOTE recommendations'), true, 'csv discloses 3%/5% are recommendations');
+  // Print surface
+  const htmlVd = core.printReportHTML(projVd);
+  eq(htmlVd.includes('Voltage drop — one circuit run'), true, 'print has vd section title');
+  eq(htmlVd.includes('4.63 V'), true, 'print shows 4.63 V');
+  eq(htmlVd.includes('3.86%'), true, 'print shows 3.86%');
+  eq(htmlVd.includes('Smallest size at ≤ 3%'), true, 'print suggests the ≤3% size');
+  // Omission when the card is untouched
+  const projVd0 = { version: 2, projectName: 'Vd0', panels: [{ name: 'M', system: '120-240-1ph', ratingA: 200, circuits: [] }] };
+  eq(core.projectToCSV(projVd0).includes('VOLTAGE DROP'), false, 'csv omits vd when no vd');
+  eq(core.printReportHTML(projVd0).includes('Voltage drop — one circuit run'), false, 'print omits vd when no vd');
+  // JSON roundtrip keeps the card state
+  const rt = core.fromJSON(core.toJSON(projVd));
+  eq(rt.vd.size, '12', 'JSON roundtrip keeps vd.size');
+  eq(rt.vd.amps, 16, 'JSON roundtrip keeps vd.amps');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
