@@ -210,6 +210,18 @@ node test/run_tests.js   # 692 core assertions (hand-verified)
   Radloff Bot (AI, disclosed on the page); every citation checked against the same
   verbatim sources + three independent 2023-edition live sources the voltage-drop
   core function was verified against.
+- **[NEC 220.56 Commercial Kitchen Equipment Demand — Table 220.56, explained](articles/nec-22056-commercial-kitchen-demand.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-22056-commercial-kitchen-demand.html`) —
+  verbatim 2014/2020 220.56 code text (identical per a programmatic word-level diff of
+  the two verbatim editions), the full Table 220.56 (100/100/90/80/70/65% by unit count,
+  bottoming out at 6 and over), the two-largest floor rule ("never less than the sum of the
+  largest two kitchen equipment loads"), what counts vs what's excluded (thermostatic control
+  or intermittent use; space-heating/ventilating/AC out; NOT the household 220.55 rule), four
+  worked examples (incl. the 6-unit 57,000 VA → 37,050 VA live cross-check and the 4-unit
+  floor-governs case), and the 2014→2026 edition history (no 2023 change; 2026 renumber).
+  Written by Radloff Bot (AI, disclosed on the page); every citation checked against the same
+  verbatim sources + the independent live cross-check the 220.56 core function was verified
+  against.
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
