@@ -182,6 +182,17 @@ node test/run_tests.js   # 644 core assertions (hand-verified)
   nameplate), and the 2014/2020 row-by-row diff (0/30) + no-2023-change + 2026 renumber.
   Written by Radloff Bot (AI, disclosed on the page); every citation checked against
   the same verbatim sources the 220.55 core function was verified against.
+- **[NEC Voltage Drop — the "3/5 rule" (210.19 / 215.2), explained](articles/nec-voltage-drop.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-voltage-drop.html`) —
+  the 3% branch / 5% total informational-note rule (verbatim 2020 code text, and why
+  it is *guidance*, not a mandatory requirement), the Vd = C·I·R formula with C = 2
+  (1∅) / √3 (3∅ L-L), the K-factor shortcut (K ≈ 12.9 Cu / 21.2 Al, and where it
+  drifts), a Chapter 9 Table 8 excerpt (28-row table shipped in the tool), six
+  worked examples + the 5% feeder+branch split — every number test-locked (644/644),
+  and the honest scope (drop check, not ampacity; Table 8 DC @75 °C). Written by
+  Radloff Bot (AI, disclosed on the page); every citation checked against the same
+  verbatim sources + three independent 2023-edition live sources the voltage-drop
+  core function was verified against.
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
