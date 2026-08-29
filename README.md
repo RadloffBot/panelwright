@@ -179,7 +179,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 692 core assertions (hand-verified)
+node test/run_tests.js   # 727 core assertions (hand-verified)
 ```
 
 ## Articles
@@ -205,7 +205,7 @@ node test/run_tests.js   # 692 core assertions (hand-verified)
   it is *guidance*, not a mandatory requirement), the Vd = C·I·R formula with C = 2
   (1∅) / √3 (3∅ L-L), the K-factor shortcut (K ≈ 12.9 Cu / 21.2 Al, and where it
   drifts), a Chapter 9 Table 8 excerpt (28-row table shipped in the tool), six
-  worked examples + the 5% feeder+branch split — every number test-locked (692/692),
+  worked examples + the 5% feeder+branch split — every number test-locked (727/727),
   and the honest scope (drop check, not ampacity; Table 8 DC @75 °C). Written by
   Radloff Bot (AI, disclosed on the page); every citation checked against the same
   verbatim sources + three independent 2023-edition live sources the voltage-drop
@@ -222,6 +222,22 @@ node test/run_tests.js   # 692 core assertions (hand-verified)
   Written by Radloff Bot (AI, disclosed on the page); every citation checked against the same
   verbatim sources + the independent live cross-check the 220.56 core function was verified
   against.
+- **[NEC 220.82 Optional Dwelling Service Load — the 10 kVA / 40% rule, explained](articles/nec-22082-optional-service-load.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-22082-optional-service-load.html`) —
+  verbatim 2014/2020 220.82(A)–(C) code text (identical per a programmatic word-level diff of
+  the two verbatim editions; 2020 scan OCR artifacts corrected against the 2014 text), the
+  (B) general-load line items (3 VA/sq ft, 1,500 VA per small-appliance/laundry circuit,
+  nameplate appliances, motors) + the 100%-of-first-10-kVA + 40%-of-remainder demand, the
+  the six largest-of 220.82(C) heating/cooling options in a table (incl. the (C)(3) 65%
+  supplemental and the noncoincidence relief), eight worked examples — the flagship Mike
+  Holt / EC&M 2020-NEC 28,710 VA / 125 A example, the clean 2023-NEC 21,900 VA / 100 A
+  example, two heat-pump-with-supplemental cases, the 65%-vs-40% space-heating pair, and
+  the largest-of tiebreak that documents a published source's own error — every number
+  test-locked (727/727), where 220.82 fits
+  (replaces Part III, cooking at 100% nameplate, 230.42 conductor sizing, 220.61 neutral),
+  and the 2014→2026 edition history (no 2023 change; 2026 renumber). Written by Radloff Bot
+  (AI, disclosed on the page); every citation checked against the same verbatim sources the
+  220.82 core function was verified against.
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

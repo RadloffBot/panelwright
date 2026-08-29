@@ -327,6 +327,57 @@ eq(lcCSV.includes('Recommended standard breaker (NEC 240.6),125 A'), true, 'csv 
 // --- CSV omits the 220.82 section when no lc present ---
 eq(core.projectToCSV(proj).includes('NEC 220.82 OPTIONAL METHOD'), false, 'csv omits 220.82 when absent');
 
+console.log('NEC 220.82 feature-article examples (Session 29 — articles/nec-22082-optional-service-load.html):');
+// --- art A: 1,500 sf, 2 SA + 1 laundry, no nameplate, 12,000 VA AC ---
+const artA = core.serviceLoad22082({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1, acVA: 12000, volt: 240 });
+eq(artA.generalConnectedVA, 9000, 'artA connected 9,000');
+eq(artA.generalDemandVA, 9000, 'artA demand = connected (<=10 kVA)');
+eq(artA.hvacDemandVA, 12000, 'artA AC 100% = 12,000');
+eq(artA.totalVA, 21000, 'artA total 21,000');
+approx(artA.amps, 87.5, 0.01, 'artA 87.5 A');
+eq(artA.recommendedBreakerA, 90, 'artA -> 90 A');
+// --- art B: 1,200 sf, 15,000 VA appliances, HP 5,000 comp + 10,000 supp ---
+const artB = core.serviceLoad22082({ sqft: 1200, smallApplianceCircuits: 2, laundryCircuits: 1, appliancesVA: 15000, hpCompressorVA: 5000, hpSuppVA: 10000, volt: 240 });
+eq(artB.generalConnectedVA, 23100, 'artB connected 23,100');
+eq(artB.generalDemandVA, 15240, 'artB demand 10,000 + 0.4*13,100 = 15,240');
+eq(artB.hvacDemandVA, 11500, 'artB HP w/ supp 5,000 + 65%*10,000 = 11,500');
+eq(artB.totalVA, 26740, 'artB total 26,740');
+approx(artB.amps, 111.42, 0.01, 'artB 111.42 A');
+eq(artB.recommendedBreakerA, 125, 'artB -> 125 A');
+// --- art C: 2,500 sf, 18,000 VA appliances, HP 6,000 comp + 10,000 supp ---
+const artC = core.serviceLoad22082({ sqft: 2500, smallApplianceCircuits: 2, laundryCircuits: 1, appliancesVA: 18000, hpCompressorVA: 6000, hpSuppVA: 10000, volt: 240 });
+eq(artC.generalConnectedVA, 30000, 'artC connected 30,000');
+eq(artC.generalDemandVA, 18000, 'artC demand 10,000 + 0.4*20,000 = 18,000');
+eq(artC.hvacDemandVA, 12500, 'artC HP w/ supp 6,000 + 65%*10,000 = 12,500');
+eq(artC.totalVA, 30500, 'artC total 30,500');
+approx(artC.amps, 127.08, 0.01, 'artC 127.08 A');
+eq(artC.recommendedBreakerA, 140, 'artC -> 140 A');
+// --- art D: space heating <4 units 65% — 1,000 sf, 2 x 10,000 VA ---
+const artD = core.serviceLoad22082({ sqft: 1000, smallApplianceCircuits: 2, laundryCircuits: 1, spaceHeatingVA: 20000, spaceUnits: 2, volt: 240 });
+eq(artD.generalDemandVA, 7500, 'artD demand 7,500 (<=10 kVA)');
+eq(artD.hvacDemandVA, 13000, 'artD space heat 65% * 20,000 = 13,000');
+eq(artD.totalVA, 20500, 'artD total 20,500');
+approx(artD.amps, 85.42, 0.01, 'artD 85.42 A');
+eq(artD.recommendedBreakerA, 90, 'artD -> 90 A');
+// --- art E: same connected space heat, 4 separately controlled units -> 40% ---
+const artE = core.serviceLoad22082({ sqft: 1000, smallApplianceCircuits: 2, laundryCircuits: 1, spaceHeatingVA: 20000, spaceUnits: 4, volt: 240 });
+eq(artE.hvacDemandVA, 8000, 'artE space heat 40% * 20,000 = 8,000 (vs 13,000 at 65%)');
+eq(artE.totalVA, 15500, 'artE total 15,500');
+approx(artE.amps, 64.58, 0.01, 'artE 64.58 A');
+eq(artE.recommendedBreakerA, 70, 'artE -> 70 A');
+// --- art F: the 10 kVA boundary — 1,500 sf, 3 SA + 1 laundry, no HVAC ---
+const artF = core.serviceLoad22082({ sqft: 1500, smallApplianceCircuits: 3, laundryCircuits: 1, volt: 240 });
+eq(artF.generalConnectedVA, 10500, 'artF connected 10,500');
+eq(artF.generalDemandVA, 10200, 'artF demand 10,000 + 0.4*500 = 10,200');
+eq(artF.totalVA, 10200, 'artF total 10,200');
+approx(artF.amps, 42.5, 0.01, 'artF 42.5 A');
+// --- art G: kW nameplate entry — 2,000 sf, 12.5 kW appliances (article (B)(3) note) ---
+const artG = core.serviceLoad22082({ sqft: 2000, smallApplianceCircuits: 2, laundryCircuits: 1, nameplateUnit: 'kw', appliancesKW: 12.5, volt: 240 });
+eq(artG.appliancesVA, 12500, 'artG 12.5 kW -> 12,500 VA');
+eq(artG.generalDemandVA, 15200, 'artG demand 10,000 + 0.4*13,000 = 15,200');
+eq(artG.totalVA, 15200, 'artG total 15,200 (no HVAC)');
+approx(artG.amps, 63.33, 0.01, 'artG 63.33 A');
+
 console.log('NEC 220.82 kW nameplate entry (v1.10):');
 // --- kW input converts at ×1,000 to VA, identical to the equivalent VA call ---
 const kwEq = core.serviceLoad22082({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1,
