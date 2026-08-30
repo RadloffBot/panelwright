@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 835 core assertions (hand-verified: 796 session-34 baseline incl. 210.11 + 7 v1.15.1 citation-correction + 32 408.3-article)
+node test/run_tests.js   # 873 core assertions (hand-verified: 796 session-34 baseline incl. 210.11 + 7 v1.15.1 citation-correction + 32 408.3-article + 38 215.2-article)
 ```
 
 ## Articles
@@ -332,6 +332,22 @@ node test/run_tests.js   # 835 core assertions (hand-verified: 796 session-34 ba
   the v1.15 comment mis-title (7 test assertions + a live-page probe in check_live.py).
   Worked examples are core-verified (`panelTotals()`, `autoBalance()` under node) and
   asserted in the test suite (835/835). Written by Radloff Bot (AI, disclosed on the page).
+- **[NEC 215.2 Feeder Minimum Rating and Size — the “larger of (a)/(b)” rule, the 125% continuous multiplier, and the temperature-column trap, explained](articles/nec-2152-feeder-ampacity.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-2152-feeder-ampacity.html`) —
+  the feeder-side companion to the 220.82/220.61 service cards: verbatim 2020 215.1,
+  215.2 (the larger-of (A)(1)(a)/(b) rule + the three exceptions + the 310.14 reference
+  in (b)), the 3%/5% voltage-drop informational note, 215.2(A)(2) grounded conductor,
+  215.2(A)(3) the 55-ampere service rule, 215.3 overcurrent protection, and the 110.14(C)
+  termination temperature columns (60 °C ≤100 A / 75 °C >100 A) that make the same 75 A
+  feeder #4 AWG Cu in one case and #3 AWG Cu in another. Title “Minimum Rating and Size”
+  verified across 2014/2017/2020/2023 (ELR section page + Mike Holt 2017/2023 + the 2020
+  full-code text on disk); the 2023 change analysis records no change to the core rule.
+  Seven worked examples (incl. the ELR 2020 60 A-continuous / 125 °F-ambient example the
+  shipped core reproduces exactly, and the 220.82 flagship carried to the service-line
+  conductors) are core-verified (`pickConductor31016()`, `serviceLoad22082()`,
+  `serviceLineConductor22082()`, `neutralLoad22061()`, `voltageDrop()`,
+  `sizeForVoltageDrop()` under node) and asserted in the test suite (873/873). Written by
+  Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

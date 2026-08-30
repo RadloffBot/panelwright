@@ -1542,5 +1542,77 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(ex4.neutralEst, null, '408.3 EX4: no 3ph neutral screen on 1ph panels');
 }
 
+// --- 215.2 feature article (Session 36): articles/nec-2152-feeder-ampacity.html ---
+// The article's worked-example numbers are produced by the shipped
+// pickConductor31016()/serviceLoad22082()/serviceLineConductor22082()/
+// neutralLoad22061()/voltageDrop()/sizeForVoltageDrop() cores and asserted here
+// so the article table can never drift from the tool.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-2152-feeder-ampacity.html'), 'utf8');
+  eq(art.includes('nec-2152-feeder-ampacity.html'), true, '215.2 article: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-2152-feeder-ampacity.html'), true, '215.2 article: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, '215.2 article: AI disclosure present');
+  eq(art.includes('Minimum Rating and Size'), true, '215.2 article: carries the verified 2014-2023 215.2 title');
+  eq(art.includes('noncontinuous load plus 125 percent of the continuous load'), true, '215.2 article: verbatim 215.2(A)(1)(a) 125% rule present');
+  eq(art.includes('Ampacity Relative to Service Conductors'), true, '215.2 article: carries 215.2(A)(3) title');
+  eq(art.includes('Temperature Limitations'), true, '215.2 article: carries 110.14(C) title');
+  // EX1: 60 A continuous -> 75 A required; 75C -> 4 AWG (85 A); 60C -> 3 AWG (85 A)
+  const ex1p75 = core.pickConductor31016(75, 'cu', 75);
+  const ex1p60 = core.pickConductor31016(75, 'cu', 60);
+  eq(ex1p75.size, '4', '215.2 EX1: 75 A Cu @75 -> 4 AWG');
+  eq(ex1p75.amp, 85, '215.2 EX1: 4 AWG = 85 A @75');
+  eq(ex1p60.size, '3', '215.2 EX1: 75 A Cu @60 -> 3 AWG (110.14(C) trap)');
+  eq(ex1p60.amp, 85, '215.2 EX1: 3 AWG = 85 A @60');
+  // EX1b: ELR 2020 example — 60 A cont, 125F ambient (0.67 factor): (b) path 89.55 A -> 3 AWG @75 (100 A) governs
+  const ex1b = core.pickConductor31016(60 / 0.67, 'cu', 75);
+  eq(ex1b.size, '3', '215.2 EX1b: 89.55 A Cu @75 -> 3 AWG (100 A covers 89.55)');
+  eq(ex1b.amp, 100, '215.2 EX1b: 3 AWG = 100 A @75');
+  // EX2: 150 noncont + 80 cont = 250 A; Cu 250 kcmil (255 A), Al 350 kcmil (250 A)
+  const ex2cu = core.pickConductor31016(250, 'cu', 75);
+  const ex2al = core.pickConductor31016(250, 'al', 75);
+  eq(ex2cu.size, '250', '215.2 EX2: 250 A Cu @75 -> 250 kcmil');
+  eq(ex2cu.amp, 255, '215.2 EX2: 250 kcmil = 255 A @75');
+  eq(ex2al.size, '350', '215.2 EX2: 250 A Al @75 -> 350 kcmil (250 A)');
+  // EX3: 215.2(A)(3) 55 A service: service pick 6 AWG (65 A), feeder >= 65 A -> 6 AWG
+  const ex3svc = core.pickConductor31016(55, 'cu', 75);
+  const ex3fd = core.pickConductor31016(ex3svc.amp, 'cu', 75);
+  eq(ex3svc.size, '6', '215.2 EX3: 55 A service -> 6 AWG (65 A @75)');
+  eq(ex3fd.size, '6', '215.2 EX3: feeder ampacity >= 65 A -> 6 AWG');
+  eq(ex3fd.amp, 65, '215.2 EX3: feeder 6 AWG = 65 A');
+  // EX4: 220.82 flagship 1500sf + 2SA + 1laundry + 12kVA AC @240V -> 21,000 VA / 87.5 A -> floor 100 A -> 3 AWG Cu
+  const ex4lc = core.serviceLoad22082({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1, acVA: 12000, volt: 240 });
+  const ex4sl = core.serviceLineConductor22082(ex4lc, 'cu', 75);
+  eq(ex4lc.totalVA, 21000, '215.2 EX4: 220.82 total 21,000 VA');
+  eq(ex4lc.amps, 87.5, '215.2 EX4: 87.5 A');
+  eq(ex4sl.reqA, 100, '215.2 EX4: required ampacity floored at 100 A (230.79(C)/230.42(B))');
+  eq(ex4sl.pick.size, '3', '215.2 EX4: 100 A Cu @75 -> 3 AWG');
+  eq(ex4sl.pick.amp, 100, '215.2 EX4: 3 AWG = 100 A @75');
+  // EX5: 250 A one-dwelling neutral (no B1/B2 asserted): 83% -> 207.5 A -> 4/0 Cu (230 A)
+  const ex5n = core.neutralLoad22061({ totalVA: 250 * 240, volt: 240, dwelling: true });
+  const ex5p = core.pickConductor31016(ex5n.minAmpA, 'cu', 75);
+  eq(ex5n.finalA, 250, '215.2 EX5: basic neutral 250 A (no reductions)');
+  eq(ex5n.minAmpA, 207.5, '215.2 EX5: 310.12(B) 83% -> 207.5 A');
+  eq(ex5p.size, '4/0', '215.2 EX5: 207.5 A Cu @75 -> 4/0 AWG');
+  eq(ex5p.amp, 230, '215.2 EX5: 4/0 = 230 A @75');
+  // EX5b: same with 220.61(B)(2): 200 + 0.7*50 = 235 A; 83% -> 195.05 A -> 3/0 Cu (200 A)
+  const ex5b = core.neutralLoad22061({ totalVA: 250 * 240, volt: 240, dwelling: true, applyB2: true });
+  const ex5bp = core.pickConductor31016(ex5b.minAmpA, 'cu', 75);
+  eq(ex5b.b2Applied, true, '215.2 EX5b: B2 applies (basicA > 200 A)');
+  eq(ex5b.finalA, 235, '215.2 EX5b: 200 + 0.70*50 = 235 A');
+  eq(ex5b.minAmpA, 195.05, '215.2 EX5b: 83% -> 195.05 A');
+  eq(ex5bp.size, '3/0', '215.2 EX5b: 195.05 A Cu @75 -> 3/0 AWG');
+  eq(ex5bp.amp, 200, '215.2 EX5b: 3/0 = 200 A @75');
+  // EX6: 2 AWG Cu, 100 A, 200 ft one-way, 1ph 240 V -> 7.76 V = 3.23% (warn); smallest <=3% -> 1 AWG (2.57%)
+  const ex6 = core.voltageDrop({ amps: 100, lengthFt: 200, volt: 240, size: '2', mat: 'cu', config: '1ph' });
+  eq(ex6.vdV, 7.76, '215.2 EX6: 2 AWG drop 7.76 V');
+  eq(ex6.pctV, 3.23, '215.2 EX6: 3.23%');
+  eq(ex6.status, 'warn', '215.2 EX6: over the 3% informational note -> warn');
+  const ex6sm = core.sizeForVoltageDrop({ amps: 100, lengthFt: 200, volt: 240, mat: 'cu', config: '1ph' });
+  eq(ex6sm.pick.size, '1', '215.2 EX6: smallest <=3% -> 1 AWG');
+  eq(ex6sm.pick.pctV, 2.57, '215.2 EX6: 1 AWG = 2.57%');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
