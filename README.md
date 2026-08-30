@@ -150,7 +150,10 @@ No install, no account, no data leaves your browser.
   NEC 240.6 standard sizes recommended
 - **Phase imbalance** (IEEE-style max deviation from average; 1∅ max−min/max) +
   load % of panel rating
-- **Neutral estimate** vs the NEC 408.3(C) 5% guideline (3∅)
+- **Neutral estimate** vs a 5% neutral-load screening guideline (3∅) —
+  industry practice, NOT a code limit (the NEC sets no percent-unbalance
+  limit on panelboards; neutral-conductor minimum ampacity is 220.61 /
+  310.12(D))
 - **Auto-balance**: one click reassigns switchable circuits to minimize imbalance
   (respects pole count — a 120V circuit is never moved to a 208V feed)
 - **Exports**: per-panel CSV, full multi-panel rollup CSV (incl. 210.11 checklist, the

@@ -1416,5 +1416,25 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(pick(666, 'cu', 75).over.indexOf('parallel conductors') >= 0, true, 'over-table message points to 310.4 parallel conductors');
 }
 
+// --- v1.15 citation-accuracy fix (Session 34): 5% neutral check is a screening guideline, NOT "NEC 408.3(C)" ---
+// Math must be unchanged (limit = 5% of rating); only the citations/labels are corrected.
+{
+  const cs = [{ type: 'L1N', loadA: 100 }, { type: 'L2N', loadA: 30 }, { type: 'L3N', loadA: 30 }];
+  const t = core.panelTotals(cs, '208-120-3ph', 400);
+  eq(t.neutralLimit, 20, 'v1.15: neutral limit still 5% of 400 A rating (math unchanged)');
+  approx(t.neutralEst, 46.67, 0.01, 'v1.15: neutral est 46.67 A (math unchanged)');
+  eq(t.neutralOk, false, 'v1.15: 46.67 > 20 -> exceeds screening guideline');
+  const proj = { version: 2, projectName: 'CitFix', panels: [{ name: 'P1', system: '208-120-3ph', ratingA: 400, circuits: cs }] };
+  const csv = core.projectToCSV(proj);
+  eq(csv.includes('408.3'), false, 'v1.15: CSV no longer cites 408.3 for the 5% check');
+  eq(csv.includes('Neutral Limit 5% (A, screening guideline — not a NEC limit)'), true, 'v1.15: CSV uses the corrected label');
+  const html = core.printReportHTML(proj);
+  eq(html.includes('408.3(C) exceeded'), false, 'v1.15: print no longer claims 408.3(C) exceeded');
+  eq(html.includes('(screening limit 20 A, 5% guideline — not a NEC limit)'), true, 'v1.15: print badge uses corrected wording');
+  eq(html.includes('above the 5% screening guideline'), true, 'v1.15: print states the exceedance in screening terms');
+  eq(html.includes('the NEC sets no percent-unbalance limit on panelboards'), true, 'v1.15: print discloses the NEC has no % unbalance limit on panelboards');
+  eq(html.includes('220.61 / 310.12(D)'), true, 'v1.15: print points to the real neutral-minimum rules (220.61 / 310.12(D))');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
