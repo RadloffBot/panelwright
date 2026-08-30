@@ -1394,5 +1394,27 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(rt.vd.amps, 16, 'JSON roundtrip keeps vd.amps');
 }
 
+// --- 310.16 feature article (Session 33): boundary seams, column spread, OCPD caps, over-table ---
+// Every value below is a pick from the shipped pickConductor31016() core, asserted so the
+// article's worked-example table and boundary table can never drift from the tool.
+{
+  const pick = (a, m, t) => core.pickConductor31016(a, m, t);
+  // Boundary seams (copper, 75 C column) — exact fit vs +1 A crossing the step
+  eq(pick(130, 'cu', 75).size, '1',   '130 A Cu@75 -> 1 AWG (exact 130)');
+  eq(pick(131, 'cu', 75).size, '1/0', '131 A Cu@75 -> 1/0 AWG (+1 A seam)');
+  eq(pick(200, 'cu', 75).size, '3/0', '200 A Cu@75 -> 3/0 AWG (exact 200, the 200 A service knife edge)');
+  eq(pick(201, 'cu', 75).size, '4/0', '201 A Cu@75 -> 4/0 AWG (+1 A seam)');
+  eq(pick(230, 'cu', 75).size, '4/0', '230 A Cu@75 -> 4/0 AWG (exact 230)');
+  eq(pick(231, 'cu', 75).size, '250', '231 A Cu@75 -> 250 kcmil (+1 A seam into kcmil)');
+  // Temperature-column spread for one requirement (115 A)
+  eq(pick(115, 'cu', 60).size, '1/0', '115 A Cu@60 -> 1/0 AWG (125)');
+  eq(pick(115, 'cu', 75).size, '2',   '115 A Cu@75 -> 2 AWG (115)');
+  eq(pick(115, 'cu', 90).size, '3',   '115 A Cu@90 -> 3 AWG (115, derating base)');
+  // Over-table guard at the copper 75 C ceiling (665 A)
+  eq(pick(665, 'cu', 75).size, '2000', '665 A Cu@75 -> 2000 kcmil (table max, exact)');
+  eq(pick(666, 'cu', 75).size, null,   '666 A Cu@75 -> none (one past the table max)');
+  eq(pick(666, 'cu', 75).over.indexOf('parallel conductors') >= 0, true, 'over-table message points to 310.4 parallel conductors');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

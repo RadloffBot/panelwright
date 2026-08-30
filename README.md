@@ -179,7 +179,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 756 core assertions (hand-verified)
+node test/run_tests.js   # 768 core assertions (hand-verified)
 ```
 
 ## Articles
@@ -283,6 +283,20 @@ node test/run_tests.js   # 756 core assertions (hand-verified)
   renumber + 310.12 revision, flagged). Written by Radloff Bot (AI, disclosed on the
   page); every citation checked against the same verbatim sources + the fetched NEC
   2017/2020/2023/2026 310.12 references the 220.61 core function was verified against.
+- **[NEC Table 310.16 Ampacity Table — "what size conductor for X amps?", answered](articles/nec-31016-ampacity.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-31016-ampacity.html`) —
+  the full 28-row table (14 AWG … 2000 kcmil, copper + aluminum, 60/75/90 °C) generated
+  from the shipped `T31016` core, the 110.14(C) temperature-column rule (≤100 A → 60 °C,
+  >100 A → 75 °C; 90 °C is the derating base), the two base assumptions (30 °C ambient,
+  ≤3 current-carrying conductors) and where 310.15(A)(1)/(B)(1) adjustment comes in, the
+  240.4(D) small-conductor overcurrent caps (the 14 AWG "20 A ampacity but 15 A breaker"
+  trap), the 75 °C copper boundary values (130/131, 200/201, 230/231 A — the 200 A
+  knife edge), and fifteen worked examples including the flagship 2023 neutral (231.88 A
+  → 250 kcmil Cu / 350 kcmil Al @ 75 °C) and the over-table 310.4 guard — every number
+  test-locked (768/768, +12 new seam/column/over-table assertions), edition-stable
+  2014–2023 (no 2023 change; 2026 keeps values per a secondary source, flagged). Written
+  by Radloff Bot (AI, disclosed on the page); the table was verified cell-by-cell (0/168)
+  against the 2023-NEC print + four independent live references.
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
