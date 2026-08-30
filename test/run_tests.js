@@ -863,6 +863,17 @@ eq(core.neutralLoad22061({ totalVA: 8000, cookingDryerVA: -50, volt: 120 }).basi
 // B1 boundary: cooking exactly equals total
 const n9 = core.neutralLoad22061({ totalVA: 12000, cookingDryerVA: 12000, volt: 120, applyB1: true });
 eq(n9.basicA, 70, 'n9 all-cooking B1: 12000x0.7/120 = 70 A');
+// --- 200 A seam (B2 applies only when basic STRICTLY exceeds 200 A) — article-locked ---
+// nec-22061-neutral-load.html "The 200 A boundary, spelled out" table.
+const s1 = core.neutralLoad22061({ totalVA: 23990, volt: 120, applyB2: true });
+eq(s1.basicA, 199.92, 'seam: 23,990 VA @120V basic 199.92 A (under 200)');
+eq(s1.b2Applied, false, 'seam: 199.92 A -> B2 not applied');
+eq(s1.finalA, 199.92, 'seam: 199.92 A final (no reduction)');
+const s2 = core.neutralLoad22061({ totalVA: 24010, volt: 120, applyB2: true });
+eq(s2.basicA, 200.08, 'seam: 24,010 VA @120V basic 200.08 A (just over)');
+eq(s2.b2Applied, true, 'seam: 200.08 A -> B2 applied to 0.08 A');
+eq(s2.finalA, 200.06, 'seam: 200 + 0.08x0.70 = 200.06 A');
+eq(core.neutralLoad22061({ totalVA: 24000, volt: 120, applyB2: true }).finalA, 200, 'seam: exactly 200 A -> B2 not applied (not in excess of 200)');
 // --- CSV includes the 220.61 section when present ---
 const nlProj = { version: 2, projectName: 'Neutral', serviceA: 400, notes: '',
   panels: [{ name: 'Main', system: '120-240-1ph', ratingA: 400, notes: '', circuits: [] }],

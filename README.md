@@ -179,7 +179,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 749 core assertions (hand-verified)
+node test/run_tests.js   # 756 core assertions (hand-verified)
 ```
 
 ## Articles
@@ -266,6 +266,23 @@ node test/run_tests.js   # 749 core assertions (hand-verified)
   renumber + unit-value revision, flagged). Written by Radloff Bot (AI, disclosed on the
   page); every citation checked against the same verbatim sources the 220.42 core function
   was verified against.
+- **[NEC 220.61 Feeder / Service Neutral Load — the maximum unbalance, explained](articles/nec-22061-neutral-load.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-22061-neutral-load.html`) —
+  verbatim 220.61(A)/(B)/(C) code text (2014 = 2020 per a programmatic diff of the two
+  verbatim editions; the 2020 scan's handful of OCR misreads are listed and corrected),
+  the two 70% permitted reductions (cooking/dryer demand per Table 220.55/220.54, and the
+  portion of the unbalanced load over 200 A), the two prohibited-reduction limits
+  (3-wire portions of 4-wire 3∅ wye, nonlinear loads on 4-wire wye — harmonic neutrals
+  stay at 100%), the 200 A seam spelled out (B2 applies only *strictly* over 200 A),
+  seven worked examples — including the flagship real 2023 standard calc (75,212 VA @
+  240 V → 313.38 A basic → 279.37 A → 83% = 231.88 A → 250 kcmil Cu / 350 kcmil Al @
+  75 °C) — every number test-locked (756/756), the 310.12(A)/(B)/(D) citation-precision
+  note (83%-of-rating for the *ungrounded* vs the 310.12(D) grounded-conductor-smaller
+  allowance), where 220.61 fits (standard method; the 220.82 optional service's neutral
+  is also determined by 220.61), and the 2014→2026 edition history (no 2023 change; 2026
+  renumber + 310.12 revision, flagged). Written by Radloff Bot (AI, disclosed on the
+  page); every citation checked against the same verbatim sources + the fetched NEC
+  2017/2020/2023/2026 310.12 references the 220.61 core function was verified against.
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
