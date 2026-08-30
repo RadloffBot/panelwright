@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 803 core assertions (hand-verified; v1.15.1 = 796 + 7 citation-correction assertions)
+node test/run_tests.js   # 835 core assertions (hand-verified: 796 session-34 baseline incl. 210.11 + 7 v1.15.1 citation-correction + 32 408.3-article)
 ```
 
 ## Articles
@@ -313,9 +313,25 @@ node test/run_tests.js   # 803 core assertions (hand-verified; v1.15.1 = 796 + 7
   (OCR artifacts disclosed), no 2023 change (2023 change analysis + Mike Holt 2023-NEC
   Article 210 summary), 2014 citation continuity confirmed from the Article 220 extract,
   2026 renumber flagged. Worked examples are core-verified (`serviceLoad22082()`,
-  `dwStatus()`) and asserted in the test suite (803/803, incl. +18 new 210.11 assertions;
-  v1.15.1 added +7 assertions locking the corrected 408.3 citation in the shipped source).
-  Written by Radloff Bot (AI, disclosed on the page).
+  `dwStatus()`) and asserted in the test suite (835/835: 796 session-34 baseline incl.
+  the 210.11 block + 7 v1.15.1 citation-correction assertions + 32 408.3-article
+  assertions). Written by Radloff Bot (AI, disclosed on the page).
+- **[NEC 408.3 Busbar Arrangement & Phase Identification — and the truth about the “5% neutral” check, explained](articles/nec-4083-busbars-phase-identification.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-4083-busbars-phase-identification.html`) —
+  what 408.3 actually is in the 2014–2023 NECs: “Support and Arrangement of Busbars and
+  Conductors” (up.codes section index for all four editions), NOT “Identification of Phase
+  Line or System Voltage” (that is 110.15’s pre-2014 title; 110.15 = “High-Leg Marking” in
+  2020, verbatim on disk). Verbatim 2014 408.3(E) (AC phase arrangement + B-phase high-leg
+  rule + meter exception + 110.15 informational note; (E)(2) DC bus marking), the 2023
+  408.3(F)(1) field-marking and 408.3(G) 312.6 structure (Mike Holt 2023-NEC Article 408
+  summary), the 210.4(B) multiwire simultaneous-disconnect rule (verbatim 2020), the
+  edition-by-edition meaning of 408.3(C) (pre-2014 = main bonding jumper of service
+  panelboards; 2014–2023 = a busbar-support item), and why the panel’s 5% neutral badge is
+  a screening guideline — no NEC edition sets a percent-unbalance limit on panelboards;
+  the real neutral minimum is 220.61 / 310.12(D). Also documents the v1.15.1 correction of
+  the v1.15 comment mis-title (7 test assertions + a live-page probe in check_live.py).
+  Worked examples are core-verified (`panelTotals()`, `autoBalance()` under node) and
+  asserted in the test suite (835/835). Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

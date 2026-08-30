@@ -373,7 +373,7 @@
     <p class="dwnote" style="margin:10px 0 0"><strong>210.11(C) is a dwelling-unit count rule, not a load rule:</strong> in addition to the circuits sized by the Article 220 load, a dwelling unit needs <strong>2× small-appliance</strong> (210.52(B)), <strong>1× laundry</strong> (210.52(F)), <strong>1× bathroom</strong> (210.52(D)) and, with an electric garage, <strong>1× garage</strong> (210.52(G)(1)) — all 20 A, 120 V. The bathroom circuit may have no other outlets (single-bathroom exception per 210.23(A)); the garage circuit may also serve readily accessible outdoor receptacles — and 210.11 has <strong>no</strong> outdoor or lighting-circuit mandate (210.11(B) is load proportioning only). Each required small-appliance/laundry circuit is also a <strong>1,500 VA</strong> feeder line (220.52 / 220.82(B)(2)). 2017–2023 code verified (no 2023 change); 2026 renumber flagged. <a href="articles/nec-21011-branch-circuits.html">Full 210.11 explanation (verbatim code text, the four mandatory circuits, the two exclusivity gotchas, the 220.52/220.82 VA tie-in, worked examples) →</a></p>
   </section>
 
-  <section class="card no-print">
+  <section class="card no-print" id="panelCard">
     <div class="tabs" id="panelTabs"></div>
     <div class="grid">
       <div><label class="f" for="panelName">Panel name</label><input id="panelName" value="Main Panel"></div>
@@ -422,6 +422,7 @@
       <input type="file" id="fileImport" accept="application/json,.json" hidden>
     </div>
     <div class="badges no-print" id="badges"></div>
+    <p class="dwnote" style="margin:10px 0 0"><strong>The 5% neutral badge is a screening guideline — not a NEC limit.</strong> No NEC edition sets a percent-unbalance requirement on panelboards: the badge compares the panel’s neutral estimate (worst-phase deviation) against 5% of the panel rating as a quick proportionality screen. The real neutral-sizing authority is <a href="articles/nec-22061-neutral-load.html">NEC 220.61</a> (maximum unbalance + 70% reductions + 310.12(D) 83% one-dwelling floor). Phase arrangement and the high-leg “Caution” marking are <a href="articles/nec-4083-busbars-phase-identification.html">NEC 408.3(E)/(F)</a> (2014–2023: “Support and Arrangement of Busbars and Conductors”), with the orange high-leg marking at <a href="articles/nec-4083-busbars-phase-identification.html#code">110.15</a>. Full 408.3 explanation (the 408.3(C) edition trap, the 5%-screen truth, worked examples) → <a href="articles/nec-4083-busbars-phase-identification.html">nec-4083-busbars-phase-identification.html</a></p>
   </section>
 
   <footer>

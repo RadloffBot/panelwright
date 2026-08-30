@@ -1491,5 +1491,56 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(core.dwStatus(ov).items.find(i => i.id === 'garage').met, true, '210.11: manual ok on garage row -> met (user verdict wins)');
 }
 
+// --- 408.3 feature article (Session 35): articles/nec-4083-busbars-phase-identification.html ---
+// The article's worked-example numbers are produced by the shipped panelTotals() and
+// autoBalance() cores and asserted here so the article table can never drift from the tool.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-4083-busbars-phase-identification.html'), 'utf8');
+  eq(art.includes('nec-4083-busbars-phase-identification.html'), true, '408.3 article: present');
+  eq(art.includes('canonical') && art.includes('https://radloffbot.github.io/panelwright/articles/nec-4083-busbars-phase-identification.html'), true, '408.3 article: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, '408.3 article: AI disclosure present');
+  eq(art.includes('Support and Arrangement of Busbars and Conductors'), true, '408.3 article: carries the verified 2014-2023 408.3 title');
+  eq(art.includes('screening guideline'), true, '408.3 article: labels the 5% check as a screening guideline');
+  // EX2: grossly unbalanced 3ph 400A
+  const ex2 = core.panelTotals([{ type: 'L1N', loadA: 100 }, { type: 'L2N', loadA: 30 }, { type: 'L3N', loadA: 30 }], '208-120-3ph', 400);
+  eq(ex2.L1, 100, '408.3 EX2: L1 = 100');
+  eq(ex2.L2, 30, '408.3 EX2: L2 = 30');
+  eq(ex2.L3, 30, '408.3 EX2: L3 = 30');
+  approx(ex2.imbalancePct, 87.5, 0.01, '408.3 EX2: imbalance 87.5%');
+  approx(ex2.neutralEst, 46.67, 0.01, '408.3 EX2: neutral est 46.67 A');
+  eq(ex2.neutralLimit, 20, '408.3 EX2: 5% of 400 = 20 A');
+  eq(ex2.neutralOk, false, '408.3 EX2: FAILS the screening guideline');
+  // EX3: balanced 3ph 400A
+  const ex3 = core.panelTotals([{ type: 'L1N', loadA: 40 }, { type: 'L2N', loadA: 40 }, { type: 'L3N', loadA: 40 }, { type: '3ph', loadA: 25 }], '208-120-3ph', 400);
+  eq(ex3.L1, 65, '408.3 EX3: L1 = 65');
+  eq(ex3.L2, 65, '408.3 EX3: L2 = 65');
+  eq(ex3.L3, 65, '408.3 EX3: L3 = 65');
+  eq(ex3.imbalancePct, 0, '408.3 EX3: imbalance 0%');
+  eq(ex3.neutralEst, 0, '408.3 EX3: neutral est 0 A');
+  eq(ex3.neutralOk, true, '408.3 EX3: PASSES');
+  // EX5: auto-balance movable set (article's demo row)
+  const ex5b = core.panelTotals([{ type: 'L1N', loadA: 40 }, { type: 'L1N', loadA: 35 }, { type: 'L1N', loadA: 30 }, { type: 'L1N', loadA: 25 }, { type: '3ph', loadA: 20 }], '208-120-3ph', 400);
+  eq(ex5b.L1, 150, '408.3 EX5 before: L1 = 150');
+  approx(ex5b.imbalancePct, 136.84, 0.01, '408.3 EX5 before: imbalance 136.84%');
+  approx(ex5b.neutralEst, 86.67, 0.01, '408.3 EX5 before: neutral est 86.67 A');
+  const ex5after = core.autoBalance([{ type: 'L1N', loadA: 40 }, { type: 'L1N', loadA: 35 }, { type: 'L1N', loadA: 30 }, { type: 'L1N', loadA: 25 }, { type: '3ph', loadA: 20 }], '208-120-3ph');
+  const ex5a = core.panelTotals(ex5after, '208-120-3ph', 400);
+  eq(ex5a.L1, 60, '408.3 EX5 after: L1 = 60');
+  eq(ex5a.L2, 55, '408.3 EX5 after: L2 = 55');
+  eq(ex5a.L3, 75, '408.3 EX5 after: L3 = 75');
+  approx(ex5a.imbalancePct, 18.42, 0.01, '408.3 EX5 after: imbalance 18.42%');
+  approx(ex5a.neutralEst, 11.67, 0.01, '408.3 EX5 after: neutral est 11.67 A');
+  eq(ex5a.neutralOk, true, '408.3 EX5: auto-balance flips FAIL -> PASS');
+  // 1ph example from the article: 55/30 + 45 two-pole
+  const ex4 = core.panelTotals([{ type: 'L1', loadA: 55 }, { type: 'L2', loadA: 30 }, { type: 'L1L2', loadA: 45 }], '120-240-1ph', 200);
+  eq(ex4.L1, 100, '408.3 EX4: L1 = 100');
+  eq(ex4.L2, 75, '408.3 EX4: L2 = 75');
+  approx(ex4.imbalancePct, 25, 0.01, '408.3 EX4: 1ph imbalance 25%');
+  approx(ex4.loadPct, 50, 0.01, '408.3 EX4: 50% of 200 A rating');
+  eq(ex4.neutralEst, null, '408.3 EX4: no 3ph neutral screen on 1ph panels');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
