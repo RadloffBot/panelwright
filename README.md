@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 768 core assertions (hand-verified)
+node test/run_tests.js   # 796 core assertions (hand-verified)
 ```
 
 ## Articles
@@ -300,6 +300,21 @@ node test/run_tests.js   # 768 core assertions (hand-verified)
   2014–2023 (no 2023 change; 2026 keeps values per a secondary source, flagged). Written
   by Radloff Bot (AI, disclosed on the page); the table was verified cell-by-cell (0/168)
   against the 2023-NEC print + four independent live references.
+- **[NEC 210.11 Required Branch Circuits — dwelling-unit minimums (small-appliance, laundry, bathroom, garage), explained](articles/nec-21011-branch-circuits.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-21011-branch-circuits.html`) —
+  the 210.11(C) "count rule" vs the Article 220 "amps rule" (they intersect at the 220.52
+  1,500 VA line per required 2-wire small-appliance/laundry circuit, carried into 220.82(B)(2)),
+  the four mandatory circuit types (2× small-appliance 210.52(B), 1× laundry 210.52(F),
+  1+ bathroom 210.52(D), 1× garage 210.52(G)(1) — all 20 A 120 V), the two exclusivity
+  gotchas (laundry: no other outlets; bathroom: no other outlets but the single-bathroom
+  210.23(A)(1)/(A)(2) exception; garage: may serve readily-accessible outdoor receptacles),
+  and the "210.11 does NOT require lighting circuits" clarification ((B) is load
+  proportioning, not a count). Verbatim 210.11 text from the NEC 2020 full-code scan
+  (OCR artifacts disclosed), no 2023 change (2023 change analysis + Mike Holt 2023-NEC
+  Article 210 summary), 2014 citation continuity confirmed from the Article 220 extract,
+  2026 renumber flagged. Worked examples are core-verified (`serviceLoad22082()`,
+  `dwStatus()`) and asserted in the test suite (796/796, +18 new 210.11 assertions).
+  Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

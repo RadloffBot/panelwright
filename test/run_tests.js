@@ -1436,5 +1436,39 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(html.includes('220.61 / 310.12(D)'), true, 'v1.15: print points to the real neutral-minimum rules (220.61 / 310.12(D))');
 }
 
+// --- 210.11 feature article (Session 34): articles/nec-21011-branch-circuits.html ---
+// The article's worked-example numbers are produced by the shipped serviceLoad22082() and
+// dwStatus() cores and asserted here so the article table can never drift from the tool.
+{
+  const sa = (n) => core.serviceLoad22082({ sqft: 1600, smallApplianceCircuits: n, laundryCircuits: 1, acVA: 12000, volt: 240 });
+  eq(sa(2).smallApplianceVA, 3000, '210.11: 2 min small-appliance circuits -> 3,000 VA (220.52(A) 1,500 each)');
+  eq(sa(3).smallApplianceVA, 4500, '210.11: permitted 3rd small-appliance circuit -> 4,500 VA');
+  const la = (n) => core.serviceLoad22082({ sqft: 1600, smallApplianceCircuits: 2, laundryCircuits: n, acVA: 12000, volt: 240 });
+  eq(la(1).laundryVA, 1500, '210.11: 1 min laundry circuit -> 1,500 VA (220.52(B))');
+  eq(la(2).laundryVA, 3000, '210.11: permitted 2nd laundry circuit -> 3,000 VA');
+  const base = sa(2);
+  eq(base.generalConnectedVA, 9300, '210.11: baseline 1,600 sf + 2SA + 1 laundry -> 9,300 VA connected (4,800 lighting + 3,000 + 1,500)');
+  eq(base.generalDemandVA, 9300, '210.11: baseline demand = connected (<= 10 kVA tier)');
+  eq(base.totalVA, 21300, '210.11: baseline total 21,300 VA (9,300 + 12,000 AC)');
+  approx(base.amps, 88.75, 0.01, '210.11: baseline 88.75 A @ 240 V');
+  eq(base.recommendedBreakerA, 90, '210.11: baseline -> 90 A service');
+  // --- dwStatus minimum-circuit check (210.11(C)(1)-(C)(4)) ---
+  const mk = (names) => ({ version: 2, projectName: 'T', panels: [{ name: 'P1', system: '120-240-1ph', ratingA: 200, circuits: names.map(n => ({ name: n, notes: '', amps: 20 })) }] });
+  const row = (project, id) => core.dwStatus(project).items.find(i => i.id === id);
+  const full = mk(['SA1 kitchen','SA2 kitchen','LA laundry','BATH bathroom','GARAGE garage','L1 lighting','L2 lighting']);
+  const fulls = core.dwStatus(full);
+  eq(fulls.items.filter(i => i.cite.startsWith('210.11')).every(i => i.met), true, '210.11: full set -> all 4 code rows met');
+  eq(fulls.items.filter(i => i.cite.startsWith('210.11')).length, 4, '210.11: exactly 4 code-cited rows (C)(1)-(C)(4)');
+  eq(fulls.items.filter(i => !i.cite.startsWith('210.11')).length, 2, '210.11: exactly 2 design-practice rows (outdoor, lighting)');
+  eq(fulls.metCount, 5, '210.11: full set -> 5/6 met (4 code + lighting; outdoor design-practice row unmet, no outdoor circuit in test)');
+  eq(row(mk(['SA kitchen','LA laundry','BATH bathroom','GARAGE garage']), 'smallAppliance').met, false, '210.11: 1 small-appliance circuit -> (C)(1) MISS (min 2)');
+  eq(row(mk(['SA1 kitchen','SA2 kitchen','LA laundry','BATH bathroom','GARAGE garage']), 'smallAppliance').met, true, '210.11: 2 small-appliance circuits -> (C)(1) met');
+  eq(row(mk(['SA1 kitchen','SA2 kitchen','LA laundry','GARAGE garage']), 'bathroom').met, false, '210.11: no bathroom circuit -> (C)(3) MISS (min 1)');
+  eq(row(mk(['SA1 kitchen','SA2 kitchen','LA laundry','BATH bathroom']), 'garage').met, false, '210.11: no garage circuit -> (C)(4) MISS (min 1)');
+  // manual override: a row marked ok counts as met even at 0 auto (the card's verdict mechanism)
+  const ov = { version: 2, projectName: 'T', panels: [{ name: 'P1', system: '120-240-1ph', ratingA: 200, circuits: [] }], dw: { items: core.DW_DEFAULT_ITEMS.map(i => Object.assign({}, i, { id: i.id, manual: i.id === 'garage' ? 'ok' : 'auto' })) } };
+  eq(core.dwStatus(ov).items.find(i => i.id === 'garage').met, true, '210.11: manual ok on garage row -> met (user verdict wins)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
