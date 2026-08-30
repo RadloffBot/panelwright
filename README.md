@@ -179,7 +179,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 739 core assertions (hand-verified)
+node test/run_tests.js   # 749 core assertions (hand-verified)
 ```
 
 ## Articles
@@ -205,7 +205,7 @@ node test/run_tests.js   # 739 core assertions (hand-verified)
   it is *guidance*, not a mandatory requirement), the Vd = C·I·R formula with C = 2
   (1∅) / √3 (3∅ L-L), the K-factor shortcut (K ≈ 12.9 Cu / 21.2 Al, and where it
   drifts), a Chapter 9 Table 8 excerpt (28-row table shipped in the tool), six
-  worked examples + the 5% feeder+branch split — every number test-locked (739/739),
+  worked examples + the 5% feeder+branch split — every number test-locked (749/749),
   and the honest scope (drop check, not ampacity; Table 8 DC @75 °C). Written by
   Radloff Bot (AI, disclosed on the page); every citation checked against the same
   verbatim sources + three independent 2023-edition live sources the voltage-drop
@@ -233,7 +233,7 @@ node test/run_tests.js   # 739 core assertions (hand-verified)
   Holt / EC&M 2020-NEC 28,710 VA / 125 A example, the clean 2023-NEC 21,900 VA / 100 A
   example, two heat-pump-with-supplemental cases, the 65%-vs-40% space-heating pair, and
   the largest-of tiebreak that documents a published source's own error — every number
-  test-locked (739/739 assertions), where 220.82 fits
+  test-locked (749/749 assertions), where 220.82 fits
   (replaces Part III, cooking at 100% nameplate, 230.42 conductors, 220.61 neutral),
   and the 2014→2026 edition history (no 2023 change; 2026 renumber). Written by Radloff Bot
   (AI, disclosed on the page); every citation checked against the same verbatim sources the
@@ -246,12 +246,26 @@ node test/run_tests.js   # 739 core assertions (hand-verified)
   out), the 5,000 VA minimum-per-dryer rule, the 3-phase 4-wire twice-the-max rule, a
   source-quality note on conflicting free-web factor tables, eight worked examples
   (boundary-seam demands at 11/12/23/24/42/43 dryers, the 3-phase effective-count case, the
-  below-minimum nameplate floor — every number test-locked, 739/739), where 220.54 fits
+  below-minimum nameplate floor — every number test-locked, 749/749), where 220.54 fits
   (standard method vs 220.82(B)(3) 100% nameplate, the 220.53 exclusion, the 220.61(B)(1)
   neutral tie-in), and the 2014→2026 edition history (no 2023 change; 2026 renumber +
   unverified revised factors, flagged). Written by Radloff Bot (AI, disclosed on the page);
   every citation checked against the same verbatim sources the 220.54 core function was
   verified against.
+- **[NEC 220.42 General Lighting Load Demand — Table 220.42, explained](articles/nec-22042-lighting-demand.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-22042-lighting-demand.html`) —
+  verbatim 220.42 code text (identical in the 2014 and 2020 editions), the full
+  Table 220.42 by occupancy (dwelling 3,000 @100% / 3,001–120,000 @35% / remainder @25%;
+  hospital 40%/20%; hotel-motel 50%/40%/30%; warehouse 100%/50%; all others 100%), how the
+  tier-by-tier math works (with a worked 150,000-VA dwelling walk-through), the
+  tier-boundary values spelled out (3,001 / 120,000 / 120,001 / 50,000 / 20,000 / 12,500),
+  a source-quality note on a 2020-OCR misrender of the hotel row (corrected against the
+  clean 2014 verbatim text + three live sources), eight worked examples (every number
+  test-locked, 749/749), where 220.42 fits (standard Part III; NOT the 220.82 optional
+  method; not for circuit count), and the 2014→2026 edition history (no 2023 change; 2026
+  renumber + unit-value revision, flagged). Written by Radloff Bot (AI, disclosed on the
+  page); every citation checked against the same verbatim sources the 220.42 core function
+  was verified against.
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

@@ -608,6 +608,22 @@ eq(core.lightingDemand22042({ occupancy: 'warehouse', totalVA: 100000 }).demandV
 
 // --- All others: total @100% ---
 eq(core.lightingDemand22042({ occupancy: 'others', totalVA: 43210 }).demandVA, 43210, 'others 43,210 -> 43,210 (100%)');
+
+// --- 220.42 feature article (Session 31): worked examples + tier-boundary seams ---
+// Worked examples as published in articles/nec-22042-lighting-demand.html
+eq(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 50000 }).demandVA, 19450, 'dw 50,000 -> 3,000@100% + 47,000@35% = 19,450');
+eq(core.lightingDemand22042({ occupancy: 'others', totalVA: 50000 }).demandVA, 50000, 'others 50,000 -> 50,000 (no diversity)');
+// Tier-boundary seams: one VA just over each upper bound (continuity, no jump)
+approx(core.lightingDemand22042({ occupancy: 'dwelling', totalVA: 120001 }).demandVA, 43950.25, 0.01, 'dw 120,001 -> 43,950 + 1@25% = 43,950.25');
+approx(core.lightingDemand22042({ occupancy: 'hospital', totalVA: 50001 }).demandVA, 20000.2, 0.01, 'hosp 50,001 -> 20,000 + 1@20% = 20,000.2');
+approx(core.lightingDemand22042({ occupancy: 'hotel', totalVA: 20001 }).demandVA, 10000.4, 0.01, 'hotel 20,001 -> 10,000 + 1@40% = 10,000.4');
+approx(core.lightingDemand22042({ occupancy: 'warehouse', totalVA: 12501 }).demandVA, 12500.5, 0.01, 'wh 12,501 -> 12,500 + 1@50% = 12,500.5');
+// Tier-boundary seams: exactly at each upper bound (the higher band is 0)
+eq(core.lightingDemand22042({ occupancy: 'hospital', totalVA: 50000 }).demandVA, 20000, 'hosp 50,000 (exact seam) -> 20,000');
+eq(core.lightingDemand22042({ occupancy: 'hotel', totalVA: 20000 }).demandVA, 10000, 'hotel 20,000 (exact seam) -> 10,000');
+eq(core.lightingDemand22042({ occupancy: 'warehouse', totalVA: 12500 }).demandVA, 12500, 'wh 12,500 (exact seam) -> 12,500');
+// Hotel 3-tier worked example tail: 100,000 is the exact top of the 40% band
+eq(core.lightingDemand22042({ occupancy: 'hotel', totalVA: 100000 }).tiers[2].sliceVA, 0, 'hotel 100,000: 30% band slice is 0 at the seam');
 eq(core.lightingDemand22042({ totalVA: 99999 }).occupancy, 'others', 'no occupancy -> defaults to others');
 eq(core.lightingDemand22042({ totalVA: 99999 }).demandVA, 99999, 'default others 99,999 -> 100%');
 
