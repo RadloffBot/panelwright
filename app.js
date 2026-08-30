@@ -1,17 +1,31 @@
 /*
- * PanelWright v1.15 — panel schedule calculator (NEC design aid)
+ * PanelWright v1.15.1 — panel schedule calculator (NEC design aid)
  * Multi-panel projects + service-entrance rollup.
+ * v1.15.1: CITATION CORRECTION (Session 35) — v1.15's correction comments
+ *   mis-titled 408.3 as "Identification of Phase Line or System Voltage"
+ *   (2017–2023). That title is NOT 408.3's in any edition: NEC 408.3 is
+ *   "Support and Arrangement of Busbars and Conductors" (2014/2017/2020/2023,
+ *   verified via up.codes section index for all four editions, IAE 2015
+ *   Art. 408/409 article, ELR verbatim 2014 text, Mike Holt 2023 Art. 408
+ *   newsletter). Subsections: (A) support/arrangement incl. (A)(3) Same
+ *   Vertical Section; (E) Bus Arrangement ((1) AC phase arrangement — A, B, C
+ *   order, B = higher voltage to ground on 4-wire delta, meter exception;
+ *   (2) DC bus); (F) Switchboard/Switchgear/Panelboard Identification ((1)
+ *   high-leg "Caution" field marking, (2) ungrounded AC, (3) high-impedance
+ *   grounded); (G) wire-bending space per 312.6. The "Identification of
+ *   Phase Line or System Voltage" title is 110.15's pre-2014 title (110.15 =
+ *   "High-Leg Marking" in the 2020 NEC, verbatim on disk). (For the pre-2014
+ *   editions, 408.3(C) covered the main bonding jumper of service equipment —
+ *   which is how the original "408.3(C) 5% check" label arose — but 408.3(C)
+ *   in 2014–2023 is a support/arrangement provision, and NO NEC edition
+ *   imposes a percent-unbalance limit on panelboards.)
  * v1.15: CITATION ACCURACY FIX — the panel "5% neutral unbalance" screening
- *   label no longer claims "NEC 408.3(C)". Verified this session: in the
- *   2017–2023 editions, NEC 408.3 is "Identification of Phase Line or System
- *   Voltage" (Mike Holt 2023-NEC newsletter + UL/Code Authority panelboard
- *   guide; 408.3(C) = field-marking/neutral-bonding means for service
- *   equipment) — the code sets NO percent-unbalance limit on panelboards
- *   (Mike Holt forum: "the NEC is silent on this"). The check is kept but
- *   re-labeled as a 5% neutral-load SCREENING guideline (industry practice),
- *   with the real neutral-conductor minimum (220.61 / 310.12(D)) pointed to.
- *   Math unchanged (neutralEst/neutralLimit values identical); UI/CSV/print/
- *   meta/JSON-LD labels fixed in 10 places.
+ *   label no longer claims "NEC 408.3(C)". The code sets NO percent-unbalance
+ *   limit on panelboards (Mike Holt forum: "the NEC is silent on this"). The
+ *   check is kept but re-labeled as a 5% neutral-load SCREENING guideline
+ *   (industry practice), with the real neutral-conductor minimum (220.61 /
+ *   310.12(D)) pointed to. Math unchanged (neutralEst/neutralLimit values
+ *   identical); UI/CSV/print/meta/JSON-LD labels fixed in 10 places.
  * v1.14: NEC 220.56 commercial kitchen equipment load demand (Table 220.56,
  *   other than dwelling units) — demand factors 1–2 @100%, 3 @90%, 4 @80%,
  *   5 @70%, 6+ @65% on equipment with thermostatic control or intermittent use
@@ -121,7 +135,8 @@
   // loadPct       : max phase load / panel rating × 100
   // neutralEst    : field approximation (largest phase deviation from average)
   // neutralLimit  : 5% neutral-load SCREENING heuristic (industry guideline, NOT an
-  // NEC requirement — NEC 408.3 is "Identification of Phase Line or System Voltage";
+  // NEC requirement — NEC 408.3 is "Support and Arrangement of Busbars and
+  // Conductors" (2014–2023: bus/phase arrangement, high-leg marking, wire space);
   // the code sets no % unbalance limit on panelboards; neutral-conductor minimum
   // ampacity is 220.61 / 310.12(D)).
   function panelTotals(circuits, systemId, ratingA) {

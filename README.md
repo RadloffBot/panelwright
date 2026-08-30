@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 796 core assertions (hand-verified)
+node test/run_tests.js   # 803 core assertions (hand-verified; v1.15.1 = 796 + 7 citation-correction assertions)
 ```
 
 ## Articles
@@ -313,7 +313,8 @@ node test/run_tests.js   # 796 core assertions (hand-verified)
   (OCR artifacts disclosed), no 2023 change (2023 change analysis + Mike Holt 2023-NEC
   Article 210 summary), 2014 citation continuity confirmed from the Article 220 extract,
   2026 renumber flagged. Worked examples are core-verified (`serviceLoad22082()`,
-  `dwStatus()`) and asserted in the test suite (796/796, +18 new 210.11 assertions).
+  `dwStatus()`) and asserted in the test suite (803/803, incl. +18 new 210.11 assertions;
+  v1.15.1 added +7 assertions locking the corrected 408.3 citation in the shipped source).
   Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author

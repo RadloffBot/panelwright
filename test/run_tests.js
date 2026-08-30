@@ -1436,6 +1436,27 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(html.includes('220.61 / 310.12(D)'), true, 'v1.15: print points to the real neutral-minimum rules (220.61 / 310.12(D))');
 }
 
+// --- v1.15.1 citation correction (Session 35): v1.15's correction comments MIS-TITLED 408.3 ---
+// Verified 2026-08-30 (Session 35): NEC 408.3 = "Support and Arrangement of Busbars and
+// Conductors" in 2014/2017/2020/2023 (up.codes section index for all four editions + IAE 2015
+// Art. 408/409 article + ELR verbatim 2014 text + Mike Holt 2023 Art. 408 newsletter). The
+// "Identification of Phase Line or System Voltage" title is 110.15's PRE-2014 title (110.15 =
+// "High-Leg Marking" in the 2020 NEC, verbatim on disk). The shipped app.js must never
+// re-carry that mis-title.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const src = fs.readFileSync(path.join(__dirname, '..', 'app.js'), 'utf8');
+  eq(/NEC 408\.3 is "Identification of Phase Line or System/.test(src), false, 'v1.15.1: app.js no longer mis-titles 408.3 as "Identification of Phase Line or System Voltage"');
+  eq(src.includes('NEC 408.3 is "Support and Arrangement of Busbars and\n  // Conductors" (2014–2023'), true, 'v1.15.1: inline comment carries the verified 2014–2023 408.3 title');
+  eq(src.includes('"Support and Arrangement of Busbars and Conductors" (2014/2017/2020/2023,'), true, 'v1.15.1: header comment carries the verified 408.3 title (all four editions)');
+  eq(src.includes('408.3 is "Support and Arrangement of Busbars and'), true, 'v1.15.1: header names 408.3 correctly');
+  eq(src.includes('110.15'), true, 'v1.15.1: header documents that the mis-title belongs to 110.15 (pre-2014)');
+  eq(src.includes('NO NEC edition'), true, 'v1.15.1: header states no NEC edition sets a % unbalance limit on panelboards');
+  // version label bumped
+  eq(src.startsWith('/*\n * PanelWright v1.15.1'), true, 'v1.15.1: version banner bumped');
+}
+
 // --- 210.11 feature article (Session 34): articles/nec-21011-branch-circuits.html ---
 // The article's worked-example numbers are produced by the shipped serviceLoad22082() and
 // dwStatus() cores and asserted here so the article table can never drift from the tool.
