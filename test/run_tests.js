@@ -1987,5 +1987,52 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(sl7.totalVA - sl7no.totalVA, 3000, 'art16 EX7: two small-appliance circuits add 3000 VA');
 }
 
+console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Session 42 — articles/nec-2404d-small-conductors.html):');
+{
+  // EX1: the five common (D) caps exactly as the code text states them (2017/2020/2023 values).
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art17 EX1: 240.4(D)(3) 14 Cu cap 15 A');
+  eq(core.smallConductorCap('12', 'cu'), 20, 'art17 EX1: 240.4(D)(5) 12 Cu cap 20 A');
+  eq(core.smallConductorCap('10', 'cu'), 30, 'art17 EX1: 240.4(D)(7) 10 Cu cap 30 A');
+  eq(core.smallConductorCap('12', 'al'), 15, 'art17 EX1: 240.4(D)(4) 12 Al cap 15 A');
+  eq(core.smallConductorCap('10', 'al'), 25, 'art17 EX1: 240.4(D)(6) 10 Al cap 25 A');
+  // Boundary: no (D) cap for 8 AWG (not a (D) size) and for 16/18 AWG (tool Table starts at 14 AWG).
+  eq(core.smallConductorCap('8', 'cu'), null, 'art17 EX1: 8 AWG Cu has no 240.4(D) cap');
+  eq(core.smallConductorCap('16', 'cu'), null, 'art17 EX1: 16 AWG not modeled (tool Table 310.16 starts at 14 AWG)');
+  eq(core.smallConductorCap('18', 'cu'), null, 'art17 EX1: 18 AWG not modeled (tool Table 310.16 starts at 14 AWG)');
+  // EX2: the 14 AWG trap — required 20 A circuit.
+  eq(core.pickConductor31016(20, 'cu', 75).size, '14', 'art17 EX2: ampacity pick for 20 A @75 = 14 AWG Cu');
+  eq(core.pickConductor31016(20, 'cu', 75).amp, 20, 'art17 EX2: 14 AWG Cu 75 C ampacity = 20 A (passes (a))');
+  eq(core.smallConductorCap('14', 'cu') < 20, true, 'art17 EX2: 14 AWG cap 15 A < 20 A OCPD -> 14 AWG NOT usable');
+  eq(core.smallConductorCap('12', 'cu') >= 20, true, 'art17 EX2: 12 AWG cap 20 A >= 20 A OCPD -> 12 AWG resolves');
+  // EX3: the 12 AWG THHN "30 A" myth — 90 C ampacity vs the 20 A cap.
+  eq(core.pickConductor31016(30, 'cu', 90).size, '12', 'art17 EX3: 12 AWG Cu is the 30 A @90 C size');
+  eq(core.pickConductor31016(30, 'cu', 90).amp, 30, 'art17 EX3: 12 AWG Cu 90 C ampacity = 30 A (THHN base)');
+  eq(core.pickConductor31016(25, 'cu', 75).amp, 25, 'art17 EX3: 12 AWG Cu 75 C ampacity = 25 A (110.14(C) column)');
+  eq(core.pickConductor31016(20, 'cu', 60).amp, 20, 'art17 EX3: 12 AWG Cu 60 C ampacity = 20 A');
+  eq(core.smallConductorCap('12', 'cu'), 20, 'art17 EX3: 12 AWG Cu OCPD cap = 20 A in EVERY column');
+  eq(core.nextStdBreaker(20), 20, 'art17 EX3: 20 A standard OCPD (240.6)');
+  // EX4: aluminum caps sit one size lower than copper.
+  eq(core.pickConductor31016(20, 'al', 75).amp, 20, 'art17 EX4: 12 AWG Al 75 C ampacity = 20 A');
+  eq(core.smallConductorCap('12', 'al'), 15, 'art17 EX4: 12 AWG Al OCPD cap = 15 A (one size down from Cu)');
+  eq(core.pickConductor31016(30, 'al', 75).amp, 30, 'art17 EX4: 10 AWG Al 75 C ampacity = 30 A');
+  eq(core.smallConductorCap('10', 'al'), 25, 'art17 EX4: 10 AWG Al OCPD cap = 25 A (one size down from Cu)');
+  // EX5: cap governs (14 AWG Cu, normal conditions) — effective = min(derated, cap).
+  const d5 = core.derate31015({ requiredA: 15, ambientC: 30, ccc: 3, mat: 'cu', temp: 75, size: '14' });
+  eq(d5.baseAmp, 20, 'art17 EX5: 14 AWG Cu 75 C base = 20 A');
+  eq(d5.deratedA, 20, 'art17 EX5: derated @30 C / 3 CCC = 20 A (factors 1.00)');
+  eq(d5.capA, 15, 'art17 EX5: 240.4(D) cap = 15 A');
+  eq(d5.effectiveA, 15, 'art17 EX5: effective (governing) ampacity = 15 A (cap governs)');
+  eq(d5.passes, true, 'art17 EX5: 14 AWG Cu passes a 15 A requirement at cap-limited 15 A');
+  // EX6: derating governs (10 AWG Cu, crowded raceway) — effective = derated (below cap).
+  const d6 = core.derate31015({ requiredA: 20, ambientC: 40, ccc: 8, mat: 'cu', temp: 75, size: '10' });
+  eq(d6.baseAmp, 35, 'art17 EX6: 10 AWG Cu 75 C base = 35 A');
+  eq(d6.deratedA, 21.56, 'art17 EX6: derated @40 C (0.88) / 8 CCC (0.70) = 21.56 A');
+  eq(d6.capA, 30, 'art17 EX6: 240.4(D) cap = 30 A');
+  eq(d6.effectiveA, 21.56, 'art17 EX6: effective (governing) ampacity = 21.56 A (derated governs, below cap)');
+  // EX7: (E)/(G) carve-outs — tap on 20 A circuit protected at circuit rating; motor per 430.
+  eq(core.nextStdBreaker(20), 20, 'art17 EX7: 14 AWG tap on 20 A circuit -> OCPD 20 A (240.4(E), not the 15 A cap)');
+  eq(core.nextStdBreaker(28), 30, 'art17 EX7: representative motor OCPD calc 28 A -> 30 A (240.4(G) -> Art 430, not (D)(7))');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
