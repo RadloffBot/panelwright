@@ -21,10 +21,13 @@ eq(core.nextStdBreaker(21), 25, '21 -> 25');
 eq(core.nextStdBreaker(26.25), 30, '26.25 -> 30 (21A continuous)');
 eq(core.nextStdBreaker(90), 90, '90 -> 90');
 eq(core.nextStdBreaker(91), 100, '91 -> 100');
-eq(core.nextStdBreaker(130), 140, '130 -> 140 (standard size exists)');
+eq(core.nextStdBreaker(130), 150, '130 -> 150 (140 is NOT a standard size; 125 < 130 <= 150)');
+eq(core.nextStdBreaker(151), 175, '151 -> 175 (165 is NOT a standard size)');
+eq(core.nextStdBreaker(160), 175, '160 -> 175 (not 165)');
+eq(core.nextStdBreaker(3200), 4000, '3200 -> 4000 (4000/5000/6000 are standard)');
+eq(core.nextStdBreaker(9999), null, 'too big -> null (6000 is the largest)');
 eq(core.nextStdBreaker(0), null, '0 -> null');
 eq(core.nextStdBreaker(-5), null, 'neg -> null');
-eq(core.nextStdBreaker(9999), null, 'too big -> null');
 
 console.log('reqBreakerA:');
 eq(core.reqBreakerA(16, true), 20, '16A continuous -> 20 required');
@@ -351,7 +354,7 @@ eq(artC.generalDemandVA, 18000, 'artC demand 10,000 + 0.4*20,000 = 18,000');
 eq(artC.hvacDemandVA, 12500, 'artC HP w/ supp 6,000 + 65%*10,000 = 12,500');
 eq(artC.totalVA, 30500, 'artC total 30,500');
 approx(artC.amps, 127.08, 0.01, 'artC 127.08 A');
-eq(artC.recommendedBreakerA, 140, 'artC -> 140 A');
+eq(artC.recommendedBreakerA, 150, 'artC -> 150 A (140 is NOT a standard size — v1.15.2 fix)');
 // --- art D: space heating <4 units 65% — 1,000 sf, 2 x 10,000 VA ---
 const artD = core.serviceLoad22082({ sqft: 1000, smallApplianceCircuits: 2, laundryCircuits: 1, spaceHeatingVA: 20000, spaceUnits: 2, volt: 240 });
 eq(artD.generalDemandVA, 7500, 'artD demand 7,500 (<=10 kVA)');
@@ -1454,7 +1457,10 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(src.includes('110.15'), true, 'v1.15.1: header documents that the mis-title belongs to 110.15 (pre-2014)');
   eq(src.includes('NO NEC edition'), true, 'v1.15.1: header states no NEC edition sets a % unbalance limit on panelboards');
   // version label bumped
-  eq(src.startsWith('/*\n * PanelWright v1.15.1'), true, 'v1.15.1: version banner bumped');
+  eq(src.startsWith('/*\n * PanelWright v1.15.2'), true, 'v1.15.2: version banner bumped');
+  // v1.15.2 STD_BREAKERS citation fix: no non-standard 140/165; full 240.6(A) to 6000
+  eq(src.includes('125, 150, 175, 200'), true, 'v1.15.2: standard list has no 140/165 (125,150,175,200)');
+  eq(src.includes('2500, 3000, 4000, 5000, 6000'), true, 'v1.15.2: standard list includes 4000/5000/6000');
 }
 
 // --- 210.11 feature article (Session 34): articles/nec-21011-branch-circuits.html ---

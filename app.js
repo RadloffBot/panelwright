@@ -1,6 +1,14 @@
 /*
- * PanelWright v1.15.1 — panel schedule calculator (NEC design aid)
+ * PanelWright v1.15.2 — panel schedule calculator (NEC design aid)
  * Multi-panel projects + service-entrance rollup.
+ * v1.15.2: STD BREAKER FIX (Session 37) — the 240.6 standard-size list
+ *   (STD_BREAKERS) wrongly contained 140 A and 165 A, which are NOT standard
+ *   ampere ratings in any 2014-2023 NEC edition (the list runs
+ *   125, 150, 175, 200, …), and omitted the standard 4000/5000/6000 A.
+ *   nextStdBreaker() could therefore recommend a non-standard 140 A device
+ *   (e.g. for a 130 A calculated load) and returned null above 3000 A.
+ *   Corrected to the verbatim NEC 240.6(A) list (verified against the 2014
+ *   paragraph text and the 2017+ Table 240.6(A)); no other code math changed.
  * v1.15.1: CITATION CORRECTION (Session 35) — v1.15's correction comments
  *   mis-titled 408.3 as "Identification of Phase Line or System Voltage"
  *   (2017–2023). That title is NOT 408.3's in any edition: NEC 408.3 is
@@ -63,10 +71,19 @@
   // ================= CORE (pure, no DOM) =================
 
   // NEC 240.6 standard overcurrent device sizes (A)
+  // v1.15.2 (Session 37): corrected to the actual NEC 240.6(A) list. The
+  // previous array wrongly included 140 and 165 (NOT standard ampere ratings
+  // in any 2014-2023 edition — the list runs 125, 150, 175, 200, …) and
+  // omitted the standard 4000/5000/6000 A. Verified this session against the
+  // verbatim 2014 240.6(A) paragraph (15…3000, 4000, 5000, 6000 + fuse-only
+  // 1/3/6/10/601) and the 2017+ Table 240.6(A) (same values; the 2017 cycle
+  // converted the paragraph to a table, no value change). nextStdBreaker()
+  // now always returns a genuine standard size (130 -> 150, 160 -> 175) and
+  // resolves loads above 3000 A (e.g. 3200 -> 4000).
   const STD_BREAKERS = [
-    15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100, 110, 125, 140, 150,
-    165, 175, 200, 225, 250, 300, 350, 400, 450, 500, 600, 700, 800, 1000,
-    1200, 1600, 2000, 2500, 3000
+    15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100, 110, 125, 150, 175,
+    200, 225, 250, 300, 350, 400, 450, 500, 600, 700, 800, 1000, 1200, 1600,
+    2000, 2500, 3000, 4000, 5000, 6000
   ];
 
   function nextStdBreaker(requiredA) {
