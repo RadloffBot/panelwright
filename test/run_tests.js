@@ -1457,7 +1457,7 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(src.includes('110.15'), true, 'v1.15.1: header documents that the mis-title belongs to 110.15 (pre-2014)');
   eq(src.includes('NO NEC edition'), true, 'v1.15.1: header states no NEC edition sets a % unbalance limit on panelboards');
   // version label bumped
-  eq(src.startsWith('/*\n * PanelWright v1.15.2'), true, 'v1.15.2: version banner bumped');
+  eq(src.startsWith('/*\n * PanelWright v1.16'), true, 'v1.16: version banner bumped');
   // v1.15.2 STD_BREAKERS citation fix: no non-standard 140/165; full 240.6(A) to 6000
   eq(src.includes('125, 150, 175, 200'), true, 'v1.15.2: standard list has no 140/165 (125,150,175,200)');
   eq(src.includes('2500, 3000, 4000, 5000, 6000'), true, 'v1.15.2: standard list includes 4000/5000/6000');
@@ -1689,6 +1689,101 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(core.nextStdBreaker(160), 175, 'art13: 160 A -> 175 A (no 165 in the list)');
   eq(core.nextStdBreaker(3200), 4000, 'art13: 3200 A -> 4000 A (standard list now reaches 6000)');
   eq(core.nextStdBreaker(6000), 6000, 'art13: 6000 A -> 6000 A (largest standard)');
+}
+
+// --- v1.16 conductor-derating card (Session 38): NEC 310.15(B)(1) + 310.15(C)(1) ---
+// Factor tables coordinate-verified from the verbatim 2023-NEC print (codeelec_2023.pdf
+// pp. 29/33) + live cross-checks (conduit.site, zing2.app, SunCam 2023 PDH) 2026-08-31.
+// The derating card now performs the 310.15 work the article-13 examples previously
+// left to the user.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const src = fs.readFileSync(path.join(__dirname, '..', 'app.js'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(src.includes('AMB31015B'), true, 'v1.16: 310.15(B)(1) ambient table present in core');
+  eq(src.includes('CCC31015C'), true, 'v1.16: 310.15(C)(1) CCC table present in core');
+  eq(src.includes('function derate31015'), true, 'v1.16: derate31015() core present');
+  eq(html.includes('id="drCard"'), true, 'v1.16: derating card in index.html');
+  eq(html.includes('id="drSize"'), true, 'v1.16: check-size select present');
+  // Table shape: 16 ambient rows, 7 CCC rows
+  eq(core.AMB31015B.length, 16, 'v1.16: 310.15(B)(1) has 16 ambient rows');
+  eq(core.CCC31015C.length, 7, 'v1.16: 310.15(C)(1) has 7 CCC rows');
+  // Key ambient factors (2023 print, coordinate-verified)
+  eq(core.ambFactor31015(35, 75).factor, 0.94, 'v1.16: 35 C @75 = 0.94');
+  eq(core.ambFactor31015(30, 90).factor, 1.0, 'v1.16: 30 C @90 = 1.00 (base)');
+  eq(core.ambFactor31015(5, 60).factor, 1.29, 'v1.16: <=10 C @60 = 1.29 (open upper)');
+  eq(core.ambFactor31015(55, 90).factor, 0.76, 'v1.16: 51-55 C @90 = 0.76');
+  eq(core.ambFactor31015(85, 90).factor, 0.29, 'v1.16: 81-85 C @90 = 0.29');
+  // Blank cells the code prints no factor for (must be null, not guessed)
+  eq(core.ambFactor31015(65, 60).factor, null, 'v1.16: 61-65 C @60 = null (blank cell)');
+  eq(core.ambFactor31015(85, 75).factor, null, 'v1.16: 81-85 C @75 = null (blank cell)');
+  // Out of table
+  eq(core.ambFactor31015(90, 75).factor, null, 'v1.16: 90 C = out of table (null)');
+  // CCC factors
+  eq(core.cccFactor31015(3).pct, 100, 'v1.16: 3 CCC = 100%');
+  eq(core.cccFactor31015(4).pct, 80, 'v1.16: 4 CCC = 80%');
+  eq(core.cccFactor31015(6).pct, 80, 'v1.16: 6 CCC = 80%');
+  eq(core.cccFactor31015(7).pct, 70, 'v1.16: 7 CCC = 70%');
+  eq(core.cccFactor31015(9).pct, 70, 'v1.16: 9 CCC = 70%');
+  eq(core.cccFactor31015(10).pct, 50, 'v1.16: 10 CCC = 50%');
+  eq(core.cccFactor31015(20).pct, 50, 'v1.16: 20 CCC = 50%');
+  eq(core.cccFactor31015(21).pct, 45, 'v1.16: 21 CCC = 45%');
+  eq(core.cccFactor31015(30).pct, 45, 'v1.16: 30 CCC = 45%');
+  eq(core.cccFactor31015(31).pct, 40, 'v1.16: 31 CCC = 40%');
+  eq(core.cccFactor31015(40).pct, 40, 'v1.16: 40 CCC = 40%');
+  eq(core.cccFactor31015(41).pct, 35, 'v1.16: 41+ CCC = 35%');
+  // 240.4(D) caps
+  eq(core.smallConductorCap('14', 'cu'), 15, 'v1.16: 14 Cu cap 15 A');
+  eq(core.smallConductorCap('12', 'cu'), 20, 'v1.16: 12 Cu cap 20 A');
+  eq(core.smallConductorCap('10', 'cu'), 30, 'v1.16: 10 Cu cap 30 A');
+  eq(core.smallConductorCap('12', 'al'), 15, 'v1.16: 12 Al cap 15 A');
+  eq(core.smallConductorCap('10', 'al'), 25, 'v1.16: 10 Al cap 25 A');
+  eq(core.smallConductorCap('8', 'cu'), null, 'v1.16: 8 AWG no 240.4(D) cap');
+  // FLAGSHIP (SunCam 2023 PDH): 80 A, 35 C, 6 CCC, 75 C Cu -> 2 AWG (115 base -> 86.48)
+  const df = core.derate31015({ requiredA: 80, ambientC: 35, ccc: 6, mat: 'cu', temp: 75 });
+  eq(df.pick.size, '2', 'v1.16 flagship: 80A/6CCC/35C/75C Cu -> 2 AWG');
+  eq(df.pick.baseAmp, 115, 'v1.16 flagship: 2 AWG base 115 A');
+  eq(df.pick.deratedA, 86.48, 'v1.16 flagship: 115 x 0.94 x 0.80 = 86.48 A');
+  eq(df.effectiveA, 86.48, 'v1.16 flagship: effective 86.48 A');
+  eq(df.ambF, 0.94, 'v1.16 flagship: ambient 0.94');
+  eq(df.cccFactor, 0.8, 'v1.16 flagship: CCC 0.80');
+  // 3 AWG twin fails: 100 x 0.94 x 0.80 = 75.2 < 80
+  const d3 = core.derate31015({ requiredA: 80, ambientC: 35, ccc: 6, mat: 'cu', temp: 75, size: '3' });
+  eq(d3.deratedA, 75.2, 'v1.16: 3 AWG check = 75.2 A derated');
+  eq(d3.passes, false, 'v1.16: 3 AWG FAILS (75.2 < 80)');
+  // No derating at base conditions == plain pick
+  const dn = core.derate31015({ requiredA: 100, ambientC: 30, ccc: 3, mat: 'cu', temp: 75 });
+  const dp = core.pickConductor31016(100, 'cu', 75);
+  eq(dn.pick.size, dp.size, 'v1.16: 30C/3CCC derate == plain pick (30 C base)');
+  eq(dn.ambF, 1.0, 'v1.16: 30 C ambient factor 1.00');
+  // 240.4(D) cap governs in check mode: 12 AWG 60C @35C/6CCC = 14.56 < 15 -> fails
+  const dc = core.derate31015({ requiredA: 15, ambientC: 35, ccc: 6, mat: 'cu', temp: 60, size: '12' });
+  eq(dc.deratedA, 14.56, 'v1.16: 12 AWG 60C derated 14.56 A');
+  eq(dc.passes, false, 'v1.16: 12 AWG fails (14.56 < 15)');
+  // Blank-cell honest error (no guess): 60 C col at 65 C ambient
+  const db = core.derate31015({ requiredA: 10, ambientC: 65, ccc: 3, mat: 'cu', temp: 60 });
+  eq(db.error && /No 310\.15\(B\)\(1\) ambient factor/.test(db.error), true, 'v1.16: 60C@65C blank -> honest error');
+  eq(db.pick, null, 'v1.16: blank cell -> no pick (not guessed)');
+  // 75 C col works where 60 C is blank
+  const d75 = core.derate31015({ requiredA: 10, ambientC: 65, ccc: 3, mat: 'cu', temp: 75 });
+  eq(d75.ambF, 0.47, 'v1.16: 75C@65C works (0.47)');
+  // Aluminum pick
+  const dal = core.derate31015({ requiredA: 40, ambientC: 30, ccc: 3, mat: 'al', temp: 75 });
+  eq(dal.pick.size, '8', 'v1.16: 40 A Al @75 -> 8 AWG (40 A base)');
+  // 41+ CCC (35%): 50 A, 30C, 50 CCC, 75C -> base needed 50/0.35=142.9 -> 1/0 (150) -> 52.5
+  const d50 = core.derate31015({ requiredA: 50, ambientC: 30, ccc: 50, mat: 'cu', temp: 75 });
+  eq(d50.cccPct, 35, 'v1.16: 50 CCC = 35%');
+  eq(d50.pick.size, '1/0', 'v1.16: 50 CCC 50 A -> 1/0 (150 x 0.35 = 52.5)');
+  eq(d50.pick.deratedA, 52.5, 'v1.16: 1/0 derated 52.5 A');
+  // Out-of-table ambient -> honest error
+  const dout = core.derate31015({ requiredA: 10, ambientC: 90, ccc: 3, mat: 'cu', temp: 75 });
+  eq(dout.error && /beyond the 310\.15\(B\)\(1\) table/.test(dout.error), true, 'v1.16: 90 C ambient -> honest out-of-table error');
+  // CSV + print surfaces include the card
+  const proj = core.defaultProject();
+  proj.dr = { requiredA: 80, ambientC: 35, ccc: 6, mat: 'cu', temp: 75 };
+  eq(core.projectToCSV(proj).includes('CONDUCTOR DERATING'), true, 'v1.16: CSV includes derating section');
+  eq(core.printReportHTML(proj).includes('Conductor derating'), true, 'v1.16: print report includes derating section');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

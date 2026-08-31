@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PanelWright — Panel Schedule Calculator & Multi-Panel Load Rollup (NEC design aid)</title>
-<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method) with automatic Table 310.16 service-line (ungrounded) conductor pick, NEC 220.55 cooking appliance demand (Table 220.55, Column C + Notes 1/2/3), NEC 220.53 fixed-appliance demand (75% factor for four or more fastened-in-place appliances), NEC 220.61 feeder/service neutral load (220.61(A)/(B)/(C) + 310.12(B) 83%) with automatic Table 310.16 neutral conductor pick, NEC 220.42 lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), voltage-drop check (Ch. 9 Table 8, 3%/5% info notes 210.19/215.2), NEC 210.11 checklist, phase balancing with 5% neutral-load screening guideline, breaker sizing, CSV export and branded PDF report export. No account, no install.">
+<meta name="description" content="Free online panel schedule calculator for electricians & engineers: multi-panel projects, service-entrance load rollup, NEC 220.82 dwelling service-load (optional method) with automatic Table 310.16 service-line (ungrounded) conductor pick, NEC 220.55 cooking appliance demand (Table 220.55, Column C + Notes 1/2/3), NEC 220.53 fixed-appliance demand (75% factor for four or more fastened-in-place appliances), NEC 220.61 feeder/service neutral load (220.61(A)/(B)/(C) + 310.12(B) 83%) with automatic Table 310.16 neutral conductor pick, NEC 220.42 lighting load demand (Table 220.42, standard method), NEC 220.54 multi-dwelling dryer demand (Table 220.54), voltage-drop check (Ch. 9 Table 8, 3%/5% info notes 210.19/215.2), NEC 310.15(B)(1) + 310.15(C)(1) conductor derating (ambient + current-carrying-conductor adjustment, 240.4(D) caps), NEC 210.11 checklist, phase balancing with 5% neutral-load screening guideline, breaker sizing, CSV export and branded PDF report export. No account, no install.">
 <!-- og:url / canonical below point at the live GitHub Pages origin (published 2026-08-18). -->
 <link rel="canonical" href="https://radloffbot.github.io/panelwright/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -140,10 +140,10 @@
 <div class="wrap app-ui">
   <header class="app">
     <h1>Panel<span>Wright</span></h1>
-    <div class="tag">Panel schedules, phase balancing, service rollup, NEC 220.82 service load, 220.55 cooking, 220.53 appliance & 220.56 commercial kitchen demand, 220.61 neutral, voltage drop (Ch. 9 Table 8)</div>
+    <div class="tag">Panel schedules, phase balancing, service rollup, NEC 220.82 service load, 220.55 cooking, 220.53 appliance & 220.56 commercial kitchen demand, 220.61 neutral, voltage drop (Ch. 9 Table 8), 310.15 conductor derating</div>
     <div class="savedat" id="savedAt"></div>
   </header>
-  <p class="disc">Free design aid (v1.15.2). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
+  <p class="disc">Free design aid (v1.16). Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Built by an AI assistant — see footer.</p>
 
   <section class="card no-print">
     <h2>Project</h2>
@@ -348,6 +348,33 @@
     <div class="btnrow"><button class="ghost" id="btnVdReset">Clear voltage-drop inputs</button></div>
   </section>
 
+  <section class="card no-print" id="drCard">
+    <h2>Conductor derating — ampacity adjustments (NEC 310.15(B)(1) ambient + 310.15(C)(1) conductors-in-raceway)</h2>
+    <p class="dwnote" style="margin:0 0 10px">Applies the two <em>mandatory</em> Table 310.16 adjustments that the other cards leave to you: <strong>310.15(B)(1)</strong> ambient-temperature <em>correction</em> (multiplier from the 16-row table, 30 °C base) and <strong>310.15(C)(1)(a)</strong> <em>adjustment</em> for more than three <strong>current-carrying</strong> conductors (4–6 → 80%, 7–9 → 70%, 10–20 → 50%, 21–30 → 45%, 31–40 → 40%, 41+ → 35%). The factors <strong>multiply</strong> (310.15(A) Note): <strong>base ampacity × ambient factor × CCC factor</strong>, applied to the conductor's ampacity in the <em>same insulation-temperature column</em> you select (the 60 °C column is only available down to 51–55 °C ambient; the 75 °C column stops at 71–75 °C — the code prints no factor beyond that, and the tool says so instead of guessing). <strong>240.4(D) small-conductor OCPD caps</strong> (14/12/10 Cu, 12/10 Al) are applied as the governing ampacity where the cap is lower than the derated value. Count the <em>current-carrying</em> conductors only — the equipment grounding conductor and a neutral carrying just the unbalanced current of a multi-phase system do <strong>not</strong> count (310.15(C)(2)). Enter a size in the last box to <em>check</em> a specific conductor, or leave it empty to <em>auto-pick the smallest</em> size that survives. Factors coordinate-verified from a verbatim 2023-NEC print + live cross-checks (Session 38). 110.14(C) termination ratings still apply — verify the device rating. Design aid only. <a href="articles/nec-conductor-sizing.html">Full conductor-sizing explanation (worked 310.15 examples, the 60/75/90 °C rule, 240.4(D) caps) →</a></p>
+    <div class="grid">
+      <div><label class="f" for="drReqA">Required load (A)</label><input id="drReqA" type="number" min="0" step="0.1" placeholder="e.g. 80 (after 125% continuous if applicable)"></div>
+      <div><label class="f" for="drAmbC">Ambient temperature (°C)</label><input id="drAmbC" type="number" min="10" max="85" step="1" placeholder="30 = table base"></div>
+      <div><label class="f" for="drCcc">Current-carrying conductors</label><input id="drCcc" type="number" min="1" step="1" placeholder="3 (≤ 3 = no adjust)"></div>
+      <div><label class="f" for="drMat">Conductor material</label>
+        <select id="drMat">
+          <option value="cu" selected>Copper (Cu)</option>
+          <option value="al">Aluminum (Al)</option>
+        </select>
+      </div>
+      <div><label class="f" for="drTemp">Temperature column (insulation rating)</label>
+        <select id="drTemp">
+          <option value="60">60 °C (TW/UF; 110.14(C)(1)(a) ≤ 100 A)</option>
+          <option value="75" selected>75 °C (THW/THWN; &gt; 100 A per 110.14(C)(1)(b))</option>
+          <option value="90">90 °C (THHN/THHW — derating base only)</option>
+        </select>
+      </div>
+      <div><label class="f" for="drSize">Check a specific size (blank = auto-pick)</label><select id="drSize"></select></div>
+    </div>
+    <div class="svcsum" id="drSum" style="margin-top:12px">—</div>
+    <div class="badges" id="drBadges"></div>
+    <div class="btnrow"><button class="ghost" id="btnDrReset">Clear derating inputs</button></div>
+  </section>
+
   <section class="card no-print" id="dwCard">
     <h2>NEC 210.11 — dwelling unit minimum circuits (2017–2023 code verified; editable)</h2>
     <div class="badges" id="dwSummary"></div>
@@ -426,7 +453,7 @@
   </section>
 
   <footer>
-    <p><strong>About PanelWright.</strong> Free, open-source panel schedule tool. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max-deviation and a 5% neutral-load screening guideline (industry practice, field approximation — the NEC sets no percent-unbalance limit on panelboards; neutral-conductor minimum ampacity is governed by 220.61 / 310.12(D) — verify with real load data & power factor). The service-entrance rollup sums panel phase currents without demand factors — a screening value. The NEC 220.82 service-load card is a real optional-method demand calc for a single dwelling unit (2017–2023 code verified). The NEC 220.53 fixed-appliance card applies the 75% demand factor of 220.53 to four or more fastened-in-place appliances rated ¼ hp or 500 W or greater (2017–2023 code verified — the 2020 edition added the rating qualifier). The NEC 220.55 cooking card implements Table 220.55 (Column C + Notes 1/2/3) as verified verbatim against NFPA 70 2014 and NEC 2020 (identical; no 2023 change). The NEC 220.61 neutral card implements the 220.61(A)/(B)/(C) reductions verbatim (2014 = 2020; no 2023 change) plus the 310.12(B) 83% one-dwelling minimum neutral ampacity, and picks the neutral conductor automatically from Table 310.16 for your chosen material + temperature column (base values, 30 °C ambient, ≤3 CCC; 310.15 adjustments are yours). The voltage-drop card checks one circuit run against the 210.19(A)/215.2(A) informational-note 3%/5% guidance using NEC Chapter 9 Table 8 DC resistance at 75 °C (cross-checked against three independent 2023-edition sources; the 3%/5% figures are recommendations, not mandatory limits, and the drop pick is not an ampacity check). Print / PDF export renders the full project (rollup, every NEC card, every panel, the 210.11 checklist) as a branded report using the browser's own PDF engine — no third-party scripts, ever.</p>
+    <p><strong>About PanelWright.</strong> Free, open-source panel schedule tool. Sizing follows NEC 210.20(A)/215.2(A) continuous-load rules and 240.6 standard sizes; balancing uses IEEE-style max-deviation and a 5% neutral-load screening guideline (industry practice, field approximation — the NEC sets no percent-unbalance limit on panelboards; neutral-conductor minimum ampacity is governed by 220.61 / 310.12(D) — verify with real load data & power factor). The service-entrance rollup sums panel phase currents without demand factors — a screening value. The NEC 220.82 service-load card is a real optional-method demand calc for a single dwelling unit (2017–2023 code verified). The NEC 220.53 fixed-appliance card applies the 75% demand factor of 220.53 to four or more fastened-in-place appliances rated ¼ hp or 500 W or greater (2017–2023 code verified — the 2020 edition added the rating qualifier). The NEC 220.55 cooking card implements Table 220.55 (Column C + Notes 1/2/3) as verified verbatim against NFPA 70 2014 and NEC 2020 (identical; no 2023 change). The NEC 220.61 neutral card implements the 220.61(A)/(B)/(C) reductions verbatim (2014 = 2020; no 2023 change) plus the 310.12(B) 83% one-dwelling minimum neutral ampacity, and picks the neutral conductor automatically from Table 310.16 for your chosen material + temperature column (base values, 30 °C ambient, ≤3 CCC; apply 310.15 ambient/CCC derating in the conductor-derating card where required). The voltage-drop card checks one circuit run against the 210.19(A)/215.2(A) informational-note 3%/5% guidance using NEC Chapter 9 Table 8 DC resistance at 75 °C (cross-checked against three independent 2023-edition sources; the 3%/5% figures are recommendations, not mandatory limits, and the drop pick is not an ampacity check). The conductor-derating card applies the two mandatory Table 310.16 adjustments — 310.15(B)(1) ambient-temperature correction and 310.15(C)(1)(a) adjustment for more than three current-carrying conductors — multiplying the factors against the selected insulation-temperature column, with 240.4(D) small-conductor OCPD caps applied as the governing ampacity (factors coordinate-verified from a verbatim 2023-NEC print + live cross-checks, Session 38). Print / PDF export renders the full project (rollup, every NEC card, every panel, the 210.11 checklist) as a branded report using the browser's own PDF engine — no third-party scripts, ever.</p>
     <p>Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (no humans pretend to be the author). The code is plain HTML/JS — read it, fix it, share it (MIT). Data never leaves your browser.</p>
   </footer>
 </div>

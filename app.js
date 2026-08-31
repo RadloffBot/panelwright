@@ -1,6 +1,20 @@
 /*
- * PanelWright v1.15.2 — panel schedule calculator (NEC design aid)
+ * PanelWright v1.16 — panel schedule calculator (NEC design aid)
  * Multi-panel projects + service-entrance rollup.
+ * v1.16: CONDUCTOR DERATING CARD (Session 38) — applies the two mandatory
+ *   Table 310.16 adjustments: 310.15(B)(1) ambient-temperature correction
+ *   (16-row table, 30 °C base) and 310.15(C)(1)(a) adjustment for >3
+ *   current-carrying conductors (4-6=80, 7-9=70, 10-20=50, 21-30=45,
+ *   31-40=40, 41+=35). Factors multiply (310.15(A) Note), applied to the
+ *   SAME insulation-temperature column; 240.4(D) small-conductor OCPD caps
+ *   applied as the governing ampacity where lower. Blank 310.15(B)(1) cells
+ *   (60 °C col ≥56 °C ambient; 75 °C col ≥71 °C ambient) reported honestly,
+ *   not extrapolated. Auto-pick smallest surviving size OR check a specific
+ *   size. Factors coordinate-verified from a verbatim 2023-NEC print
+ *   (codeelec_2023.pdf p.29/p.33) + live cross-checks (conduit.site,
+ *   zing2.app, SunCam 2023 PDH) 2026-08-31. Clears the article-13 honesty
+ *   flag: the tool now performs the 310.15 derating it previously left to
+ *   the user. No other code math changed.
  * v1.15.2: STD BREAKER FIX (Session 37) — the 240.6 standard-size list
  *   (STD_BREAKERS) wrongly contained 140 A and 165 A, which are NOT standard
  *   ampere ratings in any 2014-2023 NEC edition (the list runs
@@ -965,6 +979,188 @@
     return { size: null, amp: last, label: null, over: `exceeds Table 310.16 (${last} A max for ${mat === 'cu' ? 'copper' : 'aluminum'} at ${temp} °C) — parallel conductors (310.4) or larger system` };
   }
 
+  // ---- NEC 310.15(B)(1) ambient-temperature correction factors (v1.16) ----
+  // VERIFIED at COORDINATE level (pymupdf cell geometry) from a verbatim
+  // 2023-NEC print (codeelec_2023.pdf, p. 29 — the "*Table 310.15(B)(1)(1)
+  // CORRECTION FACTORS based on 30°C (86°F)" block printed below Table 310.16)
+  // AND cross-checked against TWO independent live tables (conduit.site
+  // Table 310.15(B)(1) and zing2.app NEC 2020/2023/2026, both fetched
+  // 2026-08-31): 16 rows, "10 or less" through "81-85 °C". Cells the code
+  // leaves blank (60 °C column at 56-60 °C and hotter; 75 °C column at
+  // 71-75 °C and hotter) are null — no factor is published there, so that
+  // insulation temperature cannot be used at that ambient.
+  // Application rule (310.15(B)(1) + SunCam 2023 PDH worked example,
+  // verified on disk): the factor is applied to the conductor's rated
+  // ampacity in the SAME temperature column (the insulation rating), not to
+  // a 60 °C termination-limited value. 30 °C is the table base (factor 1.00).
+  const AMB31015B = [
+    // [label, loC, hiC, f60, f75, f90, loF, hiF]  (hiC null = open upper bound)
+    { label: '10 or less', loC: null, hiC: 10,  f60: 1.29, f75: 1.20, f90: 1.15, loF: null, hiF: 50  },
+    { label: '11-15',      loC: 11,  hiC: 15,  f60: 1.22, f75: 1.15, f90: 1.12, loF: 51,  hiF: 59  },
+    { label: '16-20',      loC: 16,  hiC: 20,  f60: 1.15, f75: 1.11, f90: 1.08, loF: 60,  hiF: 68  },
+    { label: '21-25',      loC: 21,  hiC: 25,  f60: 1.08, f75: 1.05, f90: 1.04, loF: 69,  hiF: 77  },
+    { label: '26-30',      loC: 26,  hiC: 30,  f60: 1.00, f75: 1.00, f90: 1.00, loF: 78,  hiF: 86  },
+    { label: '31-35',      loC: 31,  hiC: 35,  f60: 0.91, f75: 0.94, f90: 0.96, loF: 87,  hiF: 95  },
+    { label: '36-40',      loC: 36,  hiC: 40,  f60: 0.82, f75: 0.88, f90: 0.91, loF: 96,  hiF: 104 },
+    { label: '41-45',      loC: 41,  hiC: 45,  f60: 0.71, f75: 0.82, f90: 0.87, loF: 105, hiF: 113 },
+    { label: '46-50',      loC: 46,  hiC: 50,  f60: 0.58, f75: 0.75, f90: 0.82, loF: 114, hiF: 122 },
+    { label: '51-55',      loC: 51,  hiC: 55,  f60: 0.41, f75: 0.67, f90: 0.76, loF: 123, hiF: 131 },
+    { label: '56-60',      loC: 56,  hiC: 60,  f60: null, f75: 0.58, f90: 0.71, loF: 132, hiF: 140 },
+    { label: '61-65',      loC: 61,  hiC: 65,  f60: null, f75: 0.47, f90: 0.65, loF: 141, hiF: 149 },
+    { label: '66-70',      loC: 66,  hiC: 70,  f60: null, f75: 0.33, f90: 0.58, loF: 150, hiF: 158 },
+    { label: '71-75',      loC: 71,  hiC: 75,  f60: null, f75: null, f90: 0.50, loF: 159, hiF: 167 },
+    { label: '76-80',      loC: 76,  hiC: 80,  f60: null, f75: null, f90: 0.41, loF: 168, hiF: 176 },
+    { label: '81-85',      loC: 81,  hiC: 85,  f60: null, f75: null, f90: 0.29, loF: 177, hiF: 185 }
+  ];
+  const AMB_FKEY = { 60: 'f60', 75: 'f75', 90: 'f90' };
+
+  // ---- NEC 310.15(C)(1)(a) conductor-bundle adjustment factors (v1.16) ----
+  // VERIFIED at coordinate level (codeelec_2023.pdf p. 33, Table 310.15(C)(1))
+  // and cross-checked against the SunCam 2023 PDH example on disk (6 CCC = 80%).
+  // Applies ONLY to current-carrying conductors (CCC): the equipment grounding
+  // conductor and a neutral carrying only the unbalanced current of a
+  // multi-phase system do NOT count (310.15(C)(2)). 1-3 CCC = 100% (no adjust).
+  const CCC31015C = [
+    { min: 1,  max: 3,   pct: 100 },
+    { min: 4,  max: 6,   pct: 80  },
+    { min: 7,  max: 9,   pct: 70  },
+    { min: 10, max: 20,  pct: 50  },
+    { min: 21, max: 30,  pct: 45  },
+    { min: 31, max: 40,  pct: 40  },
+    { min: 41, max: null, pct: 35 }
+  ];
+
+  function cccFactor31015(nCCC) {
+    nCCC = Math.round(+nCCC);
+    if (!isFinite(nCCC) || nCCC < 1) return { pct: null, factor: null, reason: 'enter the number of current-carrying conductors (≥ 1)' };
+    const row = CCC31015C.find(r => nCCC >= r.min && (r.max === null || nCCC <= r.max));
+    if (!row) return { pct: null, factor: null, reason: 'conductor count out of range' };
+    return { pct: row.pct, factor: row.pct / 100, reason: null };
+  }
+
+  function ambFactor31015(ambientC, temp) {
+    ambientC = +ambientC;
+    if (!isFinite(ambientC)) return { band: null, factor: null, reason: 'enter an ambient temperature' };
+    const row = AMB31015B.find(r => (r.loC === null ? ambientC <= r.hiC : ambientC >= r.loC && ambientC <= r.hiC));
+    if (!row) {
+      const reason = ambientC > 85
+        ? 'ambient above 85 °C — beyond the 310.15(B)(1) table; re-engineer the installation (cool the ambient, reroute, or larger conductors)'
+        : 'ambient below 10 °C — the "10 or less" row (1.29/1.20/1.15) applies';
+      return { band: null, factor: null, reason };
+    }
+    return { band: row, factor: row[AMB_FKEY[temp]], reason: null };
+  }
+
+  // 240.4(D) small-conductor OCPD caps (informational; same as pickConductor31016).
+  function smallConductorCap(size, mat) {
+    if (mat === 'cu') return ({ '14': 15, '12': 20, '10': 30 })[size] || null;
+    return ({ '12': 15, '10': 25 })[size] || null;
+  }
+
+  // The v1.16 derating core. `temp` = the Table 310.16 / 310.15(B)(1) column
+  // (the insulation-temperature rating the ampacity + factor come from).
+  //   o = { requiredA, ambientC, ccc, mat, temp, size? }
+  // Returns every number the UI/CSV/print need, plus the governing ampacity
+  // (derated value vs. the 240.4(D) cap for small conductors) and a worked
+  // pick (smallest surviving size) or a specific-size check.
+  function derate31015(o) {
+    o = o || {};
+    const mat = o.mat === 'al' ? 'al' : 'cu';
+    const temp = (o.temp === 60 || o.temp === 75 || o.temp === 90) ? o.temp : 75;
+    const requiredA = (o.requiredA != null && o.requiredA !== '') ? (+o.requiredA || null) : null;
+    const ccc = (o.ccc != null && o.ccc !== '') ? (Math.round(+o.ccc) || null) : 3;
+    const ambientC = (o.ambientC != null && o.ambientC !== '') ? (+o.ambientC || null) : 30;
+    const size = (o.size != null && o.size !== '') ? String(o.size) : null;
+
+    const notes = [];
+    const cccRes = cccFactor31015(ccc == null ? 3 : ccc);
+    const ambRes = ambFactor31015(ambientC == null ? 30 : ambientC, temp);
+    const result = {
+      mat, temp, requiredA, ccc: cccRes.pct == null ? ccc : ccc, ambientC, size,
+      cccPct: cccRes.pct, cccFactor: cccRes.factor,
+      ambBand: ambRes.band ? ambRes.band.label : null,
+      ambBandF: ambRes.band ? (ambRes.band.loF == null ? '≤ ' + ambRes.band.hiF : ambRes.band.loF + '–' + ambRes.band.hiF) : null,
+      ambF: ambRes.factor,
+      baseAmp: null, deratedA: null, capA: null, effectiveA: null, passes: null,
+      pick: null, notes
+    };
+    if (requiredA == null) { result.error = 'enter the required load (A)'; return result; }
+    if (cccRes.pct == null) { result.error = cccRes.reason; return result; }
+
+    // Derate one concrete size → { row, base, derated, cap, effective, blank }
+    const derateOne = (sz) => {
+      const row = T31016.find(r => r.s === String(sz));
+      if (!row) return { error: 'unknown conductor size' };
+      const base = row.cu[T31016_COLS[temp][mat === 'al' ? 1 : 0]];
+      if (base == null) return { error: `${conductorLabel(row.s)} is not listed in the ${mat === 'cu' ? 'copper' : 'aluminum'} ${temp} °C column` };
+      if (ambRes.factor == null) return { row, base, derated: null, cap: null, effective: null, blank: true };
+      const derated = base * ambRes.factor * cccRes.factor;
+      const cap = row.small ? smallConductorCap(row.s, mat) : null;
+      const effective = cap != null ? Math.min(derated, cap) : derated;
+      return { row, base, derated: round2(derated), cap, effective: round2(effective), blank: false };
+    };
+
+    // ---- Mode B: check the specific size the user picked ----
+    if (size) {
+      const d = derateOne(size);
+      if (d.error) { result.error = d.error; return result; }
+      result.baseAmp = d.base;
+      result.sizeLabel = conductorLabel(d.row.s) + ' ' + (mat === 'cu' ? 'Cu' : 'Al');
+      if (d.blank) {
+        if (ambRes.band) {
+          result.notes.push(`No 310.15(B)(1) factor is listed for the ${temp} °C column at ${ambientC} °C ambient (row ${result.ambBand}) — ${temp} °C-rated insulation cannot be used there. Use 75 °C or 90 °C-rated insulation, or lower the operating ambient.`);
+        } else {
+          result.error = ambRes.reason;
+          result.notes = [ambRes.reason];
+        }
+        return result;
+      }
+      result.deratedA = d.derated;
+      result.capA = d.cap;
+      result.effectiveA = d.effective;
+      result.passes = d.effective >= requiredA - 1e-9;
+      if (d.cap != null && d.cap < d.derated) notes.push(`240.4(D) cap (${d.cap} A) governs — the derated ampacity (${d.derated} A) is NOT usable for a ${mat === 'cu' ? 'copper' : 'aluminum'} ${d.row.s} AWG; effective ampacity is capped at ${d.cap} A.`);
+      else if (d.cap != null) notes.push(`240.4(D): OCPD for this size is capped at ${d.cap} A (derated ampacity ${d.derated} A governs here).`);
+      result.notes = notes;
+      return result;
+    }
+
+    // ---- Mode A: pick the smallest size that survives the derating ----
+    if (ambRes.factor == null) {
+      if (ambRes.band) {
+        result.error = `No 310.15(B)(1) ambient factor is listed for the ${temp} °C column at ${ambientC} °C ambient (row ${result.ambBand}). Choose a 75 °C or 90 °C temperature column (higher-rated insulation) or re-check the operating ambient.`;
+      } else {
+        result.error = ambRes.reason;
+      }
+      return result;
+    }
+    let pick = null;
+    for (const row of T31016) {
+      const d = derateOne(row.s);
+      if (d.error || d.blank) continue;
+      if (d.effective >= requiredA - 1e-9) { pick = d; break; }
+    }
+    if (!pick) {
+      result.error = `No Table 310.16 size survives to ${requiredA} A after ambient + CCC derating — use parallel conductors (310.4), a higher-rated insulation column, or a larger system.`;
+      return result;
+    }
+    result.baseAmp = pick.base;
+    result.deratedA = pick.derated;
+    result.capA = pick.cap;
+    result.effectiveA = pick.effective;
+    result.pick = {
+      size: pick.row.s,
+      label: conductorLabel(pick.row.s) + ' ' + (mat === 'cu' ? 'Cu' : 'Al'),
+      amp: pick.effective,
+      baseAmp: pick.base,
+      deratedA: pick.derated
+    };
+    result.passes = true;
+    if (pick.cap != null && pick.cap < pick.derated) notes.push(`240.4(D): the ${pick.row.s} AWG OCPD is capped at ${pick.cap} A — the pick already used the capped value as the governing ampacity.`);
+    result.notes = notes;
+    return result;
+  }
+
   // ---- Voltage drop — NEC Chapter 9, Table 8 (v1.13) ----
   // VERIFIED (Session 25, 2026-08-28): CH9_T8 DC resistance (ohms per 1,000 ft
   // at 75 °C) cross-checked against THREE independent live sources:
@@ -1281,6 +1477,41 @@
       L.push(['Note', 'Vd = C × I × R with C = 2 (single-phase) or √3 (three-phase). 3% per branch circuit / 5% feeder + branch combined are INFORMATIONAL NOTE recommendations (210.19(A) Info Note 3, 215.2(A)(1) Info Note 2 — NEC 2020 text on disk), not mandatory limits. Table 8 DC values at 75 °C — verify against the adopted NEC edition (2026 NEC: Ch. 9 unchanged for these values). Design aid only.']);
       L.push([]);
     }
+    // v1.16: conductor derating card
+    const drState = (project && project.dr) || null;
+    if (drState && (+drState.requiredA || 0) > 0) {
+      const dr = derate31015(drState);
+      L.push(['CONDUCTOR DERATING — AMPACITY ADJUSTMENTS (NEC 310.15(B)(1) ambient + 310.15(C)(1) CCC)', '']);
+      L.push(['Required load (A)', dr.requiredA]);
+      L.push(['Ambient temperature (°C)', dr.ambientC + (dr.ambBand ? ' — ' + dr.ambBand + ' °C row (' + dr.ambBandF + ' °F)' : '')]);
+      L.push(['Current-carrying conductors', dr.ccc + ' — ' + (dr.cccPct != null ? dr.cccPct + '%' : '')]);
+      L.push(['Temperature column', dr.temp + ' °C']);
+      L.push(['Material', dr.mat === 'cu' ? 'copper' : 'aluminum']);
+      if (dr.error) {
+        L.push(['Result', 'ERROR — ' + dr.error]);
+      } else if (dr.size) {
+        L.push(['Checked size', dr.sizeLabel]);
+        L.push(['Base ampacity (Table 310.16)', dr.baseAmp + ' A']);
+        L.push(['Ambient factor 310.15(B)(1)', dr.ambF == null ? 'not listed for this column/row' : dr.ambF]);
+        L.push(['CCC factor 310.15(C)(1)', dr.cccFactor]);
+        L.push(['Derated ampacity', dr.deratedA == null ? 'n/a' : dr.deratedA + ' A']);
+        if (dr.capA != null) L.push(['240.4(D) OCPD cap', dr.capA + ' A']);
+        L.push(['Effective ampacity', dr.effectiveA == null ? 'n/a' : dr.effectiveA + ' A']);
+        L.push(['Result', dr.passes == null ? 'no published factor — see note' : (dr.passes ? 'PASSES (effective ' + dr.effectiveA + ' A ≥ ' + dr.requiredA + ' A)' : 'FAILS (effective ' + dr.effectiveA + ' A < ' + dr.requiredA + ' A)')]);
+        dr.notes.forEach(nt => L.push(['Note', nt]));
+      } else if (dr.pick) {
+        L.push(['Base ampacity (Table 310.16)', dr.pick.baseAmp + ' A']);
+        L.push(['Ambient factor 310.15(B)(1)', dr.ambF]);
+        L.push(['CCC factor 310.15(C)(1)', dr.cccFactor]);
+        L.push(['Derated ampacity', dr.pick.deratedA + ' A']);
+        if (dr.capA != null) L.push(['240.4(D) OCPD cap', dr.capA + ' A']);
+        L.push(['Effective ampacity', dr.effectiveA + ' A']);
+        L.push(['Picked conductor', dr.pick.label + ' (' + dr.temp + ' °C column) — governs at ' + dr.effectiveA + ' A']);
+        dr.notes.forEach(nt => L.push(['Note', nt]));
+      }
+      L.push(['Note', 'Factors multiply (310.15(A) Note). The ambient factor applies to the conductor\'s ampacity in the SAME insulation-temperature column (310.15(B)(1)); 110.14(C) still limits terminations — verify the device rating before relying on the 75/90 °C columns. 310.15(C)(1) counts CURRENT-CARRYING conductors only (EGC and an unbalanced-neutral of a multi-phase system excluded, 310.15(C)(2)). Factors coordinate-verified from a verbatim 2023-NEC print + live cross-checks (2026-08-31). Design aid only — verify against the adopted NEC edition.']);
+      L.push([]);
+    }
     L.push(['DWELLING UNIT MINIMUM CIRCUITS (NEC 210.11)', '']);
     L.push(['Requirement', 'Cite', 'Required', 'Auto-detected', 'Status', 'Result', 'Note']);
     const dws = dwStatus(project);
@@ -1582,6 +1813,32 @@
       inner += '<p class="pr-note">Vd = C × I × R with C = 2 (single-phase, one round trip) or √3 (three-phase line-to-line). The 3% (branch) / 5% (feeder + branch combined) figures are INFORMATIONAL NOTE recommendations — 210.19(A) Info Note No. 3 and 215.2(A)(1) Info Note No. 2 (NEC 2020 text) — not mandatory limits. Chapter 9 Table 8 DC resistance at 75 °C; verify against the adopted NEC edition. Design aid only.</p>';
       out.push(reportSec('Voltage drop', 'Voltage drop — one circuit run (NEC Ch. 9 Table 8; 210.19(A)/215.2(A) info-note 3%/5%)', inner));
     }
+    // ---- Conductor derating (v1.16) ----
+    const dr = project.dr ? derate31015(project.dr) : null;
+    if (dr && dr.requiredA) {
+      let inner = '<table class="pr-meta"><tbody>' +
+        prRow('Required load', dr.requiredA + ' A') +
+        prRow('Ambient temperature', dr.ambientC + ' °C (' + escH(dr.ambBandF) + ' °F, ' + escH(dr.ambBand) + ' °C row)') +
+        prRow('Current-carrying conductors', dr.ccc + ' — ' + (dr.cccPct != null ? dr.cccPct + '%' : '') + ' (310.15(C)(1))') +
+        prRow('Temperature column', dr.temp + ' °C (' + (dr.mat === 'cu' ? 'copper' : 'aluminum') + ')') +
+        prRow('Ambient factor 310.15(B)(1)', dr.ambF == null ? 'not listed' : dr.ambF) +
+        (dr.baseAmp != null ? prRow('Base ampacity (Table 310.16)', dr.baseAmp + ' A') : '') +
+        (dr.deratedA != null ? prRow('Derated ampacity', dr.deratedA + ' A') : '') +
+        (dr.capA != null ? prRow('240.4(D) OCPD cap', dr.capA + ' A') : '') +
+        (dr.effectiveA != null ? prRow('Effective ampacity', dr.effectiveA + ' A', 'big') : '') +
+        '</tbody></table>';
+      if (dr.error) {
+        inner += '<p class="pr-badges"><strong>' + escH(dr.error) + '</strong></p>';
+      } else if (dr.size) {
+        if (dr.passes != null) inner += '<p class="pr-badges"><strong>' + escH(dr.sizeLabel) + ' — ' + (dr.passes ? '✓ survives' : '✗ fails') + ': effective ' + dr.effectiveA + ' A vs ' + dr.requiredA + ' A required</strong></p>';
+        dr.notes.forEach(nt => inner += '<p class="pr-badges">' + escH(nt) + '</p>');
+      } else if (dr.pick) {
+        inner += '<p class="pr-badges"><strong>Picked: ' + escH(dr.pick.label) + ' at the ' + dr.temp + ' °C column — governs at ' + dr.effectiveA + ' A</strong></p>';
+        dr.notes.forEach(nt => inner += '<p class="pr-badges">' + escH(nt) + '</p>');
+      }
+      inner += '<p class="pr-note">Factors multiply (310.15(A) Note). The 310.15(B)(1) ambient factor applies to the ampacity in the same insulation-temperature column; 110.14(C) still limits terminations. 310.15(C)(1) counts current-carrying conductors only (EGC and unbalanced neutral excluded, 310.15(C)(2)). Coordinate-verified 2023-NEC factors (Session 38). Design aid only — verify against the adopted NEC edition.</p>';
+      out.push(reportSec('Conductor derating', 'Conductor derating — ampacity adjustments (NEC 310.15(B)(1) ambient + 310.15(C)(1) CCC)', inner));
+    }
     // ---- NEC 210.11 checklist ----
     {
       const dws = dwStatus(project);
@@ -1646,6 +1903,7 @@
     cookingABFactorPct, cookingNote3KW, cookingDemand22055,
     neutralLoad22061,
     T31016, T31016_COLS, AWG_SIZES, conductorLabel, pickConductor31016,
+    AMB31015B, CCC31015C, cccFactor31015, ambFactor31015, derate31015, smallConductorCap,
     CH9_T8, ch9Row, voltageDrop, sizeForVoltageDrop,
     toCSV, projectToCSV, printReportHTML, toJSON, fromJSON, migrate, round2
   };
@@ -2259,6 +2517,80 @@
     badgesEl.innerHTML = b;
   }
 
+  // ---- Conductor derating card (v1.16, NEC 310.15(B)(1) + (C)(1)) ----
+  function drFields() {
+    const el = id => $('#dr' + id);
+    const n = x => (el(x) && el(x).value !== '') ? (+el(x).value || null) : null;
+    return {
+      requiredA: n('ReqA'),
+      ambientC: n('AmbC'),
+      ccc: n('Ccc'),
+      mat: (el('Mat') && el('Mat').value === 'al') ? 'al' : 'cu',
+      temp: el('Temp') ? (el('Temp').value === '60' ? 60 : el('Temp').value === '90' ? 90 : 75) : 75,
+      size: el('Size') && el('Size').value !== '' ? el('Size').value : ''
+    };
+  }
+
+  function renderDrInputs() {
+    const l = state.dr || {};
+    const set = (id, v) => { const e = $('#dr' + id); if (e) e.value = (v == null ? '' : v); };
+    set('ReqA', l.requiredA);
+    set('AmbC', l.ambientC);
+    set('Ccc', l.ccc);
+    set('Mat', l.mat || 'cu');
+    set('Temp', l.temp || 75);
+    set('Size', l.size || '');
+  }
+
+  function renderDr() {
+    const l = drFields();
+    const sumEl = $('#drSum'), badgesEl = $('#drBadges');
+    if (!sumEl || !badgesEl) return;
+    if (!(l.requiredA > 0)) {
+      sumEl.textContent = '—';
+      badgesEl.innerHTML = '<span class="badge">Enter the required load (A) — plus ambient and the current-carrying conductor count — to derate per 310.15(B)(1) + (C)(1)</span>';
+      return;
+    }
+    const r = derate31015(l);
+    if (r.error) {
+      sumEl.textContent = '—';
+      badgesEl.innerHTML = '<span class="badge bad">' + esc(r.error) + '</span>';
+      return;
+    }
+    const f = r.cccFactor || 1, fa = r.ambF == null ? '—' : r.ambF;
+    if (r.size) {
+      // specific-size check mode
+      if (r.passes == null) {
+        sumEl.textContent = `${r.sizeLabel} @ ${r.ambientC} °C, ${r.ccc} CCC — ${r.ambBand} °C row`;
+        badgesEl.innerHTML = r.notes.map(n => `<span class="badge warn">${esc(n)}</span>`).join('') + '<span class="badge">Design aid only — verify against the adopted NEC edition.</span>';
+        return;
+      }
+      sumEl.textContent = `${r.sizeLabel}: ${r.baseAmp} A base × ${fa} (ambient, ${r.ambBand} °C row) × ${f} (${r.cccPct}%, ${r.ccc} CCC) = ${r.deratedA} A derated${r.capA != null ? (r.capA < r.deratedA ? ` → ${r.capA} A effective (240.4(D) cap)` : '') : ''} — needs ${r.requiredA} A`;
+      const cls = r.passes ? 'ok' : 'bad';
+      let b = `<span class="badge ${cls}">${r.passes ? '✓ survives — effective ampacity ' + r.effectiveA + ' A ≥ ' + r.requiredA + ' A' : '✗ fails — effective ampacity ' + r.effectiveA + ' A < ' + r.requiredA + ' A required'}</span>`;
+      if (!r.passes) {
+        const pick = derate31015({ requiredA: l.requiredA, ambientC: l.ambientC, ccc: l.ccc, mat: l.mat, temp: l.temp });
+        if (pick.pick) b += `<span class="badge ok">Smallest size that survives: ${esc(pick.pick.label)} (base ${pick.pick.baseAmp} A → ${pick.pick.deratedA} A derated)</span>`;
+        else if (pick.error) b += `<span class="badge warn">${esc(pick.error)}</span>`;
+      }
+      b += r.notes.map(n => `<span class="badge">${esc(n)}</span>`).join('');
+      b += '<span class="badge">Factors multiply (310.15(A) Note) — derate the insulation-temperature column; 110.14(C) still caps terminations. Design aid only.</span>';
+      badgesEl.innerHTML = b;
+      return;
+    }
+    // pick mode
+    if (!r.pick) {
+      sumEl.textContent = '—';
+      badgesEl.innerHTML = '<span class="badge bad">' + esc(r.error) + '</span>';
+      return;
+    }
+    sumEl.textContent = `${r.pick.label} — ${r.pick.baseAmp} A base × ${fa} (ambient, ${r.ambBand} °C row) × ${f} (${r.cccPct}%, ${r.ccc} CCC) = ${r.pick.deratedA} A derated — governs at ${r.effectiveA} A for the ${r.requiredA} A load`;
+    let b = `<span class="badge ok">✓ ${esc(r.pick.label)} at the ${r.temp} °C column (${r.mat === 'cu' ? 'copper' : 'aluminum'})</span>`;
+    b += r.notes.map(n => `<span class="badge">${esc(n)}</span>`).join('');
+    b += '<span class="badge">310.15(B)(1) ambient + 310.15(C)(1) CCC factors (2023 NEC, coordinate-verified). The factor applies to the insulation-temperature column; 110.14(C) still caps terminations. Design aid only.</span>';
+    badgesEl.innerHTML = b;
+  }
+
   function renderDw() {
     const dw = dwStatus(state);
     const allMet = dw.metCount === dw.total;
@@ -2297,7 +2629,7 @@
     el.innerHTML = printReportHTML(state);
   }
 
-  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderFaInputs(); renderFa(); renderK56Inputs(); renderK56(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderVdInputs(); renderVd(); renderDw(); renderPrintReport(); }
+  function renderAll() { renderPanels(); renderTable(); renderBadges(); renderService(); renderLcInputs(); renderLc(); renderDdInputs(); renderDd(); renderFaInputs(); renderFa(); renderK56Inputs(); renderK56(); renderLtInputs(); renderLt(); renderCkInputs(); renderCk(); renderNlInputs(); renderNl(); renderVdInputs(); renderVd(); renderDrInputs(); renderDr(); renderDw(); renderPrintReport(); }
 
   // ---- actions ----
   function addCircuit() {
@@ -2460,6 +2792,11 @@
       const sel = $('#vdSize');
       if (sel) sel.innerHTML = VD_SIZES.map(s => `<option value="${s}">${conductorLabel(s)}</option>`).join('');
     }
+    // v1.16: fill the derating "check this size" select from Table 310.16
+    {
+      const sel = $('#drSize');
+      if (sel) sel.innerHTML = '<option value="">(auto-pick smallest)</option>' + T31016.map(r => `<option value="${r.s}">${conductorLabel(r.s)}</option>`).join('');
+    }
     renderAll();
     updateSavedAt();
 
@@ -2605,6 +2942,21 @@
     $('#btnVdReset').onclick = () => {
       state.vd = null;
       saveState(); renderVdInputs(); renderVd();
+    };
+    // v1.16: conductor derating card
+    $('#drCard').addEventListener('input', e => {
+      if (!e.target.id || !e.target.id.startsWith('dr')) return;
+      state.dr = drFields();
+      saveState(); renderDr();
+    });
+    $('#drCard').addEventListener('change', e => {
+      if (e.target.id !== 'drSize' && e.target.id !== 'drMat' && e.target.id !== 'drTemp') return;
+      state.dr = drFields();
+      saveState(); renderDr();
+    });
+    $('#btnDrReset').onclick = () => {
+      state.dr = null;
+      saveState(); renderDrInputs(); renderDr();
     };
     $('#fileImport').onchange = e => {
       if (e.target.files && e.target.files[0]) importJSON(e.target.files[0]);
