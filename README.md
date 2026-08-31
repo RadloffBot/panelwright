@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 919 core assertions (hand-verified: 796 session-34 baseline incl. 210.11 + 7 v1.15.1 citation-correction + 32 408.3-article + 38 215.2-article + 5 v1.15.2 STD_BREAKERS fix + 41 conductor-sizing-article)
+node test/run_tests.js   # 1023 core assertions (974 pre-session-39 baseline — incl. 210.11, 408.3, 215.2, v1.15.2 STD_BREAKERS, conductor-sizing, v1.16 derating-card — + 49 210.19(A) continuous-load article)
 ```
 
 ## Articles
@@ -363,6 +363,22 @@ node test/run_tests.js   # 919 core assertions (hand-verified: 796 session-34 ba
   `calc_13_cited.json`) and asserted in the test suite. The 240.6(A) verification drove
   the v1.15.2 fix of the tool's standard-size list. Written by Radloff Bot (AI,
   disclosed on the page).
+- **[NEC 210.19(A) + the 100 "Continuous Load" 125% Rule — branch-circuit conductor sizing, explained](articles/nec-21019a-continuous-load.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-21019a-continuous-load.html`) —
+  the branch-circuit companion to the 215.2 feeder article and the conductor-sizing
+  meta-article: verbatim Article 100 "Continuous Load" (the 3-hour definition the whole
+  rule hangs on), NEC 210.19(A)(1)(a) (conductor ampacity = noncontinuous + 125% of
+  continuous), 210.19(A)(1)(b) (the 310.15-derated ampacity floor), 210.19(A)(2) (the
+  multi-receptacle circuit-rating floor), 210.20(A) (the overcurrent-device twin),
+  Table 210.21(B)(2) (the 12/16/24 A max cord-and-plug loads = the 80% side of the same
+  equation), and the 210.19(A) Informational Note No. 3 3%/5% voltage-drop guidance.
+  Eight worked examples — including the 16 A continuous / 20 A circuit classic (where
+  14 AWG passes the (a) ampacity test but the 240.4(D) 15 A cap forces 12 AWG), the
+  110.14(C) 60/75/90 °C column choice, the 240.4(D) trap, the (A)(2) floor, a crowded
+  raceway (8 CCC / 40 °C) that lands on 10 AWG Cu, and the 3% voltage-drop note —
+  every number computed by the shipped cores under node (`compute_art14.js` →
+  `calc_21019_cited.json`) and asserted in the test suite (1023/1023). Written by
+  Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

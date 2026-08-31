@@ -1786,5 +1786,81 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(core.printReportHTML(proj).includes('Conductor derating'), true, 'v1.16: print report includes derating section');
 }
 
+// --- Article 14 (Session 39): articles/nec-21019a-continuous-load.html ---
+// 210.19(A) + Article 100 "Continuous Load" + 210.20(A). Worked examples EX1-EX8
+// computed by the shipped cores (income-lab/compute_art14.js -> calc_21019_cited.json);
+// asserted here so the article can never drift from the tool.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-21019a-continuous-load.html'), 'utf8');
+  eq(art.includes('nec-21019a-continuous-load.html'), true, 'art14: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-21019a-continuous-load.html'), true, 'art14: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art14: AI disclosure present');
+  eq(art.includes('A load where the maximum current is expected to continue for 3 hours or more'), true, 'art14: Art 100 Continuous Load def verbatim');
+  eq(art.includes('ampacity not less than the noncontinuous load plus 125 percent of the continuous load'), true, 'art14: verbatim 210.19(A)(1)(a) 125% rule');
+  eq(art.includes('rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent'), true, 'art14: verbatim 210.20(A) OCPD rule');
+  eq(art.includes('voltage drop exceeding 3 percent'), true, 'art14: 210.19(A) Info Note 3 (3%) present');
+  eq(art.includes('does not exceed 5 percent'), true, 'art14: 210.19(A) Info Note 3 (5%) present');
+  eq(art.includes('100% divided by 80% equals 125%'), true, 'art14: 80/125 symmetry (PDH) quoted');
+  // EX1: 16 A continuous -> reqA 20 A, OCPD 20 A; 14 AWG ampacity pick (20 A @75) but 240.4(D) cap 15 A < 20 A OCPD -> 12 AWG
+  eq(Math.round((0 + 1.25 * 16) * 100) / 100, 20, 'art14 EX1: 1.25 x 16 = 20 A required');
+  eq(core.nextStdBreaker(20), 20, 'art14 EX1: OCPD 20 A');
+  eq(core.pickConductor31016(20, 'cu', 75).size, '14', 'art14 EX1: (a)-pick 14 AWG (20 A @75C)');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art14 EX1: 14 Cu 240.4(D) cap 15 A < 20 A OCPD -> 14 AWG fails OCPD gate');
+  eq(core.smallConductorCap('12', 'cu'), 20, 'art14 EX1: 12 Cu cap 20 A >= 20 A OCPD -> 12 AWG resolves');
+  eq(20 * 0.80, 16, 'art14 EX1: 80% reciprocal (20 x 0.8 = 16 A max continuous)');
+  // EX2: 8 A continuous single-outlet -> reqA 10 A, OCPD 15 A, 14 AWG (cap 15 A == OCPD)
+  eq(Math.round(1.25 * 8), 10, 'art14 EX2: 1.25 x 8 = 10 A required');
+  eq(core.nextStdBreaker(10), 15, 'art14 EX2: OCPD 15 A');
+  eq(core.pickConductor31016(10, 'cu', 75).size, '14', 'art14 EX2: 14 AWG (20 A @75C)');
+  // EX3: 20 noncont + 15 cont -> reqA 38.75, OCPD 40, (A)(2) floor 40 -> 8 AWG (50 A)
+  eq(Math.round((20 + 1.25 * 15) * 100) / 100, 38.75, 'art14 EX3: 20 + 1.25 x 15 = 38.75 A required');
+  eq(core.nextStdBreaker(38.75), 40, 'art14 EX3: OCPD 40 A');
+  const a3 = core.pickConductor31016(40, 'cu', 75);
+  eq(a3.size, '8', 'art14 EX3: (A)(2) floor 40 A -> 8 AWG');
+  eq(a3.amp, 50, 'art14 EX3: 8 AWG = 50 A @75C');
+  eq(core.smallConductorCap('10', 'cu'), 30, 'art14 EX3: 10 Cu cap 30 A < 40 A OCPD (second reason 10 AWG fails)');
+  // EX4: 20 A requirement across 110.14(C) columns: 60C->12 AWG, 75C->14 AWG, 90C base 25 A
+  eq(core.pickConductor31016(20, 'cu', 60).size, '12', 'art14 EX4: 60C column -> 12 AWG');
+  eq(core.pickConductor31016(20, 'cu', 75).size, '14', 'art14 EX4: 75C column -> 14 AWG');
+  eq(core.pickConductor31016(20, 'cu', 90).amp, 25, 'art14 EX4: 14 AWG 90C base 25 A (derating base only)');
+  // EX5: 15 A continuous -> reqA 18.75, OCPD 20; 14 AWG passes (a) but cap 15 < 20 -> 12 AWG
+  eq(Math.round(1.25 * 15 * 100) / 100, 18.75, 'art14 EX5: 1.25 x 15 = 18.75 A required');
+  eq(core.nextStdBreaker(18.75), 20, 'art14 EX5: OCPD 20 A');
+  eq(core.pickConductor31016(18.75, 'cu', 75).size, '14', 'art14 EX5: (a)-pick 14 AWG (20 A >= 18.75 A)');
+  eq(core.smallConductorCap('14', 'cu') < 20, true, 'art14 EX5: 15 A cap < 20 A OCPD -> 14 AWG NOT usable');
+  const row12 = core.T31016.find(r => r.s === '12');
+  eq(row12.cu[1], 25, 'art14 EX5: 12 AWG Cu 75C base 25 A');
+  eq(core.smallConductorCap('12', 'cu') >= 20, true, 'art14 EX5: 12 Cu cap 20 A >= 20 A OCPD -> 12 AWG resolves');
+  // EX6: (A)(2) floor — 21 noncont + 5 cont: (a) 27.25 A, rating 30 A governs -> 10 AWG (35 A)
+  eq(Math.round((21 + 1.25 * 5) * 100) / 100, 27.25, 'art14 EX6: 21 + 1.25 x 5 = 27.25 A ((a) number)');
+  eq(core.nextStdBreaker(27.25), 30, 'art14 EX6: OCPD 30 A');
+  const a6 = core.pickConductor31016(Math.max(27.25, 30), 'cu', 75);
+  eq(a6.size, '10', 'art14 EX6: (A)(2) floor 30 A -> 10 AWG (35 A)');
+  // EX7: 16 A continuous, 8 CCC (70%), 40 C (0.88 @75) -> 14 AWG 12.32 fail, 12 AWG 15.4 fail, 10 AWG 21.56 pass
+  eq(core.ambFactor31015(40, 75).factor, 0.88, 'art14 EX7: 40 C @75 = 0.88');
+  eq(core.cccFactor31015(8).pct, 70, 'art14 EX7: 8 CCC = 70%');
+  const d7_14 = core.derate31015({ requiredA: 16, ambientC: 40, ccc: 8, mat: 'cu', temp: 75, size: '14' });
+  eq(d7_14.deratedA, 12.32, 'art14 EX7: 14 AWG derated 12.32 A');
+  eq(d7_14.passes, false, 'art14 EX7: 14 AWG FAILS (12.32 < 16)');
+  const d7_12 = core.derate31015({ requiredA: 16, ambientC: 40, ccc: 8, mat: 'cu', temp: 75, size: '12' });
+  eq(d7_12.deratedA, 15.4, 'art14 EX7: 12 AWG derated 15.4 A');
+  eq(d7_12.passes, false, 'art14 EX7: 12 AWG FAILS (15.4 < 16)');
+  const d7 = core.derate31015({ requiredA: 16, ambientC: 40, ccc: 8, mat: 'cu', temp: 75 });
+  eq(d7.pick.size, '10', 'art14 EX7: derated pick -> 10 AWG');
+  eq(d7.pick.deratedA, 21.56, 'art14 EX7: 10 AWG derated 21.56 A >= 16 A');
+  eq(core.nextStdBreaker(1.25 * 16), 20, 'art14 EX7: OCPD still 20 A (derating changes wire, not requirement)');
+  // EX8: voltage drop 30 A, 100 ft, 120 V, 10 AWG -> 7.26 V = 6.05% (bad); smallest <=3% -> 6 AWG 2.46%
+  const a8 = core.voltageDrop({ amps: 30, lengthFt: 100, volt: 120, size: '10', mat: 'cu', config: '1ph' });
+  eq(a8.vdV, 7.26, 'art14 EX8: 10 AWG drop 7.26 V');
+  eq(a8.pctV, 6.05, 'art14 EX8: 6.05% (bad, over the 5% note)');
+  const a8sm = core.sizeForVoltageDrop({ amps: 30, lengthFt: 100, volt: 120, mat: 'cu', config: '1ph' });
+  eq(a8sm.pick.size, '6', 'art14 EX8: smallest <=3% -> 6 AWG');
+  eq(a8sm.pick.pctV, 2.46, 'art14 EX8: 6 AWG = 2.46%');
+  // core's own cap note text (what the tool emits on a 14 AWG pick)
+  eq(core.pickConductor31016(20, 'cu', 75).notes.join(' ').includes('capped at 15 A'), true, 'art14: 14 AWG pick carries the 240.4(D) cap note (15 A)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
