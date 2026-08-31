@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1023 core assertions (974 pre-session-39 baseline — incl. 210.11, 408.3, 215.2, v1.15.2 STD_BREAKERS, conductor-sizing, v1.16 derating-card — + 49 210.19(A) continuous-load article)
+node test/run_tests.js   # 1055 core assertions (1023 pre-session-40 baseline — incl. 210.11, 408.3, 215.2, v1.15.2 STD_BREAKERS, conductor-sizing, v1.16 derating-card, 210.19(A) continuous-load — + 32 210.23+210.24 permissible-loads article)
 ```
 
 ## Articles
@@ -379,6 +379,18 @@ node test/run_tests.js   # 1023 core assertions (974 pre-session-39 baseline —
   every number computed by the shipped cores under node (`compute_art14.js` →
   `calc_21019_cited.json`) and asserted in the test suite (1023/1023). Written by
   Radloff Bot (AI, disclosed on the page).
+- **[NEC 210.23 + 210.24 — Permissible Loads on Multiple-Outlet Branch Circuits, explained](articles/nec-21023-permissible-loads.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-21023-permissible-loads.html`) —
+  the load-permission companion to the 210.19(A) continuous-load and 210.11
+  branch-circuit articles: what each circuit size may actually supply. Verbatim
+  210.23 (the 80% cord-and-plug cap, the 50% fixed-equipment cap, the 30/40/50 A
+  occupancy limits, the >50 A nonlighting-only rule) and the full Table 210.24
+  summary (14/12/10/8/6 AWG Cu picks, 15/20/30/40/50 A protection, receptacle
+  ratings), plus the Table 210.21(B)(2) 12/16/24 A per-receptacle limits and the
+  2023 additions (10-ampere branch circuits, Table 210.24(1)/(2) split). Seven
+  worked examples — every number computed by the shipped cores under node
+  (`compute_art15.js` → `calc_21023_cited.json`) and asserted in the test suite
+  (1055/1055). Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

@@ -1862,5 +1862,54 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(core.pickConductor31016(20, 'cu', 75).notes.join(' ').includes('capped at 15 A'), true, 'art14: 14 AWG pick carries the 240.4(D) cap note (15 A)');
 }
 
+// --- Article 15 (Session 40): articles/nec-21023-permissible-loads.html ---
+// NEC 210.23 (permissible loads, multiple-outlet branch circuits) + 210.24
+// (branch-circuit requirements summary table) + Table 210.21(B)(2). Worked
+// examples EX1-EX7 computed by the shipped cores (income-lab/compute_art15.js
+// -> calc_21023_cited.json); asserted here so the article can never drift.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-21023-permissible-loads.html'), 'utf8');
+  eq(art.includes('nec-21023-permissible-loads.html'), true, 'art15: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-21023-permissible-loads.html'), true, 'art15: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art15: AI disclosure present');
+  eq(art.includes('In no case shall the load exceed the branch-circuit ampere rating'), true, 'art15: 210.23 opening sentence verbatim');
+  eq(art.includes('shall not exceed 80 percent of the branch-circuit ampere rating'), true, 'art15: 210.23(A)(1) 80% cap verbatim');
+  eq(art.includes('shall not exceed 50 percent of the branch-circuit ampere rating'), true, 'art15: 210.23(A)(2) 50% cap verbatim');
+  eq(art.includes('Branch circuits larger than 50 amperes shall supply only nonlighting outlet loads'), true, 'art15: 210.23(D) >50 A verbatim');
+  eq(art.includes('This table provides only a summary of minimum requirements'), true, 'art15: 210.24 summary-only sentence verbatim');
+  eq(art.includes('Dwelling unit exhaust fans on bathroom or laundry room lighting circuits'), true, 'art15: 2023 10-A permitted loads (ELR) present');
+  eq(art.includes('Garage door openers'), true, 'art15: 2023 10-A not-permitted list present');
+  eq(art.includes('Table 210.24(1)'), true, 'art15: 2023 split-table naming flagged');
+  // EX1: 80% cord-and-plug cap on 20 A
+  eq(Math.round(20 * 0.8 * 100) / 100, 16, 'art15 EX1: 80% of 20 A = 16 A cap');
+  eq(Math.round(1920 / 120 * 100) / 100, 16, 'art15 EX1: 1920 W @120 V = 16.00 A (at cap, pass)');
+  eq(Math.round(2400 / 120 * 100) / 100, 20, 'art15 EX1: 2400 W @120 V = 20.00 A (> 16 A cap, fail)');
+  // EX2: 50% fastened-in-place cap on 20 A
+  eq(Math.round(20 * 0.5 * 100) / 100, 10, 'art15 EX2: 50% of 20 A = 10 A cap');
+  eq(Math.round(1200 / 120 * 100) / 100, 10, 'art15 EX2: 1200 W @120 V = 10.00 A (at cap, pass)');
+  eq(Math.round(1400 / 120 * 100) / 100, 11.67, 'art15 EX2: 1400 W @120 V = 11.67 A (> 10 A cap, fail)');
+  // EX3: Table 210.24 picks reproduced by the shipped 310.16 core (60 C column)
+  eq(core.pickConductor31016(15, 'cu', 60).size, '14', 'art15 EX3: 15 A -> 14 AWG Cu (table min)');
+  eq(core.pickConductor31016(20, 'cu', 60).size, '12', 'art15 EX3: 20 A -> 12 AWG Cu (table min)');
+  eq(core.pickConductor31016(30, 'cu', 60).size, '10', 'art15 EX3: 30 A -> 10 AWG Cu (table min)');
+  eq(core.pickConductor31016(40, 'cu', 60).size, '8', 'art15 EX3: 40 A -> 8 AWG Cu (table min)');
+  eq(core.pickConductor31016(50, 'cu', 60).size, '6', 'art15 EX3: 50 A -> 6 AWG Cu (table min)');
+  eq(core.pickConductor31016(20, 'al', 60).size, '10', 'art15 EX3: 20 A Al -> 10 AWG (table Al)');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art15 EX3: 240.4(D) 14 Cu cap 15 A (binds)');
+  eq(core.smallConductorCap('12', 'cu'), 20, 'art15 EX3: 240.4(D) 12 Cu cap 20 A (binds)');
+  eq(core.smallConductorCap('10', 'cu'), 30, 'art15 EX3: 240.4(D) 10 Cu cap 30 A (binds)');
+  // EX4: 2023 10 A circuit
+  eq(core.pickConductor31016(10, 'cu', 60).size, '14', 'art15 EX4: 10 A -> 14 AWG Cu pick');
+  eq(core.nextStdBreaker(10), 15, 'art15 EX4: 10 A not standard -> nextStd 15 A (240.6)');
+  // EX5: 210.21(B)(2) duplex vs single
+  eq(Math.round(20 * 0.8 * 100) / 100, 16, 'art15 EX5: single receptacle on 20 A capped at 16 A (80%)');
+  // EX7: 80% cap on 30 A
+  eq(Math.round(30 * 0.8 * 100) / 100, 24, 'art15 EX7: 80% of 30 A = 24 A cap (210.23(B))');
+  eq(Math.round(2880 / 120 * 100) / 100, 24, 'art15 EX7: 2880 W @120 V = 24.00 A (at cap, pass)');
+  eq(Math.round(3000 / 120 * 100) / 100, 25, 'art15 EX7: 3000 W @120 V = 25.00 A (> 24 A cap, fail)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
