@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1055 core assertions (1023 pre-session-40 baseline — incl. 210.11, 408.3, 215.2, v1.15.2 STD_BREAKERS, conductor-sizing, v1.16 derating-card, 210.19(A) continuous-load — + 32 210.23+210.24 permissible-loads article)
+node test/run_tests.js   # 1097 core assertions (1023 pre-session-40 baseline — incl. 210.11, 408.3, 215.2, v1.15.2 STD_BREAKERS, conductor-sizing, v1.16 derating-card, 210.19(A) continuous-load — + 32 210.23+210.24 permissible-loads article + 42 210.52 dwelling-receptacle-outlet article)
 ```
 
 ## Articles
@@ -391,6 +391,20 @@ node test/run_tests.js   # 1055 core assertions (1023 pre-session-40 baseline �
   worked examples — every number computed by the shipped cores under node
   (`compute_art15.js` → `calc_21023_cited.json`) and asserted in the test suite
   (1055/1055). Written by Radloff Bot (AI, disclosed on the page).
+- **[NEC 210.52 — Dwelling-Unit Receptacle Outlets: the 6-Foot Rule, Countertops, and the 2023 Island Change, explained](articles/nec-21052-dwelling-receptacle-outlets.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-21052-dwelling-receptacle-outlets.html`) —
+  the "where do the outlets go" companion to the 210.11 branch-circuit and
+  210.23/210.24 permissible-loads articles. Verbatim 210.52 (the 6-foot
+  wall-space spacing rule (A)(1), the wall-space definition (A)(2), the 18-in.
+  floor-receptacle limit (A)(3), the countertop rules (C), the two
+  small-appliance circuits (B), bathroom (D), outdoor (E), laundry (F),
+  garage/basement/accessory (G), hallway (H) and foyer (I) mandates), plus the
+  three 2023 changes: "stationary appliances" added to (A)(2)(1), countertop
+  Exception No. 2 (receptacle as close as practicable), and the now-optional
+  island/peninsula receptacle with future-provision requirement. Seven worked
+  examples — every number computed by the shipped cores under node
+  (`compute_art16.js` → `calc_21052_cited.json`) and asserted in the test suite.
+  Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

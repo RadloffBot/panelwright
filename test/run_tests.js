@@ -1911,5 +1911,81 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(Math.round(3000 / 120 * 100) / 100, 25, 'art15 EX7: 3000 W @120 V = 25.00 A (> 24 A cap, fail)');
 }
 
+// --- Article 16 (Session 41): articles/nec-21052-dwelling-receptacle-outlets.html ---
+// NEC 210.52 (dwelling-unit receptacle outlets) — 6-ft spacing rule, 24-in
+// countertop rule, 210.52(B) small-appliance circuits, the four 210.11(C)
+// mandates, and the three 2023 changes (stationary appliances, countertop
+// Exception No. 2, optional island receptacle). Worked examples EX1-EX7
+// computed by the shipped cores (income-lab/compute_art16.js ->
+// calc_21052_cited.json); asserted here so the article can never drift.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-21052-dwelling-receptacle-outlets.html'), 'utf8');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-21052-dwelling-receptacle-outlets.html'), true, 'art16: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art16: AI disclosure present');
+  eq(art.includes('no point measured horizontally along the floor line of any wall space is more than 1.8 m (6 ft) from a receptacle outlet'), true, 'art16: 210.52(A)(1) 6-ft rule verbatim');
+  eq(art.includes('Any space 600 mm (2 ft) or more in width (including space measured around corners) and unbroken along the floor line by doorways and similar openings, fireplaces, and fixed cabinets that do not have countertops or similar work surfaces'), true, 'art16: 210.52(A)(2)(1) wall-space definition verbatim (2020)');
+  eq(art.includes('no point along the wall line is more than 600 mm (24 in.) measured horizontally from a receptacle outlet in that space'), true, 'art16: 210.52(C)(1) 24-in countertop rule verbatim');
+  eq(art.includes('the two or more 20-ampere small-appliance branch circuits required by 210.11(C)(1) shall serve all wall and floor receptacle outlets covered by 210.52(A)'), true, 'art16: 210.52(B)(1) small-appliance service verbatim');
+  eq(art.includes('shall have no other outlets'), true, 'art16: 210.52(B)(2) exclusivity verbatim');
+  eq(art.includes('At least one receptacle outlet shall be installed in bathrooms within 900 mm (3 ft) of the outside edge of each basin'), true, 'art16: 210.52(D) bathroom 3-ft verbatim');
+  eq(art.includes('In each attached garage and in each detached garage with electric power, at least one receptacle outlet shall be installed in each vehicle bay'), true, 'art16: 210.52(G)(1) garage verbatim');
+  eq(art.includes('hallways of 3.0 m (10 ft) or more in length shall have at least one receptacle outlet'), true, 'art16: 210.52(H) hallway verbatim');
+  eq(art.includes('greater than 5.6 m² (60 ft²)'), true, 'art16: 210.52(I) foyer 60 ft² verbatim');
+  // 2023 changes (ELR code-language previews)
+  eq(art.includes('fireplaces, <strong>stationary appliances</strong>, and fixed cabinets'), true, 'art16: 2023 (A)(2)(1) stationary appliances present');
+  eq(art.includes('Where a required receptacle outlet cannot be installed in the wall areas shown in Figure 210.52(C)(1)'), true, 'art16: 2023 (C)(1) Exception No. 2 present');
+  eq(art.includes('<strong>if installed</strong> to serve an island or peninsular countertop or work surface'), true, 'art16: 2023 (C)(2) optional island receptacle present');
+  eq(art.includes('provisions shall be provided at the island or peninsula for future addition of a receptacle outlet'), true, 'art16: 2023 (C)(2) future-provision requirement present');
+  // 2020 island math: first 9 ft2 (or fraction) = 1, +1 per additional 18 ft2 (or fraction)
+  const island2020 = (ft2) => 1 + (ft2 <= 9 ? 0 : Math.ceil((ft2 - 9) / 18));
+  eq(island2020(12), 2, 'art16 EX3: 12 ft2 island -> 2 (2020)');
+  eq(island2020(27), 2, 'art16 EX3: 27 ft2 island -> 2 (2020)');
+  eq(island2020(28), 3, 'art16 EX3: 28 ft2 island -> 3 (2020)');
+  // EX1: 6-ft reach rule (n equally spaced outlets, max reach L/((n-1)*2))
+  const nMin = (L, D) => Math.ceil(L / (2 * D) - 1e-9) + 1;
+  eq(nMin(12, 6), 2, 'art16 EX1: 12 ft run -> 2 outlets (6 ft reach)');
+  eq(nMin(24, 6), 3, 'art16 EX1: 24 ft run -> 3 outlets (6 ft reach)');
+  eq(nMin(25, 6), 4, 'art16 EX1: 25 ft run -> 4 outlets (3 would give 6.25 ft)');
+  // EX2: 24-in countertop reach
+  eq(nMin(144, 24), 4, 'art16 EX2: 144 in run -> 4 outlets (24 in reach)');
+  eq(nMin(120, 24), 4, 'art16 EX2: 120 in run -> 4 outlets (20 in reach)');
+  eq(Math.ceil(72 / 12), 6, 'art16 EX2: 72 in assembly, 12 in per outlet -> 6 outlets');
+  // EX4: two small-appliance circuits in the 220.82 service (REAL core)
+  const sl4 = core.serviceLoad22082({ sqft: 1600, smallApplianceCircuits: 2, laundryCircuits: 1 });
+  eq(sl4.smallApplianceVA, 3000, 'art16 EX4: 2 small-appliance circuits = 3000 VA (220.82(B)(2))');
+  eq(sl4.laundryVA, 1500, 'art16 EX4: 1 laundry circuit = 1500 VA (220.82(B)(2))');
+  eq(sl4.generalConnectedVA, 9300, 'art16 EX4: 1600 ft2 house general connected = 9300 VA');
+  eq(sl4.amps, 38.75, 'art16 EX4: 9300 VA @ 240 V = 38.75 A');
+  const sl4one = core.serviceLoad22082({ sqft: 1600, smallApplianceCircuits: 1, laundryCircuits: 1 });
+  eq(sl4.generalConnectedVA - sl4one.generalConnectedVA, 1500, 'art16 EX4: delta of one small-appliance circuit = 1500 VA');
+  // EX5: the dwelling checklist (REAL core dwStatus)
+  const mkCircuits = (names) => names.map(n => ({ name: n, notes: '', A: 20, system: '120-208-1ph' }));
+  const dwFull = core.dwStatus({ panels: [{ name: 'Main Panel', system: '120-208-1ph', ratingA: 200, notes: '',
+    circuits: mkCircuits(['Small appliance circuit 1 (kitchen/pantry/dining)', 'Small appliance circuit 2 (kitchen/living)',
+      'Laundry 20A', 'Bathroom 20A (vanity)', 'Garage 20A vehicle bay', 'Exterior porch GFCI 20A',
+      'Lighting L1', 'Lighting L2', 'General purpose 1', 'General purpose 2', 'Range 50A', 'Dryer 30A', 'AC 40A']) }] });
+  eq(dwFull.metCount, 6, 'art16 EX5: full panel passes all 6 checklist items');
+  eq(dwFull.total, 6, 'art16 EX5: 6 default checklist items');
+  const dwBad = core.dwStatus({ panels: [{ name: 'Main Panel', system: '120-208-1ph', ratingA: 200, notes: '',
+    circuits: mkCircuits(['Small appliance circuit (kitchen)', 'Laundry 20A', 'Garage 20A vehicle bay', 'Lighting L1', 'Lighting L2', 'General 1']) }] });
+  eq(dwBad.metCount, 3, 'art16 EX5: broken panel passes only 3 of 6');
+  eq(dwBad.items.filter(r => !r.met).map(r => r.id).join(','), 'smallAppliance,bathroom,outdoor', 'art16 EX5: missing = smallAppliance+bathroom+outdoor');
+  // EX6: wiring the required 20 A circuits (REAL core)
+  eq(core.pickConductor31016(20, 'cu', 60).size, '12', 'art16 EX6: 20 A @60 -> 12 AWG Cu');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art16 EX6: 14 AWG Cu capped at 15 A (cannot feed 20 A circuit)');
+  eq(core.smallConductorCap('12', 'cu'), 20, 'art16 EX6: 12 AWG Cu capped at 20 A');
+  eq(core.nextStdBreaker(20), 20, 'art16 EX6: 20 A standard OCPD (240.6)');
+  // EX7: the mandated circuits inside the 220.82 flagship service (REAL core)
+  const sl7 = core.serviceLoad22082({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1, acVA: 12000, volt: 240 });
+  eq(sl7.totalVA, 21000, 'art16 EX7: flagship service = 21000 VA');
+  eq(sl7.amps, 87.5, 'art16 EX7: 21000 VA @ 240 V = 87.5 A');
+  eq(core.serviceLineConductor22082(sl7, 'cu', 75).reqA, 100, 'art16 EX7: 230.79(C) one-family floor -> 100 A');
+  eq(core.serviceLineConductor22082(sl7, 'cu', 75).pick.size, '3', 'art16 EX7: 100 A service -> 3 AWG Cu (75 C)');
+  const sl7no = core.serviceLoad22082({ sqft: 1500, smallApplianceCircuits: 0, laundryCircuits: 1, acVA: 12000, volt: 240 });
+  eq(sl7.totalVA - sl7no.totalVA, 3000, 'art16 EX7: two small-appliance circuits add 3000 VA');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
