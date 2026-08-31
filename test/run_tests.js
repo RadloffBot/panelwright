@@ -1620,5 +1620,76 @@ console.log('Voltage drop — NEC Ch. 9 Table 8 (v1.13, 3-source cross-checked):
   eq(ex6sm.pick.pctV, 2.57, '215.2 EX6: 1 AWG = 2.57%');
 }
 
+// --- Conductor-sizing end-to-end article (Session 37): articles/nec-conductor-sizing.html ---
+// Meta-article on 240.4 + 310.15 + 240.6. Worked examples computed by the shipped
+// cores + the coordinate-verified 310.15 factors; asserted here so the article can
+// never drift from the tool.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-conductor-sizing.html'), 'utf8');
+  eq(art.includes('nec-conductor-sizing.html'), true, 'art13: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-conductor-sizing.html'), true, 'art13: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art13: AI disclosure present');
+  eq(art.includes('Overcurrent Devices Rated 800 Amperes or Less'), true, 'art13: 240.4(B) title present');
+  eq(art.includes('does not exceed 800 amperes'), true, 'art13: verbatim 240.4(B)(3) 800 A ceiling');
+  eq(art.includes('Small Conductors'), true, 'art13: 240.4(D) title present');
+  eq(art.includes('adjustable trip circuit breaker'), true, 'art13: 2023 240.4(B) adjustable-trip change present');
+  eq(art.includes('<td class="num">80</td>') && art.includes('<td class="num">35</td>'), true, 'art13: 310.15(C) CCC factor rows (80% / 35%) present');
+  // EX1: 60 A continuous -> 75 A; 75C -> 4 AWG (85 A); 60C -> 3 AWG (85 A); OCPD 80 A
+  const a1p75 = core.pickConductor31016(75, 'cu', 75);
+  const a1p60 = core.pickConductor31016(75, 'cu', 60);
+  eq(a1p75.size, '4', 'art13 EX1: 75 A Cu @75 -> 4 AWG');
+  eq(a1p75.amp, 85, 'art13 EX1: 4 AWG = 85 A @75');
+  eq(a1p60.size, '3', 'art13 EX1: 75 A Cu @60 -> 3 AWG');
+  eq(core.nextStdBreaker(75), 80, 'art13 EX1: OCPD 80 A');
+  // EX2 flagship: 80 A, 6 CCC (0.80), 35C (0.94 @75): 3 AWG fails (75.2), 2 AWG passes (86.48)
+  eq(Math.round(100 * 0.94 * 0.80 * 100) / 100, 75.2, 'art13 EX2: 3 AWG corrected 75.2 < 80 (fails)');
+  eq(Math.round(115 * 0.94 * 0.80 * 100) / 100, 86.48, 'art13 EX2: 2 AWG corrected 86.48 >= 80 (passes)');
+  // EX3: 60 noncont + 1.25*100 cont = 185 A; Cu 3/0 (200 A), Al 250 kcmil (205 A); OCPD 200 A standard
+  const a3cu = core.pickConductor31016(185, 'cu', 75);
+  const a3al = core.pickConductor31016(185, 'al', 75);
+  eq(a3cu.size, '3/0', 'art13 EX3: 185 A Cu @75 -> 3/0 AWG');
+  eq(a3cu.amp, 200, 'art13 EX3: 3/0 = 200 A @75');
+  eq(a3al.size, '250', 'art13 EX3: 185 A Al @75 -> 250 kcmil');
+  eq(a3al.amp, 205, 'art13 EX3: 250 kcmil Al = 205 A @75');
+  eq(core.nextStdBreaker(185), 200, 'art13 EX3: OCPD 200 A (standard size matches ampacity)');
+  // EX4: 125 noncont + 1.25*250 cont = 437.5 A; Cu 700 kcmil (460 A); OCPD min 450 A; 240.4(B) next std 500 A (<=800)
+  const a4 = core.pickConductor31016(437.5, 'cu', 75);
+  eq(a4.size, '700', 'art13 EX4: 437.5 A Cu @75 -> 700 kcmil');
+  eq(a4.amp, 460, 'art13 EX4: 700 kcmil = 460 A @75');
+  eq(core.nextStdBreaker(437.5), 450, 'art13 EX4: OCPD min 450 A (215.3)');
+  eq(core.nextStdBreaker(460), 500, 'art13 EX4: 240.4(B) next std above 460 A = 500 A (<=800, permitted)');
+  // EX5: 240.4(D) small-conductor caps (ampacity != OCPD)
+  eq(core.pickConductor31016(18, 'cu', 60).notes.join(' ').includes('capped at 20 A'), true, 'art13 EX5: 12 AWG Cu 240.4(D) cap note (20 A)');
+  // EX6: voltage drop 2 AWG Cu, 80 A, 150 ft, 1ph 120V -> 4.66 V = 3.88% (warn); 1 AWG 3.08%; smallest <=3% -> 1/0 (2.44%)
+  const a6 = core.voltageDrop({ amps: 80, lengthFt: 150, volt: 120, size: '2', mat: 'cu', config: '1ph' });
+  eq(a6.vdV, 4.66, 'art13 EX6: 2 AWG drop 4.66 V');
+  eq(a6.pctV, 3.88, 'art13 EX6: 3.88% (warn, over 3%)');
+  const a6sm = core.sizeForVoltageDrop({ amps: 80, lengthFt: 150, volt: 120, mat: 'cu', config: '1ph' });
+  eq(a6sm.pick.size, '1/0', 'art13 EX6: smallest <=3% -> 1/0 AWG');
+  eq(a6sm.pick.pctV, 2.44, 'art13 EX6: 1/0 = 2.44%');
+  // EX7: 220.82 flagship service + drop: 21,000 VA / 87.5 A -> floor 100 A -> 3 AWG Cu (100 A);
+  // drop 100 A, 200 ft, 240 V -> 9.80 V = 4.08% (warn); smallest <=3% -> 1 AWG (2.57%)
+  const a7lc = core.serviceLoad22082({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1, acVA: 12000, volt: 240 });
+  const a7sl = core.serviceLineConductor22082(a7lc, 'cu', 75);
+  eq(a7lc.totalVA, 21000, 'art13 EX7: 220.82 total 21,000 VA');
+  eq(a7lc.amps, 87.5, 'art13 EX7: 87.5 A');
+  eq(a7sl.reqA, 100, 'art13 EX7: required ampacity floored at 100 A');
+  eq(a7sl.pick.size, '3', 'art13 EX7: 100 A Cu @75 -> 3 AWG');
+  eq(a7sl.pick.amp, 100, 'art13 EX7: 3 AWG = 100 A @75');
+  const a7vd = core.voltageDrop({ amps: 100, lengthFt: 200, volt: 240, size: '3', mat: 'cu', config: '1ph' });
+  eq(a7vd.vdV, 9.80, 'art13 EX7: 3 AWG drop 9.80 V');
+  eq(a7vd.pctV, 4.08, 'art13 EX7: 4.08% (warn, over 3%)');
+  const a7sm = core.sizeForVoltageDrop({ amps: 100, lengthFt: 200, volt: 240, mat: 'cu', config: '1ph' });
+  eq(a7sm.pick.size, '1', 'art13 EX7: smallest <=3% -> 1 AWG');
+  eq(a7sm.pick.pctV, 2.57, 'art13 EX7: 1 AWG = 2.57%');
+  // 240.6(A) standard-size sanity (the v1.15.2 fix): no 140/165, to 6000
+  eq(core.nextStdBreaker(130), 150, 'art13: 130 A -> 150 A (no 140 in the list)');
+  eq(core.nextStdBreaker(160), 175, 'art13: 160 A -> 175 A (no 165 in the list)');
+  eq(core.nextStdBreaker(3200), 4000, 'art13: 3200 A -> 4000 A (standard list now reaches 6000)');
+  eq(core.nextStdBreaker(6000), 6000, 'art13: 6000 A -> 6000 A (largest standard)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 873 core assertions (hand-verified: 796 session-34 baseline incl. 210.11 + 7 v1.15.1 citation-correction + 32 408.3-article + 38 215.2-article)
+node test/run_tests.js   # 919 core assertions (hand-verified: 796 session-34 baseline incl. 210.11 + 7 v1.15.1 citation-correction + 32 408.3-article + 38 215.2-article + 5 v1.15.2 STD_BREAKERS fix + 41 conductor-sizing-article)
 ```
 
 ## Articles
@@ -348,6 +348,21 @@ node test/run_tests.js   # 873 core assertions (hand-verified: 796 session-34 ba
   `serviceLineConductor22082()`, `neutralLoad22061()`, `voltageDrop()`,
   `sizeForVoltageDrop()` under node) and asserted in the test suite (873/873). Written by
   Radloff Bot (AI, disclosed on the page).
+- **[NEC Conductor Sizing, End to End — 240.4 overcurrent, 310.15 corrections, 240.6 standard sizes, explained](articles/nec-conductor-sizing.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-conductor-sizing.html`) —
+  the pipeline meta-article: verbatim 240.4(B) (the next-standard-size rule — 2020 text
+  plus the 2023 adjustable-trip change), 240.4(D) small-conductor OCPD caps (14 Cu → 15 A,
+  12 Cu → 20 A, 10 Cu → 30 A; 12 Al → 15 A, 10 Al → 25 A), the full NEC 240.6(A) standard
+  ampere ratings (…125, 150, 175, 200… to 6000 A — no 140/165), the 310.15(B)(1)
+  ambient-temperature correction factors and 310.15(C)(1) current-carrying-conductor
+  adjustment factors (coordinate-level from the 2023-NEC-based print, cross-checked
+  against the live 2017 NEC section page), and seven worked examples — including the
+  classic 80 A / 6 CCC / 35 °C case that lands on 2 AWG Cu (115 × 0.94 × 0.80 = 86.48 A)
+  and the 220.82 flagship carried to service-line conductors + voltage drop. Every
+  number is computed by the shipped cores under node (`compute_art13.js` →
+  `calc_13_cited.json`) and asserted in the test suite. The 240.6(A) verification drove
+  the v1.15.2 fix of the tool's standard-size list. Written by Radloff Bot (AI,
+  disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
