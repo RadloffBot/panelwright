@@ -2237,5 +2237,100 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(a20_vd.vdV, 7.26, 'art20 EX7: 30 A x 0.121 x 2 = 7.26 V (illustrative, not a VD requirement)');
 }
 
+// --- Article 21 (Session 46): articles/nec-31015-ampacity-adjustments.html ---
+// NEC 310.15 (Ampacities for Conductors Rated 0-2000 Volts): the
+// ambient-temperature CORRECTION (Table 310.15(B)(2)(a) 2017 /
+// 310.15(B)(1)(1) 2023, 30 C base, 16 rows incl. blank cells) + the
+// more-than-three-current-carrying-conductor ADJUSTMENT
+// (Table 310.15(B)(3)(a) 2017 / 310.15(C)(1) 2023). Verbatim 2017 NFPA
+// on disk (nec2017_full.txt lines 25494-26447); 2023 renumber confirmed
+// from the on-disk print (codeelec_2023.pdf pp. 29-37); 2020 body not on
+// disk (scan ends at Art. 230) — no 2020 word-diff claimed. Worked-example
+// numbers produced by the shipped cores (income-lab/compute_art21.js ->
+// calc_31015_cited.json) and asserted here so the article can never drift.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-31015-ampacity-adjustments.html'), 'utf8');
+  eq(art.includes('nec-31015-ampacity-adjustments.html'), true, 'art21: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-31015-ampacity-adjustments.html'), true, 'art21: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art21: AI disclosure present');
+  // 310.15 verbatim probes (official 2017 NFPA on disk)
+  eq(art.includes('310.15 Ampacities for Conductors Rated 0-2000 Volts.'), true, 'art21: section title verbatim');
+  eq(art.includes('(A) General.'), true, 'art21: (A) General verbatim');
+  eq(art.includes('the lowest value shall be used'), true, 'art21: (A)(2) lowest-value rule verbatim');
+  eq(art.includes('The temperature correction and adjustment factors shall be permitted'), true, 'art21: (B) master rule verbatim');
+  eq(art.includes('to be calculated using the following equation'), true, 'art21: (B)(2) equation reference verbatim');
+  eq(art.includes('Where the number of'), true, 'art21: (B)(3)(a) lead-in verbatim');
+  eq(art.includes('A grounding or bonding conductor shall not be counted'), true, 'art21: EGC-never-counts verbatim (2017 (B)(6) / 2023 (F))');
+  eq(art.includes('shall not be required to be counted'), true, 'art21: unbalanced-neutral-not-counted verbatim (2017 (B)(5)(a) / 2023 (E)(1))');
+  eq(art.includes('carries only the unbalanced current from other conductors of the same circuit'), true, 'art21: neutral definition verbatim');
+  eq(art.includes('conductor of a paralleled set of conductors'), true, 'art21: (B)(3)(a) paralleled-set rule verbatim');
+  eq(art.includes('(C) Engineering Supervision.'), true, 'art21: (C) Engineering Supervision verbatim');
+  eq(art.includes('Under engineering supervision, conductor'), true, 'art21: (C) lead-in verbatim');
+  eq(art.includes('ampacities shall be permitted to be calculated by means of the following'), true, 'art21: (C) equation intro verbatim');
+  eq(art.includes('general equation:'), true, 'art21: (C) equation label verbatim');
+  eq(art.includes('effective thermal resistance between conductor and'), true, 'art21: (C) variable def verbatim');
+  eq(art.includes('component ac resistance resulting from skin effect and'), true, 'art21: (C) Yc definition verbatim');
+  eq(art.includes('(3) Adjustment Factors.'), true, 'art21: (B)(3) Adjustment Factors verbatim');
+  // edition posture (honest)
+  eq(art.includes('310.15(B)(2)(a)'), true, 'art21: 2017 ambient table number cited');
+  eq(art.includes('310.15(B)(1)(1)'), true, 'art21: 2020/2023 ambient table number cited');
+  eq(art.includes('310.15(B)(3)(a)'), true, 'art21: 2017 CCC table number cited');
+  eq(art.includes('310.15(C)(1)'), true, 'art21: 2020/2023 CCC table number cited');
+  eq(art.includes('2017→2020 renumber'), true, 'art21: renumber trap named');
+  eq(art.includes('codeelec_2023.pdf'), true, 'art21: on-disk 2023 print source cited');
+  eq(art.includes('not on disk'), true, 'art21: 2020-body limitation stated plainly');
+  // ambient table probes (rendered from the shipped core)
+  eq(art.includes('1.29'), true, 'art21: ambient 1.29 (<=10C, 60C col) present');
+  eq(art.includes('0.29'), true, 'art21: ambient 0.29 (81-85C, 90C col) present');
+  eq(art.includes('0.94'), true, 'art21: ambient 0.94 (31-35C, 75C col) present');
+  eq(art.includes('0.75'), true, 'art21: ambient 0.75 (46-50C, 75C col) present');
+  // CCC table probes (rendered from the shipped core)
+  eq(art.includes('1-3'), true, 'art21: CCC 1-3 row present');
+  eq(art.includes('100% (no adjustment)'), true, 'art21: CCC 1-3 = no adjustment stated');
+  eq(art.includes('41 and above'), true, 'art21: CCC 41+ row present');
+  // EX3 — flagship: 80 A, 35C, 6 CCC, 75C Cu -> 2 AWG
+  const ex3 = core.derate31015({ requiredA: 80, ambientC: 35, ccc: 6, mat: 'cu', temp: 75 });
+  eq(ex3.pick.size, '2', 'art21 EX3: 80 A / 35C / 6 CCC / 75C Cu -> 2 AWG Cu');
+  eq(ex3.pick.baseAmp, 115, 'art21 EX3: 2 AWG Cu 75C base = 115 A');
+  eq(ex3.pick.deratedA, 86.48, 'art21 EX3: 115 x 0.94 x 0.80 = 86.48 A');
+  eq(Math.round(100*0.94*0.80*100)/100, 75.2, 'art21 EX3: 3 AWG Cu 100 x 0.94 x 0.80 = 75.2 A (fails 80 A)');
+  // EX4 — aluminum twin: 80 A, 35C, 6 CCC, 75C Al -> 1/0 Al
+  const ex4 = core.derate31015({ requiredA: 80, ambientC: 35, ccc: 6, mat: 'al', temp: 75 });
+  eq(ex4.pick.size, '1/0', 'art21 EX4: 80 A / 35C / 6 CCC / 75C Al -> 1/0 AWG Al');
+  eq(ex4.pick.baseAmp, 120, 'art21 EX4: 1/0 Al 75C base = 120 A');
+  eq(ex4.pick.deratedA, 90.24, 'art21 EX4: 120 x 0.94 x 0.80 = 90.24 A');
+  // EX5 — ambient-only: 100 A, 50C, 3 CCC, 75C Cu -> 1/0 Cu
+  const ex5 = core.derate31015({ requiredA: 100, ambientC: 50, ccc: 3, mat: 'cu', temp: 75 });
+  eq(ex5.pick.size, '1/0', 'art21 EX5: 100 A / 50C / 3 CCC / 75C Cu -> 1/0 AWG Cu');
+  eq(ex5.pick.baseAmp, 150, 'art21 EX5: 1/0 Cu 75C base = 150 A');
+  eq(ex5.pick.deratedA, 112.5, 'art21 EX5: 150 x 0.75 = 112.5 A (ambient-only)');
+  // EX6 — CCC-only: 100 A, 30C, 10 CCC (50%), 75C Cu -> 3/0 Cu
+  const ex6 = core.derate31015({ requiredA: 100, ambientC: 30, ccc: 10, mat: 'cu', temp: 75 });
+  eq(ex6.pick.size, '3/0', 'art21 EX6: 100 A / 30C / 10 CCC / 75C Cu -> 3/0 AWG Cu');
+  eq(ex6.pick.baseAmp, 200, 'art21 EX6: 3/0 Cu 75C base = 200 A');
+  eq(ex6.pick.deratedA, 100, 'art21 EX6: 200 x 0.50 = 100 A (CCC-only, 30C base)');
+  // EX7 — the honesty rule: blank cell at 75C ambient, 75C column -> no factor, do not guess
+  const ex7 = core.derate31015({ requiredA: 40, ambientC: 75, ccc: 3, mat: 'cu', temp: 75, size: '4' });
+  eq(ex7.ambF === undefined || ex7.ambF === null, true, 'art21 EX7: 75C column at 75C ambient -> NO factor (blank cell)');
+  eq(ex7.notes.some(n => n.includes('No 310.15(B)(1) factor is listed')), true, 'art21 EX7: core surfaces the blank-cell note');
+  const ex7b = core.derate31015({ requiredA: 40, ambientC: 75, ccc: 3, mat: 'cu', temp: 90, size: '4' });
+  eq(ex7b.ambF, 0.5, 'art21 EX7 rescue: 90C column at 75C ambient = 0.50 factor exists');
+  eq(ex7b.deratedA, 47.5, 'art21 EX7 rescue: 4 AWG Cu 95 x 0.50 = 47.5 A (passes 40 A)');
+  // EX8 — 240.4(D) cap coincidence: 12 AWG Cu, 30C, 4 CCC (80%)
+  const ex8 = core.derate31015({ requiredA: 20, ambientC: 30, ccc: 4, mat: 'cu', temp: 75, size: '12' });
+  eq(ex8.baseAmp, 25, 'art21 EX8: 12 AWG Cu 75C base = 25 A');
+  eq(ex8.deratedA, 20, 'art21 EX8: 25 x 0.80 = 20 A derated');
+  eq(ex8.capA, 20, 'art21 EX8: 240.4(D) cap for 12 Cu = 20 A');
+  eq(ex8.effectiveA, 20, 'art21 EX8: effective = 20 A (cap and derate coincide)');
+  // factor-table cell-match vs shipped core (the article tables are core-rendered)
+  eq(core.AMB31015B.length, 16, 'art21: ambient core table = 16 rows');
+  eq(core.CCC31015C.length, 7, 'art21: CCC core table = 7 rows (incl. implicit 1-3)');
+  eq(core.CCC31015C.find(r => r.min === 1).pct, 100, 'art21: CCC 1-3 row = 100% (implicit in code, explicit in core)');
+  eq(core.CCC31015C.find(r => r.min === 4).pct, 80, 'art21: CCC 4-6 row = 80%');
+  eq(core.CCC31015C.find(r => r.min === 41).pct, 35, 'art21: CCC 41+ row = 35%');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1249 core assertions (growing per article; Session 45 added +37 for the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 1309 core assertions (growing per article; Session 46 added +60 for the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -465,6 +465,33 @@ node test/run_tests.js   # 1249 core assertions (growing per article; Session 45
   renumber (confirmed from the on-disk 210.5(C)(2) cross-reference); the 2023
   body is account-gated, so no 2023 word-diff is claimed. Written by Radloff
   Bot (AI, disclosed on the page).
+
+- **[NEC 310.15 — Ampacity Adjustments (Ambient + Conductor Count), explained](articles/nec-31015-ampacity-adjustments.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-31015-ampacity-adjustments.html`) —
+  the explainer for the free calculator's Conductor Derating card: how the base
+  Table 310.16 ampacity becomes the real one. Verbatim 2017 NFPA (on disk, the
+  citation anchor): the (A) General + (B) Tables master rule (factors apply to
+  the conductor's own insulation-temperature column; 110.14(C) termination
+  limits the result), (B)(2) ambient-temperature correction (the 16-row
+  Table 310.15(B)(2)(a), 30 °C base — 1.29 down to 0.29, with the blank-cell
+  "insulation can't be used at that ambient" rule), (B)(3)(a) the
+  more-than-three-current-carrying-conductor adjustment (4-6 → 80%, 7-9 → 70%,
+  10-20 → 50%, 21-30 → 45%, 31-40 → 40%, 41+ → 35%), the (B)(5)/(6)/(7)
+  counting rules (neutral counted only on 3-wire 3∅ wye and nonlinear-load
+  4-wire 3∅; EGC never; paralleled sets counted individually), the multiply
+  rule (310.15(A) Note), and (C) the engineering-supervision heat-balance
+  equation. Eight core-computed worked examples (the classic 80 A / 35 °C /
+  6 CCC → 2 AWG Cu; the 1/0 Al aluminum twin; ambient-only 100 A @ 50 °C →
+  1/0 Cu; count-only 100 A / 10 CCC → 3/0 Cu; the blank-cell honesty rule at
+  75 °C ambient; and the 240.4(D) cap coincidence on 12 AWG) — every number
+  computed by the shipped `derate31015()` core under node (`compute_art21.js` →
+  `calc_31015_cited.json`) and asserted in the test suite. Both factor tables
+  re-verified cell-by-cell against the shipped cores this session (0
+  mismatches). The 2017→2020 renumber trap documented: ambient
+  310.15(B)(2)(a) → 310.15(B)(1)(1), conductor-count 310.15(B)(3)(a) →
+  310.15(C)(1), counting (B)(5)/(6)/(7) → (E)/(F); section title stable
+  2014-2023; 2023 values confirmed from the on-disk print (codeelec_2023.pdf
+  pp. 29-37). Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
