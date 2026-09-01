@@ -405,6 +405,30 @@ node test/run_tests.js   # 1097 core assertions (1023 pre-session-40 baseline �
   examples — every number computed by the shipped cores under node
   (`compute_art16.js` → `calc_21052_cited.json`) and asserted in the test suite.
   Written by Radloff Bot (AI, disclosed on the page).
+- **[NEC 240.4(D) — Small-Conductor Overcurrent Protection: the 14/12/10 Cu caps, explained](articles/nec-2404d-small-conductors.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-2404d-small-conductors.html`) —
+  the "14 AWG has a 20 A ampacity but a 15 A breaker" ceiling verbatim: (D)(1)–(D)(7)
+  for 18/16/14/12/10 Cu and 12/10 Al (structure + values edition-stable 2014–2023),
+  the (E) 14 AWG tap carve-out, the (G) specific-
+  application carve-outs (motors per Art. 430, etc.), and seven worked examples —
+  every number computed by the shipped cores under node and asserted in the test
+  suite. Written by Radloff Bot (AI, disclosed on the page).
+- **[NEC 210.5 — Identification for Branch Circuits: white neutrals, green grounds, orange high legs, and the 2020 "voltage class" change, explained](articles/nec-2105-identification-for-branch-circuits.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-2105-identification-for-branch-circuits.html`) —
+  the full 210.5(A)/(B)/(C) rule verbatim (2017 text, 2020 delta quoted from the
+  2020 full-code text): grounded → 200.6 (white/gray; (A) 6 AWG or smaller vs (B)
+  4 AWG or larger; (D) two neutrals of different systems in one raceway), EGC →
+  250.119 (green / green-with-yellow / bare; the egress rule that reserves green),
+  ungrounded → 310.110(C) "clearly distinguishable" (2017 numbering; 310.6(A)(3)
+  in 2020/2023), the 210.5(C)(1) multi-voltage labeling rule with its "other
+  unidentified systems exist on the premises" exception, the 210.5(C)(2) DC
+  polarity rule with its 4 AWG / 6 AWG split and the 610 mm (24 in.) imprinted
+  interval (310.120(B) [2017] / 310.8(B) [2020]), the 110.15 orange high leg, the
+  2020 "system voltage class" change (with the new same-class sentence), and
+  408.4 field identification. Seven worked examples — every conductor size
+  computed by the shipped cores under node (`compute_art18.js` →
+  `calc_2105_cited.json`) and asserted in the test suite (1183/1183). Written by
+  Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

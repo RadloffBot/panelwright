@@ -2034,5 +2034,100 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(core.nextStdBreaker(28), 30, 'art17 EX7: representative motor OCPD calc 28 A -> 30 A (240.4(G) -> Art 430, not (D)(7))');
 }
 
+// --- Article 18 (Session 43): articles/nec-2105-identification-for-branch-circuits.html ---
+// NEC 210.5 (Identification for Branch Circuits) — 210.5(A) grounded -> 200.6
+// (white/gray), (B) EGC -> 250.119 (green), (C) ungrounded -> clearly
+// distinguishable (310.110(C) [2017] / 310.6(A)(3) [2020/2023]); the 210.5(C)(1)
+// multi-voltage labeling rule + its "other unidentified systems exist on the
+// premises" exception; the 210.5(C)(2) DC polarity rule (4 AWG / 6 AWG split,
+// 610 mm / 24 in. imprinted interval per 310.120(B) [2017] / 310.8(B) [2020]);
+// the 110.15 orange high leg; the 2020 "system voltage class" change. Worked
+// examples EX1-EX7 computed by the shipped cores (income-lab/compute_art18.js ->
+// calc_2105_cited.json); asserted here so the article can never drift.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-2105-identification-for-branch-circuits.html'), 'utf8');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-2105-identification-for-branch-circuits.html'), true, 'art18: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art18: AI disclosure present');
+  // 210.5 section probes (2017 verbatim, OCR-normalized)
+  eq(art.includes('The grounded conductor of a branch circuit shall be identified in accordance with 200.6.'), true, 'art18: 210.5(A) verbatim');
+  eq(art.includes('The equipment grounding conductor shall be identified in accordance with 250.119.'), true, 'art18: 210.5(B) verbatim');
+  eq(art.includes('Ungrounded conductors shall be identified in accordance with 210.5(C)(1) or (2), as applicable.'), true, 'art18: 210.5(C) lead-in verbatim');
+  eq(art.includes('each ungrounded conductor of a branch circuit shall be identified by phase or line and system at all termination, connection, and splice points'), true, 'art18: 210.5(C)(1) 2017 wording verbatim');
+  eq(art.includes('The new system label(s) shall include the words "other unidentified systems exist on the premises."'), true, 'art18: 210.5(C)(1) exception exact phrase');
+  eq(art.includes('each ungrounded conductor of 4 AWG or larger shall be identified by polarity at all termination, connection, and splice points by marking tape, tagging, or other approved means'), true, 'art18: 210.5(C)(2) 4 AWG-or-larger verbatim');
+  eq(art.includes('each ungrounded conductor of 6 AWG or smaller shall be identified by polarity at all termination, connection, and splice points'), true, 'art18: 210.5(C)(2) 6 AWG-or-smaller verbatim');
+  eq(art.includes('A continuous red outer finish'), true, 'art18: 210.5(C)(2)(a)(1) red finish verbatim');
+  eq(art.includes('A continuous black outer finish'), true, 'art18: 210.5(C)(2)(b)(1) black finish verbatim');
+  eq(art.includes('repeated at intervals not exceeding 610 mm (24 in.) in accordance with 310.120(B)'), true, 'art18: 210.5(C)(2)(a)(3) 610 mm interval + 310.120(B) ref verbatim');
+  // 2020 change probes
+  eq(art.includes('by phase or line and <strong>by system voltage class</strong> at all termination, connection, and splice points'), true, 'art18: 2020 (C)(1) voltage-class wording present');
+  eq(art.includes('Different systems within the same premises that have the same system voltage class shall be permitted to use the same identification.'), true, 'art18: 2020 new same-class sentence verbatim');
+  eq(art.includes('310.8(B)'), true, 'art18: 2020 renumbered cross-reference (310.120(B) -> 310.8(B)) disclosed');
+  // 200.6 / 250.119 / 310.110 / 110.15 / 408.4 probes
+  eq(art.includes('An insulated grounded conductor of 6 AWG or smaller shall be identified by one of the following means: (1) A continuous white outer finish.'), true, 'art18: 200.6(A) lead + (A)(1) verbatim');
+  eq(art.includes('An insulated grounded conductor 4 AWG or larger shall be identified by one of the following means'), true, 'art18: 200.6(B) lead verbatim');
+  eq(art.includes('each grounded conductor shall be identified by system'), true, 'art18: 200.6(D) by-system rule verbatim');
+  eq(art.includes('Conductors with insulation or individual covering that is green, green with one or more yellow stripes, or otherwise identified as permitted by this section shall not be used for ungrounded or grounded circuit conductors.'), true, 'art18: 250.119 lead-in egress rule verbatim');
+  eq(art.includes('shall be finished to be clearly distinguishable from grounded and grounding conductors'), true, 'art18: 310.110(C) clearly-distinguishable verbatim');
+  eq(art.includes('Branch-circuit ungrounded conductors shall be identified in accordance with 210.5(C).'), true, 'art18: 310.110(C) -> 210.5(C) routing verbatim');
+  eq(art.includes('only the conductor or busbar having the higher phase voltage to ground shall be durably and permanently marked by an outer finish that is orange in color or by other effective means'), true, 'art18: 110.15 orange high-leg verbatim');
+  eq(art.includes('The AWG size or circular mil area shall be repeated at intervals not exceeding 610 mm (24 in.).'), true, 'art18: 310.120(B)(1) 24-in repeat verbatim');
+  eq(art.includes('No circuit shall be described in a manner that depends on transient conditions of occupancy.'), true, 'art18: 408.4(A) directory rule verbatim');
+  // EX1: the 20 A circuit pick is 12 AWG Cu (14 AWG ruled out by the 240.4(D) 15 A cap)
+  eq(core.pickConductor31016(20, 'cu', 75).size, '14', 'art18 EX1: bare ampacity pick for 20 A @75 = 14 AWG Cu');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art18 EX1: 14 AWG Cu cap 15 A < 20 A OCPD -> ruled out');
+  const p12 = core.pickConductor31016(25, 'cu', 75);
+  eq(p12.size, '12', 'art18 EX1: 12 AWG Cu is the 25 A @75 size');
+  eq(p12.amp, 25, 'art18 EX1: 12 AWG Cu 75 C ampacity = 25 A');
+  eq(core.smallConductorCap('12', 'cu'), 20, 'art18 EX1: 12 AWG Cu cap 20 A covers the 20 A OCPD');
+  eq(core.reqBreakerA(20, true), 25, 'art18 EX1: 20 A continuous load -> 25 A required (125%)');
+  // EX2: multi-voltage branch picks (20 A -> 12 AWG; 30 A -> 10 AWG)
+  eq(core.smallConductorCap('12', 'cu') >= 20, true, 'art18 EX2: 20 A branch -> 12 AWG Cu (cap 20 A OK)');
+  eq(core.pickConductor31016(35, 'cu', 75).size, '10', 'art18 EX2: 35 A @75 pick = 10 AWG Cu (30 A branch + 240.4(D) headroom)');
+  eq(core.smallConductorCap('10', 'cu'), 30, 'art18 EX2: 10 AWG Cu cap = 30 A (covers 30 A OCPD)');
+  // EX3: DC polarity buckets (30 A cont -> 37.5 A -> 8 AWG "smaller"; 80 A cont -> 100 A -> 3 AWG "larger")
+  const dc30 = core.pickConductor31016(core.reqBreakerA(30, true), 'cu', 75);
+  eq(dc30.size, '8', 'art18 EX3: 37.5 A (30 A continuous) -> 8 AWG Cu');
+  eq(dc30.amp, 50, 'art18 EX3: 8 AWG Cu 75 C ampacity = 50 A');
+  const dc80 = core.pickConductor31016(core.reqBreakerA(80, true), 'cu', 75);
+  eq(dc80.size, '3', 'art18 EX3: 100 A (80 A continuous) -> 3 AWG Cu');
+  eq(dc80.amp, 100, 'art18 EX3: 3 AWG Cu 75 C ampacity = 100 A');
+  // bucket logic: physical size, not gauge number (4 AWG or LARGER vs 6 AWG or SMALLER; 5 AWG = wording gap)
+  const bucket = (s) => (/\d+\/0$/.test(s) || +s <= 4) ? 'larger' : (+s >= 6 ? 'smaller' : 'gap');
+  eq(bucket('8'), 'smaller', 'art18 EX3: 8 AWG in the "6 AWG or smaller" four-means bucket');
+  eq(bucket('6'), 'smaller', 'art18 EX3: 6 AWG itself in the "6 AWG or smaller" bucket');
+  eq(bucket('4'), 'larger', 'art18 EX3: 4 AWG in the "4 AWG or larger" bucket');
+  eq(bucket('3'), 'larger', 'art18 EX3: 3 AWG in the "4 AWG or larger" bucket');
+  eq(bucket('1/0'), 'larger', 'art18 EX3: 1/0 kcmil in the "4 AWG or larger" bucket');
+  eq(bucket('5'), 'gap', 'art18 EX3: 5 AWG is the literal wording gap (neither phrase)');
+  // EX4: high-leg geometry (208Y/120 delta, midpoint grounded)
+  eq(Math.round(Math.sqrt(3) * 120 * 10) / 10, 207.8, 'art18 EX4: high leg to ground = sqrt(3) x 120 = 207.8 V');
+  // EX5: two-neutrals-in-one-raceway anchor picks
+  const n100 = core.pickConductor31016(100, 'cu', 75);
+  eq(n100.size, '3', 'art18 EX5: 100 A neutral anchor -> 3 AWG Cu');
+  const n125 = core.pickConductor31016(125, 'cu', 75);
+  eq(n125.size, '1', 'art18 EX5: 125 A neutral anchor -> 1 AWG Cu');
+  eq(n125.amp, 130, 'art18 EX5: 1 AWG Cu 75 C ampacity = 130 A');
+  // EX7: the 220.82 flagship (test-suite vector: 1,500 ft2 + 21,000 VA appl + 5,000 VA AC @240)
+  const sl7 = core.serviceLoad22082({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1, appliancesVA: 21000, volt: 240, acVA: 5000 });
+  eq(sl7.totalVA, 23000, 'art18 EX7: flagship total = 23,000 VA');
+  eq(core.serviceLineConductor22082(sl7, 'cu', 75).reqA, 100, 'art18 EX7: 95.83 A -> 100 A (230.79(C) floor)');
+  eq(core.serviceLineConductor22082(sl7, 'cu', 75).pick.size, '3', 'art18 EX7: 100 A -> 3 AWG Cu ungrounded @75 C');
+  eq(sl7.recommendedBreakerA, 100, 'art18 EX7: 100 A standard service OCPD');
+  // EX7: dwStatus on the 100 A panel (garage absent -> 5 of 6 met)
+  const dw7 = core.dwStatus({
+    panels: [{ name: 'P1', ratingA: 100, system: '120/240', circuits: [
+      { name: 'SA-1 KITCHEN', ratingA: 20 }, { name: 'SA-2 KITCHEN', ratingA: 20 },
+      { name: 'Laundry', ratingA: 20 }, { name: 'BATH', ratingA: 20 },
+      { name: 'GFCI OUTDOOR', ratingA: 20 },
+      { name: 'LIGHT-1', ratingA: 15 }, { name: 'LIGHT-2', ratingA: 15 }
+    ] }]
+  });
+  eq(dw7.metCount, 5, 'art18 EX7: dwStatus 5 of 6 met (no garage)');
+  eq(dw7.items.find(i => i.id === 'garage').met, false, 'art18 EX7: garage item unmet (0 circuits)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
