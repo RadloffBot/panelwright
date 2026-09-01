@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1097 core assertions (1023 pre-session-40 baseline — incl. 210.11, 408.3, 215.2, v1.15.2 STD_BREAKERS, conductor-sizing, v1.16 derating-card, 210.19(A) continuous-load — + 32 210.23+210.24 permissible-loads article + 42 210.52 dwelling-receptacle-outlet article)
+node test/run_tests.js   # 1249 core assertions (growing per article; Session 45 added +37 for the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -440,6 +440,30 @@ node test/run_tests.js   # 1097 core assertions (1023 pre-session-40 baseline �
   range-receptacle demand allowance. Seven worked examples — every number
   computed by the shipped cores under node (`compute_art19.js` →
   `calc_21021_cited.json`) and asserted in the test suite. Written by Radloff
+  Bot (AI, disclosed on the page).
+
+- **[NEC 250.119 + 310.120 — EGC identification (green / green-yellow) and conductor marking, explained](articles/nec-250119-egc-identification.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-250119-egc-identification.html`) —
+  250.119 (Identification of Equipment Grounding Conductors) verbatim: the
+  green / green-with-yellow-stripes rule, the one-way reservation (green is
+  never a circuit or neutral conductor), the three exceptions (Class 2/3 &
+  comms < 50 V, integral-insulation flexible cord without a ground,
+  traffic-signal signal conductors), and 250.119(A) the 4 AWG-and-larger
+  identification rule (strip / color green / green tape, must encircle, at
+  each end + every accessible point). 310.120 (Marking) verbatim: the five
+  required markings (voltage, type letter(s), manufacturer ID, AWG size or
+  circular-mil area, undersized-neutral note) and the (B) methods — surface
+  marking with the size repeated every 24 in. / other markings every 40 in.,
+  internal marker tape for most metal-covered cables, and coil/reel tags.
+  Plus Table 250.122 minimum EGC sizes by OCPD rating (15→14/12, 20→12/10,
+  30→10/8, 60→8/6, 100→6/4, 200→4/2) and 250.122(B) the proportional-increase
+  rule (a 200 A circuit upsized 3/0 → 4/0 needs a 52,635 cmil EGC → 2 AWG,
+  since 3 AWG falls 15 cmil short). Seven worked examples — every number
+  computed by the shipped cores under node (`compute_art20.js` →
+  `calc_250119_cited.json`) and asserted in the test suite. Edition posture
+  stated honestly: verbatim 2017 NFPA on disk; 310.120 → 310.8 in the 2020
+  renumber (confirmed from the on-disk 210.5(C)(2) cross-reference); the 2023
+  body is account-gated, so no 2023 word-diff is claimed. Written by Radloff
   Bot (AI, disclosed on the page).
 
 ## About the author

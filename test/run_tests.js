@@ -2183,5 +2183,59 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(core.pickConductor31016(40, 'cu', 60).size, '8', 'art19 EX7: 40 A @60 -> 8 AWG Cu (40 A)');
 }
 
+// --- Article 20 (Session 45): articles/nec-250119-egc-identification.html ---
+// NEC 250.119 (Identification of EGCs) + 310.120 (Marking) + Table 250.122 +
+// 250.122(B). Verbatim 2017 NFPA on disk; 2020 renumber 310.120->310.8 confirmed
+// from on-disk 210.5(C)(2); 2023 gated (no word-diff claimed). Worked-example
+// numbers produced by the shipped cores (income-lab/compute_art20.js ->
+// calc_250119_cited.json) and asserted here so the article can never drift.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-250119-egc-identification.html'), 'utf8');
+  eq(art.includes('nec-250119-egc-identification.html'), true, 'art20: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-250119-egc-identification.html'), true, 'art20: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art20: AI disclosure present');
+  // 250.119 verbatim probes (official 2017 NFPA on disk)
+  eq(art.includes('shall have a continuous outer finish that is either green or green with one or more yellow stripes'), true, 'art20: 250.119 green rule verbatim');
+  eq(art.includes('shall not be used for ungrounded or grounded circuit conductors'), true, 'art20: 250.119 one-way reservation verbatim');
+  eq(art.includes('Identification shall encircle the conductor'), true, 'art20: 250.119(A) must-encircle verbatim');
+  eq(art.includes('Conductors 4 AWG and Larger'), true, 'art20: 250.119(A) 4 AWG threshold verbatim');
+  // 310.120 verbatim probes
+  eq(art.includes('The AWG size or circular mil area'), true, 'art20: 310.120(A)(4) size marking verbatim');
+  eq(art.includes('repeated at intervals not exceeding 610 mm (24 in.)'), true, 'art20: 310.120(B)(1) 24-in size interval verbatim');
+  eq(art.includes('All other markings shall be repeated at intervals not exceeding 1.0 m (40 in.)'), true, 'art20: 310.120(B)(1) 40-in other interval verbatim');
+  eq(art.includes('marker tape located within the cable and running for its complete length'), true, 'art20: 310.120(B)(2) marker-tape verbatim');
+  // Table 250.122 low rows (verbatim 2017)
+  eq(art.includes('15   | 14  | 12'), true, 'art20: Table 250.122 15 A row (14/12) present');
+  eq(art.includes('200  | 4   | 2'), true, 'art20: Table 250.122 200 A row (4/2) present');
+  // 2020 renumber 310.120 -> 310.8 (confirmed from on-disk 210.5(C)(2))
+  eq(art.includes('became 310.8'), true, 'art20: 2020 renumber 310.120 -> 310.8 stated');
+  eq(art.includes('in accordance with 310.8(B)'), true, 'art20: on-disk 210.5(C)(2) 310.8(B) cross-ref cited');
+  // EX2: Table 250.122 minimum EGC rows (computed)
+  eq(core.ch9Row('14').cm, 4110, 'art20 EX2: 14 AWG cmil 4110');
+  eq(core.ch9Row('12').cm, 6530, 'art20 EX2: 12 AWG cmil 6530');
+  eq(core.ch9Row('10').cm, 10380, 'art20 EX2: 10 AWG cmil 10380');
+  eq(core.ch9Row('8').cm, 16510, 'art20 EX2: 8 AWG cmil 16510');
+  eq(core.ch9Row('6').cm, 26240, 'art20 EX2: 6 AWG cmil 26240');
+  eq(core.ch9Row('4').cm, 41740, 'art20 EX2: 4 AWG cmil 41740');
+  eq(core.ch9Row('2').cm, 66360, 'art20 EX2: 2 AWG cmil 66360');
+  // EX4: 250.122(B) proportional increase — 200 A, ungrounded 3/0 -> 4/0
+  eq(core.ch9Row('3/0').cm, 167800, 'art20 EX4: 3/0 cmil 167800 (min-ampacity ungrounded)');
+  eq(core.ch9Row('4/0').cm, 211600, 'art20 EX4: 4/0 cmil 211600 (upsized ungrounded)');
+  const a20_req = core.ch9Row('4').cm * (core.ch9Row('4/0').cm / core.ch9Row('3/0').cm);
+  eq(Math.round(a20_req), 52635, 'art20 EX4: EGC cmil required = 41740 x (211600/167800) = 52635');
+  eq(core.ch9Row('3').cm < a20_req, true, 'art20 EX4: 3 AWG (52620 cmil) is just under -> NOT sufficient');
+  eq(core.ch9Row('2').cm >= a20_req, true, 'art20 EX4: 2 AWG (66360 cmil) >= 52635 -> the proportional EGC pick');
+  // EX6: 310.120(B)(1) repeat counts per 100 ft (computed)
+  eq(Math.ceil(1200 / 24), 50, 'art20 EX6: size marking every 24 in -> 50 per 100 ft');
+  eq(Math.ceil(1200 / 40), 30, 'art20 EX6: other markings every 40 in -> 30 per 100 ft');
+  // EX7: EGC resistance sense (Table 8 Ch 9 via the shipped core)
+  const a20_vd = core.voltageDrop({ amps: 30, lengthFt: 100, volt: 120, size: '10', mat: 'cu', config: '1ph' });
+  eq(a20_vd.rPerKft, 1.21, 'art20 EX7: 10 AWG Cu = 1.21 ohm/kft (Table 8 Ch 9)');
+  eq(a20_vd.rOneWay, 0.121, 'art20 EX7: 100 ft one-way = 0.121 ohm');
+  eq(a20_vd.vdV, 7.26, 'art20 EX7: 30 A x 0.121 x 2 = 7.26 V (illustrative, not a VD requirement)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
