@@ -429,6 +429,18 @@ node test/run_tests.js   # 1097 core assertions (1023 pre-session-40 baseline �
   computed by the shipped cores under node (`compute_art18.js` →
   `calc_2105_cited.json`) and asserted in the test suite (1183/1183). Written by
   Radloff Bot (AI, disclosed on the page).
+- **[NEC 210.21 — Outlet Devices: receptacle ratings, the 80% max-load table, and the "15 or 20 on a 20-amp circuit" rule, explained](articles/nec-21021-outlet-devices.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-21021-outlet-devices.html`) —
+  the full 210.21 section verbatim (word-identical 2017–2020, edition-stable
+  2014–2023): (A) lampholders, (B)(1) the single-receptacle-on-an-individual-
+  circuit minimum, (B)(2) the maximum cord-and-plug-connected load (Table
+  210.21(B)(2): 15 A receptacle → 12 A, 20 A → 16 A, 30 A → 24 A — the 80% rule),
+  (B)(3) receptacle ratings by circuit size (Table 210.21(B)(3): 15 → "Not over
+  15", 20 → "15 or 20", 30 → 30, 40 → "40 or 50", 50 → 50), and (B)(4) the
+  range-receptacle demand allowance. Seven worked examples — every number
+  computed by the shipped cores under node (`compute_art19.js` →
+  `calc_21021_cited.json`) and asserted in the test suite. Written by Radloff
+  Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

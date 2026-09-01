@@ -2129,5 +2129,59 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(dw7.items.find(i => i.id === 'garage').met, false, 'art18 EX7: garage item unmet (0 circuits)');
 }
 
+// --- 210.21 feature article (Session 44): articles/nec-21021-outlet-devices.html ---
+// The article's worked-example numbers are produced by the shipped cores and asserted
+// here so the article table can never drift from the tool.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-21021-outlet-devices.html'), 'utf8');
+  eq(art.includes('nec-21021-outlet-devices.html'), true, 'art19: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-21021-outlet-devices.html'), true, 'art19: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art19: AI disclosure present');
+  // verbatim code-text probes (2017 = 2020 word-identical)
+  eq(art.includes('Outlet devices shall have an ampere rating that is not less than the load to be served'), true, 'art19: 210.21 lead-in verbatim');
+  eq(art.includes('A single receptacle installed on an individual branch circuit shall have an ampere rating not less than that of the branch circuit.'), true, 'art19: (B)(1) single-receptacle minimum verbatim');
+  eq(art.includes('a receptacle shall not supply a total cord-and-plug-connected load in excess of the maximum specified in Table 210.21(B)(2)'), true, 'art19: (B)(2) max-load verbatim');
+  eq(art.includes('receptacle ratings shall conform to the values listed in Table 210.21(B)(3)'), true, 'art19: (B)(3) rating-conformance verbatim');
+  eq(art.includes('The ampere rating of a range receptacle shall be permitted to be based on a single range demand load as specified in Table 220.55.'), true, 'art19: (B)(4) range-receptacle allowance verbatim');
+  // Table 210.21(B)(3) "15 or 20" row + (A) lampholder 660/750 W
+  eq(art.includes('15 or 20'), true, 'art19: Table (B)(3) "15 or 20" row present');
+  eq(art.includes('660 watts if of the admedium type, or not less than 750 watts'), true, 'art19: (A) lampholder 660/750 W verbatim');
+  // EX1: Table 210.21(B)(2) 80% max-load table (computed by the shipped core)
+  eq(12 / 15 * 100, 80, 'art19 EX1: 15 A receptacle max load 12 A = 80%');
+  eq(16 / 20 * 100, 80, 'art19 EX1: 20 A receptacle max load 16 A = 80%');
+  eq(24 / 30 * 100, 80, 'art19 EX1: 30 A receptacle max load 24 A = 80%');
+  eq(16 * 120, 1920, 'art19 EX1: 16 A @120 V = 1,920 W');
+  eq(24 * 240, 5760, 'art19 EX1: 24 A @240 V = 5,760 W');
+  // EX3: (B)(1) dedicated 20 A circuit — 14 AWG ruled out by the 240.4(D) 15 A cap
+  eq(core.pickConductor31016(20, 'cu', 75).size, '14', 'art19 EX3: bare ampacity pick for 20 A @75 = 14 AWG Cu');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art19 EX3: 14 AWG Cu cap 15 A < 20 A -> ruled out');
+  const a19_12 = core.pickConductor31016(25, 'cu', 75);
+  eq(a19_12.size, '12', 'art19 EX3: 12 AWG Cu is the 25 A @75 size (feeds a 20 A circuit)');
+  eq(a19_12.amp, 25, 'art19 EX3: 12 AWG Cu 75 C ampacity = 25 A');
+  eq(core.smallConductorCap('12', 'cu'), 20, 'art19 EX3: 12 AWG Cu cap 20 A covers the 20 A OCPD');
+  // EX4: 240.4(D) trap the (B)(1) picks sit on — aluminum version
+  eq(core.pickConductor31016(20, 'al', 75).size, '12', 'art19 EX4: bare ampacity pick for 20 A Al @75 = 12 AWG Al (20 A)');
+  eq(core.smallConductorCap('12', 'al'), 15, 'art19 EX4: 12 AWG Al cap 15 A < 20 A -> ruled out (the Al trap)');
+  const a19_10al = core.pickConductor31016(25, 'al', 75);
+  eq(a19_10al.size, '10', 'art19 EX4: 10 AWG Al is the 25 A @75 size (feeds a 20 A Al circuit)');
+  eq(core.smallConductorCap('10', 'al'), 25, 'art19 EX4: 10 AWG Al cap 25 A covers the 20 A OCPD');
+  // EX5: 30 A receptacle on a 30 A circuit
+  eq(core.pickConductor31016(30, 'cu', 75).size, '10', 'art19 EX5: 30 A circuit -> 10 AWG Cu (35 A @75)');
+  eq(core.pickConductor31016(30, 'cu', 75).amp, 35, 'art19 EX5: 10 AWG Cu 75 C ampacity = 35 A');
+  eq(core.smallConductorCap('10', 'cu'), 30, 'art19 EX5: 10 AWG Cu cap = 30 A (covers the 30 A OCPD)');
+  // EX6: (B)(4) range receptacle rated by the 220.55 single-range demand
+  const a19_range = core.cookingDemand22055({ count: 1, ratingKW: 12 });
+  eq(a19_range.demandKW, 8, 'art19 EX6: 12 kW single range 220.55 Column C demand = 8 kW');
+  eq(a19_range.demandVA, 8000, 'art19 EX6: 8 kW = 8,000 VA');
+  eq(Math.round(8000 / 240 * 100) / 100, 33.33, 'art19 EX6: 8,000 VA / 240 V = 33.33 A demand');
+  eq(core.pickConductor31016(50, 'cu', 75).size, '8', 'art19 EX6: 50 A range circuit -> 8 AWG Cu (50 A @75)');
+  // EX7: 40 A circuit "40 or 50" row
+  eq(core.pickConductor31016(40, 'cu', 75).size, '8', 'art19 EX7: 40 A @75 -> 8 AWG Cu (50 A)');
+  eq(core.pickConductor31016(40, 'cu', 75).amp, 50, 'art19 EX7: 8 AWG Cu 75 C ampacity = 50 A');
+  eq(core.pickConductor31016(40, 'cu', 60).size, '8', 'art19 EX7: 40 A @60 -> 8 AWG Cu (40 A)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
