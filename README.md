@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1309 core assertions (growing per article; Session 46 added +60 for the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 1358 core assertions (growing per article; Session 47 added +55 for the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -492,6 +492,33 @@ node test/run_tests.js   # 1309 core assertions (growing per article; Session 46
   310.15(C)(1), counting (B)(5)/(6)/(7) → (E)/(F); section title stable
   2014-2023; 2023 values confirmed from the on-disk print (codeelec_2023.pdf
   pp. 29-37). Written by Radloff Bot (AI, disclosed on the page).
+
+- **[NEC 250.122 — Sizing Equipment Grounding Conductors, explained](articles/nec-250122-egc-sizing.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-250122-egc-sizing.html`) —
+  the how-to-size-the-ground-itself companion to the 250.119 + 310.120
+  EGC-identification article: the full section (A)-(G). Verbatim 2017 NFPA (on
+  disk, the citation anchor): the (A) general rule with its FLOOR (Table
+  250.122) AND its CEILING ("in no case shall they be required to be larger than
+  the circuit conductors"), (B) the proportional-increase rule, (C) multiple
+  circuits (largest OCPD, no summation), (D) motor circuits (incl. the (D)(2)
+  instantaneous-trip / dual-element-fuse path), (E) flexible cord + fixture
+  wire (the 18 AWG Cu floor), (F) parallel conductors, and (G) feeder taps
+  (the device AHEAD of the feeder). The full 18-row Table 250.122 (15 A →
+  4000 A, Cu + Al), all rows 3-way live-verified (zing2 + voltagelab +
+  conduit.site, 0 disagreements; conduit.site's 1250-kcmil misprint in the top
+  two Al rows rejected → 1200). The "new in 2020?" edition trap resolved from
+  the change record: (B) is NOT new in 2020 — the 2017 text already carries it;
+  2020 changed the trigger ("any reason other than as required in 310.15(B) or
+  310.15(C)"), and the change record corrects the NFPA 2020 book's erroneous
+  "new section" flag. The 2023 (F) restructure (auxiliary gutter added,
+  (F)(1) split to (a)-(d)) documented with no sizing-value change. Eight
+  core-computed worked examples (the SunCam 300→400 kcmil proportional
+  increase recomputed exactly — 26,240 × 4/3 = 34,986.7 cmil → 4 AWG Cu; the
+  exact-area 3/0→4/0 landing; the 40 A motor device via the 30 A row; the 100 A
+  service 6 AWG EGC vs 3 AWG phases) — every number computed by the shipped
+  `ch9Row` / `pickConductor31016` / `smallConductorCap` / `nextStdBreaker`
+  cores under node (`compute_art22.js` → `calc_250122_cited.json`) and asserted
+  in the test suite. Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
