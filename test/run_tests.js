@@ -2332,5 +2332,85 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(core.CCC31015C.find(r => r.min === 41).pct, 35, 'art21: CCC 41+ row = 35%');
 }
 
+// --- Article 22 (Session 47): articles/nec-250122-egc-sizing.html ---
+// NEC 250.122 (Size of Equipment Grounding Conductors) deep-dive: the (A)
+// table rule + ceiling, (B) proportional increase, (C) multiple circuits,
+// (D) motor circuits, (E) flexible cord, (F) parallel conductors, (G) feeder
+// taps. Verbatim 2017 section text (on disk, nec2017_full.txt lines 21479-21624)
+// + Table 250.122 (18 rows, 3-way live-verified 2026-09-01). Every worked
+// number asserted against the shipped cores (ch9Row cmil, nextStdBreaker,
+// pickConductor31016, smallConductorCap) so the article cannot drift from the
+// tool.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-250122-egc-sizing.html'), 'utf8');
+  // whitespace-normalized copy: verbatim probes must survive pre-wrap line breaks
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  eq(art.includes('nec-250122-egc-sizing.html'), true, 'art22: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-250122-egc-sizing.html'), true, 'art22: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art22: AI disclosure present');
+  eq(has('Size of Equipment Grounding Conductors'), true, 'art22: carries the verified 2014-2023 section title');
+  // verbatim 2017 code probes
+  eq(has('shall not be smaller than shown in Table 250.122'), true, 'art22: verbatim 250.122(A) floor');
+  eq(has('in no case shall they be required to be larger than the circuit conductors'), true, 'art22: verbatim 250.122(A) ceiling');
+  eq(has('increased in size proportionately, according to the circular mil area of the ungrounded conductors'), true, 'art22: verbatim 2017 250.122(B)');
+  eq(has('it shall be sized for the largest overcurrent device protecting conductors in the raceway, cable, or cable tray'), true, 'art22: verbatim 250.122(C) largest-OCPD rule');
+  eq(has('dual element time-delay fuse selected for branch-circuit short-circuit and ground-fault protection in accordance with 430.52(C)(1), Exception No. 1'), true, 'art22: verbatim 250.122(D)(2)');
+  eq(has('shall not be smaller than 18 AWG copper and shall not be smaller than the circuit conductors'), true, 'art22: verbatim 250.122(E) 18 AWG floor');
+  eq(has('310.10(H)'), true, 'art22: verbatim 250.122(F) parallel reference');
+  eq(has('based on the rating of the overcurrent device ahead of the feeder but shall not be required to be larger than the tap conductors'), true, 'art22: verbatim 250.122(G) feeder taps');
+  // edition-trap content (250.122(B) NOT new in 2020)
+  eq(has('for any reason other than as required in 310.15(B) or 310.15(C)'), true, 'art22: 2020 (B) trigger wording present');
+  eq(has('a revision of the existing section'), true, 'art22: the change record corrects the NFPA book "new section" flag');
+  // 2023 (F) restructure
+  eq(has('Auxiliary Gutter'), true, 'art22: 2023 (F)(1)(a) auxiliary-gutter addition present');
+  // Table 250.122 row probes (all 18 rows)
+  const rows = [
+    ['15', '14', '12'], ['20', '12', '10'], ['30', '10', '8'], ['60', '8', '6'],
+    ['100', '6', '4'], ['200', '4', '2'], ['300', '3', '1'], ['400', '2', '1/0'],
+    ['500', '1', '2/0'], ['600', '1/0', '3/0'], ['800', '1/0', '4/0'],
+    ['1000', '2/0', '250 kcmil'], ['1200', '3/0', '350 kcmil'],
+    ['1600', '4/0', '400 kcmil'], ['2000', '250 kcmil', '500 kcmil'],
+    ['2500', '350 kcmil', '600 kcmil'], ['3000', '400 kcmil', '700 kcmil'],
+    ['4000', '500 kcmil', '750 kcmil'],
+  ];
+  for (const [a, cu, al] of rows) {
+    const re = new RegExp('<td class="num">' + a + '</td><td class="ctr">' + cu + '</td><td class="ctr">' + al + '</td>');
+    eq(re.test(art), true, 'art22: Table 250.122 row ' + a + ' A -> ' + cu + ' Cu / ' + al + ' Al');
+  }
+  // EX1: 30 A circuit, 10 AWG Cu phases, (A) ceiling binds
+  eq(core.smallConductorCap('10', 'cu'), 30, 'art22 EX1: 240.4(D) cap 10 AWG Cu = 30 A');
+  eq(core.nextStdBreaker(30), 30, 'art22 EX1: 30 A is a standard size');
+  // EX2: 250.122(B) proportional increase, SunCam 2023 flagship recomputed exactly
+  const a6 = core.ch9Row('6').cm;
+  eq(a6, 26240, 'art22 EX2: 6 AWG = 26,240 cmil (Ch. 9 T8)');
+  const req2 = a6 * (400000 / 300000);
+  eq(Math.round(req2 * 10) / 10, 34986.7, 'art22 EX2: 26,240 x (400/300) = 34,986.7 cmil');
+  let pick2 = null;
+  for (const r of core.CH9_T8) if (r.cm >= req2 - 1e-9) { pick2 = r.s; break; }
+  eq(pick2, '4', 'art22 EX2: smallest size >= 34,986.7 cmil -> 4 AWG Cu');
+  eq(core.ch9Row('4').cm, 41740, 'art22 EX2: 4 AWG = 41,740 cmil');
+  // EX3: exact-area landing 3/0 -> 4/0
+  const a30 = core.ch9Row('3/0').cm;
+  eq(a30, 167800, 'art22 EX3: 3/0 = 167,800 cmil');
+  approx(a30 * (core.ch9Row('4/0').cm / a30), core.ch9Row('4/0').cm, 1e-6, 'art22 EX3: proportional math lands exactly on 4/0 area (float tol)');
+  eq(core.ch9Row('4/0').cm, 211600, 'art22 EX3: 4/0 = 211,600 cmil');
+  // EX4: (G) feeder tap, 200 A ahead -> 4 AWG Cu / 2 AWG Al (row probe above)
+  eq(core.nextStdBreaker(200), 200, 'art22 EX4: 200 A is a standard size');
+  // EX5: (D) motor, 40 A device -> "not exceeding 30" row = 10 AWG Cu
+  eq(core.nextStdBreaker(40), 40, 'art22 EX5: 40 A device (not a table row)');
+  // EX6: (E) flexible cord 14 AWG -> EGC 14 AWG (circuit size governs)
+  eq(core.ch9Row('14').cm, 4110, 'art22 EX6: 14 AWG = 4,110 cmil');
+  // EX7: 100 A service: EGC 6 AWG Cu vs phases 3 AWG Cu @75
+  const ex7sl = core.pickConductor31016(100, 'cu', 75);
+  eq(ex7sl.size, '3', 'art22 EX7: 100 A Cu @75 -> 3 AWG ungrounded');
+  eq(ex7sl.amp, 100, 'art22 EX7: 3 AWG = 100 A @75');
+  eq(core.ch9Row('6').cm, 26240, 'art22 EX7: EGC 6 AWG (26,240 cmil) << phases 3 AWG (52,620 cmil)');
+  // EX8: (C) three 20 A circuits share one EGC -> 20 A row = 12 AWG Cu
+  eq(core.nextStdBreaker(20), 20, 'art22 EX8: 20 A is a standard size (largest OCPD, no summation)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
