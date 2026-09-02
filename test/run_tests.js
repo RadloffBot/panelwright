@@ -2412,5 +2412,110 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(core.nextStdBreaker(20), 20, 'art22 EX8: 20 A is a standard size (largest OCPD, no summation)');
 }
 
+// --- Article 23 (Session 48): articles/nec-250102-main-bonding-jumper.html ---
+// NEC 250.102 (Grounded Conductor, Bonding Conductors, and Jumpers) deep-dive:
+// (A) material, (B) attachment, (C) supply-side bonding jumper size (Table
+// 250.102(C)(1) + the 12.5% Note 1 + the parallel rules), (D) load-side
+// hand-off to 250.122, (E) installation. Verbatim 2017 section text (on disk,
+// nec2017_full.txt lines 20450-20570) + the full 7-row Table 250.102(C)(1)
+// (cross-checked this session against zing2.app 2020/2023/2026 — identical —
+// and the ELR 2023 change record sectionID 1612, which prints Note 1's 12.5%
+// rule; the on-disk OCR's "124% percent" is a garble and is NOT asserted).
+// Every worked number asserted against the shipped cores (ch9Row cmil,
+// pickConductor31016, T31016) so the article cannot drift from the tool.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-250102-main-bonding-jumper.html'), 'utf8');
+  // whitespace-normalized copy: verbatim probes must survive pre-wrap line breaks
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art23: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-250102-main-bonding-jumper.html'), true, 'art23: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art23: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art23: Article + FAQPage JSON-LD present');
+  // verbatim 2017 code probes (250.102 body)
+  eq(has('Grounded Conductor, Bonding Conductors, and'), true, 'art23: carries the verified 2014-2023 section title');
+  eq(has('Bonding jumpers shall be of copper, aluminum, copper-clad aluminum, or other corrosion-resistant material'), true, 'art23: verbatim 250.102(A) material');
+  eq(has('A bonding jumper shall be a wire, bus, screw, or similar suitable conductor'), true, 'art23: verbatim 250.102(A) wire/bus/screw');
+  eq(has('The supply-side bonding jumper shall not be smaller than specified in Table 250.102(C)(1)'), true, 'art23: verbatim 250.102(C)(1)');
+  eq(has('the size of the supply-side bonding jumper for each raceway or cable shall be selected from Table 250.102(C)(1)'), true, 'art23: verbatim 250.102(C)(2) per-raceway rule');
+  eq(has('The equipment bonding jumper on the load side of an overcurrent device(s) shall be sized in accordance with 250.122'), true, 'art23: verbatim 250.102(D) hand-off to 250.122');
+  eq(has('the length of the bonding jumper or conductor or equipment bonding jumper shall not exceed 1.8 m (6 ft)'), true, 'art23: verbatim 250.102(E)(2) 6 ft limit');
+  // the four sections that point at the one table
+  eq(has('250.24(C)(1) Sizing for a Single Raceway or Cable. The grounded conductor shall not be smaller than specified in Table 250.102(C)(1)'), true, 'art23: verbatim 250.24(C)(1)');
+  eq(has('but not smaller than 1/0 AWG'), true, 'art23: verbatim 250.24(C)(2) 1/0 AWG parallel minimum');
+  eq(has('Main bonding jumpers and system bonding jumpers shall not be smaller than specified in Table 250.102(C)(1)'), true, 'art23: verbatim 250.28(D)(1)');
+  eq(has('(a) Sizing for a Single Raceway. The grounded conductor shall not be smaller than specified in Table 250.102(C)(1)'), true, 'art23: verbatim 250.30(A)(3)(a)');
+  eq(has('The lightning protection system ground terminals shall be bonded to the building or structure grounding electrode system'), true, 'art23: verbatim 250.106');
+  // Note 1: the 12.5% rule (the OCR garble "124% percent" appears ONLY as a
+  // documented garble in the honesty/source notes — the factor printed in the
+  // notes list must be the resolved value)
+  eq(has('not less than 12.5 percent'), true, 'art23: Note 1 prints the resolved 12.5 percent');
+  eq(has('a garble for "12.5 percent"'), true, 'art23: the OCR "124% percent" is explicitly documented as a garble (not propagated as the factor)');
+  eq(has('shall not be required to be larger than the largest ungrounded conductor'), true, 'art23: Note 1 ceiling (never larger than ungrounded)');
+  // Note 3: equivalent area for multiple sets
+  eq(has('the largest sum of the areas of the corresponding conductors of each set'), true, 'art23: Note 3 equivalent-area rule');
+  // edition posture: 2023 change record
+  eq(has('sectionID 1611') || has('1611'), true, 'art23: ELR 2023 record for 250.102(A) cited');
+  eq(has('sectionID 1612') || has('1612'), true, 'art23: ELR 2023 record for the table cited');
+  // Table 250.102(C)(1) row probes (all 7 rows; 2020/2023/2026 identical per zing2)
+  const rows = [
+    ['2 AWG or smaller', '1/0 AWG or smaller', '8 AWG', '6 AWG'],
+    ['1 AWG or 1/0 AWG', '2/0 AWG or 3/0 AWG', '6 AWG', '4 AWG'],
+    ['2/0 AWG or 3/0 AWG', '4/0 AWG or 250 kcmil', '4 AWG', '2 AWG'],
+    ['Over 3/0 AWG through 350 kcmil', 'Over 250 kcmil through 500 kcmil', '2 AWG', '1/0 AWG'],
+    ['Over 350 kcmil through 600 kcmil', 'Over 500 kcmil through 900 kcmil', '1/0 AWG', '3/0 AWG'],
+    ['Over 600 kcmil through 1100 kcmil', 'Over 900 kcmil through 1750 kcmil', '2/0 AWG', '4/0 AWG'],
+    ['Over 1100 kcmil', 'Over 1750 kcmil', '12.5%', '12.5%'],
+  ];
+  for (const [cuL, alL, cu, al] of rows) {
+    const re = new RegExp('<td>' + cuL + '</td><td>' + alL + '</td><td class="ctr[^"]*">[^<]*' + cu.replace(/%/g, '%') + '[^<]*</td><td class="ctr[^"]*">[^<]*' + al + '[^<]*</td>');
+    eq(re.test(art), true, 'art23: Table 250.102(C)(1) row ' + cuL + ' -> ' + cu + ' Cu / ' + al + ' Al');
+  }
+  // EX1: 100 A service: phases 3 AWG Cu, bonded neutral 8 AWG Cu (two sizes smaller), EGC 6 AWG Cu
+  const ex1p = core.pickConductor31016(100, 'cu', 75);
+  eq(ex1p.size, '3', 'art23 EX1: 100 A Cu @75 -> 3 AWG ungrounded');
+  eq(ex1p.amp, 100, 'art23 EX1: 3 AWG = 100 A @75');
+  eq(core.ch9Row('3').cm, 52620, 'art23 EX1: 3 AWG = 52,620 cmil (Ch. 9 T8)');
+  // EX2: 200 A service: phases 3/0 Cu, bonded neutral 4 AWG Cu
+  const ex2p = core.pickConductor31016(200, 'cu', 75);
+  eq(ex2p.size, '3/0', 'art23 EX2: 200 A Cu @75 -> 3/0 ungrounded');
+  eq(ex2p.amp, 200, 'art23 EX2: 3/0 = 200 A @75');
+  eq(core.ch9Row('3/0').cm, 167800, 'art23 EX2: 3/0 = 167,800 cmil');
+  // EX3: 400 kcmil Cu service -> "Over 350 through 600" row -> 1/0 AWG Cu; ampacity 335 A (NOT 475)
+  eq(core.ch9Row('400').cm, 400000, 'art23 EX3: 400 kcmil = 400,000 cmil');
+  const amp400 = core.T31016.find(r => r.s === '400').cu[1];
+  eq(amp400, 335, 'art23 EX3: 400 kcmil Cu = 335 A @75 (the 475-A 90 °C value is NOT the governing column)');
+  // EX4: Note 1 12.5%, both ends — smallest standard size >= 12.5% of ungrounded area
+  const req4cu = core.ch9Row('1500').cm * 0.125;
+  eq(core.ch9Row('1500').cm, 1500000, 'art23 EX4: 1500 kcmil = 1,500,000 cmil');
+  approx(req4cu, 187500, 1e-6, 'art23 EX4: 1,500,000 x 12.5% = 187,500 cmil required');
+  let pick4cu = null;
+  for (const r of core.CH9_T8) if (r.cm >= req4cu - 1e-9) { pick4cu = r.s; break; }
+  eq(pick4cu, '4/0', 'art23 EX4: smallest size >= 187,500 cmil -> 4/0 Cu (3/0 = 167,800 falls short)');
+  eq(core.ch9Row('4/0').cm, 211600, 'art23 EX4: 4/0 = 211,600 cmil');
+  const req4al = core.ch9Row('1750').cm * 0.125;
+  eq(core.ch9Row('1750').cm, 1750000, 'art23 EX4: 1750 kcmil = 1,750,000 cmil');
+  approx(req4al, 218750, 1e-6, 'art23 EX4: 1,750,000 x 12.5% = 218,750 cmil required');
+  let pick4al = null;
+  for (const r of core.CH9_T8) if (r.cm >= req4al - 1e-9) { pick4al = r.s; break; }
+  eq(pick4al, '250', 'art23 EX4: smallest size >= 218,750 cmil -> 250 kcmil (250,000 cmil)');
+  // EX5: paralleled sets, Note 3 equivalent area = largest sum of corresponding conductors
+  const eq5 = 2 * core.ch9Row('4/0').cm;
+  approx(eq5, 423200, 1e-6, 'art23 EX5: equivalent area = 2 x 4/0 (211,600) = 423,200 cmil');
+  // EX6: separately derived 100 kVA 3-ph 208 V: secondary FLC, then pick, then table row
+  const fla6 = 100000 / (Math.sqrt(3) * 208);
+  approx(fla6, 277.6, 0.05, 'art23 EX6: 100,000 VA / (sqrt(3) x 208 V) = 277.6 A secondary FLC');
+  const ex6p = core.pickConductor31016(Math.ceil(fla6), 'cu', 75);
+  eq(ex6p.size, '300', 'art23 EX6: 278 A Cu @75 -> 300 kcmil ungrounded');
+  eq(ex6p.amp, 285, 'art23 EX6: 300 kcmil = 285 A @75');
+  eq(core.T31016.find(r => r.s === '250').cu[1], 255, 'art23 EX6: 250 kcmil Cu = 255 A @75 (< 278, not enough)');
+  // ladder: 250.66 caps (no 12.5% row) while 250.102(C)(1) keeps scaling
+  eq(has('3/0 Cu / 250 kcmil Al — CAPPED, no further row'), true, 'art23 ladder: 250.66 top row is a CAP (3/0 Cu / 250 kcmil Al)');
+  eq(has('keeps scaling (Note 1)'), true, 'art23 ladder: 250.102(C)(1) keeps scaling via Note 1');
+  eq(has('keyed to OCPD rating, not size'), true, 'art23 ladder: 250.122 keyed to OCPD rating, not conductor size');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

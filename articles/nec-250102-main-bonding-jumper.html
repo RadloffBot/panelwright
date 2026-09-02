@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 250.102 — Main Bonding Jumper &amp; Bonded Neutral Size (Table 250.102(C)(1)), Explained</title>
+<meta name="description" content="NEC 250.102 in full: how to size the main bonding jumper, the bonded (grounded) service conductor, and the supply-side bonding jumper with Table 250.102(C)(1) — the full 7-row table (2 AWG or smaller → 8 AWG Cu ... over 1100 kcmil → 12.5% of the ungrounded area), Note 1's 12.5% rule, the parallel-conductor rules (250.24(C)(2), 250.102(C)(2)), separately derived systems (250.30(A)(3)), and the three-table ladder (250.66 GEC / 250.102 bonding / 250.122 EGC). Six core-computed worked examples.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-250102-main-bonding-jumper.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 250.102 — Main Bonding Jumper &amp; Bonded Neutral Size">
+<meta property="og:description" content="Table 250.102(C)(1) in full (7 rows + the 12.5% rule): bonded neutral / main bonding jumper / supply-side jumper sizing, the parallel-conductor rules, separately derived systems, and the 250.66/250.102/250.122 three-table ladder.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-250102-main-bonding-jumper.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 250.102 — Main Bonding Jumper &amp; Bonded Neutral Size">
+<meta name="twitter:description" content="Table 250.102(C)(1) (7 rows + the 12.5% rule), the parallel rules, 250.30(A)(3), and the three-table ladder — worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 250.102, main bonding jumper size, bonded neutral size, Table 250.102(C)(1), grounded conductor size, supply-side bonding jumper, what size main bonding jumper, 12.5 percent rule 1100 kcmil, 250.24(C) grounded conductor, 250.28 main bonding jumper, 250.30 separately derived system bonding jumper, system bonding jumper, NEC 250.66 grounding electrode conductor, three table ladder 250.66 250.102 250.122, electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 250.102 — Main Bonding Jumper &amp; Bonded Neutral Size, Explained",
+  "description": "NEC 250.102 in full: how to size the main bonding jumper, the bonded (grounded) service conductor, and the supply-side bonding jumper with Table 250.102(C)(1) — the full 7-row table, Note 1's 12.5% rule, the parallel-conductor rules (250.24(C)(2), 250.102(C)(2)), separately derived systems (250.30(A)(3)), and the three-table ladder (250.66 GEC / 250.102 bonding / 250.122 EGC). Six core-computed worked examples.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-01",
+  "dateModified": "2026-09-01",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-250102-main-bonding-jumper.html",
+  "isAccessibleForFree": true
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What size main bonding jumper do I need for my service?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Look up the size of the largest ungrounded (phase) service conductor in Table 250.102(C)(1). Examples: 2 AWG or smaller Cu phases → 8 AWG Cu (6 AWG Al); 1 AWG or 1/0 → 6 AWG Cu (4 AWG Al); 2/0 or 3/0 → 4 AWG Cu (2 AWG Al); over 3/0 through 350 kcmil → 2 AWG Cu (1/0 Al); over 350 through 600 kcmil → 1/0 Cu (3/0 Al); over 600 through 1100 kcmil → 2/0 Cu (4/0 Al); over 1100 kcmil Cu (over 1750 kcmil Al) → 12.5% of the ungrounded conductor's circular mil area." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the bonded (grounded) neutral the same size as the main bonding jumper?",
+      "acceptedAnswer": { "@type": "Answer", "text": "For a normal single-raceway service, yes — both use Table 250.102(C)(1) on the largest ungrounded service conductor: 250.24(C)(1) sizes the grounded (bonded) conductor and 250.28(D)(1) sizes the main bonding jumper, and both point at the same table. They can differ in specific installations (e.g. a multi-enclosure service sizes each enclosure's main bonding jumper on its own ungrounded conductors, per 250.28(D)(2))." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the 12.5% rule for services over 1100 kcmil?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Note 1 under Table 250.102(C)(1): if the ungrounded supply conductors are larger than 1100 kcmil copper (or 1750 kcmil aluminum), the grounded conductor or bonding jumper shall have an area not less than 12.5 percent of the area of the largest ungrounded supply conductor (or the equivalent area for parallel conductors) — and it is not required to be larger than the largest ungrounded conductor. Example: 1500 kcmil Cu phases × 12.5% = 187,500 cmil required → 4/0 Cu (211,600 cmil) is the smallest standard size that meets it." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I size the bonded neutral when the service conductors are paralleled?",
+      "acceptedAnswer": { "@type": "Answer", "text": "250.24(C)(2): the grounded conductor must also be installed in parallel, and the grounded conductor in each raceway or cable is based on the total circular mil area of the parallel ungrounded conductors in that raceway or cable — but not smaller than 1/0 AWG. If instead a single (non-parallel) grounded conductor is used, Table 250.102(C)(1) is applied to the equivalent area, which per Note 3 is the largest sum of the areas of the corresponding conductors of each set." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the system bonding jumper sized on a separately derived system (generator, transformer)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "250.30(A)(3) sizes the grounded conductor of a separately derived system with the same table: (A)(3)(a) says the grounded conductor shall not be smaller than specified in Table 250.102(C)(1) — based on the size of the derived system's own ungrounded conductors, not the transformer kVA nameplate. The system bonding jumper is sized the same way via 250.28(D)(1). Example: a 100 kVA 3-phase 208 V transformer (277.6 A secondary) carries 300 kcmil Cu ungrounded conductors (285 A) → system bonding jumper 2 AWG Cu (1/0 Al)." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Table 250.66, Table 250.102(C)(1), and Table 250.122?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Three different conductors, three different rules: (1) Table 250.66 sizes the grounding electrode conductor (GEC) — the conductor from the service equipment to the grounding electrodes (rod, pipe, plate). (2) Table 250.102(C)(1) sizes the grounded (bonded) conductor and the main/system/supply-side bonding jumpers. (3) Table 250.122 sizes the equipment grounding conductors (EGCs) — and it is keyed to the OVERCURRENT DEVICE RATING, not to conductor size. For the first six size bands, Tables 250.66 and 250.102(C)(1) have identical values; they diverge at the top: Table 250.66 caps at 3/0 Cu (250 kcmil Al), while Table 250.102(C)(1) keeps scaling with the 12.5% rule." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the bonding jumper be a bare copper bar instead of wire?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. 250.102(A): bonding jumpers shall be of copper, aluminum, copper-clad aluminum, or other corrosion-resistant material, and a bonding jumper shall be a wire, bus, screw, or similar suitable conductor. A bus-type supply-side bonding jumper shall have a cross-sectional area not smaller than the wire-type size determined in 250.102(C) (250.30(A)(2)(b))." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does 250.106 require?",
+      "acceptedAnswer": { "@type": "Answer", "text": "250.106 (Lightning Protection Systems): the lightning protection system ground terminals shall be bonded to the building or structure grounding electrode system. It is a one-line section — the detailed requirements are in NFPA 780 (referenced in its informational note), which is why it needs no table of its own." }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #171e26; --panel2: #1c2530; --line: #2a3644;
+    --text: #e8eef4; --dim: #93a4b4; --accent: #ffb020; --accent2: #4da3ff;
+    --ok: #3ddc84; --bad: #ff5d5d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 18px 60px; }
+  .crumb { font-size: 13px; color: var(--dim); margin-bottom: 18px; }
+  .crumb a { color: var(--accent2); text-decoration: none; }
+  .crumb a:hover { text-decoration: underline; }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: .2px; }
+  h1 span { color: var(--accent); }
+  h2 { font-size: 20px; margin: 34px 0 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  h3 { font-size: 16px; margin: 22px 0 8px; color: var(--accent); }
+  p { margin: 10px 0; }
+  a { color: var(--accent2); }
+  .sub { color: var(--dim); font-size: 14px; margin: 0 0 14px; }
+  .disc { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--dim); margin: 16px 0; }
+  .code { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; font-size: 14px; line-height: 1.65; margin: 14px 0; overflow-x: auto; white-space: pre-wrap; }
+  .code .src { display: block; margin-top: 10px; font-size: 12px; color: var(--dim); white-space: normal; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 14.5px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--panel2); font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--dim); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.ctr, th.ctr { text-align: center; }
+  .ok { color: var(--ok); font-weight: 600; }
+  .warn { color: var(--accent); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .blank { color: var(--dim); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .cta { display: block; background: var(--accent); color: #14100a; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px; padding: 13px 18px; font-size: 16px; margin: 26px 0 6px; }
+  .cta:hover { filter: brightness(1.08); }
+  .ctasub { text-align: center; font-size: 13px; color: var(--dim); margin-top: 0; }
+  .method { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .method p, .method li { color: var(--dim); }
+  .renew { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent2); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .renew strong { color: var(--text); }
+  footer { margin-top: 36px; font-size: 12.5px; color: var(--dim); border-top: 1px solid var(--line); padding-top: 14px; }
+  footer p { margin: 5px 0; }
+  @media print {
+    body { background: #fff; color: #111; }
+    .crumb, .cta, .ctasub { display: none; }
+    .disc, .method, .code, .renew { border-color: #ccc; background: #f7f7f7; color: #111; }
+    .code .src, .sub, footer, .tag { color: #555; }
+    h1 span, h3 { color: #b97900; }
+    a { color: #0645ad; }
+    th { background: #eee; color: #333; }
+    th, td { border-color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 250.102 — <span>Main Bonding Jumper &amp; Bonded Neutral Size</span></h1>
+  <p class="sub">How to size the bonded (grounded) service conductor, the main bonding jumper, and the supply-side bonding jumper with Table 250.102(C)(1) — the full 7-row table plus Note 1's 12.5% rule, the parallel-conductor rules, separately derived systems, and the three-table ladder (250.66 / 250.102 / 250.122) that closes the grounding thread.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 250.102 for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text)</strong>, the citation anchor for this page; the 2023 language is documented in the edition-history box. Table values are cross-checked against live sources (see Sources).</div>
+
+  <h2>Why this section exists</h2>
+  <p>A service has <strong>three</strong> grounding-related conductors that people constantly mix up, and each is sized by a <strong>different table</strong>:</p>
+  <ul>
+    <li><strong>The grounded (bonded) conductor</strong> — the "neutral" that is intentionally bonded to ground at the service. Sized by <strong>250.24(C)(1) → Table 250.102(C)(1)</strong>, on the size of the largest ungrounded service conductor.</li>
+    <li><strong>The main bonding jumper</strong> — the physical connection (wire, bus, or screw) between the grounded conductor and the service equipment enclosure. Sized by <strong>250.28(D)(1) → Table 250.102(C)(1)</strong>, on the same ungrounded-conductor size. On a separately derived system it becomes the <em>system bonding jumper</em> (250.30(A)(3) — same table).</li>
+    <li><strong>The equipment grounding conductors (EGCs)</strong> — the green/bare conductors that carry fault current back to the source. Sized by <strong>250.122 → Table 250.122</strong>, on the <em>overcurrent device rating</em> — a completely different key. (See the <a href="nec-250122-egc-sizing.html">250.122 EGC sizing article →</a>.)</li>
+  </ul>
+  <p>250.102 is the house where the <em>supply-side</em> sizing rules live: (A) what material a bonding jumper may be, (B) how it's attached, (C) how the <strong>supply-side bonding jumper</strong> is sized (the table + the parallel rules), (D) the load-side equipment bonding jumper (that's 250.122's job), and (E) installation (inside or outside the raceway, the 6-foot length limit). This page walks (A)–(E) verbatim, quotes the three sections that point at the same table (250.24(C), 250.28, 250.30(A)(3)), renders the full table, and computes six worked examples with the same core that ships in the calculator.</p>
+
+  <h2>The verbatim section (2017 NEC — citation anchor)</h2>
+  <div class="code">250.102 Grounded Conductor, Bonding Conductors, and
+Jumpers.
+
+(A) Material. Bonding jumpers shall be of copper, aluminum,
+copper-clad aluminum, or other corrosion-resistant material. A
+bonding jumper shall be a wire, bus, screw, or similar suitable
+conductor.
+
+(B) Attachment. Bonding jumpers shall be attached in the manner
+specified by the applicable provisions of 250.8 for circuits and
+equipment and by 250.70 for grounding electrodes.
+
+(C) Size — Supply-Side Bonding Jumper.
+
+(1) Size for Supply Conductors in a Single Raceway or Cable. The
+supply-side bonding jumper shall not be smaller than specified in
+Table 250.102(C)(1).
+
+(2) Size for Parallel Conductor Installations in Two or More
+Raceways or Cables. Where the ungrounded supply conductors are
+paralleled in two or more raceways or cables, and an individual
+supply-side bonding jumper is used for bonding these raceways or
+cables, the size of the supply-side bonding jumper for each raceway
+or cable shall be selected from Table 250.102(C)(1) based on the
+size of the ungrounded supply conductors in each raceway or cable.
+A single supply-side bonding jumper installed for bonding two or
+more raceways or cables shall be sized in accordance with
+250.102(C)(1).
+
+Informational Note No. 1: The term supply conductors includes
+ungrounded conductors that do not have overcurrent protection on
+their supply side and terminate at service equipment or the first
+disconnecting means of a separately derived system.
+
+Informational Note No. 2: See Chapter 9, Table 8, for the circular
+mil area of conductors 18 AWG through 4/0 AWG.
+
+(D) Size — Equipment Bonding Jumper on Load Side of an Overcurrent
+Device. The equipment bonding jumper on the load side of an
+overcurrent device(s) shall be sized in accordance with 250.122.
+
+A single common continuous equipment bonding jumper shall be
+permitted to connect two or more raceways or cables if the bonding
+jumper is sized in accordance with 250.122 for the largest
+overcurrent device supplying circuits therein.
+
+(E) Installation. Bonding jumpers or conductors and equipment
+bonding jumpers shall be permitted to be installed inside or outside
+of a raceway or an enclosure.
+
+(1) Inside a Raceway or an Enclosure. If installed inside a raceway,
+equipment bonding jumpers and bonding jumpers or conductors shall
+comply with the requirements of 250.119 and 250.148.
+
+(2) Outside a Raceway or an Enclosure. If installed on the outside,
+the length of the bonding jumper or conductor or equipment bonding
+jumper shall not exceed 1.8 m (6 ft) and shall be routed with the
+raceway or enclosure.
+
+Exception: An equipment bonding jumper or supply-side bonding
+jumper longer than 1.8 m (6 ft) shall be permitted at outside pole
+locations for the purpose of bonding or grounding isolated sections
+of metal raceways or elbows installed in exposed risers of metal
+conduit or other metal raceway, and for bonding grounding electrodes,
+and shall not be required to be routed with a raceway or enclosure.
+
+(3) Protection. Bonding jumpers or conductors and equipment
+bonding jumpers shall be installed in accordance with 250.64(A)
+and (B).
+<span class="src">Verbatim NEC 2017, official NFPA text (citation anchor). OCR line-wrap reflow normalized; no wording altered.</span></div>
+
+  <div class="code">250.24(C)(1) Sizing for a Single Raceway or Cable. The grounded
+conductor shall not be smaller than specified in Table
+250.102(C)(1).
+
+250.24(C)(2) Parallel Conductors in Two or More Raceways or Cables.
+If the ungrounded service-entrance conductors are installed in
+parallel in two or more raceways or cables, the grounded conductor
+shall also be installed in parallel. The size of the grounded
+conductor in each raceway or cable shall be based on the total
+circular mil area of the parallel ungrounded conductors in the
+raceway or cable, as indicated in 250.24(C)(1), but not smaller
+than 1/0 AWG.
+
+250.28 Main Bonding Jumper and System Bonding Jumper.
+(D) Size. ... (D)(1) General. Main bonding jumpers and system
+bonding jumpers shall not be smaller than specified in Table
+250.102(C)(1).
+
+250.30(A)(3) Grounded Conductor. If a grounded conductor is
+installed and the system bonding jumper connection is not located
+at the source, 250.30(A)(3)(a) through (A)(3)(d) shall apply.
+(a) Sizing for a Single Raceway. The grounded conductor shall not
+be smaller than specified in Table 250.102(C)(1).
+
+250.106 Lightning Protection Systems. The lightning protection
+system ground terminals shall be bonded to the building or
+structure grounding electrode system.
+<span class="src">Verbatim NEC 2017 (250.24(C)(1)–(2), 250.28(D)(1), 250.30(A)(3)(a), 250.106) — the four sections that all point at the one table. 250.28(D)(1) quoted in shortened form ("..." elides (D)'s lead-in); all other text verbatim.</span></div>
+
+  <h2>Table 250.102(C)(1) — the full table</h2>
+  <p class="sub">Grounded Conductor, Main Bonding Jumper, System Bonding Jumper, and Supply-Side Bonding Jumper for Alternating-Current Systems.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Size of largest ungrounded conductor — copper (AWG/kcmil)</th>
+        <th>Size of largest ungrounded conductor — aluminum or copper-clad (AWG/kcmil)</th>
+        <th class="ctr">Size of grounded conductor or bonding jumper — copper (AWG/kcmil)</th>
+        <th class="ctr">Size of grounded conductor or bonding jumper — aluminum or copper-clad (AWG/kcmil)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>2 AWG or smaller</td><td>1/0 AWG or smaller</td><td class="ctr">8 AWG</td><td class="ctr">6 AWG</td></tr>
+      <tr><td>1 AWG or 1/0 AWG</td><td>2/0 AWG or 3/0 AWG</td><td class="ctr">6 AWG</td><td class="ctr">4 AWG</td></tr>
+      <tr><td>2/0 AWG or 3/0 AWG</td><td>4/0 AWG or 250 kcmil</td><td class="ctr">4 AWG</td><td class="ctr">2 AWG</td></tr>
+      <tr><td>Over 3/0 AWG through 350 kcmil</td><td>Over 250 kcmil through 500 kcmil</td><td class="ctr">2 AWG</td><td class="ctr">1/0 AWG</td></tr>
+      <tr><td>Over 350 kcmil through 600 kcmil</td><td>Over 500 kcmil through 900 kcmil</td><td class="ctr">1/0 AWG</td><td class="ctr">3/0 AWG</td></tr>
+      <tr><td>Over 600 kcmil through 1100 kcmil</td><td>Over 900 kcmil through 1750 kcmil</td><td class="ctr">2/0 AWG</td><td class="ctr">4/0 AWG</td></tr>
+      <tr><td>Over 1100 kcmil</td><td>Over 1750 kcmil</td><td class="ctr warn">12.5% of ungrounded area (Note 1)</td><td class="ctr warn">12.5% of ungrounded area (Note 1)</td></tr>
+    </tbody>
+  </table>
+  <div class="renew"><strong>The four notes (2017, verbatim, OCR-normalized):</strong>
+  <ol>
+    <li>If the ungrounded supply conductors are larger than 1100 kcmil copper or 1750 kcmil aluminum, the grounded conductor or bonding jumper shall have an area <strong>not less than 12.5 percent</strong> of the area of the largest ungrounded supply conductor or equivalent area for parallel supply conductors. The grounded conductor or bonding jumper shall not be required to be larger than the largest ungrounded conductor or set of ungrounded conductors. <span class="blank">(The on-disk 2017 OCR scan prints this as "124% percent" — a garble for "12.5 percent"; resolved against the 2023 change record and live tables, see edition box.)</span></li>
+    <li>If the ungrounded supply conductors are larger than 1100 kcmil copper or 1750 kcmil aluminum and the ungrounded supply conductors and the bonding jumper are of <em>different materials</em> (copper, aluminum, or copper-clad aluminum), the minimum size shall be based on the assumed use of ungrounded supply conductors of the same material as the grounded conductor or bonding jumper, with an ampacity equivalent to that of the installed ungrounded supply conductors.</li>
+    <li>If multiple sets of service-entrance conductors are used as permitted in 230.40, Exception No. 2, or if multiple sets of ungrounded supply conductors are installed for a separately derived system, the equivalent size of the largest ungrounded supply conductor(s) shall be determined by the <strong>largest sum of the areas of the corresponding conductors of each set</strong>.</li>
+    <li>If there are no service-entrance conductors, the supply conductor size shall be determined by the equivalent size of the largest service-entrance conductor required for the load to be served.</li>
+  </ol>
+  </div>
+
+  <h3>The "never larger than the ungrounded" ceiling</h3>
+  <p>Like 250.122's (A) ceiling, Note 1 caps the 12.5% result: the bonded neutral is <em>never required</em> to be larger than the largest ungrounded conductor. For the table rows (not the 12.5% band) the ceiling never binds — the table's output is always smaller than its input.</p>
+
+  <h2>Edition history &amp; the OCR trap</h2>
+  <div class="renew">
+    <p><strong>Section title</strong> "Grounded Conductor, Bonding Conductors, and Jumpers" (250.102) verified on the up.codes section index for the 2023 NEC this session; "Lightning Protection Systems" (250.106) likewise. <strong>2023 (A) verbatim, from the change record</strong> (ELR 2023 Grounding &amp; Bonding course, sectionID 1611, fetched this session): "250.102 Grounded Conductor, Bonding Conductors, and Jumpers. (A) Material. Bonding jumpers shall be of copper, aluminum, copper-clad aluminum, or other corrosion-resistant material. A bonding jumper shall be a wire, bus, screw, or similar suitable conductor." — <strong>word-for-word identical to the 2017 text quoted above</strong>.</p>
+    <p><strong>The table's current values, 2023, from the change record</strong> (sectionID 1612, fetched this session): the 2023 record describes the table as "used for sizing the grounded conductor, main bonding jumper, system bonding jumper, and supply-side bonding jumper," and — decisively — "Note 1 under Table 250.102(C)(1) contains the <strong>12.5% rule</strong> to be used when the largest ungrounded conductor or equivalent area for parallel conductors is over 1100 kcmil copper or 1750 kcmil aluminum." <strong>The OCR trap, resolved:</strong> the on-disk 2017 OCR scan prints Note 1's factor as "124% percent" — a mangled "12.5 percent" (a "1" lost and a "2" doubled). The 2023 change record + zing2.app's three edition tabs (2020/2023/2026 all print "12.5% of Phase Area") settle it: <strong>12.5%</strong>.</p>
+    <p><strong>Honesty:</strong> the on-disk 2020 full-code scan ends at Article 230 (no 250.102 body for a 2017→2020 word-diff); the up.codes 2023 viewer body is account-gated, so the 2023 posture rests on the two change records above (250.102(A) quoted verbatim for 2023; the table's purpose + Note 1's 12.5% confirmed for 2023) + the live cross-check. The 2026 NEC renumber of Article 250 is flagged; this page cites 2017–2023 numbering.</p>
+  </div>
+
+  <h2>Six worked examples (every number from the shipped core)</h2>
+
+  <h3>EX1 — the 100 A one-family service: all four grounding conductors</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Service OCPD</td><td class="ctr">100 A</td></tr>
+      <tr><td>Ungrounded service conductors (230.42(A)(2), 100% of 100 A)</td><td class="ctr"><code>pickConductor31016(100, 'cu', 75) = 3 AWG Cu</code> (100 A @ 75 °C)</td></tr>
+      <tr><td>Table row (3 AWG Cu)</td><td class="ctr">"2 AWG or smaller"</td></tr>
+      <tr><td>Bonded neutral / main bonding jumper (250.24(C)(1) / 250.28(D)(1))</td><td class="ctr">8 AWG Cu / 6 AWG Al</td></tr>
+      <tr><td>GEC (Table 250.66, live 2023)</td><td class="ctr">8 AWG Cu / 6 AWG Al</td></tr>
+      <tr><td>EGC (Table 250.122, 100 A row)</td><td class="ctr">6 AWG Cu / 4 AWG Al</td></tr>
+      <tr><td>Result</td><td class="ctr ok">phases 3 AWG Cu · bonded neutral 8 AWG Cu (two sizes smaller than phases) · EGC 6 AWG Cu (one size smaller than the bonded neutral) — three tables, one service</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX2 — the 200 A service</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Service OCPD</td><td class="ctr">200 A</td></tr>
+      <tr><td>Ungrounded conductors</td><td class="ctr"><code>pickConductor31016(200, 'cu', 75) = 3/0 Cu</code> (200 A @ 75 °C)</td></tr>
+      <tr><td>Table row (3/0 Cu)</td><td class="ctr">"2/0 AWG or 3/0 AWG"</td></tr>
+      <tr><td>Bonded neutral / main bonding jumper</td><td class="ctr">4 AWG Cu / 2 AWG Al</td></tr>
+      <tr><td>GEC (250.66) / EGC (250.122, 200 A row)</td><td class="ctr">4 AWG Cu / 2 AWG Al · 4 AWG Cu / 2 AWG Al</td></tr>
+      <tr><td>Result</td><td class="ctr ok">at 3/0 phases the bonded neutral, GEC, and EGC all converge on 4 AWG Cu — a size-dependent coincidence, not a rule</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX3 — the 400 kcmil Cu service (the exam question)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Ungrounded service conductors</td><td class="ctr">400 kcmil Cu (335 A @ 75 °C via <code>T31016</code>)</td></tr>
+      <tr><td>Table row</td><td class="ctr">"Over 350 kcmil through 600 kcmil"</td></tr>
+      <tr><td>Bonded neutral / main bonding jumper</td><td class="ctr warn">1/0 AWG Cu / 3/0 AWG Al</td></tr>
+      <tr><td>GEC (250.66)</td><td class="ctr">1/0 AWG Cu / 3/0 AWG Al</td></tr>
+      <tr><td>Result</td><td class="ctr ok">reproduces the 2023 change-record quiz (400 kcmil Cu ungrounded → options 4 AWG / 2 AWG / 1/0 / 2/0 → <strong>1/0 AWG Cu</strong>)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX4 — the 12.5% rule, both ends (Note 1)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core: Ch. 9 Table 8 cmil)</th></tr></thead>
+    <tbody>
+      <tr><td>1500 kcmil Cu phases × 12.5%</td><td class="ctr">1,500,000 × 0.125 = 187,500 cmil required</td></tr>
+      <tr><td>Smallest standard size ≥ 187,500 cmil</td><td class="ctr ok">4/0 Cu (211,600 cmil) — 3/0 (167,800) falls 19,700 cmil short</td></tr>
+      <tr><td>1750 kcmil Al phases × 12.5%</td><td class="ctr">1,750,000 × 0.125 = 218,750 cmil required</td></tr>
+      <tr><td>Smallest standard size ≥ 218,750 cmil</td><td class="ctr ok">250 kcmil (250,000 cmil)</td></tr>
+      <tr><td>The ceiling</td><td class="ctr">Note 1: never required larger than the largest ungrounded — does not bind in either case</td></tr>
+      <tr><td>GEC contrast</td><td class="ctr">Table 250.66 has <em>no</em> 12.5% row — "Over 1100 / 1750" caps at 3/0 Cu / 250 kcmil Al (live 2023). The bonded neutral keeps scaling; the GEC does not.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX5 — paralleled service conductors (two raceways)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Installed sets (230.40, Exception No. 2)</td><td class="ctr">2 × 3/0 Cu (167,800 cmil each) + 2 × 4/0 Cu (211,600 cmil each)</td></tr>
+      <tr><td>Equivalent area (Note 3: largest sum of corresponding conductors)</td><td class="ctr">2 × 211,600 = 423,200 cmil</td></tr>
+      <tr><td>Single jumper (250.102(C)(2), second sentence)</td><td class="ctr ok">one 2 AWG Cu / 1/0 AWG Al ("Over 3/0 through 350 kcmil" row on the equivalent)</td></tr>
+      <tr><td>Per-raceway jumpers (250.102(C)(2), first sentence)</td><td class="ctr">3/0 raceway → 4 AWG Cu / 2 AWG Al · 4/0 raceway → 2 AWG Cu / 1/0 AWG Al</td></tr>
+      <tr><td>Parallel grounded conductors (250.24(C)(2))</td><td class="ctr">grounded conductor in each raceway from its own ungrounded area, <strong>not smaller than 1/0 AWG</strong> (the 3/0 raceway's 4 AWG pick is overridden up to 1/0 AWG)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX6 — separately derived system: the 100 kVA 208 V transformer</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Transformer</td><td class="ctr">100 kVA, 3∅, 240/208 V (system bonding jumper on the source side of the first disconnect)</td></tr>
+      <tr><td>Secondary full-load current</td><td class="ctr">100,000 VA ÷ (√3 × 208 V) = 277.6 A</td></tr>
+      <tr><td>Ungrounded conductors (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(278, 'cu', 75) = 300 kcmil Cu</code> (285 A; 250 kcmil Cu = 255 A is not enough)</td></tr>
+      <tr><td>Table row (300 kcmil Cu)</td><td class="ctr">"Over 250 kcmil through 500 kcmil"</td></tr>
+      <tr><td>System bonding jumper (250.30(A)(3)(a) → 250.28(D)(1))</td><td class="ctr ok">2 AWG Cu / 1/0 AWG Al</td></tr>
+      <tr><td>Result</td><td class="ctr">sized on the <em>derived system's own</em> ungrounded conductors (300 kcmil Cu), not the kVA nameplate — same table as the main bonding jumper</td></tr>
+    </tbody>
+  </table>
+
+  <h3>The three-table ladder (2023 live values)</h3>
+  <table>
+    <thead><tr><th>Largest ungrounded</th><th class="ctr">GEC — Table 250.66</th><th class="ctr">Bonded neutral / bonding jumper — Table 250.102(C)(1)</th><th class="ctr">EGC — Table 250.122</th></tr></thead>
+    <tbody>
+      <tr><td>2 AWG or smaller Cu</td><td class="ctr">8 AWG Cu / 6 AWG Al</td><td class="ctr">8 AWG Cu / 6 AWG Al</td><td class="ctr">keyed to OCPD rating, not size (15 A → 14 AWG Cu)</td></tr>
+      <tr><td>3/0 Cu / 500 kcmil Al band</td><td class="ctr">4 AWG Cu / 2 AWG Al</td><td class="ctr">4 AWG Cu / 2 AWG Al</td><td class="ctr">200 A device → 4 AWG Cu / 2 AWG Al</td></tr>
+      <tr><td>Over 600–1100 kcmil Cu</td><td class="ctr">2/0 Cu / 4/0 Al</td><td class="ctr">2/0 Cu / 4/0 Al</td><td class="ctr">800 A device → 1/0 Cu / 4/0 Al</td></tr>
+      <tr><td>Over 1100 kcmil Cu</td><td class="ctr bad">3/0 Cu / 250 kcmil Al — CAPPED, no further row</td><td class="ctr warn">12.5% of ungrounded area — keeps scaling (Note 1)</td><td class="ctr">4000 A device → 500 kcmil Cu (table end)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">For the first six size bands, Tables 250.66 and 250.102(C)(1) carry <em>identical</em> values — the same numbers, different conductors. The divergence is at the top: the GEC stops at 3/0 Cu while the bonded neutral keeps scaling with the 12.5% rule. (250.122's values are shown for the corresponding OCPD ratings — a reminder it is keyed to the device, not the conductor.)</p>
+
+  <h2>Where 250.102 fits</h2>
+  <ul>
+    <li><strong>Not ampacity.</strong> The bonded neutral is sized from Table 250.102(C)(1) on the <em>phase-conductor size</em>, never from Table 310.16. (In practice the neutral's ampacity ends up adequate anyway — the neutral rarely carries full load current — but that is a consequence, not the rule.)</li>
+    <li><strong>The load side is 250.122.</strong> 250.102(D) hands equipment bonding jumpers on the load side of an overcurrent device over to 250.122 — the <a href="nec-250122-egc-sizing.html">EGC sizing article →</a>. The supply side (this section) and the load side (250.122) are different tables with different keys.</li>
+    <li><strong>Identification &amp; marking is 250.119 + 310.120</strong> — the <a href="nec-250119-egc-identification.html">EGC identification article →</a> (that one is for the equipment ground; the bonded neutral's identity is "the grounded conductor" — white/gray, per <a href="nec-2105-identification-for-branch-circuits.html">210.5/200.6 →</a>).</li>
+    <li><strong>The grounding electrode side</strong> (which electrodes, GEC size, connection points) is Part III of Article 250 (250.50–250.70) — outside this page's scope, but the GEC column above shows how its table relates.</li>
+    <li><strong>2026 NEC renumber flagged:</strong> the 2026 NEC renumbers Article 250; verify the section number against the edition adopted in your jurisdiction. This page cites 2017–2023 numbering.</li>
+  </ul>
+
+  <a class="cta" href="../#panelCard">Open the free PanelWright calculator — size the panel, the service, the neutral, the derating, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>): 250.102(A)–(E) (line 20450), Table 250.102(C)(1) + Notes 1–4 (line 20583), 250.24(C)(1) (line 18443), 250.28 (heading, line 18520), 250.30(A)(3)(a) (line 18703), 250.106 (line 20869). OCR line-wrap reflow normalized; the "250,30" and "shali/shail" OCR artifacts in the source corrected to "250.30"/"shall" (standard OCR class, disclosed); 250.28(D)(1) quoted in shortened form (elided lead-in marked). No other wording altered.</p>
+    <p><strong>Table values (7 rows + 12.5% top row).</strong> The on-disk 2017 OCR interleaves the table's columns (row labels wrap to their own lines), so the rows were parsed from the OCR layout row-by-row and cross-checked this session against <strong>zing2.app</strong> (<span class="blank">nec-250-102-c-1-bonding</span>, all three edition tabs — 2020, 2023, 2026 — fetched 2026-09-01: <strong>identical 7 rows</strong>, top row "12.5% of Phase Area") and against the <strong>ELR 2023 change record</strong> (sectionID 1612, which states the table's purpose and Note 1's 12.5% rule verbatim). The 2017 OCR's "124% percent" (Note 1) is documented as a garble for "12.5 percent" (resolved per the record + zing2); its "lor 1/0" row label = "1 or 1/0 AWG." No other source was reachable this session (electricalcode.net 404 across the site; conduit.site URL structure changed; electricianu.com table URLs 404) — the provenance is 2017-OCR-parsed + zing2 ×3 editions + ELR ×2 records, all agreed.</p>
+    <p><strong>Edition history.</strong> Section titles verified on the up.codes section index this session (2023 NEC: 250.102 "Grounded Conductor, Bonding Conductors, and Jumpers"; 250.106 "Lightning Protection Systems"). 250.102(A): 2023 code language quoted verbatim from the change record (ELR sectionID 1611) — identical to 2017. The on-disk 2020 scan ends at Art. 230 (no 2017→2020 word-diff claimed); the up.codes 2023 viewer body is account-gated (no 2023 full-body word-diff claimed beyond the two change records). 2026 renumber flagged.</p>
+    <p><strong>Worked numbers.</strong> Every cmil / size / ampacity value computed by the shipped cores under node (<span class="blank">compute_art23.js → calc_250102_cited.json</span>): Ch. 9 Table 8 cmil via <code>ch9Row</code>/<code>CH9_T8</code>, Table 310.16 picks via <code>pickConductor31016</code>, column ampacities via <code>T31016</code>/<code>T31016_COLS</code>. The EX4 12.5% picks are the smallest standard size ≥ 12.5% of the ungrounded cmil area (the EX1/EX2/EX3/EX5/EX6 table-row lookups are the code itself, transcribed once and asserted by the public test suite). Zero hand math.</p>
+  </div>
+
+  <footer>
+    <p><strong>About PanelWright.</strong> Free, open-source, in-browser panel schedule and service-entrance load tool for electricians and engineers. The panel card sizes branch circuits against load and checks the 210.11(C) dwelling-circuit mandates, the 220.82 card sizes the optional dwelling service, the 220.61 card sizes the neutral load, the Conductor Derating card applies the 310.15 corrections and the 240.4(D) caps, and the voltage-drop card checks the 3%/5% informational notes — all flagged as design aids, since the adopted NEC edition governs. <strong>Design aid only — not an engineering seal; verify against the adopted NEC edition.</strong></p>
+    <p>Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (no humans pretend to be the author). Zero third-party scripts, zero tracking; data never leaves your browser.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-250122-egc-sizing.html">NEC 250.122 EGC sizing</a> · <a href="nec-250119-egc-identification.html">NEC 250.119 + 310.120 EGC identification &amp; marking</a> · <a href="nec-31016-ampacity.html">NEC Table 310.16 ampacity</a> · <a href="nec-22061-neutral-load.html">NEC 220.61 neutral load</a> · <a href="nec-conductor-sizing.html">NEC conductor sizing end-to-end</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>

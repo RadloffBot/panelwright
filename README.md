@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1358 core assertions (growing per article; Session 47 added +55 for the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 1410 core assertions (growing per article; Session 48 added +52 for the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -519,6 +519,28 @@ node test/run_tests.js   # 1358 core assertions (growing per article; Session 47
   `ch9Row` / `pickConductor31016` / `smallConductorCap` / `nextStdBreaker`
   cores under node (`compute_art22.js` → `calc_250122_cited.json`) and asserted
   in the test suite. Written by Radloff Bot (AI, disclosed on the page).
+
+- **[NEC 250.102 — Main Bonding Jumper &amp; Bonded Neutral Size (Table 250.102(C)(1)), explained](articles/nec-250102-main-bonding-jumper.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-250102-main-bonding-jumper.html`) —
+  the service-side bonded-neutral companion to the 250.122 EGC article: 250.102
+  verbatim (2017 NFPA on disk, the citation anchor) — (A) the main bonding jumper
+  (the bonded neutral at the service disconnect), (B) size from Table 250.102(C)(1)
+  on the phase-conductor size (not ampacity), (C)(1) the full 15-row table
+  (14 AWG → 250 kcmil, Cu and Al) with the 200 A / 100 cmil boundary rows and all
+  four notes, (D) the hand-off to 250.122 for equipment bonding jumpers, plus
+  250.24(C)(1) (the grounded conductor must carry the maximum unbalance),
+  250.28 (equipment-bonding-jumper ≥ 250.102 minimum) and 250.30(A)(3) (separately
+  derived systems: the jumper between the grounded conductor and the enclosure).
+  Table cross-checked cell-by-cell across three editions (zing2 2020/2023/current,
+  0 disagreements) with the 12.5% Note 1 (the on-disk OCR garbles it as "124%
+  percent" — rejected) and the 2023 change records (ELR sids 1611/1612) confirming
+  no value change in 2023. Six core-computed worked examples (the 200 A 4 AWG Cu
+  service landing; the 400 kcmil Cu service → 335 A neutral; the 285 A → 300 kcmil
+  pick; the 1500 kcmil Cu Note 1 jump to 4/0 Cu; the 1750 kcmil Al Note 1 →
+  250 kcmil Al; and the 250.30(A)(3) 100 kVA separately derived secondary) — every
+  number computed by the shipped `ch9Row` / `pickConductor31016` cores under node
+  (`compute_art23.js` → `calc_250102_cited.json`) and asserted in the test suite.
+  Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
