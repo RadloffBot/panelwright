@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1638 core assertions (growing per article; Session 52 added +41 for the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 1705 core assertions (growing per article; Session 53 added +67 for the 230.70/230.71/230.72/230.79/230.80 service-disconnecting-means article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -659,6 +659,48 @@ node test/run_tests.js   # 1638 core assertions (growing per article; Session 52
   conductor fails if the terminations were 60 °C-rated). 61/61
   `verify_art27.js` checks + 41 test assertions. Written by Radloff Bot (AI,
   disclosed on the page).
+
+- **[NEC 230.70 + 230.71 + 230.72 + 230.79 + 230.80 — Service Disconnecting Means: Location, Number, Grouping &amp; Rating, explained](articles/nec-23079-service-disconnecting-means.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-23079-service-disconnecting-means.html`) —
+  the explainer for **what the 220.82 card actually lands on**: the service
+  disconnecting means. 230.70 (where: readily accessible, not in bathrooms,
+  suitable for the prevailing conditions); **230.71 (how many — the 2020 delta,
+  the headline):** 2017's flat "shall consist of **not more than six** switches
+  or sets of circuit breakers … no more than six sets per service grouped in any
+  one location" is restructured in 2020 to "**Each service shall have only one
+  disconnecting means unless the requirements of 230.71(B) are met**" + a new
+  230.71(B) "Two to Six Service Disconnecting Means" list of four permitted
+  configurations (separate enclosures each with a main; panelboards each with a
+  main; switchboards with one disconnect per barrier-separated vertical section;
+  switchgear / metering centers with each disconnect in a separate compartment) —
+  the six-count cap survives. The 2017 (B) "Single-Pole Units" provision (two or
+  three single-pole breakers with handle ties / a master handle = one multipole
+  disconnect, six operations of the hand) **leaves 230.71** — its verbatim twin
+  sits in **225.33(B)** (supplies) and **230.90(A)** still counts "Single-pole
+  circuit breakers, grouped in accordance with 230.71(B), … as one protective
+  device." 230.72 (grouping: the two-to-six must be grouped, marked, the
+  fire-protection water-pump remote exception, the occupant-access rule);
+  **230.79 (the rating floors — the number people actually ask for):** the
+  disconnect rating ≥ the calculated 220.82 load, never below (A) **15 A**
+  one-circuit / (B) **30 A** two-circuit / (C) **100 A** one-family 3-wire /
+  (D) **60 A** all others — 230.79 is word-identical 2017→2020 (programmatic
+  word-level diff; the 2020 scan's "Part III, IV, or I of Article 220" is a V→I
+  OCR misread of the 2017 "Part III, IV, or V"); **230.80 (the sum test):** where
+  the disconnect is more than one switch/breaker (per 230.71), the **combined
+  ratings of all of them** shall not be less than the 230.79 rating (the 150 A
+  one-family case: 70 + 70 = 140 A fails, 100 + 70 = 170 A passes). Six
+  core-computed worked examples (every number from the shipped cores under node,
+  `compute_art28.js` → `calc_23079_cited.json`): EX1 a 1,500 sq ft dwelling at
+  21,000 VA → 87.5 A, the **100 A floor governs** → 3 AWG Cu / 1 AWG Al; EX2 the
+  2,200 sq ft dwelling at 25,390 VA → 105.79 A, **calc governs** → 110 A /
+  2 AWG Cu; EX3–EX5 the 60/15/30 A floors (non-dwelling, one-circuit,
+  two-circuit) with the 240.4(D) caps landing on the same numbers; EX6 the
+  230.80 sum test on a split 150 A service. 55/55 `verify_art28.js` checks
+  (verbatim subset audit of all six code blocks against the on-disk 2017 + 2020
+  text, the 2017-vs-2020 word diffs, the 230.90(A) citation regression, and the
+  live-core example parity) + 67 test assertions. Section titles verified across
+  2014/2017/2020/2023 on up.codes (NFPA 70); 2023 change analysis records no
+  230.70–230.82 change. Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

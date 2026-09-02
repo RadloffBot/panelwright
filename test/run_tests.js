@@ -2910,5 +2910,109 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-2152-feeder-ampacity.html'), true, 'art27: cross-links to the 215.2 article');
 }
 
+// ---------------------------------------------------------------------------
+// ARTICLE 28 — NEC 230.70 + 230.71 + 230.72 + 230.79 + 230.80 service
+// disconnecting means: where, how many, grouping, rating floors (15/30/100/60 A)
+// and the 230.80 combined-rating sum rule. The 2020 delta: 230.71 restructured
+// (flat "not more than six" -> one-disconnect default + (B) "Two to Six" four
+// configs; Single-Pole Units moved out to 225.33(B) / 230.90(A)); 230.79/230.80
+// word-identical 2017->2020 (programmatic diff). Core-computed examples:
+// compute_art28.js -> calc_23079_cited.json. Verbatim audit: verify_art28.js.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-23079-service-disconnecting-means.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  // the verbatim blocks preserve some line-wrap hyphens ("service-\nentrance",
+  // "calcu-\nlated"); hasH strips hyphens (+ any space after) from BOTH sides so
+  // probes read as the official text (a hyphenated probe matches a
+  // hyphen-broken article line)
+  const dehy = (s) => s.replace(/- */g, '');
+  const normH = dehy(norm);
+  const hasH = (s) => normH.includes(dehy(s.toLowerCase()));
+  eq(art.includes('nec-23079-service-disconnecting-means.html'), true, 'art28: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-23079-service-disconnecting-means.html'), true, 'art28: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art28: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art28: Article + FAQPage JSON-LD present');
+  // verbatim 2017 230.70 probes
+  eq(hasH('Means shall be provided to disconnect all conductors in a building or other structure from the service-entrance conductors'), true, 'art28: verbatim 230.70 lead-in');
+  eq(has('The service disconnecting means shall be installed at a readily accessible location either outside of a building or structure or inside nearest the point of entrance of the service conductors'), true, 'art28: verbatim 230.70(A)(1) location');
+  eq(has('Service disconnecting means shall not be installed in bathrooms'), true, 'art28: verbatim 230.70(A)(2) bathrooms');
+  eq(has('Each service disconnecting means shall be suitable for the prevailing conditions'), true, 'art28: verbatim 230.70(C) suitable for use');
+  // verbatim 2017 230.71 probes (the pre-2020 flat rule + Single-Pole Units)
+  eq(has('shall consist of not more than six switches or sets of circuit breakers, or a combination of not more than six switches and sets of circuit breakers'), true, 'art28: verbatim 2017 230.71(A) not-more-than-six');
+  eq(has('There shall be not more than six sets of disconnects per service grouped in any one location'), true, 'art28: verbatim 2017 230.71(A) six-per-location cap');
+  eq(has('Two or three single-pole switches or breakers, capable of individual operation, shall be permitted on multiwire circuits'), true, 'art28: verbatim 2017 230.71(B) single-pole units');
+  eq(hasH('one pole for each ungrounded conductor, as one multipole disconnect, provided they are equipped with identified handle ties or a master handle'), true, 'art28: verbatim 2017 230.71(B) handle ties / master handle');
+  eq(has('Informational Note: See 408.36'), true, 'art28: verbatim 2017 230.71 informational note (408.36)');
+  // verbatim 2020 230.71 probes (the restructured default + two-to-six configs)
+  eq(has('Each service shall have only one disconnecting means unless the requirements of 230.71(B) are met'), true, 'art28: verbatim 2020 230.71 one-disconnect default');
+  eq(has('(B) Two to Six Service Disconnecting Means'), true, 'art28: verbatim 2020 230.71(B) heading');
+  eq(has('Two to six service disconnects shall be permitted for each service permitted by 230.2'), true, 'art28: verbatim 2020 230.71(B) two-to-six lead');
+  eq(has('(1) Separate enclosures with a main service disconnecting means in each enclosure'), true, 'art28: verbatim 2020 230.71(B)(1) separate enclosures');
+  eq(has('(2) Panelboards with a main service disconnecting means in each panelboard enclosure'), true, 'art28: verbatim 2020 230.71(B)(2) panelboards');
+  eq(has('(3) Switchboard(s) where there is only one service disconnect in each separate vertical section where there are barriers separating each vertical section'), true, 'art28: verbatim 2020 230.71(B)(3) switchboard sections');
+  eq(has('(4) Service disconnects in switchgear or metering centers where each disconnect is located in a separate compartment'), true, 'art28: verbatim 2020 230.71(B)(4) switchgear/metering centers');
+  // verbatim 2017 230.72 probes
+  eq(has('The two to six disconnects as permitted in 230.71 shall be grouped'), true, 'art28: verbatim 230.72(A) grouping');
+  eq(has('where used only for a water pump also intended to provide fire protection, shall be permitted to be located remote from the other disconnecting means'), true, 'art28: verbatim 230.72(A) exception water pump');
+  eq(has('each occupant shall have access to the occupant\'s service disconnecting means'), true, 'art28: verbatim 230.72(C) occupant access');
+  eq(has('shall be permitted to be accessible to authorized management personnel only'), true, 'art28: verbatim 230.72(C) exception management');
+  // verbatim 2017 230.79 probes (floors identical in 2017 and 2020)
+  eq(hasH('The service disconnecting means shall have a rating not less than the calculated load to be carried'), true, 'art28: verbatim 230.79 lead-in');
+  eq(has('determined in accordance with Part III, IV, or V of Article 220, as applicable'), true, 'art28: verbatim 230.79 Part 220 ref (V not I)');
+  eq(has('In no case shall the rating be lower than specified in 230.79(A), (B), (C), or (D)'), true, 'art28: verbatim 230.79 no-case-lower');
+  eq(hasH('the service disconnecting means shall have a rating of not less than 15 amperes'), true, 'art28: verbatim 230.79(A) 15 A one-circuit floor');
+  eq(hasH('the service disconnecting means shall have a rating of not less than 30 amperes'), true, 'art28: verbatim 230.79(B) 30 A two-circuit floor');
+  eq(hasH('the service disconnecting means shall have a rating of not less than 100 amperes, 3-wire'), true, 'art28: verbatim 230.79(C) 100 A dwelling floor');
+  eq(hasH('the service disconnecting means shall have a rating of not less than 60 amperes'), true, 'art28: verbatim 230.79(D) 60 A all-others floor');
+  // verbatim 2017 230.80 probe
+  eq(has('Where the service disconnecting means consists of more than one switch or circuit breaker, as permitted by 230.71'), true, 'art28: verbatim 230.80 more-than-one condition');
+  eq(has('the combined ratings of all the switches or circuit breakers used shall not be less than the rating required by 230.79'), true, 'art28: verbatim 230.80 sum rule');
+  // edition-delta box probes (the documented 2020 changes)
+  eq(has('Single-Pole Units left the section'), true, 'art28: delta box names the single-pole move');
+  eq(has('225.33(B)'), true, 'art28: delta box cites 225.33(B) survival home');
+  eq(has('230.90(A)'), true, 'art28: delta box cites 230.90(A) OCPD counting ref');
+  eq(has('Single-pole circuit breakers, grouped in accordance with 230.71(B), shall be considered as one protective device'), true, 'art28: delta box quotes 230.90(A) sentence');
+  eq(has('word-for-word unchanged from 2017'), true, 'art28: delta box states 230.79/230.80 unchanged');
+  eq(has('word-identical (programmatic diff'), true, 'art28: delta table shows programmatic diff evidence');
+  // core-computed worked examples (the real shipped app.js, zero hand math)
+  const p = core.pickConductor31016, nb = core.nextStdBreaker,
+        svcLoad = core.serviceLoad22082, svcLine = core.serviceLineConductor22082;
+  const r1 = svcLoad({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1, hpNoSuppVA: 12000, volt: 240 });
+  eq(r1.totalVA, 21000, 'art28 EX1: 220.82 load 21,000 VA (1,500 sq ft dwelling)');
+  eq(r1.amps, 87.5, 'art28 EX1: 21,000 VA @ 240 V = 87.5 A');
+  eq(nb(Math.max(r1.amps, 100)), 100, 'art28 EX1: 230.79(C) 100 A floor governs 87.5 A load');
+  eq(svcLine(r1, 'cu', 75).pick.size, '3', 'art28 EX1: 3 AWG Cu (100 A @75)');
+  eq(svcLine(r1, 'al', 75).pick.size, '1', 'art28 EX1: 1 AWG Al (100 A @75)');
+  const r2 = svcLoad({ sqft: 2200, smallApplianceCircuits: 2, laundryCircuits: 1, appliancesVA: 5000, hpCompressorVA: 11000, hpSuppVA: 3000, volt: 240 });
+  eq(r2.totalVA, 25390, 'art28 EX2: 220.82 load 25,390 VA (larger dwelling)');
+  eq(Math.round(r2.amps * 100) / 100, 105.79, 'art28 EX2: 25,390 VA @ 240 V = 105.79 A');
+  eq(nb(Math.max(r2.amps, 100)), 110, 'art28 EX2: calculated load governs -> 110 A');
+  eq(svcLine(r2, 'cu', 75).pick.size, '2', 'art28 EX2: 2 AWG Cu (115 A @75)');
+  eq(p(60, 'cu', 75).size, '6', 'art28 EX3: 60 A floor -> 6 AWG Cu (65 A)');
+  eq(p(15, 'cu', 75).size, '14', 'art28 EX4: 15 A floor -> 14 AWG Cu (20 A)');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art28 EX4: 240.4(D) caps 14 AWG Cu at 15 A (matches floor)');
+  eq(p(30, 'cu', 75).size, '10', 'art28 EX5: 30 A floor -> 10 AWG Cu (35 A)');
+  eq(core.smallConductorCap('10', 'cu'), 30, 'art28 EX5: 240.4(D) caps 10 AWG Cu at 30 A (matches floor)');
+  eq((70 + 70) >= 150, false, 'art28 EX6: 230.80 sum 70+70=140 < 150 A -> NON-conforming');
+  eq((100 + 70) >= 150, true, 'art28 EX6: 230.80 sum 100+70=170 >= 150 A -> conforming');
+  eq(svcLine({ amps: 87.5 }, 'cu', 75).dwMinA, 100, 'art28: core dwMinA = 100 is the 230.79(C) floor');
+  // worked-example figures actually appear in the article
+  eq(has('21,000 VA') && has('87.5 A') && has('3 AWG Cu (100 A)') && has('1 AWG Al (100 A)'), true, 'art28: EX1 figures in article');
+  eq(has('25,390 VA') && has('105.79 A') && has('2 AWG Cu (115 A)'), true, 'art28: EX2 figures in article');
+  eq(has('5,400 VA') && has('22.5 A') && has('6 AWG Cu (65 A)'), true, 'art28: EX3 figures in article');
+  eq(has('140 A') && has('170 A') && has('NON-conforming'), true, 'art28: EX6 sum-test figures in article');
+  eq((art.match(/<h3>EX\d/g) || []).length, 6, 'art28: six worked examples');
+  // cross-links
+  eq(art.includes('nec-22082-optional-service-load.html'), true, 'art28: cross-links to the 220.82 article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art28: cross-links to the Table 310.16 article');
+  eq(art.includes('nec-conductor-sizing.html'), true, 'art28: cross-links to the conductor-sizing article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art28: cross-links to the 240.4(D) article');
+  eq(art.includes('nec-11014c-31014-termination-temperature.html'), true, 'art28: cross-links to the 110.14(C) article');
+  eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art28: cross-links to the 250.102 article');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
