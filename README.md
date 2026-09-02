@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1410 core assertions (growing per article; Session 48 added +52 for the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 1638 core assertions (growing per article; Session 52 added +41 for the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -621,6 +621,44 @@ node test/run_tests.js   # 1410 core assertions (growing per article; Session 48
   Cu; the busbar + ferrous-raceway rules) — every number computed by the
   shipped cores under node (`compute_art26.js` → `calc_25064_cited.json`) and
   asserted in the test suite. Written by Radloff Bot (AI, disclosed on the page).
+
+- **[NEC 110.14(C) + 310.14 — Termination Temperature Limits &amp; the 60 °C / 75 °C Column Rule, explained](articles/nec-11014c-31014-termination-temperature.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-11014c-31014-termination-temperature.html`) —
+  the explainer for the **Termination Temperature Column** select on the 220.82
+  service card and every sizing flow: which Table 310.16 column governs the
+  conductor you land on. 110.14(C)(1)(a) — circuits ≤ 100 A (or equipment
+  marked 14 AWG–1 AWG) use the **60 °C** column (a higher-rated conductor is
+  counted at its 60 °C ampacity unless the equipment is listed + identified for
+  the higher rating; the motor B/C/D 75 °C carve-out in (a)(4)); (C)(1)(b) —
+  over 100 A (larger than 1 AWG) use the **75 °C** column; the **90 °C column is
+  NOT a termination column** — it is the base for the 310.15 ambient /
+  conductor-count adjustment, then capped at the 60 °C/75 °C termination limit
+  (the second sentence of 110.14(C)). **The 2020 renumber trap (the headline):**
+  the ampacity section is 310.15 in 2014/2017 but **310.14 in 2020/2023**; the
+  ampacity table is "Table 310.15(B)(16) (formerly Table 310.16)" in 2017 but
+  **Table 310.16** in 2020+; and 310.15(B)(7) (the single-phase-dwelling 83%
+  rule) moved to **310.12** — so 2017's "Table 310.15(B)(16) … modified by
+  310.15(B)(7)" is the exact same rule as 2020's "Table 310.16 … modified by
+  310.12," renumbered not changed (section titles verified on the up.codes NFPA
+  70 index 2014/2017/2020/2023; ELR change records sectionID 878 = 310.12,
+  880 = Table 310.16). **110.14(D) torque rewrite (ELR sectionID 797):** 2017
+  "a calibrated torque tool shall be used" → 2020 "an approved means shall be
+  used" + 3 informational notes (shear bolts / breakaway devices; UL 486A-486B
+  Annex I torque values; NFPA 70B-2019 § 8.11). Verbatim 2017 NFPA (on disk,
+  `nec2017_full.txt` 110.14(C) line 7077, 110.14(D) line 7136) + verbatim 2020
+  110.14(A)–(D) (on-disk full-code text, `slideshare_nec2020.txt` line 357 —
+  the OCR "modified by 310.12" cross-ref is REAL, confirmed by ELR 878, not a
+  misread). Five worked examples computed with the real shipped core
+  (`compute_art27.js`): EX1 the 75 A ≤100 A case (60 °C → 3 AWG Cu; 75 °C →
+  4 AWG — same load, two columns, two answers); EX2 the 125 A >100 A case
+  (75 °C → 1 AWG Cu; 60 °C → 1/0); EX3 the 100 A 220.82 service (3 AWG Cu /
+  1 AWG Al, the card's own pick); EX4 the 125 A aluminum twin (2/0 AWG Al —
+  column is material-independent); EX5 the 90 °C-base × 0.80 (4–6 CCC) vs
+  75 °C-ceiling derate (1/0 Cu: 170 A base → 136 A derated, under the 150 A
+  ceiling — the 110.14(C) second sentence in numbers, and why the same
+  conductor fails if the terminations were 60 °C-rated). 61/61
+  `verify_art27.js` checks + 41 test assertions. Written by Radloff Bot (AI,
+  disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
