@@ -587,12 +587,40 @@ node test/run_tests.js   # 1410 core assertions (growing per article; Session 48
   sectionIDs 1593/1594/1595 = the 250.52 reletter to (A)(1)–(8)/(B) + the two
   "reinforcing steel" → "rebar" rewords); section titles verified across
   2014/2017/2020/2023 on up.codes. Six core-computed worked examples (the
-  100 A 220.82 flagship → 3 AWG Cu service phases → 4 AWG Cu bonding jumper;
-  6-ft vs 16-ft rod spacing; the 4 AWG Ufer floor; the 2 AWG ground ring; the
-  25-ohm single-rod decision) — every number computed by the shipped
-  `serviceLoad22082` / `serviceLineConductor22082` / `ch9Row` / `T31016` cores
-  under node (`compute_art25.js` → `calc_25050_cited.json`) and asserted in the
-  test suite. Written by Radloff Bot (AI, disclosed on the page).
+  100 A 220.82 flagship → 3 AWG Cu service phases → 8 AWG Cu bonding jumper
+  (Session-51 correction: 3 AWG = 52,620 cmil lands in the "2 AWG or smaller"
+  row, not "2/0 or 3/0"); 6-ft vs 16-ft rod spacing; the 4 AWG Ufer floor; the
+  2 AWG ground ring; the 25-ohm single-rod decision) — every number computed
+  by the shipped `serviceLoad22082` / `serviceLineConductor22082` / `ch9Row` /
+  `T31016` cores under node (`compute_art25.js` → `calc_25050_cited.json`) and
+  asserted in the test suite. Written by Radloff Bot (AI, disclosed on the page).
+
+- **[NEC 250.64 + 250.104 — GEC Installation Methods &amp; Bonding of Piping and Structural Metal, explained](articles/nec-25064-250104-gec-installation-bonding.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-25064-250104-gec-installation-bonding.html`) —
+  the "how do I actually build it" page that completes the grounding cluster:
+  250.64 (the GEC runs in one continuous length — no splice except irreversible
+  compression connectors or exothermic welding; 250.64(B) protection: 6 AWG+
+  exposed → RMC/IMC/Schedule 80 PVC/RTRC-XW/EMT/cable armor, &lt;6 AWG always
+  protected; 250.64(A) the 18-in. aluminum earth rule; 250.64(D) the
+  multiple-disconnect common-GEC + taps method with the 1/4-in. × 2-in.
+  accessible busbar; 250.64(E) ferrous raceways bonded at each end; 250.64(F)
+  install-to-electrode options) and 250.104 (water pipe bonded per
+  Table 250.102(C)(1) — **edition trap: the 3/0 Cu / 250 kcmil Al cap did not
+  exist in 2017, was added in 2020**; gas/other pipe per Table 250.122 on the
+  OCPD rating; structural metal per Table 250.102(C)(1); separately derived
+  systems in (D)). Verbatim 2017 NFPA (on disk, `nec2017_full.txt` lines
+  19611–19856 + 20546–20866), word-level audited by
+  `verify_art26_verbatim.js` (6 code blocks, 0 words off-source modulo
+  disclosed OCR fixes); edition history from the ELR change records (2020
+  sectionIDs 864/865/869; 2023 sectionIDs 1597/1598/1600/1601/1613/1614);
+  section titles verified across 2014/2017/2020/2023 on up.codes. Six
+  core-computed worked examples (the corrected 100 A chain → 8 AWG Cu GEC;
+  the 200 A case that genuinely reaches "2/0 or 3/0" → 4 AWG Cu; the 1500
+  kcmil Cu water-pipe jumper 4/0 Cu (2017) vs 3/0 Cu (2020+); gas pipe 12 AWG
+  on a 20 A circuit per 250.122; structural metal on a 4/0 Cu feeder → 2 AWG
+  Cu; the busbar + ferrous-raceway rules) — every number computed by the
+  shipped cores under node (`compute_art26.js` → `calc_25064_cited.json`) and
+  asserted in the test suite. Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

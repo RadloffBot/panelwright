@@ -2703,13 +2703,18 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
     const re = new RegExp('<td>' + cuL + '</td><td class="ctr[^"]*">[^<]*' + alL + '[^<]*</td><td class="ctr[^"]*">[^<]*' + cu + '[^<]*</td><td class="ctr[^"]*">[^<]*' + al + '[^<]*</td>');
     eq(re.test(art), true, 'art25: Table 250.66 row ' + cuL + ' -> ' + cu + ' Cu / ' + al + ' Al');
   }
-  // EX2: 220.82 flagship -> 3 AWG Cu service phases -> "2/0 or 3/0" row -> 4 AWG Cu jumper
+  // EX2: 220.82 flagship -> 3 AWG Cu service phases -> "2 AWG or smaller" row -> 8 AWG Cu jumper
+  // (Session-51 correction: 3 AWG = 52,620 cmil < 66,360 cmil (2 AWG boundary) -> NOT the "2/0 or 3/0" row)
   const lc25 = core.serviceLoad22082({ sqft: 1500, appliancesKW: 12, acVA: 5000 });
   approx(lc25.amps, 58.3, 0.1, 'art25 EX2: 14,000 VA / 240 V = 58.3 A calc');
   const slc25 = core.serviceLineConductor22082(lc25, 'cu', 75);
   eq(slc25.pick.size, '3', 'art25 EX2: 100 A service -> 3 AWG Cu ungrounded service-entrance');
-  eq(core.ch9Row('3').cm, 52620, 'art25 EX2: 3 AWG = 52,620 cmil -> "2/0 AWG or 3/0 AWG" row');
+  eq(core.ch9Row('3').cm, 52620, 'art25 EX2: 3 AWG = 52,620 cmil -> "2 AWG or smaller" row (NOT "2/0 or 3/0")');
+  eq(core.ch9Row('2').cm, 66360, 'art25 EX2: 2 AWG = 66,360 cmil (row boundary above 52,620)');
   eq(core.T31016.find(r => r.s === '3').cu[1], 100, 'art25 EX2: 3 AWG = 100 A @75 (covers the 100 A dwg service)');
+  eq(core.T31016.find(r => r.s === '8').cu[1], 50, 'art25 EX2: corrected jumper 8 AWG Cu = 50 A @75');
+  // the "2/0 or 3/0" row is reached by 3/0 Cu phases (200 A service): 167,800 cmil <= 167,840 boundary
+  eq(core.ch9Row('3/0').cm, 167800, 'art25 EX2: 3/0 = 167,800 cmil -> "2/0 AWG or 3/0 AWG" row (the 200 A case)');
   // EX3: 2x longest rod
   eq(8 * 2, 16, 'art25 EX3: 8-ft rod -> 16 ft efficient spacing (2x longest)');
   // EX4/EX5: ampacity context for the Ufer/ring floors
@@ -2722,6 +2727,116 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art25: cross-links to article 23 (250.102)');
   eq(art.includes('nec-250122-egc-sizing.html'), true, 'art25: cross-links to article 22 (250.122)');
   eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art25: cross-links to article 24 (250.26/250.30)');
+}
+
+// --- Article 26 (Session 51): articles/nec-25064-250104-gec-installation-bonding.html ---
+// NEC 250.64 (GEC Installation) + 250.104 (Bonding of Piping Systems and
+// Exposed Structural Metal) deep-dive: the no-splice rule (250.64(C): only
+// irreversible compression connectors or exothermic welding for wire GECs),
+// 250.64(B) protection (6 AWG+ exposed -> RMC/IMC/PVC/RTRC-XW/EMT/cable armor;
+// <6 AWG always protected), 250.64(D) multiple-disconnect common GEC + taps
+// (busbar 1/4 in x 2 in), 250.64(E) ferrous raceway bond-at-each-end,
+// 250.64(F) install-to-electrode, 250.104(A) water pipe per 250.102(C)(1)
+// (2020 cap: not larger than 3/0 Cu / 250 kcmil Al), 250.104(B) gas/other pipe
+// per 250.122, 250.104(C) structural metal per 250.102(C)(1), 250.104(D)
+// separately derived. Word-level verbatim audit: verify_art26_verbatim.js
+// (6 code blocks, 0 words not in the official 2017 text modulo disclosed OCR
+// fixes: copperclad, 2x busbar inch garbles, conductor(s}, Info Note No. |:).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-25064-250104-gec-installation-bonding.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  eq(art.includes('nec-25064-250104-gec-installation-bonding.html'), true, 'art26: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-25064-250104-gec-installation-bonding.html'), true, 'art26: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art26: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art26: Article + FAQPage JSON-LD present');
+  // verbatim 2017 code probes (250.64)
+  eq(has('250.64 Grounding Electrode Conductor Installation. Grounding electrode conductors at the service, at each building or structure where supplied by a feeder(s) or branch circuit(s), or at a separately derived system shall be installed as specified in 250.64(A) through (F).'), true, 'art26: verbatim 250.64 intro');
+  eq(has('(A) Aluminum or Copper-Clad Aluminum Conductors. Bare aluminum or copper-clad aluminum grounding electrode conductors shall not be used where in direct contact with masonry or the earth or where subject to corrosive conditions'), true, 'art26: verbatim 250.64(A) (copperclad OCR fix)');
+  eq(has('Where used outside, aluminum or copper-clad aluminum grounding electrode conductors shall not be terminated within 450 mm (18 in.) of the earth.'), true, 'art26: verbatim 250.64(A) 18-in earth rule');
+  eq(has('(2) Exposed to Physical Damage. A 6 AWG or larger copper or aluminum grounding electrode conductor exposed to physical damage shall be protected in rigid metal conduit (RMC), intermediate metal conduit (IMC), rigid polyvinyl chloride conduit (PVC), reinforced thermosetting resin conduit Type XW (RTRC-XW), electrical metallic tubing (EMT), or cable armor.'), true, 'art26: verbatim 250.64(B)(2) protection list (2017 PVC = pre-Schedule-80)');
+  eq(has('(3) Smaller Than 6 AWG. Grounding electrode conductors smaller than 6 AWG shall be protected in RMC, IMC, PVC, RTRC-XW, EMT, or cable armor.'), true, 'art26: verbatim 250.64(B)(3) <6 AWG always protected');
+  eq(has('conductor(s) shall be installed in one continuous length without a splice or joint'), true, 'art26: verbatim 250.64(C) no-splice rule');
+  eq(has('(1) Splicing of the wire-type grounding electrode conductor shall be permitted only by irreversible compression-type connectors listed as grounding and bonding equipment or by the exothermic welding process.'), true, 'art26: verbatim 250.64(C)(1) only two wire splice methods');
+  eq(has('(4) Threaded, welded, brazed, soldered or bolted-flange connections of metal water piping.'), true, 'art26: verbatim 250.64(C)(4) soldered = the pipe joint, not a wire splice');
+  eq(has('based on the sum of the circular mil area of the largest ungrounded conductor(s) of each set of conductors that supplies the disconnecting means'), true, 'art26: verbatim 250.64(D)(1) sum-of-cmil-area sizing');
+  eq(has('not less than 6 mm thick x 50 mm wide (1/4 in. thick x 2 in. wide)'), true, 'art26: verbatim 250.64(D)(1)(3) busbar (inch value OCR-garbled in 2017 scan, corrected)');
+  eq(has('The bonding jumper for a grounding electrode conductor raceway or cable armor shall be the same size as, or larger than, the enclosed grounding electrode conductor.'), true, 'art26: verbatim 250.64(E)(3) raceway jumper sizing');
+  eq(has('shall be bonded at each end of the raceway or enclosure to the grounding electrode or grounding electrode conductor to create an electrically parallel path'), true, 'art26: verbatim 250.64(E)(1) ferrous bond-at-each-end');
+  // verbatim 2017 code probes (250.104)
+  eq(has('250.104 Bonding of Piping Systems and Exposed Structural Metal.'), true, 'art26: carries the verified 250.104 title');
+  eq(has('(A) Metal Water Piping. The metal water piping system shall be bonded as required in (A)(1), (A)(2), or (A)(3) of this section.'), true, 'art26: verbatim 250.104(A)');
+  eq(has('The bonding jumper(s) shall be installed in accordance with 250.64(A), 250.64(B), and 250.64(E). The points of attachment of the bonding jumper(s) shall be accessible.'), true, 'art26: verbatim 250.104(A)(1) install sentence');
+  eq(has('(2) Buildings of Multiple Occupancy. In buildings of multiple occupancy where the metal water piping system(s) installed in or attached to a building or structure for the individual occupancies is metallically isolated from all other occupancies by use of nonmetallic water piping'), true, 'art26: verbatim 250.104(A)(2)');
+  eq(has('The bonding jumper(s) shall be sized in accordance with Table 250.102(C)(1), based on the size of the feeder or branch-circuit conductors that supply the building or structure.'), true, 'art26: verbatim 250.104(A)(3) feeder sizing');
+  eq(has('(B) Other Metal Piping. If installed in or attached to a building or structure, a metal piping system(s), including gas piping, that is likely to become energized shall be bonded to any of the following:'), true, 'art26: verbatim 250.104(B) gas pipe lead-in');
+  eq(has('The bonding conductor(s) or jumper(s) shall be sized in accordance with Table 250.122, and equipment grounding conductors shall be sized in accordance with Table 250.122 using the rating of the circuit that is likely to energize the piping system(s).'), true, 'art26: verbatim 250.104(B) Table 250.122 sizing');
+  eq(has('Informational Note No. 1: Bonding all piping and metal air ducts within the premises will provide additional safety.'), true, 'art26: verbatim 250.104(B) Info Note 1 (OCR "No. |:" fix)');
+  eq(has('(C) Structural Metal. Exposed structural metal that is interconnected to form a metal building frame and is not intentionally grounded or bonded and is likely to become energized shall be bonded to any of the following:'), true, 'art26: verbatim 250.104(C)');
+  eq(has('The bonding conductor(s) or jumper(s) shall be sized in accordance with Table 250.102(C)(1) and installed in accordance with 250.64(A), 250.64(B), and 250.64(E).'), true, 'art26: verbatim 250.104(C) sizing sentence');
+  eq(has('(D) Separately Derived Systems. Metal water piping systems and structural metal that is interconnected to form a building frame shall be bonded to separately derived systems'), true, 'art26: verbatim 250.104(D) intro');
+  // edition posture (ELR records fetched 2026-09-02)
+  eq(has('Schedule 80 rigid polyvinyl chloride conduit (PVC)'), true, 'art26: 2020 Schedule 80 PVC requirement quoted (sectionID 865)');
+  eq(has('not required to be larger than 3/0 copper or 250 kcmil aluminum'), true, 'art26: 2020 water-pipe jumper cap quoted (sectionID 869)');
+  eq(has('sectionID 864'), true, 'art26: ELR 2020 record 864 cited (250.64(A) rewrite)');
+  eq(has('sectionID 865'), true, 'art26: ELR 2020 record 865 cited (Schedule 80)');
+  eq(has('sectionID 869'), true, 'art26: ELR 2020 record 869 cited (3/0 Cu cap)');
+  eq(has('sectionID 1597'), true, 'art26: ELR 2023 record 1597 cited');
+  eq(has('sectionID 1598'), true, 'art26: ELR 2023 record 1598 cited');
+  eq(has('sectionID 1601'), true, 'art26: ELR 2023 record 1601 cited (cable armor)');
+  eq(has('Raceways, Cable Armor, and Enclosures'), true, 'art26: 2023 250.64(E) rename quoted');
+  eq(has('sectionID 1613'), true, 'art26: ELR 2023 record 1613 cited (250.104(A)(1) == 2020)');
+  eq(has('sectionID 1614'), true, 'art26: ELR 2023 record 1614 cited (250.104(B) == 2017)');
+  // 2017 title posture + 2020 title delta documented, not asserted
+  eq(has('the 2020 ELR record title drops "Exposed"'), true, 'art26: 250.104 title 2020 delta documented honestly');
+  // OCR garbles disclosed, not propagated
+  eq(has('copperclad'), true, 'art26: the OCR "copperclad" fix is disclosed');
+  // Table 250.66 rows (all 7; same capped table as articles 24/25)
+  const rows26 = [
+    ['2 AWG or smaller', '1/0 AWG or smaller', '8 AWG', '6 AWG'],
+    ['1 AWG or 1/0 AWG', '2/0 AWG or 3/0 AWG', '6 AWG', '4 AWG'],
+    ['2/0 AWG or 3/0 AWG', '4/0 AWG or 250 kcmil', '4 AWG', '2 AWG'],
+    ['Over 3/0 AWG through 350 kcmil', 'Over 250 through 500 kcmil', '2 AWG', '1/0 AWG'],
+    ['Over 350 through 600 kcmil', 'Over 500 through 900 kcmil', '1/0 AWG', '3/0 AWG'],
+    ['Over 600 through 1100 kcmil', 'Over 900 through 1750 kcmil', '2/0 AWG', '4/0 AWG'],
+    ['Over 1100 kcmil', 'Over 1750 kcmil', '3/0 AWG — CAPPED', '250 kcmil — CAPPED'],
+  ];
+  for (const [cuL, alL, cu, al] of rows26) {
+    const re = new RegExp('<td>' + cuL + '</td><td class="ctr[^"]*">[^<]*' + alL + '[^<]*</td><td class="ctr[^"]*">[^<]*' + cu + '[^<]*</td><td class="ctr[^"]*">[^<]*' + al + '[^<]*</td>');
+    eq(re.test(art), true, 'art26: Table 250.66 row ' + cuL + ' -> ' + cu + ' Cu / ' + al + ' Al');
+  }
+  // EX1: 100 A flagship (the corrected Article-25 chain): 3 AWG Cu (52,620 cmil) -> "2 AWG or smaller" -> 8 AWG Cu
+  const lc26 = core.serviceLoad22082({ sqft: 1500, appliancesKW: 12, acVA: 5000 });
+  approx(lc26.amps, 58.3, 0.1, 'art26 EX1: 14,000 VA / 240 V = 58.3 A calc');
+  const slc26 = core.serviceLineConductor22082(lc26, 'cu', 75);
+  eq(slc26.pick.size, '3', 'art26 EX1: 100 A service -> 3 AWG Cu ungrounded');
+  eq(core.ch9Row('3').cm, 52620, 'art26 EX1: 3 AWG = 52,620 cmil (< 66,360 = 2 AWG boundary)');
+  eq(core.ch9Row('2').cm, 66360, 'art26 EX1: 2 AWG = 66,360 cmil (the row-0/row-1 boundary)');
+  eq(core.T31016.find(r => r.s === '8').cu[1], 50, 'art26 EX1: GEC 8 AWG Cu = 50 A @75');
+  // EX1b: aluminum phases: 1 AWG Al (83,690 cmil) -> "1/0 AWG or smaller" -> 6 AWG Al
+  const alp = core.pickConductor31016(100, 'al', 75);
+  eq(alp.size, '1', 'art26 EX1b: 100 A Al @75 -> 1 AWG (83,690 cmil)');
+  eq(core.ch9Row('1').cm, 83690, 'art26 EX1b: 1 AWG = 83,690 cmil (<= 105,600 = 1/0 Al boundary)');
+  // EX2: 200 A service: 3/0 Cu (167,800 cmil) -> "2/0 or 3/0" row -> 4 AWG Cu (the genuine row-2 case)
+  const p200 = core.pickConductor31016(200, 'cu', 75);
+  eq(p200.size, '3/0', 'art26 EX2: 200 A Cu @75 -> 3/0 (200 A)');
+  eq(core.ch9Row('3/0').cm, 167800, 'art26 EX2: 3/0 = 167,800 cmil -> "2/0 AWG or 3/0 AWG" row');
+  // EX3: 1500 kcmil Cu parallel -> Note 1 (12.5%) = 187,500 cmil -> 4/0 Cu (211,600); 2020 cap -> 3/0 Cu
+  eq(Math.round(1500000 * 0.125), 187500, 'art26 EX3: 12.5% of 1,500,000 cmil = 187,500 cmil (Note 1)');
+  eq(core.ch9Row('4/0').cm, 211600, 'art26 EX3: 4/0 = 211,600 cmil (>= 187,500) -> 2017: 4/0 Cu jumper');
+  eq(core.ch9Row('3/0').cm, 167800, 'art26 EX3: 3/0 = 167,800 cmil -> 2020/2023 cap: 3/0 Cu jumper');
+  // EX4: gas pipe per Table 250.122 (250.104(B))
+  eq(core.T31016.find(r => r.s === '6').cu[1], 65, 'art26 EX4: 100 A row: 6 AWG Cu = 65 A @75 (context)');
+  // EX5: structural metal on a 4/0 Cu feeder (211,600 cmil) -> "Over 3/0 through 350 kcmil" -> 2 AWG Cu
+  eq(core.ch9Row('4/0').cm, 211600, 'art26 EX5: 4/0 = 211,600 cmil -> "Over 3/0 through 350 kcmil" row -> 2 AWG Cu jumper');
+  eq(core.T31016.find(r => r.s === '2').cu[1], 115, 'art26 EX5: 2 AWG Cu = 115 A @75 (context)');
+  // cross-links across the grounding thread
+  eq(art.includes('nec-25050-25052-25053-grounding-electrode-system.html'), true, 'art26: cross-links to article 25 (250.50/250.52/250.53)');
+  eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art26: cross-links to article 24 (250.26/250.30)');
+  eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art26: cross-links to article 23 (250.102)');
+  eq(art.includes('nec-250122-egc-sizing.html'), true, 'art26: cross-links to article 22 (250.122)');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
