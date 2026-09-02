@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 110.14(C) + 310.14 — Termination Temperature Limits &amp; the 60°C / 75°C Column Rule</title>
+<meta name="description" content="NEC 110.14(C) + 310.14 in full: the termination-temperature rule that picks which Table 310.16 column governs your conductor — 60°C for ≤100 A (14 AWG–1 AWG) unmarked equipment, 75°C for over-100 A (larger than 1 AWG), and why the 90°C column is a derating base, not a termination column. The 2020 renumber trap (310.15→310.14, Table 310.15(B)(16)→Table 310.16, 310.15(B)(7)→310.12) and the 110.14(D) torque rewrite, plus five worked examples computed with the real shipped core.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-11014c-31014-termination-temperature.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 110.14(C) + 310.14 — Termination Temperature Limits">
+<meta property="og:description" content="Which Table 310.16 column governs? 60°C (≤100 A) or 75°C (>100 A) by 110.14(C)(1); 90°C is only a derating base. The 2020 renumber trap + torque rewrite + worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-11014c-31014-termination-temperature.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 110.14(C) + 310.14 — Termination Temperature Limits">
+<meta name="twitter:description" content="60°C for ≤100 A, 75°C for >100 A, 90°C for derating only. The 2020 renumber trap + torque rewrite + worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 110.14(C) termination temperature limitations, 60°C column 75°C column, Table 310.16 temperature rating, 90°C ampacity derating base, 110.14(C)(1)(a) 60°C 100 amperes or less, 110.14(C)(1)(b) over 100 amperes 75°C, NEC 310.14 ampacities, Table 310.16 formerly 310.15(B)(16), 2020 NEC renumber 310.15 to 310.14, 310.15(B)(7) to 310.12 single-phase dwelling, 110.14(D) terminal connection torque approved means, conductor termination rating, electrical service design aid, PanelWright termination temperature column">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 110.14(C) + 310.14 — Termination Temperature Limits and the 60°C / 75°C Column Rule",
+  "description": "NEC 110.14(C) + 310.14 in full: the termination-temperature rule that selects the governing Table 310.16 column — 60°C for circuits 100 A or less (14 AWG–1 AWG) on unmarked equipment, 75°C for over 100 A (larger than 1 AWG) — and why the 90°C column is a derating/adjustment base, not a termination column. Includes the 2020 Article 310 renumber trap (310.15 → 310.14, Table 310.15(B)(16) → Table 310.16, 310.15(B)(7) → 310.12), the 110.14(D) torque rewrite, and five worked examples computed with the real shipped core.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-02",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-11014c-31014-termination-temperature.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which temperature column in Table 310.16 do I use to size a conductor?",
+      "acceptedAnswer": { "@type": "Answer", "text": "110.14(C)(1): for equipment that is NOT listed and marked otherwise, the governing column depends on the circuit rating. Circuits rated 100 amperes or less (or equipment marked for 14 AWG through 1 AWG conductors) use the 60°C column. Circuits rated over 100 amperes (or equipment marked for conductors larger than 1 AWG) use the 75°C column. A higher-rated (90°C) conductor may be used, but its ampacity must be based on the 60°C (≤100 A) or 75°C (>100 A) value — unless the equipment is listed and identified for the higher rating." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I ever use the 90°C column for the final conductor size?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Only in narrow cases. 110.14(C)(1)(a)(3) and (b)(2) allow a higher-rated conductor up to its own ampacity IF the equipment is listed and identified for use with such conductors. For ordinary unmarked equipment the 90°C column is NOT a termination column — it is the base you start from when applying 310.15 ambient-temperature and conductor-count adjustment/correction factors, after which the result is still capped at the 60°C or 75°C termination limit. That is exactly what 110.14(C)'s second sentence permits: 'Conductors with temperature ratings higher than specified for terminations shall be permitted to be used for ampacity adjustment, correction, or both.'" }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does 110.14(C)(1) reference Table 310.16 in 2020 but Table 310.15(B)(16) in 2017?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The 2020 NEC restructured Article 310 (moving medium-voltage requirements to new Article 311), which restored the commonly used ampacity table to its pre-2011 name: Table 310.15(B)(16) 'formerly Table 310.16' became Table 310.16 again. The same restructuring renumbered the ampacity section from 310.15 (2014/2017) to 310.14 (2020/2023) and moved the single-phase dwelling 83% rule out of 310.15(B)(7) into new section 310.12. So the 2017 sentence 'based on Table 310.15(B)(16) as appropriately modified by 310.15(B)(7)' is the exact same rule as the 2020 sentence 'based on Table 310.16 as appropriately modified by 310.12' — renumbered, not changed." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is 310.14 the ampacity section or is 310.15?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It depends on the edition — this is the trap. In the 2014 and 2017 NEC the ampacity section is 310.15 ('Ampacities for Conductors Rated 0-2000 Volts'). In the 2020 and 2023 NEC it is 310.14 ('Ampacities for Conductors Rated 0 Volts — 2000 Volts'). A 2017 '310.14' is a DIFFERENT section (insulation), so citing '310.14' without the edition can point at the wrong text. Always state the edition. (Verified on the up.codes NFPA 70 section index: 2014/2017 = 310.15; 2020/2023 = 310.14.)" }
+    },
+    {
+      "@type": "Question",
+      "name": "What changed in 110.14(D) for terminal torque in 2020?",
+      "acceptedAnswer": { "@type": "Answer", "text": "2017 110.14(D) 'Installation' required that 'a calibrated torque tool shall be used' when a numeric tightening torque is indicated. The 2020 revision renamed the section 'Terminal Connection Torque' and replaced that requirement with 'an approved means shall be used to achieve the indicated torque value,' adding three informational notes: (No. 1) approved means include torque tools or devices such as shear bolts or breakaway-style devices with visual indicators; (No. 2) contact the equipment manufacturer if numeric torque values are not indicated, with Annex I of UL 486A/486B providing values in the manufacturer's absence; (No. 3) see NFPA 70B-2019 Section 8.11 for torquing threaded connections and terminations." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the termination column change if I use aluminum instead of copper?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — the 60°C/75°C column choice is set by the circuit rating (100 A boundary) and the equipment marking, not the material. Both copper and aluminum conductors land on the same governing column; the material only changes which ampacity value in that column applies. Example: a 125 A circuit (>100 A) on unmarked equipment uses the 75°C column for both — 1 AWG copper (130 A) or 2/0 AWG aluminum (135 A)." }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #171e26; --panel2: #1c2530; --line: #2a3644;
+    --text: #e8eef4; --dim: #93a4b4; --accent: #ffb020; --accent2: #4da3ff;
+    --ok: #3ddc84; --bad: #ff5d5d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 18px 60px; }
+  .crumb { font-size: 13px; color: var(--dim); margin-bottom: 18px; }
+  .crumb a { color: var(--accent2); text-decoration: none; }
+  .crumb a:hover { text-decoration: underline; }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: .2px; }
+  h1 span { color: var(--accent); }
+  h2 { font-size: 20px; margin: 34px 0 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  h3 { font-size: 16px; margin: 22px 0 8px; color: var(--accent); }
+  p { margin: 10px 0; }
+  a { color: var(--accent2); }
+  .sub { color: var(--dim); font-size: 14px; margin: 0 0 14px; }
+  .disc { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--dim); margin: 16px 0; }
+  .code { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; font-size: 14px; line-height: 1.65; margin: 14px 0; overflow-x: auto; white-space: pre-wrap; }
+  .code .src { display: block; margin-top: 10px; font-size: 12px; color: var(--dim); white-space: normal; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 14.5px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--panel2); font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--dim); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.ctr, th.ctr { text-align: center; }
+  .ok { color: var(--ok); font-weight: 600; }
+  .warn { color: var(--accent); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .blank { color: var(--dim); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .cta { display: block; background: var(--accent); color: #14100a; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px; padding: 13px 18px; font-size: 16px; margin: 26px 0 6px; }
+  .cta:hover { filter: brightness(1.08); }
+  .ctasub { text-align: center; font-size: 13px; color: var(--dim); margin-top: 0; }
+  .method { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .method p, .method li { color: var(--dim); }
+  .renew { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent2); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .renew strong { color: var(--text); }
+  footer { margin-top: 36px; font-size: 12.5px; color: var(--dim); border-top: 1px solid var(--line); padding-top: 14px; }
+  footer p { margin: 5px 0; }
+  @media print {
+    body { background: #fff; color: #111; }
+    .crumb, .cta, .ctasub { display: none; }
+    .disc, .method, .code, .renew { border-color: #ccc; background: #f7f7f7; color: #111; }
+    .code .src, .sub, footer, .tag { color: #555; }
+    h1 span, h3 { color: #b97900; }
+    a { color: #0645ad; }
+    th { background: #eee; color: #333; }
+    th, td { border-color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 110.14(C) + 310.14 — <span>Termination Temperature Limits</span></h1>
+  <p class="sub">The rule that decides which column of Table 310.16 governs your conductor: 60°C for circuits of 100 A or less (14 AWG–1 AWG) on unmarked equipment, 75°C for over 100 A (larger than 1 AWG), and why the 90°C column is a derating base — not a termination column. Plus the 2020 Article 310 renumber trap and the 110.14(D) torque rewrite.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 110.14(C) and the 310.14/310.15 ampacity section for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text is quoted from the <strong>verbatim 2017 NEC (official NFPA text)</strong> as the citation anchor, with the 2020 changes (the renumber of the ampacity table + section and the 110.14(D) torque rewrite) documented in the edition-history boxes from the on-disk 2020 full-code text and the ELR change records. The worked examples are computed with the real shipped PanelWright core under <code>node</code>.</div>
+
+  <h2>The one question this section answers</h2>
+  <p>You pick a conductor from Table 310.16 — three temperature columns per material (60°C, 75°C, 90°C). <strong>Which column is the legal one for the size you land on?</strong> That is 110.14(C). The insulation on the conductor can be 90°C (THHN) while every terminal it meets in the circuit is 60°C or 75°C. The code sizes the conductor to the <em>lowest</em> temperature rating of anything it connects to, and then it lets the higher rating work <em>only</em> inside the adjustment math.</p>
+  <p>This is the feature the 220.82 service card and the conductor-sizing flows expose as the <strong>Termination Temperature Column</strong> select (60/75/90°C). Choosing the wrong column quietly over- or under-sizes the conductor, so the code hard-wires the default: unmarked equipment = 60°C at ≤100 A, 75°C above 100 A.</p>
+
+  <h2>110.14(C) — the rule, verbatim (2017)</h2>
+  <div class="code">(C) Temperature Limitations. The temperature rating associated with the ampacity of a conductor shall be selected and coordinated so as not to exceed the lowest temperature rating of any connected termination, conductor, or device. Conductors with temperature ratings higher than specified for terminations shall be permitted to be used for ampacity adjustment, correction, or both.
+
+(1) Equipment Provisions. The determination of termination provisions of equipment shall be based on 110.14(C)(1)(a) or (C)(1)(b). Unless the equipment is listed and marked otherwise, conductor ampacities used in determining equipment termination provisions shall be based on Table 310.15(B)(16) as appropriately modified by 310.15(B)(7).
+
+(a) Termination provisions of equipment for circuits rated 100 amperes or less, or marked for 14 AWG through 1 AWG conductors, shall be used only for one of the following:
+(1) Conductors rated 60°C (140°F).
+(2) Conductors with higher temperature ratings, provided the ampacity of such conductors is determined based on the 60°C (140°F) ampacity of the conductor size used.
+(3) Conductors with higher temperature ratings if the equipment is listed and identified for use with such conductors.
+(4) For motors marked with design letters B, C, or D, conductors having an insulation rating of 75°C (167°F) or higher shall be permitted to be used, provided the ampacity of such conductors does not exceed the 75°C (167°F) ampacity.
+
+(b) Termination provisions of equipment for circuits rated over 100 amperes, or marked for conductors larger than 1 AWG, shall be used only for one of the following:
+(1) Conductors rated 75°C (167°F)
+(2) Conductors with higher temperature ratings, provided the ampacity of such conductors does not exceed the 75°C (167°F) ampacity of the conductor size used, or up to their ampacity if the equipment is listed and identified for use with such conductors
+
+(2) Separate Connector Provisions. Separately installed pressure connectors shall be used with conductors at the ampacities not exceeding the ampacity at the listed and identified temperature rating of the connector.
+
+Informational Note: With respect to 110.14(C)(1) and (C)(2), equipment markings or listing information may additionally restrict the sizing and temperature ratings of connected conductors.
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt, 110.14(C) at line 7077). OCR line-wrap reflow normalized (hyphenated compounds re-joined); no wording altered. Note the 2017 cross-reference reads "Table 310.15(B)(16) as appropriately modified by 310.15(B)(7)" — see the 2020 renumber box below.</span></div>
+
+  <h3>Read it in one breath</h3>
+  <ul>
+    <li><strong>The floor is the lowest rating.</strong> Never let the ampacity you use exceed the lowest temperature rating of any connected termination, conductor, or device.</li>
+    <li><strong>(a) ≤100 A (14 AWG–1 AWG): the 60°C column governs.</strong> You may install a 75°C or 90°C conductor, but its ampacity is counted at the 60°C value — unless the equipment is listed + identified for the higher rating.</li>
+    <li><strong>(b) >100 A (larger than 1 AWG): the 75°C column governs.</strong> Same logic — a 90°C conductor is counted at the 75°C value unless the equipment is listed + identified for 90°C.</li>
+    <li><strong>(2) Separate connectors</strong> ride at their own listed/identified temperature rating.</li>
+  </ul>
+
+  <h2>The column decision, as a table</h2>
+  <table>
+    <thead><tr><th>Condition</th><th>Governing column (unmarked equipment)</th><th>Higher-rated conductor may be used…</th></tr></thead>
+    <tbody>
+      <tr><td>Circuit ≤ 100 A, or equipment marked 14 AWG–1 AWG</td><td><span class="warn">60°C</span></td><td>…counted at the <strong>60°C</strong> ampacity — or at the higher rating only if the equipment is listed + identified for it</td></tr>
+      <tr><td>Circuit > 100 A, or equipment marked larger than 1 AWG</td><td><span class="warn">75°C</span></td><td>…counted at the <strong>75°C</strong> ampacity — or at the higher rating only if the equipment is listed + identified for it</td></tr>
+      <tr><td>Motor, design letter B/C/D (any size in (a))</td><td><span class="warn">75°C</span> max</td><td>Insulation rated 75°C or higher permitted, ampacity capped at the 75°C value</td></tr>
+      <tr><td>90°C column</td><td class="blank">— not a termination column —</td><td>Used as the <strong>base for 310.15 ambient/conductor-count correction</strong>, then the result is still capped at the 60°C/75°C termination limit</td></tr>
+    </tbody>
+  </table>
+  <p>The whole "Termination Temperature Column" select in the tool is this table. Default = 75°C for a typical dwelling service over 100 A; the 60°C select exists for the ≤100 A branch-circuit world; the 90°C select is deliberately labeled a derating base.</p>
+
+  <h2>The 2020 renumber trap (the reason "310.14" and "310.15" both show up)</h2>
+  <div class="renew"><strong>Edition history — 2014/2017 → 2020/2023.</strong> The 2020 NEC moved the medium-voltage requirements out of Article 310 into a new Article 311 and renumbered the low-voltage ampacity sections. Three labels the same rule used to carry changed; the rule did not:
+    <ul style="margin:8px 0 4px;">
+      <li><strong>Ampacity section:</strong> 310.15 "Ampacities for Conductors Rated 0-2000 Volts" (2014/2017) → <strong>310.14</strong> "Ampacities for Conductors Rated 0 Volts — 2000 Volts" (2020/2023).</li>
+      <li><strong>The ampacity table:</strong> "Table 310.15(B)(16) (formerly Table 310.16)" (2017) → <strong>Table 310.16</strong> (2020). The community's old name came back (ELR sectionID 880, "restoring the most commonly used ampacity table's beloved title").</li>
+      <li><strong>The 83% single-phase dwelling rule:</strong> 310.15(B)(7) (2017) → new <strong>310.12</strong> "Single-Phase Dwelling Services and Feeders" (2020), with Table 310.15(B)(7) becoming Table 310.12 (ELR sectionID 878).</li>
+    </ul>
+    So the 2017 sentence in 110.14(C)(1) — "based on Table 310.15(B)(16) as appropriately modified by 310.15(B)(7)" — is the <strong>exact same rule</strong> as the 2020 sentence — "based on Table 310.16 as appropriately modified by 310.12" — renumbered, not changed.
+    <br><strong>The trap:</strong> in 2017, "310.14" was a <em>different</em> section (insulation), so an edition-less "310.14" citation can point at the wrong text. Always state the edition. (Section titles verified on the up.codes NFPA 70 index: 2014/2017 = 310.15; 2020/2023 = 310.14; 110.14 title "Electrical Connections" is stable 2017→2023.)</div>
+
+  <div class="code">(1) Equipment Provisions. … Unless the equipment is listed and marked otherwise, conductor ampacities used in determining equipment termination provisions shall be based on <strong>Table 310.16</strong> as appropriately modified by <strong>310.12</strong>.
+
+(a) Termination provisions of equipment for circuits rated 100 amperes or less, or marked for 14 AWG through 1 AWG conductors, shall be used only for one of the following:
+(1) Conductors rated 60° C (140° F).
+(2) Conductors with higher temperature ratings, provided the ampacity of such conductors is determined based on the 60° C (140° F) ampacity of the conductor size used.
+(3) Conductors with higher temperature ratings if the equipment is listed and identified for use with such conductors.
+(4) For motors marked with design letters B, C, or D, conductors having an insulation rating of 75° C (167° F) or higher shall be permitted to be used, provided the ampacity of such conductors does not exceed the 75° C (167° F) ampacity.
+
+(b) Termination provisions of equipment for circuits rated over 100 amperes, or marked for conductors larger than 1 AWG, shall be used only for one of the following:
+(1) Conductors rated 75° C (167° F)
+(2) Conductors with higher temperature ratings, provided the ampacity of such conductors does not exceed the 75° C (167° F) ampacity of the conductor size used, or up to their ampacity if the equipment is listed and identified for use with such conductors
+<span class="src">Verbatim NEC 2020 full-code text (slideshare_nec2020.txt, 110.14 at line 357), the two renumbered references bolded (Table 310.15(B)(16) → Table 310.16; 310.15(B)(7) → 310.12). OCR artifacts in the source (e.g. "60° C", "i.f", "proVIs1ons") normalized to standard form; the code wording is otherwise unchanged from 2017.</span></div>
+
+  <h2>110.14(D) — torque: 2017 "calibrated torque tool" → 2020 "approved means"</h2>
+  <p>The section also carries the connection-torque rule, and it changed in 2020. The 2017 text made a calibrated torque tool mandatory when a numeric value was indicated; 2020 relaxed that to "an approved means" and added three informational notes.</p>
+  <div class="code">2017 — (D) Installation. Where a tightening torque is indicated as a numeric value on equipment or in installation instructions provided by the manufacturer, a calibrated torque tool shall be used to achieve the indicated torque value, unless the equipment manufacturer has provided installation instructions for an alternative method of achieving the required torque.
+
+2020 — (D) Terminal Connection Torque. Tightening torque values for terminal connections shall be as indicated on equipment or in installation instructions provided by the manufacturer. An approved means shall be used to achieve the indicated torque value.
+
+Informational Note No. 1: Examples of approved means of achieving the indicated torque values include torque tools or devices such as shear bolts or breakaway-style devices with visual indicators that demonstrate that the proper torque has been applied.
+
+Informational Note No. 2: The equipment manufacturer can be contacted if numeric torque values are not indicated on the equipment or if the installation instructions are not available. Informative Annex I of UL Standard 486A-486B, Standard for Safety-Wire Connectors, provides torque values in the absence of manufacturer's recommendations.
+
+Informational Note No. 3: Additional information for torquing threaded connections and terminations can be found in Section 8.11 of NFPA 70B-2019, Recommended Practice for Electrical Equipment Maintenance.
+<span class="src">2017 text: verbatim official NFPA text (nec2017_full.txt, 110.14(D) at line 7136). 2020 text: verbatim NEC 2020 full-code text (slideshare_nec2020.txt, 110.14(D) at line 357) — confirmed word-for-word against the ELR 2020 change record (electricallicenserenewal.com, sectionID 797, "Revised code section… replaced the requirement for a 'calibrated torque tool' with 'an approved means' and added three informational notes").</span></div>
+
+  <h2>Worked examples (computed with the real shipped core)</h2>
+  <p>Every pick below is <code>pickConductor31016(requiredA, material, temp)</code> from the shipped <code>app.js</code> core — the smallest size in the named column whose ampacity ≥ the required ampacity. The 90°C "base × correction" figures use the shipped <code>derate31015</code> factors (4–6 current-carrying conductors = 80%).</p>
+
+  <h3>EX1 — 60 A continuous branch circuit (≤100 A), unmarked equipment</h3>
+  <p>Required ampacity = 60 A × 125% = <strong>75 A</strong> (210.19(A)(1)(a)). Circuit is ≤100 A → the <strong>60°C</strong> column governs (110.14(C)(1)(a)). A 75°C (THHN) conductor is installed but counted at its 60°C value:</p>
+  <table>
+    <thead><tr><th>Column</th><th>Pick (Cu)</th><th>Ampacity</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td>60°C <span class="ok">← governs</span></td><td class="num"><strong>3 AWG Cu</strong></td><td class="num">85 A</td><td>Termination column — the legal size</td></tr>
+      <tr><td>75°C</td><td class="num">4 AWG Cu</td><td class="num">85 A</td><td>Only if equipment is listed + identified 75°C — not the default</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Result: 3 AWG Cu.</strong> Same 75 A, two columns, two answers — the (a) 60°C rule is what makes it 3 AWG, not 4 AWG.</p>
+
+  <h3>EX2 — 125 A feeder (>100 A), unmarked equipment</h3>
+  <p>Circuit is over 100 A → the <strong>75°C</strong> column governs (110.14(C)(1)(b)). Required = 125 A:</p>
+  <table>
+    <thead><tr><th>Column</th><th>Pick (Cu)</th><th>Ampacity</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td>75°C <span class="ok">← governs</span></td><td class="num"><strong>1 AWG Cu</strong></td><td class="num">130 A</td><td>Termination column — the legal size</td></tr>
+      <tr><td>60°C</td><td class="num">1/0 AWG Cu</td><td class="num">125 A</td><td>What you'd get if the terminations were only 60°C-rated — one size larger</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Result: 1 AWG Cu.</strong> The 100 A boundary is what moves you off the 60°C column.</p>
+
+  <h3>EX3 — 100 A one-family service (220.82 optional), copper</h3>
+  <p>The 220.82 service card sizes ungrounded service conductors at the required ampacity (the 220.82 calculated load, floored at the 230.79(C) 100 A one-family disconnect via 230.42(B)) in the (b) 75°C column. Required = 100 A:</p>
+  <table>
+    <thead><tr><th>Material</th><th>Pick (75°C)</th><th>Ampacity</th></tr></thead>
+    <tbody>
+      <tr><td>Copper</td><td class="num"><strong>3 AWG Cu</strong></td><td class="num">100 A</td></tr>
+      <tr><td>Aluminum</td><td class="num">1 AWG Al</td><td class="num">100 A</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Result: 3 AWG Cu (1 AWG Al).</strong> This is exactly the pick the 220.82 card returns — the "Termination Temperature Column" select on that card is the 110.14(C)(1)(b) 75°C column.</p>
+
+  <h3>EX4 — 125 A service, aluminum (EX2's twin)</h3>
+  <p>Same >100 A 75°C column, aluminum material: required 125 A → <strong>2/0 AWG Al</strong> (135 A). The column choice is identical to EX2 — material only changes the ampacity value in that column, never the column.</p>
+
+  <h3>EX5 — the 90°C column as a derating base (the 110.14(C) second sentence)</h3>
+  <p>Here is where a 90°C conductor earns its keep: you start in the 90°C column, apply the 310.15 corrections, and the termination limit still caps the final number. A 125 A feeder in a raceway with 4–6 current-carrying conductors (80% factor), 30°C ambient, unmarked equipment (so the 75°C column is the ceiling):</p>
+  <table>
+    <thead><tr><th>Size (Cu)</th><th>90°C base</th><th>× 0.80 (4–6 CCC)</th><th>vs 75°C ceiling</th><th>Passes?</th></tr></thead>
+    <tbody>
+      <tr><td class="num">2 AWG</td><td class="num">130 A</td><td class="num">104 A</td><td class="num">75°C = 115 A</td><td class="bad">No — 104 A < 125 A required</td></tr>
+      <tr><td class="num">1 AWG</td><td class="num">145 A</td><td class="num">116 A</td><td class="num">75°C = 130 A</td><td class="bad">No — 116 A < 125 A required</td></tr>
+      <tr><td class="num"><strong>1/0 AWG</strong></td><td class="num">170 A</td><td class="num"><strong>136 A</strong></td><td class="num">75°C = 150 A</td><td class="ok">Yes — 136 A ≥ 125 A, under the 150 A ceiling</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Result: 1/0 AWG Cu.</strong> The 90°C column supplied the base (170 A); the 80% factor gave 136 A; and the (b) 75°C termination limit (150 A) never blocked it because 136 A is under the ceiling. If the terminations had been 60°C-rated, the ceiling would have been the 60°C value (125 A for 1/0) and 136 A would have failed — the same conductor, a different termination column, a different answer. <em>That</em> is the whole point of 110.14(C).</p>
+
+  <h2>Where 110.14(C) fits — and what it is not</h2>
+  <ul>
+    <li><strong>It is the column selector, not the ampacity source.</strong> Table 310.16 (2020/2023) / Table 310.15(B)(16) (2017) holds the numbers; 110.14(C) tells you which column is legal for the size you land on.</li>
+    <li><strong>It is not the derating rule.</strong> 310.15 (2017) / 310.14 (2020/2023) + its adjustment tables do the ambient/conductor-count math. 110.14(C) is what the math is <em>capped against</em>. See the <a href="nec-31015-ampacity-adjustments.html">310.15 ampacity-adjustments</a> article.</li>
+    <li><strong>It is not the 83% single-phase dwelling allowance.</strong> That is 310.12 (2020/2023) / 310.15(B)(7) (2017) — a separate reduction on the disconnect rating, referenced inside 110.14(C)(1) only as the "as appropriately modified by" cross-reference.</li>
+    <li><strong>It is not overcurrent protection.</strong> 240.4 governs the OCPD; 110.14(C) governs the conductor's usable ampacity at the termination. (240.4(D) still caps small-conductor OCPDs.) See the <a href="nec-2404d-small-conductors.html">240.4(D) small-conductor</a> article.</li>
+    <li><strong>2026 scope.</strong> The 2026 NEC renumber (Article 310 → Article 300 area, ampacity table to 300.x) is flagged and out of scope; this page documents the 2014–2023 lineage the tool implements.</li>
+  </ul>
+
+  <a class="cta" href="../#panelCard">Open the free PanelWright calculator — pick the Termination Temperature Column (60/75/90°C) and size the service, the neutral, the derating, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <div class="method">
+    <p><strong>Method &amp; sources (Session-35 discipline).</strong></p>
+    <ul>
+      <li><strong>2017 verbatim anchor</strong> (the official NFPA text on disk, <code>nec2017_full.txt</code>): 110.14(C) at line 7077, 110.14(D) at line 7136, Table 310.15(B)(16) at line 26125. OCR line-wrap reflow normalized (hyphenated compounds re-joined); no wording altered.</li>
+      <li><strong>2020 verbatim</strong> (the on-disk full-code text, <code>slideshare_nec2020.txt</code>): the complete 110.14(A)–(D) at line 357, including the renumbered "Table 310.16 … modified by 310.12" references. OCR artifacts ("60° C", "i.f", "proVIs1ons", "insu-uctions") normalized to standard form; code wording otherwise unchanged from 2017.</li>
+      <li><strong>2020 change records (ELR, fetched this session, HTTP 200):</strong> sectionID 797 = 110.14(D) torque rewrite ("calibrated torque tool" → "approved means" + 3 informational notes); sectionID 878 = 310.12 single-phase dwelling (2017 310.15(B)(7) relocated, table restored); sectionID 880 = 310.16 ampacity table (Table 310.15(B)(16) "formerly Table 310.16" restored to Table 310.16).</li>
+      <li><strong>Section titles verified on the up.codes NFPA 70 index:</strong> 310.15 "Ampacities for Conductors Rated 0-2000 Volts" (2014/2017) → 310.14 "Ampacities for Conductors Rated 0 Volts — 2000 Volts" (2020/2023); 310.12 "Single-Phase Dwelling Services and Feeders" (2023); 110.14 title "Electrical Connections" stable 2017→2023 (confirmed via the Dallas Electrical Code 2023, which adopts NFPA 70).</li>
+      <li><strong>2023 status:</strong> the on-disk 2023-NEC print (<code>codeelec_2023.txt</code>) carries the same 110.14(C) 60°C/75°C framework (the UL Directory quote at p.38 and the termination-chapter at pp.45–46), so no 2023 change to the (C) rule is claimed; the 2023 PDH change analysis records no 110.14(C) delta.</li>
+      <li><strong>Honesty note:</strong> the on-disk 2017 OCR scan runs 310.10 → 310.15 with the 310.11/310.12/310.14 heading pages dropped (0 literal "310.14" headings, 310.11/310.12 only as cross-references), so the 2017 ampacity section is anchored on 310.15 on disk + the up.codes 2017 index; the 2020/2023 310.14 title is anchored on the up.codes 2020/2023 index. No word-diff of the 310.14/310.15 <em>body</em> is claimed (the body is the ampacity tables, already verified 0/168 cells in Session 12).</li>
+      <li><strong>Worked examples:</strong> computed with the real shipped <code>app.js</code> core under <code>node</code> (<code>compute_art27.js</code>); the 90°C-base × 0.80 figures use the shipped <code>derate31015</code> factors. The EX1/EX2/EX3 picks are also asserted in the public test suite.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p><strong>Related articles:</strong>
+      <a href="nec-31016-ampacity.html">Table 310.16 ampacity (which column)</a> ·
+      <a href="nec-31015-ampacity-adjustments.html">310.15 ampacity adjustments (the 90°C base math)</a> ·
+      <a href="nec-22082-optional-service-load.html">220.82 optional service load (the card that exposes the column select)</a> ·
+      <a href="nec-conductor-sizing.html">Conductor sizing end-to-end</a> ·
+      <a href="nec-2404d-small-conductors.html">240.4(D) small-conductor OCPD caps</a> ·
+      <a href="nec-2152-feeder-ampacity.html">215.2 feeder ampacity</a>
+    </p>
+    <p><strong>Design aid only.</strong> Not a substitute for the NEC, manufacturer instructions, or a qualified electrical design. Verify against the adopted NEC edition and local code. Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (AI-built and disclosed). Plain HTML, MIT licensed.</p>
+  </footer>
+</div>
+</body>
+</html>

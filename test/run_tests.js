@@ -2839,5 +2839,76 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-250122-egc-sizing.html'), true, 'art26: cross-links to article 22 (250.122)');
 }
 
+// ---------------------------------------------------------------------------
+// ARTICLE 27 — NEC 110.14(C) Temperature Limitations + 310.14/310.15 ampacity
+// section: the Termination-Temperature-Column explainer. The column rule:
+// unmarked equipment -> 60°C column for circuits <=100 A (14 AWG-1 AWG),
+// 75°C column for >100 A (larger than 1 AWG); a higher-rated conductor is
+// counted at the termination column's ampacity unless the equipment is listed
+// and identified for the higher rating; the 90°C column is the base for
+// 310.15 adjustment/correction, not a termination column. The 2020 renumber
+// (ampacity section 310.15 -> 310.14, Table 310.15(B)(16) "formerly Table
+// 310.16" -> Table 310.16, 310.15(B)(7) -> 310.12) and the 110.14(D) torque
+// rewrite ("calibrated torque tool" -> "approved means" + 3 info notes).
+// Core-computed examples: compute_art27.js. Verbatim audit: verify_art27.js.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-11014c-31014-termination-temperature.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  eq(art.includes('nec-11014c-31014-termination-temperature.html'), true, 'art27: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-11014c-31014-termination-temperature.html'), true, 'art27: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art27: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art27: Article + FAQPage JSON-LD present');
+  // verbatim 2017 110.14(C) probes
+  eq(has('The temperature rating associated with the ampacity of a conductor shall be selected and coordinated so as not to exceed the lowest temperature rating of any connected termination, conductor, or device.'), true, 'art27: verbatim 110.14(C) floor sentence');
+  eq(has('Conductors with temperature ratings higher than specified for terminations shall be permitted to be used for ampacity adjustment, correction, or both.'), true, 'art27: verbatim 110.14(C) 90C-derating sentence');
+  eq(has('conductor ampacities used in determining equipment termination provisions shall be based on Table 310.15(B)(16) as appropriately modified by 310.15(B)(7)'), true, 'art27: verbatim 2017 (C)(1) table reference (pre-2020-renumber)');
+  eq(has('Termination provisions of equipment for circuits rated 100 amperes or less, or marked for 14 AWG through 1 AWG conductors'), true, 'art27: verbatim (C)(1)(a) 100A boundary');
+  eq(has('Termination provisions of equipment for circuits rated over 100 amperes, or marked for conductors larger than 1 AWG'), true, 'art27: verbatim (C)(1)(b) >100A boundary');
+  eq(has('Conductors with higher temperature ratings, provided the ampacity of such conductors is determined based on the 60°C (140°F) ampacity of the conductor size used'), true, 'art27: verbatim (C)(1)(a)(2) 60C-counting rule');
+  eq(has('For motors marked with design letters B, C, or D'), true, 'art27: verbatim (C)(1)(a)(4) motor carve-out');
+  eq(has('Separately installed pressure connectors shall be used with conductors at the ampacities not exceeding the ampacity at the listed and identified temperature rating of the connector'), true, 'art27: verbatim (C)(2) separate connectors');
+  // verbatim 2017 110.14(D) + 2020 torque rewrite
+  eq(has('a calibrated torque tool shall be used to achieve the indicated torque value'), true, 'art27: verbatim 2017 (D) calibrated torque tool');
+  eq(has('An approved means shall be used to achieve the indicated torque value'), true, 'art27: 2020 (D) approved means');
+  eq(has('shear bolts or breakaway-style devices with visual indicators'), true, 'art27: 2020 (D) IN1 approved-means examples');
+  eq(has('NFPA 70B-2019'), true, 'art27: 2020 (D) IN3 70B cross-ref');
+  // 2020 renumber probes (ELR sectionID 878 / 880 + up.codes)
+  eq(has('based on Table 310.16 as appropriately modified by 310.12'), true, 'art27: 2020 renumbered (C)(1) reference (Table 310.16 / 310.12)');
+  eq(has('310.15(B)(16) (formerly Table 310.16)'), true, 'art27: 2017 table title with formerly-clause');
+  eq(has('sectionID 797'), true, 'art27: cites ELR 110.14(D) torque record');
+  eq(has('sectionID 878'), true, 'art27: cites ELR 310.12 single-phase record');
+  eq(has('sectionID 880'), true, 'art27: cites ELR 310.16 table record');
+  // core-computed examples (the real shipped app.js)
+  const p = core.pickConductor31016;
+  eq(p(75, 'cu', 60).size, '3', 'art27 EX1: 75 A @60C -> 3 AWG Cu (<=100A termination column)');
+  eq(p(75, 'cu', 60).amp, 85, 'art27 EX1: 3 AWG Cu = 85 A @60');
+  eq(p(125, 'cu', 75).size, '1', 'art27 EX2: 125 A @75C -> 1 AWG Cu (>100A termination column)');
+  eq(p(125, 'cu', 75).amp, 130, 'art27 EX2: 1 AWG Cu = 130 A @75');
+  eq(p(125, 'cu', 60).size, '1/0', 'art27 EX2: same 125 A @60C -> 1/0 AWG Cu (column moves the size)');
+  eq(p(100, 'cu', 75).size, '3', 'art27 EX3: 100 A service Cu @75 -> 3 AWG (220.82 card pick)');
+  eq(p(100, 'al', 75).size, '1', 'art27 EX3: 100 A service Al @75 -> 1 AWG');
+  eq(p(125, 'al', 75).size, '2/0', 'art27 EX4: 125 A Al @75 -> 2/0 AWG (column = material-independent)');
+  eq(p(125, 'al', 75).amp, 135, 'art27 EX4: 2/0 AWG Al = 135 A @75');
+  // EX5: 90C base x 0.80 (4-6 CCC) vs 75C termination ceiling
+  const row = s => core.T31016.find(r => r.s === s);
+  eq(row('1/0').cu[2], 170, 'art27 EX5: 1/0 Cu 90C base = 170 A');
+  eq(Math.round(170 * 0.80 * 100) / 100, 136, 'art27 EX5: 1/0 Cu derated 136 A (x0.80)');
+  eq(row('1/0').cu[1], 150, 'art27 EX5: 1/0 Cu 75C termination ceiling = 150 A (136 < 150 passes)');
+  eq(row('2').cu[2] * 0.80, 104, 'art27 EX5: 2 AWG Cu 90C base 130 x 0.80 = 104 A (< 125 A fails)');
+  // service card end-to-end (the feature the article explains)
+  const svc = core.serviceLineConductor22082({ amps: 100 }, 'cu', 75);
+  eq(svc.reqA, 100, 'art27: 220.82 card reqA 100 A (230.79C floor)');
+  eq(svc.pick.size, '3', 'art27: 220.82 card picks 3 AWG Cu (75C column = 110.14(C)(1)(b))');
+  // cross-links
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art27: cross-links to the Table 310.16 article');
+  eq(art.includes('nec-31015-ampacity-adjustments.html'), true, 'art27: cross-links to the 310.15 adjustments article');
+  eq(art.includes('nec-22082-optional-service-load.html'), true, 'art27: cross-links to the 220.82 article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art27: cross-links to the 240.4(D) article');
+  eq(art.includes('nec-2152-feeder-ampacity.html'), true, 'art27: cross-links to the 215.2 article');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
