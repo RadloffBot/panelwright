@@ -2517,5 +2517,115 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(has('keyed to OCPD rating, not size'), true, 'art23 ladder: 250.122 keyed to OCPD rating, not conductor size');
 }
 
+// --- Article 24 (Session 49): articles/nec-25026-25030-separately-derived-systems.html ---
+// NEC 250.26 + 250.30 + 250.66 (Separately Derived Systems) deep-dive:
+// 250.26's five "conductor to be grounded" cases, 250.30(A)–(C) (system
+// bonding jumper, grounded conductor, grounding electrode, GEC, common-GEC
+// taps, ungrounded systems, outdoor sources), 250.66 + Table 250.66 (7
+// rows, capped top — NO 12.5% row) with the 250.66(A)–(C) electrode caps.
+// Verbatim 2017 section text (on disk, nec2017_full.txt lines 18501–18944 +
+// 19859–19892, table 19960–20028) + the one documented 2017→2023 change in
+// the 250.30 intro (ELR 2023 record sectionID 1590). Table 250.66 rows
+// cross-checked against a cached zing2.app NEC-2023 copy this session
+// (identical 7 rows). Every worked number asserted against the shipped
+// cores so the article cannot drift from the tool.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-25026-25030-separately-derived-systems.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art24: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-25026-25030-separately-derived-systems.html'), true, 'art24: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art24: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art24: Article + FAQPage JSON-LD present');
+  // verbatim 2017 code probes (250.26)
+  eq(has('250.26 Conductor to Be Grounded — Alternating-Current'), true, 'art24: carries the verified 250.26 title');
+  eq(has('Single-phase, 2-wire — one conductor'), true, 'art24: verbatim 250.26(1)');
+  eq(has('Multiphase systems having one wire common to all phases — the neutral conductor'), true, 'art24: verbatim 250.26(3)');
+  eq(has('Multiphase systems where one phase is grounded — one phase conductor'), true, 'art24: verbatim 250.26(4)');
+  // verbatim 2017 code probes (250.30)
+  eq(has('In addition to complying with 250.30(A) for grounded systems, or as provided in 250.30(B) for ungrounded systems, separately derived systems shall comply with 250.20, 250.21, 250.22, or 250.26, as applicable'), true, 'art24: verbatim 2017 250.30 intro');
+  eq(has('Multiple separately derived systems that are connected in parallel shall be installed in accordance with 250.30'), true, 'art24: verbatim 2017 250.30 parallel sentence');
+  eq(has('An alternate ac power source, such as an on-site generator, is not a separately derived system if the grounded conductor is solidly interconnected to a service-'), true, 'art24: verbatim 250.30 Info Note No. 1');
+  eq(has('(1) System Bonding Jumper. An unspliced system bonding jumper shall comply with 250.28(A) through (D)'), true, 'art24: verbatim 250.30(A)(1)');
+  eq(has('(a) Sizing for a Single Raceway. The grounded conductor shall not be smaller than specified in Table 250.102(C)(1)'), true, 'art24: verbatim 250.30(A)(3)(a)');
+  eq(has('The building or structure grounding electrode system shall be used as the grounding electrode for the separately derived system'), true, 'art24: verbatim 250.30(A)(4)');
+  eq(has('(5) Grounding Electrode Conductor, Single Separately Derived System. A grounding electrode conductor for a single separately derived system shall be sized in accordance with 250.66 for the derived ungrounded conductors'), true, 'art24: verbatim 250.30(A)(5)');
+  eq(has('A conductor of the wire type not smaller than 3/0 AWG copper or 250 kcmil aluminum'), true, 'art24: verbatim 250.30(A)(6)(a)(1) common GEC minimum');
+  eq(has('(b) Tap Conductor Size. Each tap conductor shall be sized in accordance with 250.66 based on the derived ungrounded conductors of the separately derived system it serves'), true, 'art24: verbatim 250.30(A)(6)(b) tap sizing');
+  eq(has('remains without a splice or joint'), true, 'art24: verbatim 250.30(A)(6)(c) no-splice rule');
+  eq(has('(1) Grounding Electrode Conductor. A grounding electrode conductor, sized in accordance with 250.66 for the largest derived ungrounded conductor(s)'), true, 'art24: verbatim 250.30(B)(1)');
+  eq(has('(C) Outdoor Source. If the source of the separately derived system is located outside the building or structure supplied, a grounding electrode connection shall be made at the source location'), true, 'art24: verbatim 250.30(C)');
+  eq(has('shall not be smaller than 14 AWG copper or 12 AWG aluminum'), true, 'art24: verbatim 250.30(A)(1) Ex 3 (1 kVA transformer floor)');
+  // verbatim 2017 code probes (250.66)
+  eq(has('250.66 Size of Alternating-Current Grounding Electrode Conductor. The size of the grounding electrode conductor at the service, at each building or structure where supplied by a feeder(s) or branch circuit(s), or at a separately derived system of a grounded or ungrounded ac system shall not be less than given in Table 250.66'), true, 'art24: verbatim 250.66 intro');
+  eq(has('shall not be required to be larger than 6 AWG copper wire or 4 AWG aluminum wire'), true, 'art24: verbatim 250.66(A) rod/pipe/plate cap');
+  eq(has('shall not be required to be larger than 4 AWG copper wire'), true, 'art24: verbatim 250.66(B) concrete-encased cap');
+  eq(has('shall not be required to be larger than the conductor used for the ground ring'), true, 'art24: verbatim 250.66(C) ground ring cap');
+  // Table 250.66 notes
+  eq(has('largest sum of the areas of the corresponding conductors of each set'), true, 'art24: Table 250.66 Note 1 equivalent-area rule');
+  eq(has('the grounding electrode conductor size shall be determined by the equivalent size of the largest service-entrance conductor required for the load to be served'), true, 'art24: Table 250.66 Note 2');
+  eq(has('This table also applies to the derived conductors of separately derived ac systems'), true, 'art24: Table 250.66 asterisk (applies to derived systems)');
+  // Table 250.66 row probes (all 7 rows; 2017 = 2023 per zing2 cross-check)
+  const rows = [
+    ['2 AWG or smaller', '1/0 AWG or smaller', '8 AWG', '6 AWG'],
+    ['1 AWG or 1/0 AWG', '2/0 AWG or 3/0 AWG', '6 AWG', '4 AWG'],
+    ['2/0 AWG or 3/0 AWG', '4/0 AWG or 250 kcmil', '4 AWG', '2 AWG'],
+    ['Over 3/0 AWG through 350 kcmil', 'Over 250 kcmil through 500 kcmil', '2 AWG', '1/0 AWG'],
+    ['Over 350 kcmil through 600 kcmil', 'Over 500 kcmil through 900 kcmil', '1/0 AWG', '3/0 AWG'],
+    ['Over 600 kcmil through 1100 kcmil', 'Over 900 kcmil through 1750 kcmil', '2/0 AWG', '4/0 AWG'],
+    ['Over 1100 kcmil', 'Over 1750 kcmil', '3/0 AWG', '250 kcmil'],
+  ];
+  for (const [cuL, alL, cu, al] of rows) {
+    const re = new RegExp('<td>' + cuL + '</td><td>' + alL + '</td><td class="ctr[^"]*">[^<]*' + cu + '[^<]*</td><td class="ctr[^"]*">[^<]*' + al + '[^<]*</td>');
+    eq(re.test(art), true, 'art24: Table 250.66 row ' + cuL + ' -> ' + cu + ' Cu / ' + al + ' Al');
+  }
+  // the cap row is flagged as capped (unlike 250.102(C)(1)'s 12.5% row)
+  eq(has('3/0 AWG — CAPPED'), true, 'art24: Table 250.66 top row flagged CAPPED (no 12.5% row)');
+  // edition posture: the one documented 2017→2023 change (ELR 1590)
+  eq(has('treated as a single separately derived system'), true, 'art24: 2023 250.30 intro wording (ELR 1590) quoted');
+  eq(has('sectionID 1590'), true, 'art24: ELR 2023 record 1590 cited');
+  eq(has('sectionID 1591'), true, 'art24: ELR 2023 record 1591 cited');
+  eq(has('sectionID 1592'), true, 'art24: ELR 2023 record 1592 cited');
+  eq(has('sectionID 1602'), true, 'art24: ELR record 1602 cited');
+  eq(has('sectionID 1603'), true, 'art24: ELR record 1603 cited');
+  // OCR garble disclosed, not propagated
+  eq(has('"lor 1/0"'), true, 'art24: the OCR "lor 1/0" row-label garble is documented');
+  // EX1: 50 kVA 3-ph 208 V: 138.8 A -> 1/0 Cu (150 A) -> "1 or 1/0" row -> 6 AWG Cu
+  const ex1fla = 50000 / (Math.sqrt(3) * 208);
+  approx(ex1fla, 138.8, 0.05, 'art24 EX1: 50,000 VA / (sqrt(3) x 208 V) = 138.8 A');
+  const ex1p = core.pickConductor31016(Math.ceil(ex1fla), 'cu', 75);
+  eq(ex1p.size, '1/0', 'art24 EX1: 139 A Cu @75 -> 1/0 ungrounded');
+  eq(ex1p.amp, 150, 'art24 EX1: 1/0 = 150 A @75 (>= 138.8 A)');
+  // EX2: 100 kVA 3-ph 277 V: 208.4 A -> 4/0 Cu (230 A); 3/0 = 200 A not enough
+  const ex2fla = 100000 / (Math.sqrt(3) * 277);
+  approx(ex2fla, 208.4, 0.05, 'art24 EX2: 100,000 VA / (sqrt(3) x 277 V) = 208.4 A');
+  const ex2p = core.pickConductor31016(Math.ceil(ex2fla), 'cu', 75);
+  eq(ex2p.size, '4/0', 'art24 EX2: 209 A Cu @75 -> 4/0 ungrounded');
+  eq(ex2p.amp, 230, 'art24 EX2: 4/0 = 230 A @75');
+  eq(core.T31016.find(r => r.s === '3/0').cu[1], 200, 'art24 EX2: 3/0 = 200 A @75 (< 209, not enough)');
+  eq(core.ch9Row('4/0').cm, 211600, 'art24 EX2: 4/0 = 211,600 cmil -> "Over 3/0 through 350 kcmil" row');
+  // EX4: 25 kVA 3-ph 240 V delta (ungrounded): 60.1 A -> 6 AWG Cu (65 A); 8 AWG = 50 A not enough
+  const ex4fla = 25000 / (Math.sqrt(3) * 240);
+  approx(ex4fla, 60.1, 0.05, 'art24 EX4: 25,000 VA / (sqrt(3) x 240 V) = 60.1 A');
+  const ex4p = core.pickConductor31016(Math.ceil(ex4fla), 'cu', 75);
+  eq(ex4p.size, '6', 'art24 EX4: 61 A Cu @75 -> 6 AWG ungrounded');
+  eq(core.T31016.find(r => r.s === '8').cu[1], 50, 'art24 EX4: 8 AWG = 50 A @75 (< 61, not enough)');
+  // EX5: common GEC taps: 100 kVA 208 V -> 300 kcmil (285 A); 25 kVA 208 V -> 4 AWG (85 A)
+  const ex5big = core.pickConductor31016(Math.ceil(100000 / (Math.sqrt(3) * 208)), 'cu', 75);
+  eq(ex5big.size, '300', 'art24 EX5: 100 kVA 208 V -> 300 kcmil Cu ungrounded (tap "Over 3/0 through 350" -> 2 AWG Cu)');
+  const ex5small = core.pickConductor31016(Math.ceil(25000 / (Math.sqrt(3) * 208)), 'cu', 75);
+  eq(ex5small.size, '4', 'art24 EX5: 25 kVA 208 V -> 4 AWG Cu ungrounded (tap "2 or smaller" -> 8 AWG Cu)');
+  eq(core.T31016.find(r => r.s === '6').cu[1], 65, 'art24 EX5: 6 AWG = 65 A @75 (< 69.4 A, not enough for the 25 kVA system)');
+  // EX6: 1 kVA 120/240 V: 4.17 A -> 14 AWG Cu; GEC not required (Ex 3)
+  approx(1000 / 240, 4.17, 0.01, 'art24 EX6: 1,000 VA / 240 V = 4.17 A');
+  const ex6p = core.pickConductor31016(5, 'cu', 75);
+  eq(ex6p.size, '14', 'art24 EX6: 5 A Cu @75 -> 14 AWG ungrounded (matches Exception No. 3 14 AWG floor)');
+  // cross-links back to the grounding thread
+  eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art24: cross-links to article 23 (250.102)');
+  eq(art.includes('nec-250122-egc-sizing.html'), true, 'art24: cross-links to article 22 (250.122)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

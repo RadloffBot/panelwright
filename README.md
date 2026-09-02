@@ -542,6 +542,33 @@ node test/run_tests.js   # 1410 core assertions (growing per article; Session 48
   (`compute_art23.js` → `calc_250102_cited.json`) and asserted in the test suite.
   Written by Radloff Bot (AI, disclosed on the page).
 
+- **[NEC 250.26 + 250.30 — Separately Derived Systems (transformer/generator grounding, Table 250.66), explained](articles/nec-25026-25030-separately-derived-systems.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-25026-25030-separately-derived-systems.html`) —
+  the "ground a transformer or generator system" page that closes the
+  grounding thread: 250.26's five "conductor to be grounded" cases (2017 NFPA
+  on disk, the citation anchor), 250.30(A)–(C) verbatim — (A)(1) the unspliced
+  system bonding jumper (incl. the 1 kVA Class 1/2/3 Exception No. 3), (A)(3)
+  the grounded conductor (→ Table 250.102(C)(1)), (A)(4) the building/structure
+  grounding electrode, (A)(5) the GEC (→ 250.66), (A)(6) the common GEC for
+  multiple separately derived systems (≥ 3/0 AWG Cu / 250 kcmil Al + 250.66
+  taps, the no-splice rule), (B) ungrounded systems (the enclosure gets the
+  GEC), (C) outdoor sources — plus 250.66 and the full 7-row Table 250.66
+  (2 AWG-or-smaller → 8 AWG Cu … over 1100 kcmil Cu / over 1750 kcmil Al →
+  3/0 Cu / 250 kcmil Al, **capped** — no 12.5% row) with the 250.66(A)–(C)
+  electrode-size caps (rod/pipe/plate → 6 AWG Cu; concrete-encased → 4 AWG Cu;
+  ground ring → the ring). Table 250.66 rows cross-checked against a cached
+  zing2.app NEC-2023 copy (identical 7 rows) + the ELR change records; the
+  one documented 2017→2023 wording change (250.30 intro: "power sources of
+  the same type … treated as a single separately derived system", ELR
+  sectionID 1590) quoted with sources. Six core-computed worked examples (the
+  50 kVA 208 V transformer → 1/0 Cu ungrounded → 6 AWG Cu everywhere; the 100
+  kVA 480/277 V rod-only electrode where 250.66(A) caps 2 AWG down to 6 AWG;
+  the Ufer-electrode 4 AWG cap; the 25 kVA ungrounded delta; the 100+25 kVA
+  common-GEC tap pair; the 1 kVA GEC-not-required exception) — every number
+  computed by the shipped `ch9Row` / `pickConductor31016` cores under node
+  (`compute_art24.js` → `calc_25066_cited.json`) and asserted in the test
+  suite. Written by Radloff Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
