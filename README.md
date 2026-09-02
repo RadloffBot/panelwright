@@ -569,6 +569,31 @@ node test/run_tests.js   # 1410 core assertions (growing per article; Session 48
   (`compute_art24.js` → `calc_25066_cited.json`) and asserted in the test
   suite. Written by Radloff Bot (AI, disclosed on the page).
 
+- **[NEC 250.50 + 250.52 + 250.53 — The Grounding Electrode System (what to bond to earth, and how), explained](articles/nec-25050-25052-25053-grounding-electrode-system.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-25050-25052-25053-grounding-electrode-system.html`) —
+  the "what do I bond to earth" page that completes the grounding cluster:
+  250.50 (every qualifying electrode present gets bonded together; install one
+  from (A)(4)–(A)(8) if none exist), the 250.52(A) eight permitted electrodes
+  (water pipe, in-ground support, Ufer, ground ring, rod/pipe, listed, plate,
+  other local metal) and 250.52(B) three not-permitted (gas pipe, aluminum,
+  pool steel), and 250.53(A)–(H) — the 25-ohm supplemental-rod Exception, 6-ft
+  rod spacing, ground-ring / plate 30-in. depth, rod 8-ft drive, and the
+  250.53(C) electrode-to-electrode bonding jumper sized per Table 250.66 (the
+  2020-added rebar-prohibition sentence, the 250.53(E) 6 AWG cap). **Headline
+  edition trap: there is no 250.51** — the official 2017 text on disk has zero
+  occurrences and the sequence is 250.50 → 250.52 → 250.53. Verbatim 2017 NFPA
+  (on disk, `nec2017_full.txt` lines 19292–19549); edition history from the ELR
+  change records (2020 sectionID 863 = the 250.53(C) rebar sentence; 2023
+  sectionIDs 1593/1594/1595 = the 250.52 reletter to (A)(1)–(8)/(B) + the two
+  "reinforcing steel" → "rebar" rewords); section titles verified across
+  2014/2017/2020/2023 on up.codes. Six core-computed worked examples (the
+  100 A 220.82 flagship → 3 AWG Cu service phases → 4 AWG Cu bonding jumper;
+  6-ft vs 16-ft rod spacing; the 4 AWG Ufer floor; the 2 AWG ground ring; the
+  25-ohm single-rod decision) — every number computed by the shipped
+  `serviceLoad22082` / `serviceLineConductor22082` / `ch9Row` / `T31016` cores
+  under node (`compute_art25.js` → `calc_25050_cited.json`) and asserted in the
+  test suite. Written by Radloff Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 250.50 + 250.52 + 250.53 — The Grounding Electrode System: What to Bond to Earth, and How</title>
+<meta name="description" content="NEC 250.50 + 250.52 + 250.53 in full: the grounding electrode system (GECs bonded together), the eight permitted grounding electrodes (250.52(A)) and three not-permitted (250.52(B)), and the installation rules (250.53) — the 25-ohm supplemental-rod exception, 6-ft rod spacing, ground ring / plate / Ufer depths, and the 250.53(C) bonding jumper sized per Table 250.66. The 250.51 phantom section, edition history, and six worked examples.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-25050-25052-25053-grounding-electrode-system.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 250.50 + 250.52 + 250.53 — The Grounding Electrode System">
+<meta property="og:description" content="What to bond to earth: the 8 permitted electrodes, the 3 not-permitted, the 25-ohm supplemental-rod exception, 6-ft spacing, and the 250.53(C) bonding jumper per Table 250.66. The 250.51 phantom.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-25050-25052-25053-grounding-electrode-system.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 250.50 + 250.52 + 250.53 — The Grounding Electrode System">
+<meta name="twitter:description" content="The 8 permitted electrodes, 3 not-permitted, the 25-ohm exception, 6-ft spacing, the 250.53(C) bonding jumper per 250.66 — worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 250.50 grounding electrode system, NEC 250.52 grounding electrodes, NEC 250.53 grounding electrode system installation, 250.51 phantom section, grounding electrode list, permitted grounding electrodes, 25 ohm supplemental ground rod, 6 ft rod spacing, ground ring, Ufer ground, concrete encased electrode, 250.53(C) bonding jumper, Table 250.66 grounding electrode conductor, what to ground a building, electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 250.50 + 250.52 + 250.53 — The Grounding Electrode System: What to Bond to Earth, and How",
+  "description": "NEC 250.50 + 250.52 + 250.53 in full: the grounding electrode system (GECs bonded together), the eight permitted grounding electrodes (250.52(A)) and three not-permitted (250.52(B)), and the installation rules (250.53) — the 25-ohm supplemental-rod exception, 6-ft rod spacing, ground ring / plate / Ufer depths, and the 250.53(C) bonding jumper sized per Table 250.66. The 250.51 phantom section, edition history, and six worked examples.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-02",
+  "dateModified": "2026-09-02",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-25050-25052-25053-grounding-electrode-system.html",
+  "isAccessibleForFree": true
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a grounding electrode system?",
+      "acceptedAnswer": { "@type": "Answer", "text": "250.50: every grounding electrode that is actually present at a building or structure — from the 250.52(A)(1) through (A)(7) list — must be bonded together to form the grounding electrode system. If none of those electrodes exist, one or more electrodes from 250.52(A)(4) through (A)(8) must be installed and used. The one exception is a concrete-encased electrode in an existing building where the rebar is not accessible without disturbing the concrete." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there an NEC section 250.51?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. There is no section numbered 250.51 in the 2014, 2017, 2020, or 2023 NEC. The code jumps from 250.50 (Grounding Electrode System) directly to 250.52 (Grounding Electrodes) and then 250.53 (Grounding Electrode System Installation). The on-disk official 2017 NFPA text contains zero occurrences of the string 250.51. If a reference cites 250.51 for the electrode list, it is wrong — the list is 250.52." }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the eight permitted grounding electrodes?",
+      "acceptedAnswer": { "@type": "Answer", "text": "250.52(A): (1) metal underground water pipe in earth contact 10 ft or more and electrically continuous; (2) metal in-ground support structures in earth contact vertically 10 ft or more (only one need be bonded); (3) concrete-encased electrode — 20 ft of ½-in. rebar or 4 AWG bare copper with 2 in. of concrete; (4) ground ring — a loop of 20 ft of 2 AWG bare copper encircling the building; (5) rod and pipe electrodes — 8 ft long, ⅝-in. copper/stainless/zinc-coated-steel rod or ¾-in. galvanized pipe; (6) other listed electrodes; (7) plate electrodes — 2 ft² to soil, ¼-in. ferrous or 0.06-in. nonferrous; (8) other local metal underground systems not bonded to a metal water pipe." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is NOT permitted as a grounding electrode?",
+      "acceptedAnswer": { "@type": "Answer", "text": "250.52(B): (1) metal underground gas piping systems, (2) aluminum, and (3) the pool structures and structural rebar described in 680.26(B)(1) and (B)(2). (The 2017 text reads 250.52(B)(3) as structural reinforcing steel; 2023 rewords it structural rebar — same pool steel either way.)" }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a single 8-ft ground rod enough to ground a building?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Only if it measures 25 ohms or less to earth. 250.53(A)(2): a single rod, pipe, or plate electrode must be supplemented by an additional 250.52(A)(2)–(A)(8) electrode — the Exception excuses the supplemental electrode only when the single rod already reads 25 ohms or less. The two rods must be spaced at least 6 ft apart (250.53(A)(3)). The code does not let you average two high-resistance rods to pass." }
+    },
+    {
+      "@type": "Question",
+      "name": "How far apart must grounding electrodes be?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Within one system, multiple rod/pipe/plate electrodes must be at least 6 ft apart (250.53(A)(3)); the Informational Note says spacing them twice the length of the longest rod (16 ft for an 8-ft rod) improves paralleling efficiency. Between two separate grounding systems, each 250.52(A)(5)/(A)(7) electrode must be at least 6 ft from the other system's electrodes (250.53(B))." }
+    },
+    {
+      "@type": "Question",
+      "name": "How big is the 250.53(C) bonding jumper?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sized per Table 250.66 on the largest ungrounded service-entrance conductor (or its equivalent). For a 100 A service with 3 AWG copper phases, the 2/0 AWG or 3/0 AWG row gives a 4 AWG copper bonding jumper. 250.53(E) caps the sole connection to a rod/pipe/plate supplemental electrode at 6 AWG copper (4 AWG aluminum), and 250.66(A)–(C) cap the whole GEC by electrode type. Rebar may not be used to interconnect the electrodes (250.53(C), added 2020)." }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #171e26; --panel2: #1c2530; --line: #2a3644;
+    --text: #e8eef4; --dim: #93a4b4; --accent: #ffb020; --accent2: #4da3ff;
+    --ok: #3ddc84; --bad: #ff5d5d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 18px 60px; }
+  .crumb { font-size: 13px; color: var(--dim); margin-bottom: 18px; }
+  .crumb a { color: var(--accent2); text-decoration: none; }
+  .crumb a:hover { text-decoration: underline; }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: .2px; }
+  h1 span { color: var(--accent); }
+  h2 { font-size: 20px; margin: 34px 0 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  h3 { font-size: 16px; margin: 22px 0 8px; color: var(--accent); }
+  p { margin: 10px 0; }
+  a { color: var(--accent2); }
+  .sub { color: var(--dim); font-size: 14px; margin: 0 0 14px; }
+  .disc { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--dim); margin: 16px 0; }
+  .code { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; font-size: 14px; line-height: 1.65; margin: 14px 0; overflow-x: auto; white-space: pre-wrap; }
+  .code .src { display: block; margin-top: 10px; font-size: 12px; color: var(--dim); white-space: normal; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 14.5px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--panel2); font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--dim); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.ctr, th.ctr { text-align: center; }
+  .ok { color: var(--ok); font-weight: 600; }
+  .warn { color: var(--accent); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .blank { color: var(--dim); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .cta { display: block; background: var(--accent); color: #14100a; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px; padding: 13px 18px; font-size: 16px; margin: 26px 0 6px; }
+  .cta:hover { filter: brightness(1.08); }
+  .ctasub { text-align: center; font-size: 13px; color: var(--dim); margin-top: 0; }
+  .method { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .method p, .method li { color: var(--dim); }
+  .renew { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent2); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .renew strong { color: var(--text); }
+  footer { margin-top: 36px; font-size: 12.5px; color: var(--dim); border-top: 1px solid var(--line); padding-top: 14px; }
+  footer p { margin: 5px 0; }
+  @media print {
+    body { background: #fff; color: #111; }
+    .crumb, .cta, .ctasub { display: none; }
+    .disc, .method, .code, .renew { border-color: #ccc; background: #f7f7f7; color: #111; }
+    .code .src, .sub, footer, .tag { color: #555; }
+    h1 span, h3 { color: #b97900; }
+    a { color: #0645ad; }
+    th { background: #eee; color: #333; }
+    th, td { border-color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 250.50 + 250.52 + 250.53 — <span>The Grounding Electrode System</span></h1>
+  <p class="sub">What you actually bond to earth: 250.50 (every electrode present gets bonded together), 250.52 (the eight permitted electrodes and the three that are not), and 250.53 (how they get installed — the 25-ohm supplemental-rod exception, 6-ft spacing, ground-ring / plate / Ufer depths, and the 250.53(C) bonding jumper sized per Table 250.66). Plus the section that does not exist: 250.51.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 250.50 + 250.52 + 250.53 for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text)</strong>, the citation anchor for this page; the 2020 and 2023 changes are documented in the edition-history box (including the 250.53(C) rebar sentence added in 2020 and the 250.52 reorganization + two wording deltas in 2023). Table values are cross-checked against live sources (see Sources).</div>
+
+  <h2>Why these three sections</h2>
+  <p>The <strong>grounding electrode system</strong> is how a building's electrical system ties itself to the earth. Three sections do the job together, and they answer three different questions:</p>
+  <ul>
+    <li><strong>What do I bond?</strong> — <strong>250.50</strong>: every grounding electrode that is present at the building gets bonded together; if none exist, install one from the permitted list.</li>
+    <li><strong>What counts as a grounding electrode?</strong> — <strong>250.52</strong>: the eight permitted electrodes (A) and the three that are not permitted (B).</li>
+    <li><strong>How do I install it?</strong> — <strong>250.53</strong>: depth and embedding rules for rods / pipes / plates / rings / Ufers, the 25-ohm supplemental-rod exception, 6-ft spacing, and the 250.53(C) bonding jumper that ties the electrodes together.</li>
+  </ul>
+  <p>This page walks all three verbatim, renders Table 250.66 (the bonding-jumper / GEC sizing table), and computes six worked examples with the same core that ships in the calculator. The service-side GEC that runs from the panel to the electrode uses this same Table 250.66 (<a href="nec-25026-25030-separately-derived-systems.html">article 24 →</a>); the load-side equipment grounds are a different table, <a href="nec-250122-egc-sizing.html">250.122 →</a>.</p>
+
+  <h2>The edition trap: there is no 250.51</h2>
+  <div class="renew"><strong>250.51 does not exist.</strong> The code jumps from <strong>250.50</strong> (Grounding Electrode System) straight to <strong>250.52</strong> (Grounding Electrodes) and then <strong>250.53</strong> (Grounding Electrode System Installation). The official 2017 NFPA text on disk contains zero occurrences of the string "250.51," and the Part III sequence is <code>250.50 → 250.52 → 250.53 → 250.54 (Auxiliary Grounding Electrodes) → 250.58 (Common Grounding Electrode)</code>. If a note, quiz, or reference points at "250.51" for the electrode list, it is off by one — the list is <strong>250.52</strong>, and the bond-together rule is <strong>250.50</strong>. This is the same class of edition trap as <a href="nec-31015-ampacity-adjustments.html">310.15 vs 310.16</a> and the 2020 Article 250 relettering.</div>
+
+  <h2>250.50 — the system is every electrode, bonded together</h2>
+  <p>The core rule: the grounding electrode system is not one electrode you pick — it is <em>all</em> of the qualifying electrodes that are present, tied together. That is why a house with a Ufer, a water pipe, and a ground rod has all three bonded, not just the one you would have chosen on its own.</p>
+  <div class="code">250.50 Grounding Electrode System. All grounding electrodes
+as described in 250.52(A)(1) through (A)(7) that are present at
+each building or structure served shall be bonded together to form
+the grounding electrode system. Where none of these grounding
+electrodes exist, one or more of the grounding electrodes specified
+in 250.52(A)(4) through (A)(8) shall be installed and used.
+
+Exception: Concrete-encased electrodes of existing buildings or
+structures shall not be required to be part of the grounding
+electrode system where the steel reinforcing bars or rods are not
+accessible for use without disturbing the concrete.
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt line 19292). OCR line-wrap reflow normalized; no wording altered. The (A)(1)–(A)(7) / (A)(4)–(A)(8) ranges are cross-confirmed against the ELR 2017 commentary and the San Francisco code library (2017-based).</span></div>
+  <p>Note the two ranges: the bond-together rule covers <strong>(A)(1)–(A)(7)</strong> (everything present), while the "install if none exist" rule points to <strong>(A)(4)–(A)(8)</strong> (ground ring, rods/pipes, listed, plates, and other local metal). A metal water pipe (A)(1) or in-ground support structure (A)(2) is <em>not</em> on the install list — if the only electrode you can bond is a water pipe or structural steel, you must still install a (A)(4)–(A)(8) electrode to complete the system.</p>
+
+  <h2>250.52 — the eight permitted electrodes (and the three that are not)</h2>
+  <div class="code">250.52 Grounding Electrodes.
+(A) Electrodes Permitted for Grounding.
+
+(1) Metal Underground Water Pipe. A metal underground water pipe
+in direct contact with the earth for 3.0 m (10 ft) or more
+(including any metal well casing bonded to the pipe) and
+electrically continuous (or made electrically continuous by bonding
+around insulating joints or insulating pipe) to the points of
+connection of the grounding electrode conductor and the bonding
+conductor(s) or jumper(s), if installed.
+
+(2) Metal In-ground Support Structure(s). One or more metal
+in-ground support structure(s) in direct contact with the earth
+vertically for 3.0 m (10 ft) or more, with or without concrete
+encasement. If multiple metal in-ground support structures are
+present at a building or a structure, it shall be permissible to
+bond only one into the grounding electrode system.
+
+Informational Note: Metal in-ground support structures include,
+but are not limited to, pilings, casings, and other structural
+metal.
+
+(3) Concrete-Encased Electrode. A concrete-encased electrode shall
+consist of at least 6.0 m (20 ft) of either (1) or (2):
+
+(1) One or more bare or zinc galvanized or other electrically
+conductive coated steel reinforcing bars or rods of not less than
+13 mm (1/2 in.) in diameter, installed in one continuous 6.0 m
+(20 ft) length, or if in multiple pieces connected together by the
+usual steel tie wires, exothermic welding, welding, or other
+effective means to create a 6.0 m (20 ft) or greater length; or
+
+(2) Bare copper conductor not smaller than 4 AWG
+
+Metallic components shall be encased by at least 50 mm (2 in.) of
+concrete and shall be located horizontally within that portion of a
+concrete foundation or footing that is in direct contact with the
+earth or within vertical foundations or structural components or
+members that are in direct contact with the earth. If multiple
+concrete-encased electrodes are present at a building or structure,
+it shall be permissible to bond only one into the grounding
+electrode system.
+
+Informational Note: Concrete installed with insulation, vapor
+barriers, films or similar items separating the concrete from the
+earth is not considered to be in "direct contact" with the earth.
+
+(4) Ground Ring. A ground ring encircling the building or
+structure, in direct contact with the earth, consisting of at
+least 6.0 m (20 ft) of bare copper conductor not smaller than
+2 AWG.
+
+(5) Rod and Pipe Electrodes. Rod and pipe electrodes shall not be
+less than 2.44 m (8 ft) in length and shall consist of the
+following materials.
+
+(a) Grounding electrodes of pipe or conduit shall not be smaller
+than metric designator 21 (trade size 3/4) and, where of steel,
+shall have the outer surface galvanized or otherwise metal-coated
+for corrosion protection.
+
+(b) Rod-type grounding electrodes of stainless steel and copper or
+zinc coated steel shall be at least 15.87 mm (5/8 in.) in diameter,
+unless listed.
+
+(6) Other Listed Electrodes. Other listed grounding electrodes
+shall be permitted.
+
+(7) Plate Electrodes. Each plate electrode shall expose not less
+than 0.186 m² (2 ft²) of surface to exterior soil. Electrodes of
+bare or electrically conductive coated iron or steel plates shall
+be at least 6.4 mm (1/4 in.) in thickness. Solid, uncoated
+electrodes of nonferrous metal shall be at least 1.5 mm (0.06 in.)
+in thickness.
+
+(8) Other Local Metal Underground Systems or Structures. Other
+local metal underground systems or structures such as piping
+systems, underground tanks, and underground metal well casings that
+are not bonded to a metal water pipe.
+
+(B) Not Permitted for Use as Grounding Electrodes. The following
+systems and materials shall not be used as grounding electrodes:
+
+(1) Metal underground gas piping systems
+(2) Aluminum
+(3) The structures and structural reinforcing steel described in
+680.26(B)(1) and (B)(2)
+
+Informational Note: See 250.104(B) for bonding requirements of gas
+piping.
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt lines 19307–19423). OCR line-wrap reflow normalized; OCR artifacts corrected to standard wording where the scan garbled the fractions ("(1∕2 in.)" printed as "(% in.)", trade size "(%)", "(2 ft*)", "6.4 mm (4 in.)" = 1/4 in.) — the standard OCR class, disclosed in the source note. No other wording altered. Note: in the official 2017 text, 250.52(A) carries NO (A) letter on the list items — the "(A)" before "Electrodes Permitted" is the subsection; the items are (1)–(8). The 2023 edition reletters this as 250.52(A)(1)–(8) (see edition history).</span></div>
+
+  <table>
+    <thead><tr><th>#</th><th>Electrode (250.52(A))</th><th>Key spec</th></tr></thead>
+    <tbody>
+      <tr><td class="ctr">1</td><td>Metal underground water pipe</td><td>in earth contact ≥ 10 ft; electrically continuous to the GEC / bonding points</td></tr>
+      <tr><td class="ctr">2</td><td>Metal in-ground support structure(s)</td><td>in earth contact <strong>vertically</strong> ≥ 10 ft, with or without concrete; only one need be bonded</td></tr>
+      <tr><td class="ctr">3</td><td>Concrete-encased electrode (Ufer)</td><td>≥ 20 ft of ½-in. rebar (or pieces tied to 20 ft) <strong>or</strong> bare 4 AWG Cu; ≥ 2 in. concrete; in earth contact; only one need be bonded</td></tr>
+      <tr><td class="ctr">4</td><td>Ground ring</td><td>loop encircling the building, in earth contact, ≥ 20 ft of bare Cu <strong>not smaller than 2 AWG</strong></td></tr>
+      <tr><td class="ctr">5</td><td>Rod and pipe electrodes</td><td>≥ 8 ft long; pipe/conduit ≥ ¾-in. (MD 21) steel, galvanized; rod stainless / copper / zinc-coated steel ≥ ⅝-in. dia unless listed</td></tr>
+      <tr><td class="ctr">6</td><td>Other listed electrodes</td><td>listed grounding electrodes are permitted</td></tr>
+      <tr><td class="ctr">7</td><td>Plate electrodes</td><td>≥ 2 ft² to exterior soil; ferrous ≥ ¼-in. thick; nonferrous solid uncoated ≥ 0.06-in. thick</td></tr>
+      <tr><td class="ctr">8</td><td>Other local metal underground systems</td><td>piping systems, underground tanks, underground metal well casings not bonded to a metal water pipe</td></tr>
+    </tbody>
+  </table>
+
+  <h3>The three that are not (250.52(B))</h3>
+  <table>
+    <thead><tr><th>#</th><th>Not permitted as a grounding electrode</th></tr></thead>
+    <tbody>
+      <tr><td class="ctr">1</td><td>Metal underground <strong>gas</strong> piping systems</td></tr>
+      <tr><td class="ctr">2</td><td><strong>Aluminum</strong></td></tr>
+      <tr><td class="ctr">3</td><td>The pool structures and structural <strong>rebar</strong> described in 680.26(B)(1) and (B)(2) — 2017 reads "structural reinforcing steel," 2023 reads "structural rebar" (see edition history)</td></tr>
+    </tbody>
+  </table>
+  <p>Two practical notes: (a) a gas pipe is <em>bonded</em> for safety (250.104(B)) but never <em>used as</em> a grounding electrode; and (b) the pool's steel is bonded into its own equipotential grid per 680.26, but it is not part of the building's grounding electrode system — using it could put a voltage gradient on swimmers.</p>
+
+  <h2>250.53 — how the electrodes get installed</h2>
+  <div class="code">250.53 Grounding Electrode System Installation.
+
+(A) Rod, Pipe, and Plate Electrodes. Rod, pipe, and plate
+electrodes shall meet the requirements of 250.53(A)(1) through
+(A)(3).
+
+(1) Below Permanent Moisture Level. If practicable, rod, pipe, and
+plate electrodes shall be embedded below permanent moisture level.
+Rod, pipe, and plate electrodes shall be free from nonconductive
+coatings such as paint or enamel.
+
+(2) Supplemental Electrode Required. A single rod, pipe, or plate
+electrode shall be supplemented by an additional electrode of a type
+specified in 250.52(A)(2) through (A)(8). The supplemental
+electrode shall be permitted to be bonded to one of the following:
+
+(1) Rod, pipe, or plate electrode
+(2) Grounding electrode conductor
+(3) Grounded service-entrance conductor
+(4) Nonflexible grounded service raceway
+(5) Any grounded service enclosure
+
+Exception: If a single rod, pipe, or plate grounding electrode has a
+resistance to earth of 25 ohms or less, the supplemental electrode
+shall not be required.
+
+(3) Supplemental Electrode. If multiple rod, pipe, or plate
+electrodes are installed to meet the requirements of this section,
+they shall not be less than 1.8 m (6 ft) apart.
+
+Informational Note: The paralleling efficiency of rods is increased
+by spacing them twice the length of the longest rod.
+
+(B) Electrode Spacing. Where more than one of the electrodes of the
+type specified in 250.52(A)(5) or (A)(7) are used, each electrode
+of one grounding system (including that used for strike termination
+devices) shall not be less than 1.83 m (6 ft) from any other
+electrode of another grounding system. Two or more grounding
+electrodes that are bonded together shall be considered a single
+grounding electrode system.
+
+(C) Bonding Jumper. The bonding jumper(s) used to connect the
+grounding electrodes together to form the grounding electrode
+system shall be installed in accordance with 250.64(A), (B), and
+(E), shall be sized in accordance with 250.66, and shall be
+connected in the manner specified in 250.70.
+
+(D) Metal Underground Water Pipe. If used as a grounding electrode,
+metal underground water pipe shall meet the requirements of
+250.53(D)(1) and (D)(2).
+
+(1) Continuity. Continuity of the grounding path or the bonding
+connection to interior piping shall not rely on water meters or
+filtering devices and similar equipment.
+
+(2) Supplemental Electrode Required. A metal underground water pipe
+shall be supplemented by an additional electrode of a type specified
+in 250.52(A)(2) through (A)(8). If the supplemental electrode is of
+the rod, pipe, or plate type, it shall comply with 250.53(A). The
+supplemental electrode shall be bonded to one of the following:
+
+(1) Grounding electrode conductor
+(2) Grounded service-entrance conductor
+(3) Nonflexible grounded service raceway
+(4) Any grounded service enclosure
+(5) As provided by 250.32(B)
+
+Exception: The supplemental electrode shall be permitted to be
+bonded to the interior metal water piping at any convenient point as
+specified in 250.68(C)(1), Exception.
+
+(E) Supplemental Electrode Bonding Connection Size. Where the
+supplemental electrode is a rod, pipe, or plate electrode, that
+portion of the bonding jumper that is the sole connection to the
+supplemental grounding electrode shall not be required to be larger
+than 6 AWG copper wire or 4 AWG aluminum wire.
+
+(F) Ground Ring. The ground ring shall be installed not less than
+750 mm (30 in.) below the surface of the earth.
+
+(G) Rod and Pipe Electrodes. The electrode shall be installed such
+that at least 2.44 m (8 ft) of length is in contact with the soil.
+It shall be driven to a depth of not less than 2.44 m (8 ft) except
+that, where rock bottom is encountered, the electrode shall be
+driven at an oblique angle not to exceed 45 degrees from the
+vertical or, where rock bottom is encountered at an angle up to
+45 degrees, the electrode shall be permitted to be buried in a
+trench that is at least 750 mm (30 in.) deep. The upper end of the
+electrode shall be flush with or below ground level unless the
+aboveground end and the grounding electrode conductor attachment
+are protected against physical damage as specified in 250.10.
+
+(H) Plate Electrode. Plate electrodes shall be installed not less
+than 750 mm (30 in.) below the surface of the earth.
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt lines 19424–19549). OCR line-wrap reflow normalized; OCR artifacts corrected to standard wording where the scan garbled the (A)(2) list markers (printed ") " and ")") and one typo ("melal"→"metal") — the standard OCR class, disclosed in the source note. No other wording altered.</span></div>
+
+  <h3>The rules that matter on the job</h3>
+  <table>
+    <thead><tr><th>Ref</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td class="ctr">250.53(A)(1)</td><td>Embed rods / pipes / plates below permanent moisture level if practicable; keep them free of paint / enamel.</td></tr>
+      <tr><td class="ctr warn">250.53(A)(2)</td><td>A <strong>single</strong> rod / pipe / plate electrode <strong>must be supplemented</strong> by an additional 250.52(A)(2)–(8) electrode — <strong>unless it measures ≤ 25 ohms</strong> (the Exception).</td></tr>
+      <tr><td class="ctr">250.53(A)(3)</td><td>Multiple rods / pipes / plates: spaced <strong>≥ 6 ft</strong> apart. Info Note: 2× the longest rod improves paralleling efficiency.</td></tr>
+      <tr><td class="ctr">250.53(B)</td><td>Between two <em>different</em> grounding systems, each (A)(5)/(A)(7) electrode ≥ 6 ft from the other system's electrodes.</td></tr>
+      <tr><td class="ctr warn">250.53(C)</td><td>The <strong>bonding jumper</strong> tying the electrodes together: installed per 250.64(A)/(B)/(E), <strong>sized per Table 250.66</strong>, connected per 250.70. <strong>Rebar may not interconnect the electrodes</strong> (added 2020).</td></tr>
+      <tr><td class="ctr">250.53(D)</td><td>Water pipe as electrode: continuity must not rely on water meters / filters; the pipe also <strong>must be supplemented</strong> by an (A)(2)–(8) electrode.</td></tr>
+      <tr><td class="ctr">250.53(E)</td><td>The sole connection to a rod / pipe / plate supplemental electrode need not be larger than <strong>6 AWG Cu (4 AWG Al)</strong>.</td></tr>
+      <tr><td class="ctr">250.53(F)</td><td>Ground ring buried <strong>≥ 30 in.</strong> below grade.</td></tr>
+      <tr><td class="ctr">250.53(G)</td><td>Rod / pipe: ≥ 8 ft in soil contact, driven ≥ 8 ft (oblique ≤ 45° or 30-in. trench on rock bottom).</td></tr>
+      <tr><td class="ctr">250.53(H)</td><td>Plate electrode buried <strong>≥ 30 in.</strong> below grade.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Edition history — what actually changed</h2>
+  <div class="renew"><strong>2017 → 2020:</strong> <strong>250.53(C)</strong> gained a sentence. The 2017 text (quoted above) ends 250.53(C) at "...connected in the manner specified in 250.70." The 2020 NEC adds: <em>"Rebar shall not be used as a conductor to interconnect the electrodes of grounding electrode systems."</em> (ELR 2020 change record sectionID 863, "Code Change Summary: Revised code language on the use of rebar in grounding electrode systems.") <strong>2020 → 2023:</strong> <strong>250.52</strong> was reorganized — the 2023 code prints the list as <strong>250.52(A)(1)–(8)</strong> (Electrodes Permitted for Grounding) and the exclusions as <strong>250.52(B)</strong> (Not Permitted for Use as Grounding Electrodes), and carries two wording deltas: 250.52(A)(3) "steel reinforcing bars or rods" → <strong>"rebar"</strong>, and 250.52(B)(3) "structural reinforcing steel" → <strong>"structural rebar."</strong> (ELR 2023 change records sectionID 1593, 1594, 1595.) 250.50 and 250.53 have no 2023 change record.</div>
+  <p>So: the <em>numbers and substance</em> are stable across 2014–2023. What moves is (a) the 2020 rebar-prohibition sentence in 250.53(C), and (b) the 2023 relettering of the 250.52 list plus the two "reinforcing steel → rebar" rewords. If a reference cites a 250.52(A)(n) list number, confirm the edition — 2017 prints the items without the (A) prefix, 2023 includes it.</p>
+
+  <h2>Table 250.66 — sizing the GEC and the 250.53(C) bonding jumper</h2>
+  <p>Both the service-side GEC and the 250.53(C) electrode-to-electrode bonding jumper are sized from the same table, keyed on the <strong>largest ungrounded service-entrance conductor</strong> (or its equivalent). This is the same seven-row, capped-top table from <a href="nec-25026-25030-separately-derived-systems.html">article 24 →</a> (the separately derived system GEC uses it too). The electrode-type caps 250.66(A)–(C) and 250.53(E) can <em>shrink</em> the requirement — never grow it.</p>
+  <table>
+    <thead><tr><th>Largest ungrounded service-entrance conductor (Cu)</th><th class="ctr">(Al / Cu-clad Al)</th><th class="ctr">GEC / jumper Cu</th><th class="ctr">GEC / jumper Al</th></tr></thead>
+    <tbody>
+      <tr><td>2 AWG or smaller</td><td class="ctr">1/0 AWG or smaller</td><td class="ctr">8 AWG</td><td class="ctr">6 AWG</td></tr>
+      <tr><td>1 AWG or 1/0 AWG</td><td class="ctr">2/0 AWG or 3/0 AWG</td><td class="ctr">6 AWG</td><td class="ctr">4 AWG</td></tr>
+      <tr><td>2/0 AWG or 3/0 AWG</td><td class="ctr">4/0 AWG or 250 kcmil</td><td class="ctr">4 AWG</td><td class="ctr">2 AWG</td></tr>
+      <tr><td>Over 3/0 AWG through 350 kcmil</td><td class="ctr">Over 250 through 500 kcmil</td><td class="ctr">2 AWG</td><td class="ctr">1/0 AWG</td></tr>
+      <tr><td>Over 350 through 600 kcmil</td><td class="ctr">Over 500 through 900 kcmil</td><td class="ctr">1/0 AWG</td><td class="ctr">3/0 AWG</td></tr>
+      <tr><td>Over 600 through 1100 kcmil</td><td class="ctr">Over 900 through 1750 kcmil</td><td class="ctr">2/0 AWG</td><td class="ctr">4/0 AWG</td></tr>
+      <tr><td>Over 1100 kcmil</td><td class="ctr">Over 1750 kcmil</td><td class="ctr">3/0 AWG — CAPPED</td><td class="ctr">250 kcmil — CAPPED</td></tr>
+    </tbody>
+  </table>
+  <p class="blank" style="font-size:13px">Notes: (1) multiple parallel sets → equivalent size = the largest sum of the corresponding conductor areas; (2) where there are no service-entrance conductors, size on the equivalent service-entrance size required for the load; the table also applies to separately derived ac systems. The top row is a hard cap (3/0 Cu / 250 kcmil Al) — unlike Table 250.102(C)(1), there is no 12.5% Note-1 row. Caps: 250.66(A) rod/pipe/plate ≤ 6 AWG Cu (4 AWG Al); 250.66(B) concrete-encased ≤ 4 AWG Cu; 250.66(C) ground ring ≤ the ring size; 250.53(E) sole rod/pipe/plate supplemental connection ≤ 6 AWG Cu (4 AWG Al).</p>
+
+  <h2>Worked examples (core-computed)</h2>
+
+  <h3>EX1 — the phantom section: is there a 250.51?</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value</th></tr></thead>
+    <tbody>
+      <tr><td>Part III sequence (2017 on disk)</td><td class="ctr">250.50 → 250.52 → 250.53 → 250.54 → 250.58</td></tr>
+      <tr><td>Occurrences of "250.51" in the official 2017 text</td><td class="ctr bad">0 — the section does not exist</td></tr>
+      <tr><td>The electrode list is</td><td class="ctr warn">250.52, not 250.51</td></tr>
+      <tr><td>The bond-together rule is</td><td class="ctr">250.50</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX2 — the 100 A flagship: the 250.53(C) bonding jumper</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Service (220.82, 1,500 ft² + 12 kVA appliances + 5,000 VA A/C)</td><td class="ctr">14,000 VA → 58.3 A → 100 A (125% + dwg minimum)</td></tr>
+      <tr><td>Largest ungrounded service-entrance conductor (310.16 @ 75 °C)</td><td class="ctr"><code>serviceLineConductor22082 → 3 AWG Cu</code> (100 A; 52,620 cmil)</td></tr>
+      <tr><td>Table 250.66 row for 3 AWG Cu</td><td class="ctr">"2/0 AWG or 3/0 AWG"</td></tr>
+      <tr><td>250.53(C) bonding jumper (electrode-to-electrode)</td><td class="ctr ok">4 AWG Cu (2 AWG Al)</td></tr>
+      <tr><td>Result</td><td class="ctr">the wire that ties the Ufer + water pipe + rod together at the service is 4 AWG Cu for a 100 A 3 AWG-phase service — the same Table 250.66 that sizes the GEC</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX3 — rod spacing: 6 ft floor vs 16 ft efficient</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value</th></tr></thead>
+    <tbody>
+      <tr><td>Code floor between rods (250.53(A)(3))</td><td class="ctr">6 ft</td></tr>
+      <tr><td>Longest rod</td><td class="ctr">8 ft (minimum)</td></tr>
+      <tr><td>Efficient spacing (Info Note: 2× longest rod)</td><td class="ctr warn">16 ft</td></tr>
+      <tr><td>Result</td><td class="ctr">6 ft is the minimum you may not go under; 16 ft approaches true parallel (independent) grounding resistance for an 8-ft rod</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX4 — the Ufer (250.52(A)(3)): 4 AWG Cu floor, 20 ft rebar</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Smallest permitted Ufer conductor</td><td class="ctr">bare 4 AWG Cu</td></tr>
+      <tr><td>4 AWG Cu ampacity (310.16 @ 75 °C)</td><td class="ctr"><code>T31016 → 85 A</code> (context — the 4 AWG floor is a code minimum, not an ampacity pick)</td></tr>
+      <tr><td>Rebar alternative</td><td class="ctr">≥ 20 ft of ½-in. rebar (or pieces tied to 20 ft)</td></tr>
+      <tr><td>Concrete cover</td><td class="ctr">≥ 2 in.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX5 — the ground ring (250.52(A)(4)): 2 AWG Cu, 30 in. deep</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Minimum ring conductor</td><td class="ctr">bare 2 AWG Cu</td></tr>
+      <tr><td>2 AWG Cu ampacity (310.16 @ 75 °C)</td><td class="ctr"><code>T31016 → 115 A</code> (context — the 2 AWG floor is a code minimum, not an ampacity pick)</td></tr>
+      <tr><td>Minimum ring length</td><td class="ctr">≥ 20 ft (a loop encircling the building)</td></tr>
+      <tr><td>Depth (250.53(F))</td><td class="ctr">≥ 30 in. below grade</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX6 — the 25-ohm rule: one 40-ohm rod is never enough</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value</th></tr></thead>
+    <tbody>
+      <tr><td>Single 8-ft rod measured</td><td class="ctr">40 ohms</td></tr>
+      <tr><td>≤ 25 ohms? (250.53(A)(2) Exception)</td><td class="ctr bad">No → supplemental electrode REQUIRED</td></tr>
+      <tr><td>Second electrode added (250.52(A)(2)–(8))</td><td class="ctr">e.g. a second 40-ohm rod, spaced ≥ 6 ft</td></tr>
+      <tr><td>Two 40-ohm rods in parallel (illustrative)</td><td class="ctr">≈ 20 ohms — but the code does NOT let you average two failing rods to pass</td></tr>
+      <tr><td>Result</td><td class="ctr">the Exception excuses only a <em>single</em> rod already at ≤ 25 ohms; otherwise a supplemental electrode is mandatory, full stop</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Where 250.50/250.52/250.53 fit</h2>
+  <ul>
+    <li><strong>The bonding side is article 23.</strong> The main bonding jumper and the bonded neutral at the service are sized by Table 250.102(C)(1) — the <a href="nec-250102-main-bonding-jumper.html">250.102 article →</a>. The 250.53(C) electrode-to-electrode jumper is a <em>different</em> jumper, sized by Table 250.66.</li>
+    <li><strong>The GEC is this page's table.</strong> The service-side GEC (panel to electrode) and the separately derived system GEC both use Table 250.66 — <a href="nec-25026-25030-separately-derived-systems.html">article 24 →</a> walks the derived-system side.</li>
+    <li><strong>Load-side EGCs are 250.122</strong> — the <a href="nec-250122-egc-sizing.html">EGC sizing article →</a>, keyed to the overcurrent device, not to the service size.</li>
+    <li><strong>Equipment bonding (250.104) is different from grounding.</strong> A gas pipe is bonded (250.104(B)) but never used as an electrode (250.52(B)(1)).</li>
+    <li><strong>2026 NEC renumber flagged:</strong> the 2026 NEC renumbers Article 250; verify the section number against the edition adopted in your jurisdiction. This page cites 2017–2023 numbering.</li>
+  </ul>
+
+  <a class="cta" href="../#panelCard">Open the free PanelWright calculator — size the panel, the service, the neutral, the derating, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>): 250.50 (line 19292), 250.52 (lines 19307–19423), 250.53 (lines 19424–19549). OCR line-wrap reflow normalized; OCR artifacts corrected to standard wording where the scan garbled them — the 250.52 fractions ("(1∕2 in.)"→"(1/2 in.)", trade size "(%)", "(2 ft*)", "6.4 mm (4 in.)" = 1/4 in.) and the 250.53(A)(2) list markers (") ") plus one typo ("melal"→"metal") — the standard OCR class, disclosed here rather than propagated. No other wording altered. The 250.50 (A)(1)–(A)(7)/(A)(4)–(A)(8) ranges are cross-confirmed against the ELR 2017 commentary (sectionID 3535.0) and the San Francisco code library (2017-based).</p>
+    <p><strong>250.51 absence.</strong> The string "250.51" appears <strong>0 times</strong> in the official 2017 text on disk (full-file grep), and the Part III sequence is 250.50 → 250.52 → 250.53 → 250.54 → 250.58. The on-disk 2014 and 2020 scans (nec220_2014.txt, slideshare_nec2020.txt) do not reach Article 250, so no 2014/2020 word-diff is claimed for 250.50/250.52/250.53 — only the 2017 on-disk anchor plus the ELR change records below.</p>
+    <p><strong>Edition history.</strong> Three ELR 2023 change records fetched this session (fetched 2026-09-02 via <span class="blank">fetch_art25_elr.py</span>): sectionID 1593 (250.52 + (A) list, 2023 language), sectionID 1594 (250.52(A)(2) — verbatim-identical to 2017), sectionID 1595 (250.52(B) — the "structural reinforcing steel"→"structural rebar" delta). One ELR 2020 change record fetched this session (via <span class="blank">fetch_art25_25053c_2020.py</span>): sectionID 863 (250.53(C) — the 2017→2020 "Rebar shall not be used..." addition, quoted from both the 2017 and 2020 Code Language blocks). Section titles (250.52 "Grounding Electrodes", 250.53 "Grounding Electrode System Installation") verified on up.codes across 2014/2017/2020/2023 (fetched 2026-09-02). 2026 renumber flagged.</p>
+    <p><strong>Worked numbers.</strong> Every cmil / ampacity / conductor pick computed by the shipped cores under node (<span class="blank">compute_art25.js → calc_25050_cited.json</span>): Ch. 9 Table 8 cmil via <code>ch9Row</code>/<code>CH9_T8</code>, Table 310.16 picks via <code>T31016</code>/<code>T31016_COLS</code>, the 220.82 service load + line conductor via <code>serviceLoad22082</code>/<code>serviceLineConductor22082</code>. The electrode permitted/not-permitted lists, the 250.53 installation specs, and Table 250.66 are the code itself, transcribed once and asserted by the public test suite. Zero hand math.</p>
+  </div>
+
+  <footer>
+    <p><strong>About PanelWright.</strong> Free, open-source, in-browser panel schedule and service-entrance load tool for electricians and engineers. The panel card sizes branch circuits against load and checks the 210.11(C) dwelling-circuit mandates, the 220.82 card sizes the optional dwelling service, the 220.61 card sizes the neutral load, the Conductor Derating card applies the 310.15 corrections and the 240.4(D) caps, and the voltage-drop card checks the 3%/5% informational notes — all flagged as design aids, since the adopted NEC edition governs. <strong>Design aid only — not an engineering seal; verify against the adopted NEC edition.</strong></p>
+    <p>Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (no humans pretend to be the author). Zero third-party scripts, zero tracking; data never leaves your browser.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-250102-main-bonding-jumper.html">NEC 250.102 main bonding jumper &amp; bonded neutral</a> · <a href="nec-250122-egc-sizing.html">NEC 250.122 EGC sizing</a> · <a href="nec-250119-egc-identification.html">NEC 250.119 + 310.120 EGC identification &amp; marking</a> · <a href="nec-25026-25030-separately-derived-systems.html">NEC 250.26 + 250.30 separately derived systems</a> · <a href="nec-31016-ampacity.html">NEC Table 310.16 ampacity</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>

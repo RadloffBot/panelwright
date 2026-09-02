@@ -2627,5 +2627,102 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-250122-egc-sizing.html'), true, 'art24: cross-links to article 22 (250.122)');
 }
 
+// --- Article 25 (Session 50): articles/nec-25050-25052-25053-grounding-electrode-system.html ---
+// NEC 250.50 + 250.52 + 250.53 (The Grounding Electrode System) deep-dive:
+// 250.50 (bond every present electrode together; install if none from
+// (A)(4)-(A)(8)), the 250.52(A) eight permitted electrodes + 250.52(B) three
+// not-permitted, and 250.53(A)-(H) (25-ohm supplemental-rod exception, 6-ft
+// spacing, ring/plate 30-in. depth, rod 8-ft, 250.53(C) bonding jumper per
+// Table 250.66, 250.53(E) 6 AWG cap). HEADLINE: 250.51 does not exist (0
+// occurrences in the official 2017 text on disk). Edition deltas: 2020 added
+// the rebar-prohibition sentence to 250.53(C); 2023 relettered 250.52 to
+// (A)(1)-(8)/(B) and reworded "reinforcing steel" -> "rebar" in (A)(3) and
+// (B)(3). Verbatim 2017 on disk (nec2017_full.txt lines 19292-19549); Table
+// 250.66 = same 7 capped rows as article 24. Every worked number asserted
+// against the shipped cores so the article cannot drift from the tool.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-25050-25052-25053-grounding-electrode-system.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  eq(art.includes('nec-25050-25052-25053-grounding-electrode-system.html'), true, 'art25: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-25050-25052-25053-grounding-electrode-system.html'), true, 'art25: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art25: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art25: Article + FAQPage JSON-LD present');
+  // verbatim 2017 code probes (250.50)
+  eq(has('250.50 Grounding Electrode System. All grounding electrodes as described in 250.52(A)(1) through (A)(7) that are present at each building or structure served shall be bonded together to form the grounding electrode system'), true, 'art25: verbatim 2017 250.50');
+  eq(has('one or more of the grounding electrodes specified in 250.52(A)(4) through (A)(8) shall be installed and used'), true, 'art25: verbatim 250.50 install-if-none range');
+  eq(has('Concrete-encased electrodes of existing buildings or structures shall not be required to be part of the grounding electrode system where the steel reinforcing bars or rods are not accessible for use without disturbing the concrete'), true, 'art25: verbatim 250.50 Exception (accessible-rebar carve-out)');
+  // verbatim 2017 code probes (250.52)
+  eq(has('250.52 Grounding Electrodes.'), true, 'art25: carries the verified 250.52 title');
+  eq(has('A metal underground water pipe in direct contact with the earth for 3.0 m (10 ft) or more (including any metal well casing bonded to the pipe) and electrically continuous'), true, 'art25: verbatim 250.52(A)(1) water pipe');
+  eq(has('in direct contact with the earth vertically for 3.0 m (10 ft) or more, with or without concrete encasement'), true, 'art25: verbatim 250.52(A)(2) in-ground support');
+  eq(has('at least 6.0 m (20 ft) of either (1) or (2)'), true, 'art25: verbatim 250.52(A)(3) Ufer 20 ft');
+  eq(has('Bare copper conductor not smaller than 4 AWG'), true, 'art25: verbatim 250.52(A)(3)(2) Ufer 4 AWG floor');
+  eq(has('A ground ring encircling the building or structure, in direct contact with the earth, consisting of at least 6.0 m (20 ft) of bare copper conductor not smaller than 2 AWG'), true, 'art25: verbatim 250.52(A)(4) ground ring 2 AWG');
+  eq(has('Rod and pipe electrodes shall not be less than 2.44 m (8 ft) in length'), true, 'art25: verbatim 250.52(A)(5) rod 8 ft');
+  eq(has('Rod-type grounding electrodes of stainless steel and copper or zinc coated steel shall be at least 15.87 mm (5/8 in.) in diameter, unless listed'), true, 'art25: verbatim 250.52(A)(5)(b) rod 5/8 in.');
+  eq(has('Each plate electrode shall expose not less than 0.186 m² (2 ft²) of surface to exterior soil'), true, 'art25: verbatim 250.52(A)(7) plate 2 ft²');
+  eq(has('Metal underground gas piping systems'), true, 'art25: verbatim 250.52(B)(1) gas pipe not permitted');
+  eq(has('The structures and structural reinforcing steel described in 680.26(B)(1) and (B)(2)'), true, 'art25: verbatim 2017 250.52(B)(3) pool steel (2017 wording)');
+  // verbatim 2017 code probes (250.53)
+  eq(has('250.53 Grounding Electrode System Installation.'), true, 'art25: carries the verified 250.53 title');
+  eq(has('A single rod, pipe, or plate electrode shall be supplemented by an additional electrode of a type specified in 250.52(A)(2) through (A)(8)'), true, 'art25: verbatim 250.53(A)(2) supplemental required');
+  eq(has('If a single rod, pipe, or plate grounding electrode has a resistance to earth of 25 ohms or less, the supplemental electrode shall not be required'), true, 'art25: verbatim 250.53(A)(2) 25-ohm Exception');
+  eq(has('they shall not be less than 1.8 m (6 ft) apart'), true, 'art25: verbatim 250.53(A)(3) 6-ft rod spacing');
+  eq(has('The paralleling efficiency of rods is increased by spacing them twice the length of the longest rod'), true, 'art25: verbatim 250.53(A)(3) Info Note');
+  eq(has('shall not be less than 1.83 m (6 ft) from any other electrode of another grounding system'), true, 'art25: verbatim 250.53(B) inter-system 6 ft');
+  eq(has('The bonding jumper(s) used to connect the grounding electrodes together to form the grounding electrode system shall be installed in accordance with 250.64(A), (B), and (E), shall be sized in accordance with 250.66, and shall be connected in the manner specified in 250.70'), true, 'art25: verbatim 2017 250.53(C) (pre-rebar-sentence form)');
+  eq(has('Continuity of the grounding path or the bonding connection to interior piping shall not rely on water meters or filtering devices'), true, 'art25: verbatim 250.53(D)(1) water-meter continuity');
+  eq(has('shall not be required to be larger than 6 AWG copper wire or 4 AWG aluminum wire'), true, 'art25: verbatim 250.53(E) 6 AWG supplemental-connection cap');
+  eq(has('The ground ring shall be installed not less than 750 mm (30 in.) below the surface of the earth'), true, 'art25: verbatim 250.53(F) ring 30 in.');
+  eq(has('It shall be driven to a depth of not less than 2.44 m (8 ft)'), true, 'art25: verbatim 250.53(G) rod driven 8 ft');
+  eq(has('Plate electrodes shall be installed not less than 750 mm (30 in.) below the surface of the earth'), true, 'art25: verbatim 250.53(H) plate 30 in.');
+  // the 250.51 phantom (headline)
+  eq(has('250.51 does not exist'), true, 'art25: 250.51 phantom headline stated');
+  eq(has('zero occurrences of the string "250.51,"'), true, 'art25: 250.51 absence quantified (0 in official 2017 text)');
+  eq(has('250.50 → 250.52 → 250.53 → 250.54 (Auxiliary Grounding Electrodes) → 250.58 (Common Grounding Electrode)'), true, 'art25: Part III sequence shown');
+  // edition posture: 2020 rebar addition (ELR 863) + 2023 reletter/deltas (ELR 1593/1594/1595)
+  eq(has('Rebar shall not be used as a conductor to interconnect the electrodes of grounding electrode systems'), true, 'art25: 2020-added 250.53(C) rebar sentence quoted');
+  eq(has('sectionID 863'), true, 'art25: ELR 2020 record 863 cited');
+  eq(has('sectionID 1593'), true, 'art25: ELR 2023 record 1593 cited');
+  eq(has('sectionID 1595'), true, 'art25: ELR 2023 record 1595 cited');
+  eq(has('structural rebar'), true, 'art25: 2023 "structural rebar" wording quoted');
+  // Table 250.66 rows (all 7; same capped table as article 24)
+  const rows25 = [
+    ['2 AWG or smaller', '1/0 AWG or smaller', '8 AWG', '6 AWG'],
+    ['1 AWG or 1/0 AWG', '2/0 AWG or 3/0 AWG', '6 AWG', '4 AWG'],
+    ['2/0 AWG or 3/0 AWG', '4/0 AWG or 250 kcmil', '4 AWG', '2 AWG'],
+    ['Over 3/0 AWG through 350 kcmil', 'Over 250 through 500 kcmil', '2 AWG', '1/0 AWG'],
+    ['Over 350 through 600 kcmil', 'Over 500 through 900 kcmil', '1/0 AWG', '3/0 AWG'],
+    ['Over 600 through 1100 kcmil', 'Over 900 through 1750 kcmil', '2/0 AWG', '4/0 AWG'],
+    ['Over 1100 kcmil', 'Over 1750 kcmil', '3/0 AWG — CAPPED', '250 kcmil — CAPPED'],
+  ];
+  for (const [cuL, alL, cu, al] of rows25) {
+    const re = new RegExp('<td>' + cuL + '</td><td class="ctr[^"]*">[^<]*' + alL + '[^<]*</td><td class="ctr[^"]*">[^<]*' + cu + '[^<]*</td><td class="ctr[^"]*">[^<]*' + al + '[^<]*</td>');
+    eq(re.test(art), true, 'art25: Table 250.66 row ' + cuL + ' -> ' + cu + ' Cu / ' + al + ' Al');
+  }
+  // EX2: 220.82 flagship -> 3 AWG Cu service phases -> "2/0 or 3/0" row -> 4 AWG Cu jumper
+  const lc25 = core.serviceLoad22082({ sqft: 1500, appliancesKW: 12, acVA: 5000 });
+  approx(lc25.amps, 58.3, 0.1, 'art25 EX2: 14,000 VA / 240 V = 58.3 A calc');
+  const slc25 = core.serviceLineConductor22082(lc25, 'cu', 75);
+  eq(slc25.pick.size, '3', 'art25 EX2: 100 A service -> 3 AWG Cu ungrounded service-entrance');
+  eq(core.ch9Row('3').cm, 52620, 'art25 EX2: 3 AWG = 52,620 cmil -> "2/0 AWG or 3/0 AWG" row');
+  eq(core.T31016.find(r => r.s === '3').cu[1], 100, 'art25 EX2: 3 AWG = 100 A @75 (covers the 100 A dwg service)');
+  // EX3: 2x longest rod
+  eq(8 * 2, 16, 'art25 EX3: 8-ft rod -> 16 ft efficient spacing (2x longest)');
+  // EX4/EX5: ampacity context for the Ufer/ring floors
+  eq(core.T31016.find(r => r.s === '4').cu[1], 85, 'art25 EX4: 4 AWG Cu = 85 A @75 (Ufer floor context)');
+  eq(core.T31016.find(r => r.s === '2').cu[1], 115, 'art25 EX5: 2 AWG Cu = 115 A @75 (ring floor context)');
+  // EX6: 25-ohm decision
+  eq(40 <= 25, false, 'art25 EX6: a 40-ohm single rod fails the 25-ohm Exception -> supplemental required');
+  approx((40 * 40) / (40 + 40), 20.0, 0.05, 'art25 EX6: two 40-ohm rods in parallel = 20 ohms (illustrative)');
+  // cross-links back to the grounding thread
+  eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art25: cross-links to article 23 (250.102)');
+  eq(art.includes('nec-250122-egc-sizing.html'), true, 'art25: cross-links to article 22 (250.122)');
+  eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art25: cross-links to article 24 (250.26/250.30)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
