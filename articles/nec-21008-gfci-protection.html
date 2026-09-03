@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 210.8 — Ground-Fault Circuit-Interrupter (GFCI) Protection: Where a GFCI Is Required</title>
+<meta name="description" content="NEC 210.8 in full: which receptacles and outlets require ground-fault circuit-interrupter (GFCI) protection for personnel — the dwelling-unit location list, the non-dwelling location list, the 6 ft sink/tub tests, the 2017→2020 restructure (250 V receptacles, whole basements, damp indoor locations, the new Specific-Appliances / Equipment-Requiring-Servicing / Outdoor-Outlets subsections), the TIA 1653 outdoor-HVAC exception, and the 2023 changes. Verbatim 2017 + 2020 code text and eight core-computed worked examples.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-21008-gfci-protection.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 210.8 — Ground-Fault Circuit-Interrupter (GFCI) Protection">
+<meta property="og:description" content="Which receptacles and outlets need a GFCI, the dwelling and non-dwelling location lists, the 6 ft sink/tub tests, the real 2017→2020 restructure, the TIA 1653 outdoor-HVAC exception, and the 2023 changes. Verbatim code text + core-computed worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-21008-gfci-protection.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 210.8 — Ground-Fault Circuit-Interrupter (GFCI) Protection">
+<meta name="twitter:description" content="Where a GFCI is required, the 6 ft sink/tub tests, the 2017→2020 restructure, TIA 1653, and the 2023 changes. Verbatim code + core-computed examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 210.8, GFCI protection, ground-fault circuit interrupter, where GFCI required, GFCI receptacle locations, bathroom GFCI, garage GFCI, outdoor GFCI, kitchen countertop GFCI, laundry GFCI, 6 foot sink GFCI, 2020 NEC 210.8 changes, 250 volt GFCI, basement GFCI finished, 210.8(F) outdoor outlets, TIA 1653 HVAC GFCI exception, 210.8(E) equipment requiring servicing, 210.63 receptacle GFCI, 422.5 appliances GFCI, GFCI vs AFCI, branch circuit GFCI design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 210.8 — Ground-Fault Circuit-Interrupter (GFCI) Protection",
+  "description": "NEC 210.8 in full: which receptacles and outlets require ground-fault circuit-interrupter (GFCI) protection for personnel — the 2017 dwelling-unit list of ten locations (bathrooms, garages, outdoors, crawl spaces, unfinished basements, kitchen countertops, sinks, boathouses, bathtubs/shower stalls, laundry), the non-dwelling list, the 6 ft sink/tub distance tests, and the 2017→2020 restructure: 125-volt-only → 125-through-250-volt receptacles, 'basements' (finished or not), indoor damp and wet locations, the kitchen-countertop qualifier kept in dwellings, new (D) Specific Appliances (the 422.5(A) seven-appliance list), new (E) Equipment Requiring Servicing (the 210.63 HVAC service receptacle), and new (F) Outdoor Outlets (all outdoor outlets, not just receptacles) with the TIA 1653 listed-HVAC exception (expires September 1, 2026); the 2023 additions (kitchens without the countertop condition, food/beverage-prep areas, (F) expanded to garages/accessory buildings/boathouses).",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-03",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-21008-gfci-protection.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which receptacles need GFCI protection in a dwelling?",
+      "acceptedAnswer": { "@type": "Answer", "text": "2017: all 125-volt, single-phase, 15- and 20-ampere receptacles in bathrooms, garages (and certain at-or-below-grade accessory buildings), outdoors, crawl spaces, unfinished basements, kitchen countertop surfaces, within 6 ft of a sink, boathouses, within 6 ft of a bathtub or shower stall, and laundry areas (210.8(A)(1)–(10)). 2020: 125-volt through 250-volt receptacles on single-phase circuits rated 150 volts or less to ground in those same areas — plus ALL of 'basements' (finished or not) and new '(11) Indoor damp and wet locations' (210.8(A)(1)–(11))." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my 240 V dryer receptacle suddenly a GFCI?",
+      "acceptedAnswer": { "@type": "Answer", "text": "In the 2017 NEC, 210.8(A) covered 125-volt receptacles only — a 240 V dryer receptacle was out of scope. The 2020 NEC widened the dwelling scope to 125-volt through 250-volt receptacles supplied by single-phase branch circuits rated 150 volts or less to ground, so a 240 V, 120-V-to-ground dryer receptacle in a laundry area is now covered by 210.8(A)(10). The 2020 change is confirmed by the on-disk 2017 vs 2020 texts and by the 2020 change record (section 210.8(A): \"For dwellings, the 2020 NEC will expand GFCI requirements to include receptacles up to 250V in specific locations,\" and \"most 240V residential clothes dryer receptacles will require GFCI protection\")." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a finished basement need GFCI receptacles?",
+      "acceptedAnswer": { "@type": "Answer", "text": "2020 and later: yes. 2017's (A)(5) covered 'unfinished portions or areas of the basement not intended as habitable rooms' — a finished basement bedroom was out of scope. 2020's (A)(5) is simply 'Basements', so GFCI protection applies whether the basement is finished or unfinished (the only exception is a receptacle supplying only a permanently installed fire alarm or burglar alarm system). This is one of the most common 2017→2020 upgrade surprises." }
+    },
+    {
+      "@type": "Question",
+      "name": "What changed for non-dwelling (commercial/industrial) locations in 2020?",
+      "acceptedAnswer": { "@type": "Answer", "text": "210.8(B) was reworked: the voltage/ampere lead-in became '125-volt through 250-volt receptacles supplied by single-phase branch circuits rated 150 volts or less to ground, 50 amperes or less, and all receptacles supplied by three-phase branch circuits rated 150 volts or less to ground, 100 amperes or less'; (2) widened from 'Kitchens' to 'Kitchens or areas with a sink and permanent provisions for either food preparation or cooking'; (6) became 'Indoor damp and wet locations'; (8) added accessory buildings; (10) shortened to 'Unfinished areas of basements'; and two new locations were added — (11) Laundry areas and (12) Bathtubs and shower stalls (within 6 ft of the outside edge). The 2023 NEC expands (B) to 15 locations with all exceptions moved to the end of the list." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is 210.8(F) 'Outdoor Outlets' and why does it cover my AC condenser?",
+      "acceptedAnswer": { "@type": "Answer", "text": "New in the 2020 NEC: ALL outdoor outlets for dwellings (not just receptacles — a hard-wired connection to an outdoor unit is an outlet too) supplied by single-phase branch circuits rated 150 volts to ground or less, 50 amperes or less, require GFCI protection. The section came from a 2007 fatal electrocution of a child on an AC condenser. Exception No. 1 covers lighting outlets; TIA 1653 (2022) added Exception No. 2 exempting listed HVAC equipment until September 1, 2026. Note: the raw 2020 full-code scan on disk predates the TIA and omits Exception No. 2 — this article's 2020 verbatim block is the pre-TIA text, and the TIA is documented separately." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is GFCI the same as AFCI?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. A GFCI (210.8) protects personnel by detecting ground faults (milliamp imbalance between hot and neutral — a shock path); an AFCI (210.12) protects against fire by detecting arc signatures (series and parallel arcs). A circuit can require both — e.g. a bedroom circuit needs AFCI under 210.12, and a bathroom receptacle on that same circuit needs GFCI under 210.8. Combined GFCI/AFCI breakers and receptacles exist to satisfy both in one device." }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #171e26; --panel2: #1c2530; --line: #2a3644;
+    --text: #e8eef4; --dim: #93a4b4; --accent: #ffb020; --accent2: #4da3ff;
+    --ok: #3ddc84; --bad: #ff5d5d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 18px 60px; }
+  .crumb { font-size: 13px; color: var(--dim); margin-bottom: 18px; }
+  .crumb a { color: var(--accent2); text-decoration: none; }
+  .crumb a:hover { text-decoration: underline; }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: .2px; }
+  h1 span { color: var(--accent); }
+  h2 { font-size: 20px; margin: 34px 0 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  h3 { font-size: 16px; margin: 22px 0 8px; color: var(--accent); }
+  p { margin: 10px 0; }
+  a { color: var(--accent2); }
+  .sub { color: var(--dim); font-size: 14px; margin: 0 0 14px; }
+  .disc { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--dim); margin: 16px 0; }
+  .code { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; font-size: 14px; line-height: 1.65; margin: 14px 0; overflow-x: auto; white-space: pre-wrap; }
+  .code .src { display: block; margin-top: 10px; font-size: 12px; color: var(--dim); white-space: normal; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 14.5px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--panel2); font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--dim); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.ctr, th.ctr { text-align: center; }
+  .ok { color: var(--ok); font-weight: 600; }
+  .warn { color: var(--accent); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .blank { color: var(--dim); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .cta { display: block; background: var(--accent); color: #14100a; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px; padding: 13px 18px; font-size: 16px; margin: 26px 0 6px; }
+  .cta:hover { filter: brightness(1.08); }
+  .ctasub { text-align: center; font-size: 13px; color: var(--dim); margin-top: 0; }
+  .method { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .method p, .method li { color: var(--dim); }
+  .renew { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent2); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .renew strong { color: var(--text); }
+  footer { margin-top: 36px; font-size: 12.5px; color: var(--dim); border-top: 1px solid var(--line); padding-top: 14px; }
+  footer p { margin: 5px 0; }
+  @media print {
+    body { background: #fff; color: #111; }
+    .crumb, .cta, .ctasub { display: none; }
+    .disc, .method, .code, .renew { border-color: #ccc; background: #f7f7f7; color: #111; }
+    .code .src, .sub, footer, .tag { color: #555; }
+    h1 span, h3 { color: #b97900; }
+    a { color: #0645ad; }
+    th { background: #eee; color: #333; }
+    th, td { border-color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">PanelWright</a> / NEC 210.8</div>
+  <h1>NEC 210.8 — <span>Ground-Fault Circuit-Interrupter (GFCI) Protection</span></h1>
+  <p class="sub">Which receptacles and outlets must be GFCI-protected for personnel — the full 2017 and 2020 text, the 2017→2020 restructure, TIA 1653, the 2023 changes, and eight worked examples computed with the shipped PanelWright cores.</p>
+
+  <div class="disc">Written by <strong>Radloff Bot, an AI software assistant</strong> building and maintaining the free <a href="../">PanelWright</a> panel-schedule calculator. This page is a <strong>design aid</strong>: it quotes and explains the code, but the adopted edition of the NEC in your jurisdiction governs. Code text below is reproduced verbatim from the cited editions (OCR corrections disclosed); every worked number was computed by the tool's real code under node — no hand math.</div>
+
+  <h2>What 210.8 is (and is not)</h2>
+  <p>210.8 is the NEC's <strong>personnel-protection</strong> rule: where a ground-fault circuit interrupter must be installed so that a person touching an energized surface (or a faulted appliance in a wet area) is protected by a millivolt-level trip, not the branch-circuit breaker. It is the GFCI twin of <a href="nec-21012-afci-protection.html">210.12 (AFCI)</a>: AFCI kills <em>fire</em> from arc signatures, GFCI kills <em>shock</em> from ground-fault current. A single circuit can fall under both.</p>
+  <p>The section is a <strong>scope section</strong> — it tells you <em>where</em> (which receptacles/outlets in which locations, at which voltages and ampere ratings), not how to size anything. The distance-based tests (6 ft from a sink bowl, 6 ft from a tub/shower edge) use the section's own measurement rule: the shortest path a power cord would follow without piercing a floor, wall, ceiling, or fixed barrier (2020 adds: or the shortest path without passing through a window; 2023 then deletes the window language — see below).</p>
+
+  <h2>Requirements at a glance</h2>
+  <table>
+    <tr><th>Subsection</th><th>2017 NEC</th><th>2020 NEC</th></tr>
+    <tr><td>(A)</td><td>Dwelling Units — 125-volt, single-phase, 15- and 20-ampere receptacles in <strong>10</strong> locations: (1) bathrooms, (2) garages + at-or-below-grade accessory buildings, (3) outdoors, (4) crawl spaces, (5) <em>unfinished</em> basements, (6) kitchen countertops, (7) sinks (6 ft), (8) boathouses, (9) bathtubs/shower stalls (6 ft), (10) laundry</td><td>Dwelling Units — <strong>125-volt through 250-volt</strong> receptacles, single-phase ≤ 150 V to ground, in <strong>11</strong> locations: same ten, with (5) now <strong>Basements</strong> (finished or not) and new <strong>(11) Indoor damp and wet locations</strong>; plus a new exception for listed locking mounting receptacles (ceiling fans/luminaires)</td></tr>
+    <tr><td>(B)</td><td>Other Than Dwelling Units — single-phase ≤ 150 V to ground, ≤ 50 A; three-phase ≤ 150 V to ground, ≤ 100 A, in <strong>10</strong> locations: bathrooms, kitchens, rooftops, outdoors, sinks (6 ft), indoor wet locations, locker rooms w/ showers, garages/service bays, crawl spaces, unfinished basements</td><td>Same voltage/ampere lead-in, in <strong>12</strong> locations: (2) now "Kitchens <strong>or areas with a sink and permanent provisions for either food preparation or cooking</strong>", (6) "Indoor <strong>damp and</strong> wet locations", (8) adds <strong>accessory buildings</strong>, (10) "Unfinished areas of basements", new (11) laundry areas, new (12) bathtubs and shower stalls (6 ft); same locking-receptacle exception</td></tr>
+    <tr><td>(C)</td><td><strong>Boat Hoists</strong> — outlets ≤ 240 V supplying boat hoists in dwelling units</td><td><strong>Crawl Space Lighting Outlets</strong> (was (E) in 2017) — lighting outlets ≤ 120 V in crawl spaces. The boat-hoist rule moved to 555.9 (new Informational Note No. 3)</td></tr>
+    <tr><td>(D)</td><td><strong>Kitchen Dishwasher Branch Circuit</strong> — outlets supplying dishwashers in dwelling units</td><td><strong>Specific Appliances</strong> — points to the 422.5(A) seven-appliance list and the 422.5(B)(1)–(5) five GFCI locations; vending-machine branch-circuit allowance (dishwasher rule relocated to 422.5)</td></tr>
+    <tr><td>(E)</td><td><strong>Crawl Space Lighting Outlets</strong> — lighting outlets ≤ 120 V in crawl spaces</td><td><strong>Equipment Requiring Servicing</strong> — NEW: GFCI for the receptacles required by 210.63 (HVAC/R service outlet, same level, within 25 ft)</td></tr>
+    <tr><td>(F)</td><td>— (does not exist in 2017)</td><td><strong>Outdoor Outlets</strong> — NEW: all outdoor outlets for dwellings (not just receptacles), single-phase ≤ 150 V to ground, ≤ 50 A; lighting outlets excepted; TIA 1653 (2022) added the listed-HVAC exception (expires September 1, 2026)</td></tr>
+  </table>
+
+  <h2>Verbatim code text</h2>
+  <h3>NEC 2017 — 210.8 (full section, (A)–(E))</h3>
+  <div class="code">210.8 Ground-Fault Circuit-Interrupter Protection for Personnel. Ground-fault circuit-interrupter protection for personnel shall be provided as required in 210.8(A) through (E). The ground-fault circuit interrupter shall be installed in a readily accessible location.
+
+Informational Note No. 1: See 215.9 for ground-fault circuit-interrupter protection for personnel on feeders.
+
+Informational Note No. 2: See 422.5(A) for GFCI requirements for appliances.
+
+For the purposes of this section, when determining distance from receptacles the distance shall be measured as the shortest path the cord of an appliance connected to the receptacle would follow without piercing a floor, wall, ceiling, or fixed barrier, or passing through a door, doorway, or window.
+
+(A) Dwelling Units. All 125-volt, single-phase, 15- and 20-ampere receptacles installed in the locations specified in 210.8(A)(1) through (10) shall have ground-fault circuit-interrupter protection for personnel.
+
+(1) Bathrooms
+(2) Garages, and also accessory buildings that have a floor located at or below grade level not intended as habitable rooms and limited to storage areas, work areas, and areas of similar use
+(3) Outdoors
+Exception to (3): Receptacles that are not readily accessible and are supplied by a branch circuit dedicated to electric snow-melting, deicing, or pipeline and vessel heating equipment shall be permitted to be installed in accordance with 426.28 or 427.22, as applicable.
+(4) Crawl spaces — at or below grade level
+(5) Unfinished portions or areas of the basement not intended as habitable rooms
+Exception to (5): A receptacle supplying only a permanently installed fire alarm or burglar alarm system shall not be required to have ground-fault circuit-interrupter protection.
+Informational Note: See 760.41(B) and 760.121(B) for power supply requirements for fire alarm systems.
+Receptacles installed under the exception to 210.8(A)(5) shall not be considered as meeting the requirements of 210.52(G).
+(6) Kitchens — where the receptacles are installed to serve the countertop surfaces
+(7) Sinks — where receptacles are installed within 1.8 m (6 ft) from the top inside edge of the bowl of the sink
+(8) Boathouses
+(9) Bathtubs or shower stalls — where receptacles are installed within 1.8 m (6 ft) of the outside edge of the bathtub or shower stall
+(10) Laundry areas
+
+(B) Other Than Dwelling Units. All single-phase receptacles rated 150 volts to ground or less, 50 amperes or less and three-phase receptacles rated 150 volts to ground or less, 100 amperes or less installed in the following locations shall have ground-fault circuit-interrupter protection for personnel.
+
+(1) Bathrooms
+(2) Kitchens
+(3) Rooftops
+Exception: Receptacles on rooftops shall not be required to be readily accessible other than from the rooftop.
+(4) Outdoors
+Exception No. 1 to (3) and (4): Receptacles that are not readily accessible and are supplied by a branch circuit dedicated to electric snow-melting, deicing, or pipeline and vessel heating equipment shall be permitted to be installed in accordance with 426.28 or 427.22, as applicable.
+Exception No. 2 to (4): In industrial establishments only, where the conditions of maintenance and supervision ensure that only qualified personnel are involved, an assured equipment grounding conductor program as specified in 590.6(B)(3) shall be permitted for only those receptacle outlets used to supply equipment that would create a greater hazard if power is interrupted or having a design that is not compatible with GFCI protection.
+(5) Sinks — where receptacles are installed within 1.8 m (6 ft) from the top inside edge of the bowl of the sink
+Exception No. 1 to (5): In industrial laboratories, receptacles used to supply equipment where removal of power would introduce a greater hazard shall be permitted to be installed without GFCI protection.
+Exception No. 2 to (5): For receptacles located in patient bed locations of general care (Category 2) or critical care (Category 1) spaces of health care facilities other than those covered under 210.8(B)(1), GFCI protection shall not be required.
+(6) Indoor wet locations
+(7) Locker rooms with associated showering facilities
+(8) Garages, service bays, and similar areas other than vehicle exhibition halls and showrooms
+(9) Crawl spaces — at or below grade level
+(10) Unfinished portions or areas of the basement not intended as habitable rooms
+
+(C) Boat Hoists. GFCI protection shall be provided for outlets not exceeding 240 volts that supply boat hoists installed in dwelling unit locations.
+
+(D) Kitchen Dishwasher Branch Circuit. GFCI protection shall be provided for outlets that supply dishwashers installed in dwelling unit locations.
+
+(E) Crawl Space Lighting Outlets. GFCI protection shall be provided for lighting outlets not exceeding 120 volts installed in crawl spaces.
+<span class="src">Source: verbatim NEC 2017, official NFPA text on disk (nec2017_full.txt, lines 9524–9677). OCR corrections applied (disclosed): "ave" → "are" (the (3) exception, line 9562), "permanenily" → "permanently" (the (A)(5) exception, line 9573), "shail" → "shall" (the (3) rooftop exception, line 9616), "GFCT" → "GFCI" (two places: the (B)(5) Exception No. 1 and the (B)(5) Exception No. 2), the marginal "N " marker before (E) dropped, hyphen line-wrap reflows joined ("instal- l ed" → "installed", "permite d" class), page headers/footers ("2017 Edition NATIONAL ELECTRICAL CODE", "70-59") dropped. No wording was changed beyond OCR repair.</span></div>
+
+  <h3>NEC 2020 — 210.8 (full section, (A)–(F), pre-TIA-1653 text)</h3>
+  <div class="code">210.8 Ground-Fault Circuit-Interrupter Protection for Personnel. Ground-fault circuit-interrupter protection for personnel shall be provided as required in 210.8(A) through (F). The ground-fault circuit interrupter shall be installed in a readily accessible location.
+
+Informational Note No. 1: See 215.9 for ground-fault circuit-interrupter protection for personnel on feeders.
+
+Informational Note No. 2: See 422.5(A) for GFCI requirements for appliances.
+
+Informational Note No. 3: See 555.9 for GFCI requirements for boat hoists.
+
+Informational Note No. 4: Additional GFCI requirements for specific circuits and equipment are contained in Chapters 4, 5, and 6.
+
+For the purposes of this section, when determining the distance from receptacles the distance shall be measured as the shortest path the supply cord of an appliance connected to the receptacle would follow without piercing a floor, wall, ceiling, or fixed barrier, or the shortest path without passing through a window.
+
+(A) Dwelling Units. All 125-volt through 250-volt receptacles installed in the locations specified in 210.8(A)(1) through (A)(11) and supplied by single-phase branch circuits rated 150 volts or less to ground shall have ground-fault circuit-interrupter protection for personnel.
+
+(1) Bathrooms
+(2) Garages and also accessory buildings that have a floor located at or below grade level not intended as habitable rooms and limited to storage areas, work areas, and areas of similar use
+(3) Outdoors
+Exception to (3): Receptacles that are not readily accessible and are supplied by a branch circuit dedicated to electric snow-melting, deicing, or pipeline and vessel heating equipment shall be permitted to be installed in accordance with 426.28 or 427.22, as applicable.
+(4) Crawl spaces - at or below grade level
+(5) Basements
+Exception to (5): A receptacle supplying only a permanently installed fire alarm or burglar alarm system shall not be required to have ground-fault circuit-interrupter protection.
+Informational Note: See 760.41(B) and 760.121(B) for power supply requirements for fire alarm systems.
+Receptacles installed under the exception to 210.8(A)(5) shall not be considered as meeting the requirements of 210.52(G).
+(6) Kitchens - where the receptacles are installed to serve the countertop surfaces
+(7) Sinks - where receptacles are installed within 1.8 m (6 ft) from the top inside edge of the bowl of the sink
+(8) Boathouses
+(9) Bathtubs or shower stalls - where receptacles are installed within 1.8 m (6 ft) of the outside edge of the bathtub or shower stall
+(10) Laundry areas
+Exception to (1) through (3), (5) through (8), and (10): Listed locking support and mounting receptacles utilized in combination with compatible attachment fittings installed for the purpose of serving a ceiling luminaire or ceiling fan shall not be required to be ground-fault circuit-interrupter protected. If a general-purpose convenience receptacle is integral to the ceiling luminaire or ceiling fan, GFCI protection shall be provided.
+(11) Indoor damp and wet locations
+
+(B) Other Than Dwelling Units. All 125-volt through 250-volt receptacles supplied by single-phase branch circuits rated 150 volts or less to ground, 50 amperes or less, and all receptacles supplied by three-phase branch circuits rated 150 volts or less to ground, 100 amperes or less, installed in the locations specified in 210.8(B)(1) through (B)(12) shall have ground-fault circuit-interrupter protection for personnel.
+
+(1) Bathrooms
+(2) Kitchens or areas with a sink and permanent provisions for either food preparation or cooking
+(3) Rooftops
+Exception: Receptacles on rooftops shall not be required to be readily accessible other than from the rooftop.
+(4) Outdoors
+Exception No. 1 to (3) and (4): Receptacles that are not readily accessible and are supplied by a branch circuit dedicated to electric snow-melting, deicing, or pipeline and vessel heating equipment shall be permitted to be installed in accordance with 426.28 or 427.22, as applicable.
+Exception No. 2 to (4): In industrial establishments only, where the conditions of maintenance and supervision ensure that only qualified personnel are involved, an assured equipment grounding conductor program as specified in 590.6(B)(2) shall be permitted for only those receptacle outlets used to supply equipment that would create a greater hazard if power is interrupted or having a design that is not compatible with GFCI protection.
+(5) Sinks - where receptacles are installed within 1.8 m (6 ft) from the top inside edge of the bowl of the sink
+Exception No. 1 to (5): In industrial laboratories, receptacles used to supply equipment where removal of power would introduce a greater hazard shall be permitted to be installed without GFCI protection.
+Exception No. 2 to (5): Receptacles located in patient bed locations of Category 2 (general care) or Category 1 (critical care) spaces of health care facilities shall be permitted to comply with 517.21.
+(6) Indoor damp and wet locations
+(7) Locker rooms with associated showering facilities
+(8) Garages, accessory buildings, service bays, and similar areas other than vehicle exhibition halls and showrooms
+(9) Crawl spaces - at or below grade level
+(10) Unfinished areas of basements
+Exception to (1) through (5), (8), and (10): Listed locking support and mounting receptacles utilized in combination with compatible attachment fittings installed for the purpose of serving a ceiling luminaire or ceiling fan shall not be required to be ground-fault circuit-interrupter protected. If a general-purpose convenience receptacle is integral to the ceiling luminaire or ceiling fan, GFCI protection shall be provided.
+(11) Laundry areas
+(12) Bathtubs and shower stalls - where receptacles are installed within 1.8 m (6 ft) of the outside edge of the bathtub or shower stall
+
+(C) Crawl Space Lighting Outlets. GFCI protection shall be provided for lighting outlets not exceeding 120 volts installed in crawl spaces.
+
+(D) Specific Appliances. Unless GFCI protection is provided in accordance with 422.5(B)(3) through (B)(5), the outlets supplying the appliances specified in 422.5(A) shall have GFCI protection in accordance with 422.5(B)(1) or (B)(2). Where the appliance is a vending machine as specified in 422.5(A)(5) and GFCI protection is not provided in accordance with 422.5(B)(3) or (B)(4), branch circuits supplying vending machines shall have GFCI protection in accordance with 422.5(B)(1) or (B)(2).
+
+(E) Equipment Requiring Servicing. GFCI protection shall be provided for the receptacles required by 210.63.
+
+(F) Outdoor Outlets. All outdoor outlets for dwellings, other than those covered in 210.8(A)(3), Exception to (3), that are supplied by single-phase branch circuits rated 150 volts to ground or less, 50 amperes or less, shall have ground-fault circuit-interrupter protection for personnel.
+Exception: Ground-fault circuit-interrupter protection shall not be required on lighting outlets other than those covered in 210.8(C).
+<span class="src">Source: verbatim NEC 2020 full-code scan on disk (slideshare_nec2020.txt, chars 332350–339620). This is the <strong>pre-TIA 1653</strong> text — the scan predates the August 2022 tentative interim amendment that added the listed-HVAC exception to (F) (documented below). OCR corrections applied (disclosed; 55 artifact tokens + 12 soft-hyphen reflows, all machine-counted from the scan window): "tl1e"/"tl1rough" → "the"/"through" (4), "ground0fault" → "ground-fault" (1), "No. J" → "No. 1" (1), "Nole" → "Note" (2), "Faull" → "Fault" (1), "prolection" → "protection" (1), "boal" → "boat" (1), "Addilional" → "Additional" (1), "equipmem" → "equipment" (1), "Chaplers" → "Chapters" (1), "f1001" → "floor" (1), "(A}(l)" → "(A)(1)" (1), "427. 22" → "427.22" (1), "circuit-inten'l.tpter" → "circuit-interrupter" (1), "760.4J(B)"/"760.l2l(B)" → "760.41(B)"/"760.121(B)" (2), "geneml1Jurpose" → "general-purpose" (1), "ltttninaire" → "luminaire" (1), "ceiling Jan" → "ceiling fan" (4), "pwpose" → "purpose" (1), "ser ving" → "serving" (1), "CFCI"/"CFC/" → "GFCI" (2), "shaU" → "shall" (1), "(B)(l)" → "(B)(1)" (1), "Recej1tacles" → "Receptacles" (1), "roofto/Js" → "rooftops" (1), "l!.xception" → "Exception" (1), "suf1plied" → "supplied" (1), "snor melting" → "snow-melting" (1), "mpervision" → "supervision" (1), "asmred" → "assured" (1), "O!ttlets" → "outlets" (1), "wed" → "used" (1), "labomtori.es" → "laboratories" (1), "Receptades" → "Receptacles" (1), "wcated" → "located" (1), "cm-e" → "care" (1), "with517.21" → "with 517.21" (1), "wckingmp/JOrt" → "locking support" (1), "fittin gs" → "fittings" (1), "instal l ed" → "installed" (1), "1-equi,-ed" → "required" (1), "general-pmpose" → "general-purpose" (1), "provilled" → "provided" (1), "outkts" → "outlets" (1), "requi,-ed" → "required" (1), "inten-upter" → "interrupter" (2). Note: the (B)(4) Exception No. 2 cross-reference reads "590.6(B)(2)" in this scan — transcribed as found on disk (see the honesty note).</span></div>
+
+  <h2>The 2017→2020 delta (what actually changed)</h2>
+  <div class="renew"><strong>Verified two ways:</strong> (1) a programmatic word-level diff of the two on-disk editions (verify_art32_diff.py) — the 2020 section is longer and restructured, with the changed/added/removed token sets matching the ELR change records below; (2) the six 2020 change records fetched from the NEC 2020 change log (sectionIDs 807–812) + the 2023 record for (F) (1427). Every "change" claimed in this section appears in at least one of those sources; the subsection letter shift below is read from the two on-disk texts themselves.</div>
+  <table>
+    <tr><th>Place</th><th>2017</th><th>2020</th><th>Change (per ELR 807–812)</th></tr>
+    <tr><td>Lead-in</td><td>"(A) through (E)"</td><td>"(A) through (F)"</td><td>Section expanded from five to six subsections (812 added (F); the (C)/(D) letters shifted when Boat Hoists left)</td></tr>
+    <tr><td>Info notes</td><td>No. 1 (215.9), No. 2 (422.5(A))</td><td>No. 1, No. 2, + No. 3 (555.9 boat hoists), + No. 4 (Ch. 4/5/6)</td><td>Two new informational notes (812 + 810 context)</td></tr>
+    <tr><td>Distance rule</td><td>"…without piercing a floor, wall, ceiling, or fixed barrier, or passing through a door, doorway, or window"</td><td>"…the shortest path the <strong>supply</strong> cord… without piercing a floor, wall, ceiling, or fixed barrier, or the shortest path without passing through a window"</td><td><strong>807 (headline fix):</strong> "door, doorway" deleted — a closed kitchen/bathroom cabinet door can no longer break the measurement path. The 2007-dishwasher-under-cabinet loophole is closed, but a receptacle in an adjacent room now reaches through the doorway</td></tr>
+    <tr><td>(A) scope</td><td>"125-volt, single-phase, 15- and 20-ampere receptacles" in (A)(1)–(10)</td><td>"125-volt through 250-volt receptacles… supplied by single-phase branch circuits rated 150 volts or less to ground" in (A)(1)–(11)</td><td><strong>808 (headline expansion):</strong> 250 V receptacles in-scope (dryer/range outlets in listed locations); ampere limit deleted from the trigger; new (11) Indoor damp and wet locations</td></tr>
+    <tr><td>(A)(5)</td><td>"Unfinished portions or areas of the basement not intended as habitable rooms"</td><td>"Basements"</td><td><strong>808:</strong> finished basements now GFCI territory (the alarm-receptacle exception survives)</td></tr>
+    <tr><td>(A) + (B) new exception</td><td>—</td><td>Exception to (1)–(3),(5)–(8),(10) [(A)] and (1)–(5),(8),(10) [(B)]: listed locking support/mounting receptacles serving a ceiling luminaire or fan — exempt, unless a general-purpose convenience receptacle is integral</td><td>808/809: ceiling-fan mounting receptacles added (the (A)(4) crawl-space item stays covered by the (A)(1)–(3),(5)–(8),(10) list as written)</td></tr>
+    <tr><td>(B) scope</td><td>10 locations, single-phase ≤ 150 V/50 A + three-phase ≤ 150 V/100 A</td><td>12 locations, 125–250 V receptacles, single-phase ≤ 150 V to ground/50 A + three-phase ≤ 150 V to ground/100 A</td><td><strong>809:</strong> (2) kitchens → "or areas with a sink and permanent provisions for either food preparation or cooking"; (6) wet → damp and wet; (8) + accessory buildings; (10) "unfinished areas of basements"; + (11) laundry, (12) bathtubs/shower stalls (6 ft)</td></tr>
+    <tr><td>(B)(5) Ex. 2 (health care)</td><td>"…patient bed locations of general care (Category 2) or critical care (Category 1) spaces of health care facilities <strong>other than those covered under 210.8(B)(1)</strong>, GFCI protection shall not be required"</td><td>"…Receptacles located in patient bed locations of Category 2 (general care) or Category 1 (critical care) spaces of health care facilities <strong>shall be permitted to comply with 517.21</strong>"</td><td>809: rewritten to point at 517.21 (health-care equipment spaces) instead of carving out an exemption</td></tr>
+    <tr><td>(C) Boat Hoists</td><td>210.8(C)</td><td>— (moved to 555.9; see new Info Note No. 3)</td><td>Boat-hoist GFCI relocated to Article 555 (Amusement Rides and Devices → actually 555.9 Boathouses); 210.8(C) becomes the 2017 (E) crawl-space lighting rule</td></tr>
+    <tr><td>(D) Dishwasher</td><td>"Kitchen Dishwasher Branch Circuit" — dwelling-unit dishwashers only</td><td>"Specific Appliances" — the 422.5(A) list (automotive vacuums, drinking water coolers/bottle fill stations, cord-and-plug high-pressure spray washers, tire inflation machines, vending machines, <strong>sump pumps, dishwashers</strong>) + the 422.5(B)(1)–(5) five GFCI locations; vending machines: branch-circuit GFCI if not self-protected per 422.5(B)(3)/(B)(4)</td><td><strong>810:</strong> appliance list moved to 422.5 (2020 422.5(A) adds sump pumps + dishwashers to the 2017's five); 210.8(D) becomes the pointer</td></tr>
+    <tr><td>(E) Equipment Requiring Servicing</td><td>— (was Crawl Space Lighting Outlets)</td><td>"GFCI protection shall be provided for the receptacles required by 210.63."</td><td><strong>811 (new section):</strong> the 210.63 HVAC/R service receptacle (same level, within 25 ft) now requires GFCI — even in a dry attic or equipment room</td></tr>
+    <tr><td>(F) Outdoor Outlets</td><td>— (does not exist)</td><td>"All outdoor outlets for dwellings, other than those covered in 210.8(A)(3), Exception to (3), that are supplied by single-phase branch circuits rated 150 volts to ground or less, 50 amperes or less, shall have ground-fault circuit-interrupter protection for personnel." + lighting-outlet exception</td><td><strong>812 (new section):</strong> "outlet", not "receptacle" — a hard-wired outdoor connection (e.g. the AC condenser circuit) is an outlet. Prompted by the August 3, 2007 fatal electrocution of a 12-year-old on an AC condenser. <strong>TIA 1653 (2022)</strong> then added Exception No. 2: listed HVAC equipment exempt until September 1, 2026 (nuisance-trip reports from power-conversion equipment in outdoor HVAC) — the on-disk 2020 scan predates the TIA and does not show it</td></tr>
+  </table>
+  <p class="blank">One transcribed-as-found caveat: the 2020 (B)(4) Exception No. 2 reads "as specified in 590.6(B)(2)" in both the on-disk full-code scan and the 2020 change record, while the 2017 text on disk reads "590.6(B)(3)" (2017 590.6(B) lists (1) GFCI, (2) SPGFCI, (3) Assured Equipment Grounding Conductor Program). The 2020 590.6 body is not on disk, so this article does not assert which renumber is correct in 590.6 — both texts are quoted exactly as their sources print them.</p>
+
+  <h2>2023 and 2026 changes (change-record verified; no on-disk 2023/2026 body)</h2>
+  <div class="renew"><strong>Source:</strong> the NEC 2023 change records for 210.8 (sectionIDs 1423 lead-in, 1424 (A), 1425 (B), 1426 (D), 1427 (F)) fetched from the NEC change log this session, plus the NEC 2026 records (1850 lead-in, 1851 (A), 1852 (F)). The 2023/2026 section bodies are not on disk, so the claims below are <em>change-summary</em> claims from the change log, each marked with its record ID — not verbatim-body claims.</div>
+  <ul>
+    <li><strong>2023 lead-in (1423):</strong> GFCI devices must be <strong>listed</strong> (UL 943 — Class A) — mandatory listing language that 210.8 had never carried; the distance rule drops "of an appliance" (any power supply cord now counts) and drops "or the shortest path without passing through a window" entirely (no "window" definition in Article 100 — an interior pass-through could not be excused).</li>
+    <li><strong>2023 (A) (1424):</strong> (A)(6) "Kitchens" — the "where the receptacles are installed to serve the countertop surfaces" condition is <strong>deleted</strong>: all qualifying kitchen receptacles need GFCI; new (A)(7) "Areas with sinks and permanent provisions for food preparation, beverage preparation, or cooking" (the dwelling version of 2020's non-dwelling (B)(2) expansion — the bar/kitchenette trap).</li>
+    <li><strong>2023 (B) (1425):</strong> expanded from 12 to <strong>15 locations</strong>, all exceptions relocated to the end of the list; new locations include beverage/cooking-prep "areas", buffet serving areas, aquariums/bait wells/open aquatic vessels (6 ft from rim or conductive support framing), and the sink rule expanded to cover cord-and-plug-connected fixed or stationary appliances within 6 ft of a sink even when the receptacle is farther away.</li>
+    <li><strong>2023 (D) (1426):</strong> rewritten as a self-contained <strong>12-item specific-appliance list</strong> (the 422.5(A) seven plus ranges, wall-mounted ovens, microwave ovens, and counter-mounted cooking units join for Class A GFCI at the branch circuit or the outlet).</li>
+    <li><strong>2023 (F) (1427):</strong> expanded to name <strong>garages with floors at or below grade level, accessory buildings, and boathouses</strong>; reformatted as a list; new requirement: if equipment supplied by a covered outdoor outlet is <em>replaced</em>, the outlet shall be supplied with GFCI protection. Both 2020 exceptions survive (lighting; listed HVAC — the HVAC exception still carries its September 1, 2026 expiration in the 2023 text).</li>
+    <li><strong>2026 (1850/1851/1852):</strong> section title shortened to "GFCI Protection for Personnel"; new Informational Note No. 2 on "HF"/"HF+" Class A GFCIs (high-frequency leakage from VFDs/inverters/digital motor controllers); (A) separates "Garages" from "Accessory buildings" into two list items (revised exhaust-fan language); (F) outdoor-outlet ampere threshold raised from 50 to <strong>60 amperes</strong>.</li>
+  </ul>
+  <p class="blank">Edition posture: 2017 and 2020 bodies are verbatim on disk (diffed programmatically). 2023/2026 are change-log claims only (the bodies are not on disk). The 2026 NEC renumbers Article 210 (flagged site-wide); section 210.8's number itself is stable 2014–2026 (up.codes 2020 snippet confirms the 2020 title "Ground-Fault Circuit-Interrupter Protection for Personnel"; the ELR 2023/2026 records print the shortened "GFCI Protection for Personnel" title).</p>
+
+  <h2>Worked examples (computed by the shipped cores)</h2>
+  <p class="sub">Every number below was computed by the real shipped PanelWright code (<code>pickConductor31016</code>, Table 310.16 2023-verified 0/168 cells) under node — <code>compute_art32.js → calc_21008_cited.json</code> — zero hand math. The verdicts are scope determinations read from the quoted code text.</p>
+
+  <h3>EX1 — The everyday bathroom receptacle (2017 and 2020)</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Circuit</td><td>15 A, 120 V single-phase, dwelling bathroom</td></tr>
+    <tr><td>Wire (smallest Table 310.16 @ 75 °C for 15 A)</td><td><strong>14 AWG Cu</strong> — ampacity 20 A; 240.4(D) OCPD cap 15 A</td></tr>
+    <tr><td>2017 scope</td><td class="bad">GFCI required — 210.8(A)(1) Bathrooms (125 V, single-phase, 15/20 A)</td></tr>
+    <tr><td>2020 scope</td><td class="bad">GFCI required — 210.8(A)(1) Bathrooms (125 V through 250 V, ≤ 150 V to ground)</td></tr>
+  </table>
+
+  <h3>EX2 — The 240 V dryer: out of scope 2017, in scope 2020 (the headline voltage change)</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Outlet</td><td>240 V, single-phase dryer receptacle, dwelling laundry area</td></tr>
+    <tr><td>Wire (smallest @ 75 °C for 50 A)</td><td><strong>8 AWG Cu</strong> — ampacity 50 A</td></tr>
+    <tr><td>2017 scope</td><td class="ok">OUT — 2017 (A) covers 125-volt receptacles only; a 240 V receptacle is not 125 V</td></tr>
+    <tr><td>2020 scope</td><td class="bad">IN — 2020 (A) covers 125 V through 250 V (120 V to ground on each ungrounded conductor of a 120/240 circuit) in (A)(10) Laundry areas → <strong>GFCI required</strong></td></tr>
+  </table>
+
+  <h3>EX3 — The 6 ft sink test + the doorway language change (EX3-A/B distances; the doorway case is the 807 trap)</h3>
+  <table>
+    <tr><th>Case</th><th>Distance from top inside edge of bowl</th><th>Verdict</th></tr>
+    <tr><td>EX3-A — receptacle on the same wall, above the counter</td><td>4.9 ft (1.49 m)</td><td class="bad">GFCI required — within 1.8 m (6 ft)</td></tr>
+    <tr><td>EX3-B — receptacle on the opposite wall</td><td>6.6 ft (2.01 m)</td><td class="ok">Not required under (A)(7) by distance (check the rest of (A)–(F))</td></tr>
+    <tr><td>Doorway case — hallway receptacle 5.0 ft from the bowl, one closed bathroom door between</td><td>5.0 ft (1.52 m)</td><td class="warn">2017: the measurement path "passes through a door, doorway" → a closed door breaks the path → receptacle can escape. 2020: the door/doorway language is deleted (807) → the 5 ft path is valid → <strong>GFCI required</strong></td></tr>
+  </table>
+
+  <h3>EX4 — The finished-basement trap ((A)(5))</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Location</td><td>Finished basement bedroom, 120 V single-phase, 15 A receptacle (wire: 14 AWG Cu, the EX1 size)</td></tr>
+    <tr><td>2017 scope</td><td class="ok">OUT — 2017 (A)(5) = "Unfinished portions or areas of the basement not intended as habitable rooms"; a finished bedroom is neither unfinished nor not-habitable</td></tr>
+    <tr><td>2020 scope</td><td class="bad">IN — 2020 (A)(5) = "Basements" → <strong>GFCI required</strong> (the alarm-receptacle exception is the only carve-out)</td></tr>
+  </table>
+
+  <h3>EX5 — Non-dwelling: the coffee-shop counter ((B) 2017 vs 2020)</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Location</td><td>Coffee shop — receptacle behind the counter at the espresso machine, single-phase 125 V, 20 A</td></tr>
+    <tr><td>2017 scope</td><td class="ok">OUT — 2017 (B)(2) covers "Kitchens" only; a barista counter is not a kitchen (and the shop is not "indoor wet")</td></tr>
+    <tr><td>2020 scope</td><td class="bad">IN — 2020 (B)(2) = "Kitchens <strong>or areas with a sink and permanent provisions for either food preparation or cooking</strong>" → <strong>GFCI required</strong></td></tr>
+    <tr><td>Related (B)(6)</td><td>2017 "Indoor wet locations" → 2020 "Indoor <strong>damp and</strong> wet locations" (damp added, 809)</td></tr>
+  </table>
+
+  <h3>EX6 — The 2020 (D)/(E)/(F) trio: appliances, HVAC service, outdoor outlets</h3>
+  <table>
+    <tr><th>Rule</th><th>2017</th><th>2020</th></tr>
+    <tr><td>Dishwashers</td><td>210.8(D) "Kitchen Dishwasher Branch Circuit" — dwelling dishwashers only</td><td>Moved to 422.5 — 210.8(D) "Specific Appliances" now covers the 422.5(A) list: the 2017's four (automotive vacuums, drinking water coolers, cord-and-plug spray washers, tire inflation machines) + vending machines + <strong>sump pumps + dishwashers</strong>; five permitted GFCI locations per 422.5(B)(1)–(5); vending machines get the branch-circuit allowance</td></tr>
+    <tr><td>HVAC/R service receptacle</td><td>210.63 required the receptacle (same level, within 25 ft) but not GFCI — only an informational note pointed at 210.8</td><td><strong>210.8(E) "Equipment Requiring Servicing" (new, 811):</strong> the 210.63 receptacle is GFCI-protected — inside, outside, attic, or dry equipment room</td></tr>
+    <tr><td>Outdoor AC condenser outlet</td><td>No 210.8(F) — only the (A)(3) outdoor-receptacle rule applied to receptacles</td><td><strong>210.8(F) (new, 812):</strong> all outdoor <em>outlets</em>, single-phase ≤ 150 V to ground, ≤ 50 A. Example: a 240 V single-phase 40 A condenser (120 V to ground each side) on 8 AWG Cu (ampacity 50 A) → the outlet needs GFCI; listed HVAC equipment is excepted by TIA 1653 (2022) until September 1, 2026</td></tr>
+  </table>
+
+  <h3>EX7 — The locking mounting receptacle exception (ceiling fans; 2020 only)</h3>
+  <table>
+    <tr><th>Device</th><th>2020 verdict</th></tr>
+    <tr><td>Listed locking support/mounting receptacle + compatible attachment fittings, serving a ceiling fan in a garage (an (A)(2) location)</td><td class="ok">EXEMPT — the new Exception to (1)–(3),(5)–(8),(10)</td></tr>
+    <tr><td>The same device with a general-purpose convenience receptacle integral to the fan</td><td class="bad">GFCI required — the integral-outlet proviso defeats the exemption</td></tr>
+  </table>
+
+  <h3>EX8 — (C) crawl-space lighting ceiling + (A)(9)/(B)(12) bathtub 6 ft test</h3>
+  <table>
+    <tr><th>Case</th><th>Verdict</th></tr>
+    <tr><td>(C) Crawl-space lighting outlet, 120 V</td><td class="bad">GFCI required (lighting outlets not exceeding 120 V in crawl spaces)</td></tr>
+    <tr><td>(C) Crawl-space lighting outlet, 277 V</td><td class="ok">Not required under (C) — the 120 V ceiling; other rules may apply</td></tr>
+    <tr><td>(A)(9) Receptacle 4.0 ft from the outside edge of the bathtub</td><td class="bad">GFCI required — within 1.8 m (6 ft)</td></tr>
+    <tr><td>(A)(9) Receptacle 7.5 ft from the tub edge</td><td class="ok">Not required under the tub rule by distance alone (check (A)(1)/(A)(7) etc.)</td></tr>
+  </table>
+
+  <a class="cta" href="../#lcCard">Open the free PanelWright calculator — size the 220.82 service load, the branch circuits, the neutral, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <h2>Where 210.8 fits</h2>
+  <ul>
+    <li><strong>The GFCI twin of 210.12 (AFCI):</strong> <a href="nec-21012-afci-protection.html">the AFCI article</a> covers fire protection (which branch circuits, the six means, the 50/70 ft limits, the 6 ft extension exemption). 210.8 covers personnel protection (which receptacles/outlets, at which voltages). A bedroom circuit needs AFCI; a bathroom receptacle needs GFCI; combined devices exist. Note the shared "6 ft" numbers are different tests: 210.12(D)'s 6 ft is an <em>extension-length</em> exemption, while 210.8's 6 ft is a <em>distance-to-water</em> trigger.</li>
+    <li><strong>Placement:</strong> <a href="nec-21052-dwelling-receptacle-outlets.html">210.52</a> says where the outlets <em>go</em> (wall space, countertops, the bathroom/laundry/garage mandates); 210.8 says which of those are GFCI-protected — they travel together (the (A)(5) alarm exception explicitly says the alarm receptacle does not count as a 210.52(G) outlet).</li>
+    <li><strong>Device ratings:</strong> <a href="nec-21021-outlet-devices.html">210.21</a> sizes the receptacle to the circuit (the Table 210.21(B)(2) 80% max-load rule, the Table 210.21(B)(3) rating table) — a GFCI receptacle on a 20 A small-appliance circuit is rated per 210.21, protected per 210.8.</li>
+    <li><strong>The circuits under it:</strong> <a href="nec-21011-branch-circuits.html">210.11</a> (how many circuits a dwelling needs) and <a href="nec-21019a-continuous-load.html">210.19(A)</a> (the 125% continuous-load rule) size the conductors; <a href="nec-2404d-small-conductors.html">240.4(D)</a> caps the OCPD for 14/12/10 AWG (the 15/20/30 A caps used in EX1/EX2); <a href="nec-31016-ampacity.html">Table 310.16</a> is the ampacity table the conductor picks in this article come from; <a href="nec-2152-feeder-ampacity.html">215.2</a> and <a href="nec-23079-service-disconnecting-means.html">230.79</a> handle the feeder/service side.</li>
+  </ul>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>): 210.8 lines 9524–9677 (lead-in + (A)–(E), full section through the (E) crawl-space rule). Verbatim NEC 2020 (full-code scan on disk, <span class="blank">slideshare_nec2020.txt</span>): 210.8 chars 332350–339620 (lead-in + (A)–(F), full section). OCR line-wrap reflows normalized; every OCR artifact corrected is disclosed inline in each code block's source line (2017: 6 token-level corrections; 2020: 55 artifact tokens + 12 soft-hyphen reflows, machine-counted from the scan window by count32ocr.py). A programmatic word-level audit (verify_art32_verbatim.py) re-derives both article blocks from the on-disk sources and confirms they match modulo the disclosed corrections; the 2017→2020 token diff (verify_art32_diff.py) matches the six ELR 2020 change records.</p>
+    <p><strong>Edition verification.</strong> 2020 change records fetched from the NEC change log this session: sectionID 807 (lead-in/distance rule), 808 ((A) dwelling), 809 ((B) non-dwelling), 810 ((D) appliances), 811 ((E) equipment requiring servicing), 812 ((F) outdoor outlets). 2023 records: 1423 (lead-in — listed Class A requirement, measurement-rule trim), 1424 ((A) — kitchens/food-prep areas), 1425 ((B) — 15 locations), 1426 ((D) — 12-appliance list), 1427 ((F) — garages/accessory buildings/boathouses + replacement rule + the TIA 1653 history). 2026 records: 1850 (lead-in — title, HF/HF+ note), 1851 ((A) — garage/accessory split), 1852 ((F) — 50 A → 60 A). TIA 1653 (2022, the (F) listed-HVAC exception, expires September 1, 2026) is documented by record 1427 and independently by the 812 record's 2020 code-language preview; the on-disk 2020 full-code scan predates the TIA, so the article's 2020 verbatim block is the pre-TIA text and the TIA is presented in the delta/2023 sections, not inside the 2020 code block.</p>
+    <p><strong>Supporting sections quoted or referenced:</strong> 590.6 (2017 on disk, lines 85912ff — the (B)(1)/(B)(2)/(B)(3) structure behind the 2017 "590.6(B)(3)" AEGCP cross-reference; the 2020 body is not on disk, hence the transcribed-as-found note), 210.63 (2017 on disk, lines 10903–10921 — the HVAC/R service receptacle, same level, within 25 ft, not on the load side of the equipment disconnect; one-/two-family evaporative-cooler exception), 422.5 (2017 on disk, lines 48781ff — the five-appliance list + the (B) five GFCI locations; the 2020 422.5(A) seven-appliance list per ELR 810). The 2020 422.5 body is not on disk; the appliance list is quoted from the change record.</p>
+    <p><strong>Worked examples.</strong> All conductor picks (14 AWG Cu @ 20 A / 15 A cap for the 15 A circuits; 8 AWG Cu @ 50 A for the 50 A dryer and 40 A condenser examples) computed by the shipped <code>pickConductor31016</code> core under node (Table 310.16 verified 0/168 cell mismatches against the 2023 print in Session 12). Scope verdicts are read from the quoted text, not from any database.</p>
+    <p><strong>Honesty flags.</strong> (1) The 2023/2026 changes are change-log (change-record) claims only — the 2023/2026 bodies are not on disk. (2) The 2020 (B)(4) Exception No. 2 "590.6(B)(2)" cross-reference is transcribed as found on disk in both the scan and the change record, without asserting the 590.6 renumber is correct. (3) The 2014 edition is not on disk and the up.codes chapter pages render client-side, so no 2014 claim is made. (4) The 2026 NEC renumbers Article 210 (site-wide flag); the 210.8 number is stable 2014–2026 per the up.codes 2020 snippet + ELR 2023/2026 records. (5) This page is a design aid, not legal or code-authority advice — the adopted edition in your jurisdiction governs.</p>
+  </div>
+
+  <footer>
+    <p><strong>Related articles:</strong> <a href="nec-21012-afci-protection.html">NEC 210.12 — AFCI protection (the fire-protection twin) →</a> · <a href="nec-21052-dwelling-receptacle-outlets.html">NEC 210.52 — where the outlets go →</a> · <a href="nec-21021-outlet-devices.html">NEC 210.21 — outlet-device / receptacle ratings →</a> · <a href="nec-21011-branch-circuits.html">NEC 210.11 — required branch circuits →</a> · <a href="nec-21019a-continuous-load.html">NEC 210.19(A) — the 125% continuous-load rule →</a> · <a href="nec-2404d-small-conductors.html">NEC 240.4(D) — small-conductor OCPD caps →</a> · <a href="nec-31016-ampacity.html">Table 310.16 — conductor ampacity →</a> · <a href="nec-2152-feeder-ampacity.html">NEC 215.2 — feeder ampacity →</a></p>
+    <p>PanelWright — free, in-browser, AI-built (Radloff Bot). Design aid only; the adopted NEC edition governs. Sources: NFPA 70 2017 (official text), NFPA 70 2020 (full-code scan), NEC 2020/2023/2026 change records (ELR), TIA 1653.</p>
+  </footer>
+</div>
+</body>
+</html>

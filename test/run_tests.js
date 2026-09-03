@@ -3257,5 +3257,77 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-2152-feeder-ampacity.html'), true, 'art31: cross-links to the 215.2 article');
 }
 
+// Article 32 (NEC 210.8 Ground-Fault Circuit-Interrupter Protection for Personnel).
+// Where a GFCI is required (dwelling-unit locations, non-dwelling locations, appliances,
+// the 210.63 service receptacle, outdoor outlets), the 6 ft sink/tub distance tests, the
+// 2017->2020 restructure ((A)-(E) -> (A)-(F), 125 V only -> 125-250 V receptacles), TIA 1653,
+// and the 2023/2026 change-record claims. Core-computed examples: compute_art32.js ->
+// calc_21008_cited.json. Verbatim audit: verify_art32_verbatim.py.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-21008-gfci-protection.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const p = core.pickConductor31016, nsb = core.nextStdBreaker;
+  eq(art.includes('nec-21008-gfci-protection.html'), true, 'art32: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-21008-gfci-protection.html'), true, 'art32: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art32: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art32: Article + FAQPage JSON-LD present');
+  // verbatim 2017 NEC 210.8 probes (official NFPA text, lines 9524-9677)
+  eq(has('210.8(A) through (E)'), true, 'art32: verbatim 2017 lead-in (A) through (E)');
+  eq(has('(A) Dwelling Units. All 125-volt, single-phase, 15- and 20-ampere receptacles'), true, 'art32: verbatim 2017 (A) scope (125 V, 15/20 A)');
+  eq(has('(A)(1) through (10)'), true, 'art32: verbatim 2017 (A)(1)-(10) list ref');
+  eq(has('(B) Other Than Dwelling Units. All single-phase receptacles rated 150 volts to ground or less, 50 amperes or less'), true, 'art32: verbatim 2017 (B) scope');
+  eq(has('(C) Boat Hoists.'), true, 'art32: verbatim 2017 (C) Boat Hoists');
+  eq(has('(D) Kitchen Dishwasher Branch Circuit.'), true, 'art32: verbatim 2017 (D) dishwasher');
+  eq(has('(E) Crawl Space Lighting Outlets. GFCI protection shall be provided for lighting outlets not exceeding 120 volts installed in crawl spaces.'), true, 'art32: verbatim 2017 (E) crawl-space lighting (120 V ceiling)');
+  eq(has('conductor program as specified in 590.6(B)(3)'), true, 'art32: verbatim 2017 590.6(B)(3) AEGCP cross-ref');
+  // verbatim 2020 NEC 210.8 probes (full-code scan, chars 332350-339620, pre-TIA 1653)
+  eq(has('210.8(A) through (F)'), true, 'art32: verbatim 2020 lead-in (A) through (F)');
+  eq(has('(A) Dwelling Units. All 125-volt through 250-volt receptacles installed in the locations specified in 210.8(A)(1) through (A)(11)'), true, 'art32: verbatim 2020 (A) scope (125-250 V, 11 locations)');
+  eq(has('(11) Indoor damp and wet locations'), true, 'art32: verbatim 2020 (A)(11) damp and wet');
+  eq(has('(B) Other Than Dwelling Units. All 125-volt through 250-volt receptacles supplied by single-phase branch circuits rated 150 volts or less to ground, 50 amperes or less'), true, 'art32: verbatim 2020 (B) scope');
+  eq(has('210.8(B)(1) through (B)(12)'), true, 'art32: verbatim 2020 (B)(1)-(12) list ref');
+  eq(has('(C) Crawl Space Lighting Outlets.'), true, 'art32: verbatim 2020 (C) (letter shifted; Boat Hoists gone)');
+  eq(has('(D) Specific Appliances. Unless GFCI protection is provided in accordance with 422.5(B)(3) through (B)(5)'), true, 'art32: verbatim 2020 (D) Specific Appliances');
+  eq(has('(E) Equipment Requiring Servicing. GFCI protection shall be provided for the receptacles required by 210.63.'), true, 'art32: verbatim 2020 (E) 210.63 rule');
+  eq(has('(F) Outdoor Outlets. All outdoor outlets for dwellings, other than those covered in 210.8(A)(3)'), true, 'art32: verbatim 2020 (F) Outdoor Outlets (pre-TIA: no HVAC exception)');
+  eq(has('conductor program as specified in 590.6(B)(2)'), true, 'art32: verbatim 2020 590.6(B)(2) AEGCP cross-ref (transcribed as found)');
+  // delta + TIA probes
+  eq(has('door, doorway'), true, 'art32: 2020 distance-rule fix names the deleted "door, doorway" language');
+  eq(has('tia 1653'), true, 'art32: TIA 1653 documented');
+  eq(has('september 1, 2026'), true, 'art32: TIA 1653 expiration September 1, 2026');
+  eq(has('517.21'), true, 'art32: 2020 (B)(5) Ex 2 rewritten to point at 517.21');
+  // 2023/2026 change-record probes
+  eq(has('change-record verified'), true, 'art32: 2023/2026 section labeled change-record verified');
+  eq(has('15 locations'), true, 'art32: 2023 (B) expanded to 15 locations');
+  eq(has('60 amperes'), true, 'art32: 2026 (F) 50 A -> 60 A threshold');
+  // core-computed worked examples (real shipped app.js, zero hand math)
+  eq(nsb(15), 15, 'art32 EX1: nextStdBreaker(15) = 15 A (240.6(A))');
+  eq(p(15, 'cu', 75).size, '14', 'art32 EX1: 15 A -> 14 AWG Cu');
+  eq(p(15, 'cu', 75).amp, 20, 'art32 EX1: 14 AWG Cu Table 310.16 ampacity 20 A');
+  eq(p(50, 'cu', 75).size, '8', 'art32 EX2: 50 A -> 8 AWG Cu (the 240 V dryer)');
+  eq(p(50, 'cu', 75).amp, 50, 'art32 EX2: 8 AWG Cu Table 310.16 ampacity 50 A');
+  // worked-example figures actually appear in the article
+  eq(has('14 awg cu') && has('20 a'), true, 'art32: EX1 14 AWG Cu (amp 20) in article');
+  eq(has('8 awg cu') && has('50 a'), true, 'art32: EX2 8 AWG Cu (amp 50) in article');
+  eq(has('4.9 ft') && has('6.6 ft'), true, 'art32: EX3 sink distances 4.9 ft / 6.6 ft in article');
+  eq(has('5.0 ft'), true, 'art32: EX3 doorway case 5.0 ft in article');
+  eq(has('1.8 m (6 ft)'), true, 'art32: 6 ft (1.8 m) sink/tub test in article');
+  eq(has('4.0 ft') && has('7.5 ft'), true, 'art32: EX8 tub distances 4.0 ft / 7.5 ft in article');
+  eq(has('277 v'), true, 'art32: EX8 277 V crawl-space case in article');
+  // site wiring
+  eq(art.includes('nec-21012-afci-protection.html'), true, 'art32: cross-links to the 210.12 (AFCI) article');
+  eq(art.includes('nec-21052-dwelling-receptacle-outlets.html'), true, 'art32: cross-links to the 210.52 article');
+  eq(art.includes('nec-21021-outlet-devices.html'), true, 'art32: cross-links to the 210.21 article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art32: cross-links to the 240.4(D) article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art32: cross-links to the Table 310.16 article');
+  const sitemap = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap.includes('articles/nec-21008-gfci-protection.html'), true, 'art32: sitemap entry present');
+  const index = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index.includes('articles/nec-21008-gfci-protection.html'), true, 'art32: index cross-link present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
