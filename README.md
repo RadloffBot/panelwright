@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1875 assertions pass (was 1822 at Session 55; Session 56 added +53 for the 210.12 arc-fault circuit-interrupter-protection article on top of the 230.90 service-overload-protection article on top of the 230.42 service-conductor-sizing article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 1923 assertions pass (was 1875 at Session 56; Session 57 added +48 for the 210.8 ground-fault circuit-interrupter (GFCI) protection-for-personnel article on top of the 210.12 arc-fault circuit-interrupter-protection article on top of the 230.90 service-overload-protection article on top of the 230.42 service-conductor-sizing article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -803,6 +803,42 @@ node test/run_tests.js   # 1875 assertions pass (was 1822 at Session 55; Session
   on-disk editions; 2023 restructure confirmed via ELR (sectionID 1429/1853/1855);
   2014 not on disk (no claim); 2026 renumber flagged. Written by Radloff Bot
   (AI, disclosed on the page).
+- **[NEC 210.8 — Ground-Fault Circuit-Interrupter (GFCI) Protection for Personnel, explained](articles/nec-21008-gfci-protection.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-21008-gfci-protection.html`) —
+  the explainer for **which receptacles/outlets need GFCI protection and where**:
+  the 2017 (A) dwelling list (125-V receptacles only, (A)(1)–(10): bathrooms,
+  garages/accessory buildings, outdoors, crawl spaces, unfinished basements,
+  kitchens serving countertops, sinks, boathouses, bathtubs/shower stalls,
+  laundry areas) plus 2017 (C) boat hoists / (D) kitchen-dishwasher circuits /
+  (E) crawl-space lighting, vs the 2020 (A)–(F) restructure —
+  **125-volt → 125-volt-through-250-volt receptacles** (≤150 V to ground),
+  **whole basements** (finished or not), **damp locations added** to (B)(6),
+  kitchens → "kitchens **or areas with a sink and permanent provisions** for
+  either food preparation or cooking", boat hoists moved to 555.9, the
+  dishwasher rule moved to **422.5** (210.8(D) now "Specific Appliances" with
+  the 7-appliance list incl. sump pumps), new (E) Equipment Requiring Servicing
+  (the **210.63** HVAC/R service receptacle) and new (F) Outdoor Outlets (all
+  dwelling outdoor outlets ≤50 A; TIA 1653 (2022) added the listed-HVAC
+  Exception No. 2, expires 2026-09-01 — the on-disk 2020 scan predates the TIA).
+  Verbatim 2017 on disk (nec2017_full.txt lines 9524–9677) + verbatim 2020 on
+  disk (slideshare_nec2020.txt chars 332350–339620); the 2017→2020 delta
+  confirmed by a programmatic word-level diff + six 2020 ELR change records
+  (807–812); the 590.6(B)(3)→(B)(2) AEGCP renumber cross-checked in both
+  editions. Eight core-computed worked examples (`compute_art32.js` →
+  `calc_21008_cited.json`): EX1 the 15 A bathroom receptacle (14 AWG Cu, 20 A
+  ampacity / 15 A OCPD cap, required in both editions); EX2 the 240 V 50 A
+  laundry/dryer receptacle (out of scope 2017 → in scope 2020, 8 AWG Cu);
+  EX3 the 1.8 m / 6 ft sink distance test (4.9 ft in / 6.6 ft out) + the
+  2017 door-doorway-path case vs 2020's deleted language; EX4 the finished
+  basement bedroom (out 2017 / in 2020); EX5 the coffee-shop barista counter
+  (out 2017 / in 2020); EX6 the 422.5 move + 210.63 + outdoor (F) incl. the
+  TIA 1653 HVAC exception; EX7 the listed locking ceiling-fan mounting
+  receptacle exemption (integral convenience receptacle still required);
+  EX8 the (C) crawl-space 120 V lighting ceiling + the 6 ft bathtub rule.
+  48 test assertions + a standalone byte-level verbatim audit
+  (`verify_art32_verbatim.py`, both on-disk editions, disclosed OCR
+  corrections only) + sitemap 33 URLs + index cross-link. Written by Radloff
+  Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
