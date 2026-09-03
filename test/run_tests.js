@@ -3092,5 +3092,95 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(has('250.24(C)'), true, 'art29: cites the (C) grounded-conductor 250.24(C) floor');
 }
 
+// Article 30 (230.90 Where Required — Overload Protection for Service Conductors).
+// The (A) rule (OCPD rating/setting not higher than the conductor ampacity) with five
+// exceptions, (B) no OCPD in the grounded conductor, and the 2017->2020 delta (dropped
+// "allowable" in (A) + Exception 5 renumber 310.15(B)(7) -> 310.12). Core-computed
+// examples: compute_art30.js -> calc_23090_cited.json. Verbatim audit: validate_art30.py.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-23090-service-overload-protection.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const p = core.pickConductor31016, nsb = core.nextStdBreaker,
+        svcLoad = core.serviceLoad22082, svcLine = core.serviceLineConductor22082,
+        r2 = core.round2;
+  eq(art.includes('nec-23090-service-overload-protection.html'), true, 'art30: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-23090-service-overload-protection.html'), true, 'art30: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art30: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art30: Article + FAQPage JSON-LD present');
+  eq(art.includes('"datePublished": "2026-09-03"'), true, 'art30: datePublished 2026-09-03');
+  eq((art.match(/<h3>EX\d/g) || []).length, 6, 'art30: six worked examples');
+  // verbatim 2017 230.90 probes
+  eq(has('230.90 Where Required'), true, 'art30: verbatim title "Where Required"');
+  eq(has('Each ungrounded service conductor shall have overload protection'), true, 'art30: verbatim lead-in (overload protection mandate)');
+  eq(has('not higher than the allowable ampacity of the conductor'), true, 'art30: verbatim 2017 (A) (with "allowable")');
+  eq(has('A set of fuses shall be considered all the fuses required to protect all the ungrounded conductors of a circuit'), true, 'art30: verbatim (A) fuse-set clause');
+  eq(has('Single-pole circuit breakers, grouped in accordance with 230.71(B), shall be considered as one protective device'), true, 'art30: verbatim (A) single-pole-grouped clause');
+  eq(has('For motor-starting currents, ratings that comply with 430.52, 430.62, and 430.63 shall be permitted'), true, 'art30: verbatim 2017 Exception No. 1 (motor starts)');
+  eq(has('Fuses and circuit breakers with a rating or setting that complies with 240.4(B) or (C) and 240.6 shall be permitted'), true, 'art30: verbatim 2017 Exception No. 2 (240.4(B)/(C)+240.6)');
+  eq(has('Two to six circuit breakers or sets of fuses shall be permitted as the overcurrent device'), true, 'art30: verbatim 2017 Exception No. 3 (two-to-six)');
+  eq(has('the sum of the ratings of the circuit breakers or fuses shall be permitted to exceed the ampacity of the service conductors, provided the calculated load does not exceed the ampacity of the service conductors'), true, 'art30: verbatim 2017 Exception No. 3 (sum vs ampacity + load test)');
+  eq(has('Overload protection for fire pump supply conductors shall comply with 695.4(B)(2)(a)'), true, 'art30: verbatim 2017 Exception No. 4 (fire pumps)');
+  eq(has('requirements of 310.15(B)(7)'), true, 'art30: verbatim 2017 Exception No. 5 (310.15(B)(7))');
+  eq(has('No overcurrent device shall be inserted in a grounded service conductor except a circuit breaker that simultaneously opens all conductors of the circuit'), true, 'art30: verbatim (B) not in grounded conductor');
+  // verbatim 2020 230.90 probes (the two real changes)
+  eq(has('not higher than the ampacity of the conductor'), true, 'art30: verbatim 2020 (A) (no "allowable")');
+  eq(has('requirements of 310.12'), true, 'art30: verbatim 2020 Exception No. 5 (310.12)');
+  // delta box probes
+  eq(has('dropped "allowable"'), true, 'art30: delta box names the dropped "allowable"');
+  eq(has('310.15(B)(7)'), true, 'art30: delta box names the 2017 310.15(B)(7) reference');
+  eq(has('310.12'), true, 'art30: delta box names the 2020 310.12 reference');
+  eq(has('unchanged in substance'), true, 'art30: delta box states the 83% rule unchanged in substance');
+  eq(has('83 percent of the service rating'), true, 'art30: cites the 83% rule text');
+  // core-computed worked examples (the real shipped app.js, zero hand math)
+  const r1 = svcLoad({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1, hpNoSuppVA: 12000, volt: 240 });
+  eq(r1.totalVA, 21000, 'art30 EX1: 220.82 flagship 21,000 VA');
+  eq(r1.amps, 87.5, 'art30 EX1: 21,000 VA @ 240 V = 87.5 A');
+  eq(svcLine(r1, 'cu', 75).pick.size, '3', 'art30 EX1: ungrounded 3 AWG Cu (100 A @75)');
+  eq(svcLine(r1, 'al', 75).pick.size, '1', 'art30 EX1: ungrounded 1 AWG Al (100 A @75)');
+  eq(nsb(100), 100, 'art30 EX1: nextStdBreaker(100) = 100 A (230.79(C) one-family)');
+  eq(nsb(100) <= svcLine(r1, 'cu', 75).pick.amp && nsb(100) <= svcLine(r1, 'al', 75).pick.amp, true, 'art30 EX1: 230.90(A) OCPD 100 <= ampacity 100 holds');
+  eq(r2(100 * 0.83), 83, 'art30 EX2: 83% of 100 A = 83 A');
+  eq(p(83, 'cu', 75).size, '4', 'art30 EX2: 83 A -> 4 AWG Cu (85 A @75)');
+  eq(p(83, 'cu', 75).amp, 85, 'art30 EX2: 4 AWG Cu ampacity 85 A');
+  eq(p(83, 'al', 75).size, '2', 'art30 EX2: 83 A -> 2 AWG Al (90 A @75)');
+  eq(r2(200 * 0.83), 166, 'art30 EX2: 83% of 200 A = 166 A');
+  eq(p(166, 'cu', 75).size, '2/0', 'art30 EX2: 166 A -> 2/0 AWG Cu (175 A @75)');
+  eq(p(166, 'al', 75).size, '4/0', 'art30 EX2: 166 A -> 4/0 AWG Al (180 A @75)');
+  eq(r2(400 * 0.83), 332, 'art30 EX2: 83% of 400 A = 332 A');
+  eq(p(332, 'cu', 75).size, '400', 'art30 EX2: 332 A -> 400 kcmil Cu (335 A @75)');
+  eq(p(332, 'cu', 75).amp, 335, 'art30 EX2: 400 kcmil Cu ampacity 335 A (3 A margin over 332)');
+  eq(p(332, 'al', 75).size, '600', 'art30 EX2: 332 A -> 600 kcmil Al (340 A @75)');
+  eq(p(100, 'cu', 75).size, '3', 'art30 EX2: without 83%, 100 A -> 3 AWG Cu');
+  eq(p(200, 'cu', 75).size, '3/0', 'art30 EX2: without 83%, 200 A -> 3/0 AWG Cu');
+  eq(p(200, 'al', 75).size, '250', 'art30 EX2: without 83%, 200 A -> 250 kcmil Al (205 A)');
+  eq(p(400, 'cu', 75).size, '600', 'art30 EX2: without 83%, 400 A -> 600 kcmil Cu (420 A)');
+  eq(p(400, 'al', 75).size, '900', 'art30 EX2: without 83%, 400 A -> 900 kcmil Al (425 A)');
+  eq((100 + 100) > 100 && 87.5 <= 100, true, 'art30 EX3: two 100 A breakers (sum 200) > 3 AWG Cu ampacity 100, but load 87.5 <= 100 -> Ex 3 permits');
+  eq(p(115, 'cu', 75).size, '2', 'art30 EX6: 115 A -> 2 AWG Cu (115 A @75)');
+  eq(nsb(112), 125, 'art30 EX6: nextStdBreaker(112) = 125 A (240.6(A) next standard)');
+  eq(nsb(112) > 115, true, 'art30 EX6: 125 A OCPD > 115 A ampacity -> permitted by Exception No. 2 (240.4(B)/(C)+240.6)');
+  // worked-example figures actually appear in the article
+  eq(has('83 A') && has('4 AWG Cu (85 A)') && has('2 AWG Al (90 A)'), true, 'art30: EX2 100 A row figures in article');
+  eq(has('166 A') && has('2/0 AWG Cu (175 A)') && has('4/0 AWG Al (180 A)'), true, 'art30: EX2 200 A row figures in article');
+  eq(has('332 A') && has('400 kcmil Cu (335 A)') && has('600 kcmil Al (340 A)'), true, 'art30: EX2 400 A row figures in article');
+  eq(has('3/0 AWG Cu (200 A)') && has('250 kcmil Al (205 A)'), true, 'art30: EX2 200 A no-83% comparison in article');
+  eq(has('600 kcmil Cu (420 A)') && has('900 kcmil Al (425 A)'), true, 'art30: EX2 400 A no-83% comparison in article');
+  eq(has('125 A') && has('2 AWG Cu (115 A)'), true, 'art30: EX6 figures in article');
+  eq(has('87.5 A') && has('3 AWG Cu (100 A)') && has('1 AWG Al (100 A)'), true, 'art30: EX1/EX3 figures in article');
+  eq(has('holds: true') && has('permittedByEx3: true') && has('permittedByEx2: true'), true, 'art30: EX1/EX3/EX6 verdicts in article');
+  eq(has('2-pole'), true, 'art30: EX4 2-pole simultaneous-open requirement');
+  // cross-links
+  eq(art.includes('nec-23079-service-disconnecting-means.html'), true, 'art30: cross-links to the 230.70-230.80 article');
+  eq(art.includes('nec-23042-service-conductor-sizing.html'), true, 'art30: cross-links to the 230.42 article');
+  eq(art.includes('nec-22082-optional-service-load.html'), true, 'art30: cross-links to the 220.82 article');
+  eq(art.includes('nec-22061-neutral-load.html'), true, 'art30: cross-links to the 220.61 article');
+  eq(art.includes('nec-11014c-31014-termination-temperature.html'), true, 'art30: cross-links to the 110.14(C) article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art30: cross-links to the Table 310.16 article');
+  eq(art.includes('nec-conductor-sizing.html'), true, 'art30: cross-links to the conductor-sizing article');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

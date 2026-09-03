@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1755 assertions pass (was 1705 at Session 53; Session 54 added +50 for the 230.42 service-conductor-sizing article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 1822 assertions pass (was 1755 at Session 54; Session 55 added +67 for the 230.90 service-overload-protection article on top of the 230.42 service-conductor-sizing article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -732,6 +732,42 @@ node test/run_tests.js   # 1755 assertions pass (was 1705 at Session 53; Session
   live-core example parity) + 67 test assertions. Section titles verified across
   2014/2017/2020/2023 on up.codes (NFPA 70); 2023 change analysis records no
   230.70–230.82 change. Written by Radloff Bot (AI, disclosed on the page).
+
+- **[NEC 230.90 — Where Required: Overload Protection for Service Conductors, explained](articles/nec-23090-service-overload-protection.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-23090-service-overload-protection.html`) —
+  the explainer for **who polices the match between the service breaker and the
+  service wires**: 230.90(A) (each ungrounded service conductor shall have
+  overload protection — the OCPD in series with it rated or set **not higher than
+  the conductor ampacity**) with **all five exceptions**: No. 1 motor-starting
+  ratings per 430.52/430.62/430.63 (OCPD may exceed the ampacity for inrush),
+  No. 2 the 240.4(B)/(C) + 240.6 next-standard-size allowance, No. 3 two-to-six
+  breakers/fuse sets whose **sum of ratings may exceed the ampacity provided the
+  calculated load does not**, No. 4 fire-pump supply conductors (695.4(B)(2)(a)),
+  and No. 5 the **83% single-phase 120/240-V, 3-wire dwelling-service rule**
+  (ungrounded ampacity ≥ 83% of the service rating, 100–400 A). **230.90(B)
+  (the hard line):** no overcurrent device in the grounded (neutral) service
+  conductor except a breaker that simultaneously opens all conductors — why the
+  service disconnect is a 2-/3-/4-pole device. **The 2017→2020 delta (the
+  headline, exactly two changes per a programmatic word-level diff):** (A) drops
+  "**allowable**" before "ampacity," and Exception No. 5 renumbers its
+  cross-reference from **310.15(B)(7)** to **310.12** — the 83% rule moves into
+  the 2020 ampacity-table reorganization, unchanged in substance. Six
+  core-computed worked examples (every number from the shipped cores under node,
+  `compute_art30.js` → `calc_23090_cited.json`): EX1 the 100 A one-family service
+  (OCPD 100 ≤ ampacity 100 — the basic rule holds); EX2 the 83% rule at three
+  sizes (100 A → 4 AWG Cu / 2 AWG Al; 200 A → 2/0 Cu (175 A ≥ 166 A) / 4/0 Al;
+  400 A → 400 kcmil Cu (335 A ≥ 332 A) / 600 kcmil Al — with the 100% picks for
+  comparison: 3 AWG, 3/0, 600 Cu); EX3 two 100 A breakers (sum 200 A) on 3 AWG Cu
+  (100 A) at an 87.5 A load — permitted by Exception No. 3; EX4 the 230.90(B)
+  2-pole simultaneous-open requirement; EX5 the motor-starting exception (430
+  tables out of scope); EX6 the 240.4(B)/(C) next-standard-size case (112 A load
+  → 125 A OCPD on 2 AWG Cu at 115 A). 43/43 `validate_art30.py` checks (byte-level
+  verbatim audit of both on-disk editions + JSON-LD + figure probes) + 67 test
+  assertions. Edition posture stated honestly: title "Where Required" identical
+  in both on-disk editions (2014 not on disk; no 2014 claim); 2023 change
+  analysis records no 230.90 change; 83% rule content confirmed on disk for 2017
+  (310.15(B)(7)) and via ELR for the 2020 home (310.12, Table 310.12(A)/(B));
+  2026 renumber flagged. Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
