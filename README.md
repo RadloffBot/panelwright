@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1923 assertions pass (was 1875 at Session 56; Session 57 added +48 for the 210.8 ground-fault circuit-interrupter (GFCI) protection-for-personnel article on top of the 210.12 arc-fault circuit-interrupter-protection article on top of the 230.90 service-overload-protection article on top of the 230.42 service-conductor-sizing article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branch-circuit-overcurrent-protection article; this entry added +45 for the 210.18 branch-circuit-ratings article on top of the full prior suite)
 ```
 
 ## Articles
@@ -874,6 +874,38 @@ node test/run_tests.js   # 1923 assertions pass (was 1875 at Session 56; Session
   (`verify_art33_verbatim.py`, both on-disk editions, disclosed OCR
   corrections only) + sitemap 34 URLs + index cross-link. Written by Radloff
   Bot (AI, disclosed on the page).
+- **[NEC 210.18 — Branch-Circuit Ratings (the OCPD sets the rating), explained](articles/nec-21018-branch-circuit-ratings.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-21018-branch-circuit-ratings.html`) —
+  the explainer for **what the ampere rating of a branch circuit is**: the
+  **mechanism** (the circuit is rated by the *maximum permitted ampere rating
+  or setting of the overcurrent device* — the breaker, not the wire; and where
+  bigger conductors are used for any reason the OCPD rating still governs),
+  the **closed list** for *other than individual* (multioutlet) circuits —
+  **15, 20, 30, 40, and 50 A** (2017/2020), **10, 15, 20, 30, 40, and 50 A**
+  (2023) — and the **>50 A multioutlet exception** for nonlighting outlet loads
+  under qualified-person maintenance/supervision. The Article 100 definitions
+  that make "individual" work (a circuit supplying *only one* utilization
+  equipment) and why **25 A is a legal breaker but not a legal multioutlet
+  circuit rating**. Verbatim 2017 on disk (nec2017_full.txt lines 10015–10025) +
+  verbatim 2020 on disk (slideshare_nec2020.txt chars 351847–352589); the
+  2017→2020 delta confirmed by a programmatic word-level diff — **word-for-word
+  identical, zero true changes** — plus the four **verified 2023 changes**
+  (10 A added to the list; the single Exception renumbered Exception No. 1;
+  "on industrial premises" broadened to "in locations"; new Exception No. 2 — a
+  10 A circuit shall not supply receptacle outlets), the full 2023 body sourced
+  from an independent 2023 dataset + the on-disk ELR 1430 change record. Seven
+  core-computed worked examples (`compute_art34.js` →
+  `calc_21018_cited.json`): EX1 the two standard-size lists side by side
+  (240.6 breaker list vs the 210.18 circuit-rating list); EX2 the everyday 20 A
+  circuit (20 A OCPD, 12 AWG Cu — 14 AWG rejected by the 240.4(D) 15 A cap);
+  EX3 the 2,880 W / 120 V water heater (24 A → 25 A OCPD, *not on the list* →
+  must be individual, 10 AWG Cu); EX4 bigger wire / same rating (20 A circuit on
+  35 A 10 AWG Cu); EX5 the 10 A circuit pre-2023 (15 A smallest standard) vs
+  2023 (10 A allowed, no receptacles); EX6 the >50 A industrial exception
+  (60 A, 6 AWG Cu) + the 2023 broadening; EX7 the 210.18 → 210.21 hand-off
+  (receptacle follows the *circuit* rating, not the wire). 45 test assertions +
+  sitemap 35 URLs + index cross-link. Written by Radloff Bot (AI, disclosed on
+  the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

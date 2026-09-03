@@ -3400,5 +3400,86 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index.includes('articles/nec-21020-branch-circuit-ocpd.html'), true, 'art33: index cross-link present');
 }
 
+// Article 34 (NEC 210.18 Branch-Circuit Ratings — the OCPD sets the rating).
+// The two sentences (OCPD = rating; closed list for other-than-individual circuits;
+// bigger wire does not raise the rating) + the >50 A multioutlet exception; the
+// 2017->2020 word-identical delta (programmatic diff, zero true changes); the four
+// verified 2023 changes (10 A added to the list, Exception -> Exception No. 1,
+// "on industrial premises" -> "in locations", new Exception No. 2 no-receptacle).
+// Core-computed examples: compute_art34.js -> calc_21018_cited.json.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-21018-branch-circuit-ratings.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const p = core.pickConductor31016, nsb = core.nextStdBreaker, cap = core.smallConductorCap;
+  // cap-aware pick (240.4(D) governing cap), same shape as the compute script
+  const pickCap = (reqA, mat, temp) => {
+    for (const row of core.T31016) {
+      const cols = core.T31016_COLS[temp];
+      const amp = row[mat === 'al' ? 'al' : 'cu'][mat === 'al' ? cols[1] : cols[0]];
+      if (amp == null || amp < reqA) continue;
+      if (row.small) { const c = cap(row.s, mat); if (c != null && c < reqA) continue; }
+      return { size: row.s, amp, cap: row.small ? cap(row.s, mat) : null };
+    }
+    return { size: null, amp: null };
+  };
+  eq(art.includes('nec-21018-branch-circuit-ratings.html'), true, 'art34: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-21018-branch-circuit-ratings.html'), true, 'art34: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art34: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art34: Article + FAQPage JSON-LD present');
+  // verbatim 2017 NEC 210.18 probes (official NFPA text, lines 10015-10025)
+  eq(has('210.18 Rating. Branch circuits recognized by this article shall be rated in accordance with the maximum permitted ampere rating or setting of the overcurrent device'), true, 'art34: verbatim 2017 sentence 1 (OCPD sets the rating)');
+  eq(has('The rating for other than individual branch circuits shall be 15, 20, 30, 40, and 50 amperes'), true, 'art34: verbatim 2017 closed list');
+  eq(has('Where conductors of higher ampacity are used for any reason, the ampere rating or setting of the specified overcurrent device shall determine the circuit rating'), true, 'art34: verbatim 2017 sentence 3 (bigger wire, same rating)');
+  eq(has('Exception: Multioutlet branch circuits greater than 50 amperes shall be permitted to supply nonlighting outlet loads on industrial premises where conditions of maintenance and supervision ensure that only qualified persons service the equipment'), true, 'art34: verbatim 2017 Exception');
+  // 2020 block is word-identical to 2017 (the article's central claim)
+  eq(has('word-for-word identical to the 2017 body'), true, 'art34: 2020 word-identical claim stated');
+  // 2023 change probes (four verified changes)
+  eq(has('10, 15, 20, 30, 40, and 50 amperes'), true, 'art34: 2023 list with 10 A added');
+  eq(has('Exception No. 1:'), true, 'art34: 2023 Exception renumbered No. 1');
+  eq(has('in locations'), true, 'art34: 2023 Exception No. 1 broadened to "in locations" (was "on industrial premises")');
+  eq(has('where conditions of maintenance and supervision ensure that only qualified persons service the equipment'), true, 'art34: 2023 Exception No. 1 qualified-persons clause verbatim');
+  eq(has('Exception No. 2: Branch circuits rated 10 amperes shall not supply receptacle outlets'), true, 'art34: 2023 Exception No. 2 (no receptacles on 10 A)');
+  eq(has('Branch Circuit, Individual. A branch circuit that supplies only one utilization equipment'), true, 'art34: Article 100 individual-circuit definition quoted');
+  // 240.6 context (the breaker list vs the circuit-rating list)
+  eq(has('Additional standard ampere ratings for fuses shall be 1, 3, 6, 10, and 601'), true, 'art34: 240.6(A) fuse add-ons quoted');
+  // worked-example figures (from calc_21018_cited.json) actually appear in the article
+  eq(has('2,880 w'), true, 'art34: EX3 2,880 W water-heater load in article');
+  eq(has('2,400 va'), true, 'art34: EX4 2,400 VA load in article');
+  eq(has('1,200 w'), true, 'art34: EX5 1,200 W 10 A load in article');
+  eq(has('12 awg cu'), true, 'art34: EX2 12 AWG Cu in article');
+  eq(has('10 awg cu'), true, 'art34: EX3/EX4 10 AWG Cu in article');
+  eq(has('14 awg cu'), true, 'art34: EX5 14 AWG Cu in article');
+  eq(has('6 awg cu'), true, 'art34: EX6 6 AWG Cu in article');
+  // core-computed assertions (real shipped app.js, zero hand math)
+  eq(nsb(16), 20, 'art34 EX2: nextStdBreaker(16) = 20 A');
+  eq([15,20,30,40,50].includes(nsb(16)), true, 'art34 EX2: 20 A on the 210.18 (2017/2020) list');
+  eq(pickCap(20, 'cu', 75).size, '12', 'art34 EX2: 20 A -> 12 AWG Cu (14 AWG rejected: 240.4(D) cap 15 A)');
+  eq(pickCap(20, 'cu', 75).amp, 25, 'art34 EX2: 12 AWG Cu Table 310.16 ampacity 25 A');
+  eq(nsb(24), 25, 'art34 EX3: nextStdBreaker(24) = 25 A');
+  eq([15,20,30,40,50].includes(nsb(24)), false, 'art34 EX3: 25 A NOT on the 210.18 multioutlet list (must be individual)');
+  eq(pickCap(25, 'cu', 75).size, '10', 'art34 EX3: 25 A -> 10 AWG Cu (12 AWG rejected: 240.4(D) cap 20 A < 25 A)');
+  eq(pickCap(25, 'cu', 75).amp, 35, 'art34 EX3: 10 AWG Cu Table 310.16 ampacity 35 A');
+  eq(pickCap(60, 'cu', 75).size, '6', 'art34 EX6: 60 A -> 6 AWG Cu');
+  eq(pickCap(60, 'cu', 75).amp, 65, 'art34 EX6: 6 AWG Cu Table 310.16 ampacity 65 A');
+  eq(pickCap(10, 'cu', 75).size, '14', 'art34 EX5: 10 A (2023) -> 14 AWG Cu');
+  eq(cap('14', 'cu'), 15, 'art34 EX5: 14 AWG Cu 240.4(D) cap 15 A (>= 10 A, OK)');
+  eq(nsb(10), 15, 'art34 EX5: pre-2023 nextStdBreaker(10) = 15 A (breaker list starts at 15)');
+  eq(p(35, 'cu', 75).size, '10', 'art34 EX4: 10 AWG Cu carries 35 A (the "bigger wire" in the EX4 20 A circuit)');
+  // cross-links
+  eq(art.includes('nec-21020-branch-circuit-ocpd.html'), true, 'art34: cross-links to the 210.20 article');
+  eq(art.includes('nec-21019a-continuous-load.html'), true, 'art34: cross-links to the 210.19(A) article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art34: cross-links to the 240.4(D) article');
+  eq(art.includes('nec-21021-outlet-devices.html'), true, 'art34: cross-links to the 210.21 article');
+  eq(art.includes('nec-21023-permissible-loads.html'), true, 'art34: cross-links to the 210.23 article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art34: cross-links to the Table 310.16 article');
+  const sitemap = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap.includes('articles/nec-21018-branch-circuit-ratings.html'), true, 'art34: sitemap entry present');
+  const index = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index.includes('articles/nec-21018-branch-circuit-ratings.html'), true, 'art34: index cross-link present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
