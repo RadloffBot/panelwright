@@ -3014,5 +3014,83 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art28: cross-links to the 250.102 article');
 }
 
+// Article 29 (230.42 Minimum Size and Ampacity of Service-Entrance Conductors).
+// The (A) rule (larger of 125% continuous or 100% of max load after correction
+// factors), the (B) 230.79 disconnect-rating floor, the (C) grounded-conductor
+// floor, and the 2017->2020 delta (310.15->310.14 + new 110.14(C) clause + title
+// change + UL 857 note). Core-computed examples:
+// compute_art29.js -> calc_23042_cited.json. Verbatim audit: verify_art29.js.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-23042-service-conductor-sizing.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const dehy = (s) => s.replace(/- */g, '');
+  const normH = dehy(norm);
+  const hasH = (s) => normH.includes(dehy(s.toLowerCase()));
+  eq(art.includes('nec-23042-service-conductor-sizing.html'), true, 'art29: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-23042-service-conductor-sizing.html'), true, 'art29: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art29: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art29: Article + FAQPage JSON-LD present');
+  // verbatim 2017 230.42 probes
+  eq(has('230.42 Minimum Size and Rating'), true, 'art29: verbatim 2017 title "Minimum Size and Rating"');
+  eq(hasH('Conductors shall be sized to carry not less than the largest of 230.42(A)(1) or (A)(2)'), true, 'art29: verbatim 2017 (A) lead-in (with "to carry")');
+  eq(has('Ampacity shall be determined from 310.15'), true, 'art29: verbatim 2017 ampacity sentence (310.15)');
+  eq(has('the sum of the noncontinuous loads plus 125 percent of continuous loads'), true, 'art29: verbatim 2017 (A)(1) 125% continuous rule');
+  eq(hasH('the minimum serviceentrance conductor size shall have an ampacity not less than the maximum load to be served after the application of any adjustment or correction factors'), true, 'art29: verbatim 2017 (A)(2) correction-factor rule');
+  eq(has('the minimum ampacity for ungrounded conductors for specific installations shall not be less than the rating of the service disconnecting means specified in 230.79(A) through (D)'), true, 'art29: verbatim 2017 (B) 230.79 floor');
+  eq(has('The grounded conductor shall not be smaller than the minimum size as required by 250.24(C)'), true, 'art29: verbatim 2017 (C) grounded conductor');
+  // verbatim 2020 230.42 probes (the renumber + new clause + title change)
+  eq(has('230.42 Minimum Size and Ampacity'), true, 'art29: verbatim 2020 title "Minimum Size and Ampacity"');
+  eq(hasH('Conductors shall be sized not less than the largest of 230.42(A)(1) or (A)(2)'), true, 'art29: verbatim 2020 (A) lead-in (no "to carry")');
+  eq(has('Ampacity shall be determined from 310.14 and shall comply with 110.14(C)'), true, 'art29: verbatim 2020 ampacity sentence (310.14 + 110.14(C))');
+  eq(has('For information on busways, see UL 857'), true, 'art29: verbatim 2020 UL 857 busway Informational Note');
+  eq(has('the maximum current of busways shall be that value for which the busway has been listed or labeled'), true, 'art29: verbatim 2020 busway clause (no "allowable")');
+  // edition-delta box probes
+  eq(has('310.15'), true, 'art29: delta box names the 2017 310.15 reference');
+  eq(has('310.14'), true, 'art29: delta box names the 2020 310.14 reference');
+  eq(has('110.14(C)'), true, 'art29: delta box names the new 110.14(C) clause');
+  eq(has('UL 857'), true, 'art29: delta box names the UL 857 note');
+  // core-computed worked examples (the real shipped app.js, zero hand math)
+  const p = core.pickConductor31016, derate = core.derate31015,
+        svcLoad = core.serviceLoad22082, svcLine = core.serviceLineConductor22082;
+  const r1 = svcLoad({ sqft: 1500, smallApplianceCircuits: 2, laundryCircuits: 1, hpNoSuppVA: 12000, volt: 240 });
+  eq(r1.totalVA, 21000, 'art29 EX1: 220.82 load 21,000 VA (1,500 sq ft dwelling)');
+  eq(r1.amps, 87.5, 'art29 EX1: 21,000 VA @ 240 V = 87.5 A');
+  eq(svcLine(r1, 'cu', 75).dwMinA, 100, 'art29 EX1: 230.42(B) -> 230.79(C) 100 A floor governs 87.5 A load');
+  eq(svcLine(r1, 'cu', 75).pick.size, '3', 'art29 EX1: 3 AWG Cu (100 A @75)');
+  eq(svcLine(r1, 'al', 75).pick.size, '1', 'art29 EX1: 1 AWG Al (100 A @75)');
+  const r2 = svcLoad({ sqft: 2200, smallApplianceCircuits: 2, laundryCircuits: 1, appliancesVA: 5000, hpCompressorVA: 11000, hpSuppVA: 3000, volt: 240 });
+  eq(r2.totalVA, 25390, 'art29 EX2: 220.82 load 25,390 VA (larger dwelling)');
+  eq(Math.round(r2.amps * 100) / 100, 105.79, 'art29 EX2: 25,390 VA @ 240 V = 105.79 A');
+  eq(svcLine(r2, 'cu', 75).pick.size, '2', 'art29 EX2: (A)(2) calc governs -> 2 AWG Cu (115 A @75)');
+  eq(Math.round((100 + 1.25 * 40) * 100) / 100, 150, 'art29 EX3: (A)(1) 100 + 125%x40 = 150 A');
+  eq(p(150, 'cu', 75).size, '1/0', 'art29 EX3: 150 A -> 1/0 AWG Cu (150 A @75)');
+  eq(Math.round((100 + 40) * 100) / 100, 140, 'art29 EX4: (A)(1) Ex No.1 grounded at 100% = 140 A');
+  eq(p(140, 'cu', 75).size, '1/0', 'art29 EX4: 140 A -> 1/0 AWG Cu (clears it)');
+  eq(p(150, 'cu', 75).size, '1/0', 'art29 EX5: bare-ampacity 75C pick = 1/0 Cu (150 A)');
+  const d = derate({ requiredA: 150, ambientC: 35, ccc: 8, mat: 'cu', temp: 75 });
+  eq(d.pick.size, '4/0', 'art29 EX5: (A)(2) after correction factors -> 4/0 Cu');
+  eq(d.deratedA, 151.34, 'art29 EX5: 230 x 0.70 x 0.94 = 151.34 A derated');
+  eq(d.cccFactor === 0.7 && d.ambF === 0.94, true, 'art29 EX5: 0.70 (8 CCC) x 0.94 (35 C) factors');
+  eq(d.passes, true, 'art29 EX5: 4/0 Cu derated ampacity passes the 150 A requirement');
+  eq(svcLine({ amps: 87.5 }, 'cu', 75).pick.amp, 100, 'art29 EX6: ungrounded pick ampacity (100 A) >= 230.79(C) floor (100 A)');
+  // worked-example figures actually appear in the article
+  eq(has('21,000 VA') && has('87.5 A') && has('3 AWG Cu (100 A)') && has('1 AWG Al (100 A)'), true, 'art29: EX1 figures in article');
+  eq(has('25,390 VA') && has('105.79 A') && has('2 AWG Cu (115 A)'), true, 'art29: EX2 figures in article');
+  eq(has('1/0 AWG Cu (150 A)') && has('4/0 AWG Cu (151.34 A derated)') && has('114.95 A'), true, 'art29: EX3/EX5 figures in article');
+  eq(has('interlock holds'), true, 'art29: EX6 interlock statement in article');
+  eq((art.match(/<h3>EX\d/g) || []).length, 6, 'art29: six worked examples');
+  // cross-links
+  eq(art.includes('nec-23079-service-disconnecting-means.html'), true, 'art29: cross-links to the 230.79 article');
+  eq(art.includes('nec-22082-optional-service-load.html'), true, 'art29: cross-links to the 220.82 article');
+  eq(art.includes('nec-11014c-31014-termination-temperature.html'), true, 'art29: cross-links to the 110.14(C) article');
+  eq(art.includes('nec-31015-ampacity-adjustments.html'), true, 'art29: cross-links to the 310.15 article');
+  eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art29: cross-links to the 250.102 article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art29: cross-links to the Table 310.16 article');
+  eq(has('250.24(C)'), true, 'art29: cites the (C) grounded-conductor 250.24(C) floor');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

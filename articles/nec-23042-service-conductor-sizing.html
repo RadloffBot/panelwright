@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 230.42 — Minimum Size and Ampacity of Service-Entrance Conductors (What Size Service Wire?)</title>
+<meta name="description" content="NEC 230.42 in full: how the service-entrance conductors (the wires from the meter to the panel) get sized. The (A) rule — the larger of 125% of continuous load or 100% of the maximum load after correction factors — the (B) rule that the ungrounded conductors must also clear the 230.79 disconnect rating, and the (C) grounded-conductor floor. The 2020 renumber (310.15→310.14 + the new 110.14(C) clause) and six core-computed worked examples.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-23042-service-conductor-sizing.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 230.42 — Minimum Size and Ampacity of Service-Entrance Conductors">
+<meta property="og:description" content="What size are the service wires? 230.42: the larger of 125% continuous or 100% of the max load after correction factors — and the ungrounded conductors must also clear the 230.79 disconnect rating. The 2020 renumber (310.15→310.14 + 110.14(C)) and six worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-23042-service-conductor-sizing.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 230.42 — Minimum Size and Ampacity of Service-Entrance Conductors">
+<meta name="twitter:description" content="What size are the service wires? 230.42: larger of 125% continuous or 100% of the max load after correction factors, and the ungrounded conductors must clear the 230.79 disconnect rating. 2020 renumber + six worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 230.42 minimum size and ampacity service conductors, what size service wire, service entrance conductor sizing, 230.42(A)(1) 125 percent continuous load service, 230.42(A)(2) maximum load after correction factors, 230.42(B) 230.79 service disconnect rating conductors, 230.42(C) grounded conductor 250.24, service conductor ampacity 310.14 110.14(C), 100 amp service conductors size, 200 amp service conductors size, 400 amp service conductors, service drop conductor size, electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 230.42 — Minimum Size and Ampacity of Service-Entrance Conductors",
+  "description": "NEC 230.42 in full: how the service-entrance conductors get sized. The (A) rule (the larger of 125% of continuous load or 100% of the maximum load after adjustment/correction factors), the (B) rule that the ungrounded conductors must also clear the 230.79 service-disconnect rating, and the (C) grounded-conductor floor (250.24(C)). The 2017→2020 renumber (ampacity determination moves from 310.15 to 310.14 + the new 110.14(C) compliance clause) and six core-computed worked examples.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-02",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-23042-service-conductor-sizing.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What size are the service entrance conductors?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Not less than the maximum load to be served. NEC 230.42(A): conductors shall be sized not less than the largest of (A)(1) [the noncontinuous load plus 125% of the continuous load] or (A)(2) [the maximum load after the application of any adjustment or correction factors]. Then 230.42(B) adds a floor for specific installations: the ungrounded conductors shall not be smaller than the rating of the service disconnecting means required by 230.79(A) through (D) — so a one-family dwelling's service conductors are always sized for at least 100 A, even if the load calc is smaller." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I size the service conductors for a house?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Run the 220.82 (or standard-method) load calc to get the calculated current, then size the ungrounded conductors for the larger of that current and the 230.79(C) 100 A one-family minimum. Example: a 1,500 sq ft house with a 12,000 VA heat pump works out to 87.5 A — but 230.42(B) → 230.79(C) floors the conductors at 100 A, so you use 3 AWG copper (100 A in the 75 °C column) or 1 AWG aluminum. A 2,200 sq ft house that works out to 105.79 A sizes the conductors to the calc → 2 AWG copper (115 A)." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does 230.42(A)(1) 125 percent of continuous loads mean?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Where the service-entrance conductors supply continuous loads (or a mix of continuous and noncontinuous loads), the minimum conductor ampacity is the noncontinuous load plus 125% of the continuous load — the service-conductor analog of 210.19(A)(1) for branch circuits. The two exceptions: (1) a grounded conductor not connected to an overcurrent device may be sized at 100% of the sum of continuous and noncontinuous load; (2) the sum at 100% is permitted where the conductors terminate in an overcurrent device and its assembly both listed for operation at 100% of rating." }
+    },
+    {
+      "@type": "Question",
+      "name": "Did 230.42 change in the 2020 NEC?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — the headline change is a renumber plus a new clause. The ampacity-determination sentence changed from 'Ampacity shall be determined from 310.15' (2017) to 'Ampacity shall be determined from 310.14 and shall comply with 110.14(C)' (2020). 310.15 became 310.14 (the ampacity table moved from 'Table 310.15(B)(16)' to 'Table 310.16'), and 2020 added the explicit 110.14(C) termination-temperature compliance clause. The title also changed from 'Minimum Size and Rating' to 'Minimum Size and Ampacity,' and a new Informational Note pointing to UL 857 for busways was added. The (A)(1)/(A)(2)/(B)/(C) requirements themselves are unchanged." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the service conductors the same size as the service disconnect?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Often, but the disconnect rating and the conductor ampacity are two different requirements that 230.42(B) links together. 230.79 sets the disconnect rating (not less than the calculated load, with the 15 / 30 / 100 / 60 A floors of (A)–(D)); 230.42(B) says the ungrounded service conductors shall not be smaller than that same rating. So the conductors are always sized to at least the disconnect rating — and, when the load calc is bigger, to the load calc. The 220.82 card in PanelWright applies exactly this: required ampacity = max(calculated current, 100 A), then the Table 310.16 pick." }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #171e26; --panel2: #1c2530; --line: #2a3644;
+    --text: #e8eef4; --dim: #93a4b4; --accent: #ffb020; --accent2: #4da3ff;
+    --ok: #3ddc84; --bad: #ff5d5d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 18px 60px; }
+  .crumb { font-size: 13px; color: var(--dim); margin-bottom: 18px; }
+  .crumb a { color: var(--accent2); text-decoration: none; }
+  .crumb a:hover { text-decoration: underline; }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: .2px; }
+  h1 span { color: var(--accent); }
+  h2 { font-size: 20px; margin: 34px 0 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  h3 { font-size: 16px; margin: 22px 0 8px; color: var(--accent); }
+  p { margin: 10px 0; }
+  a { color: var(--accent2); }
+  .sub { color: var(--dim); font-size: 14px; margin: 0 0 14px; }
+  .disc { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--dim); margin: 16px 0; }
+  .code { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; font-size: 14px; line-height: 1.65; margin: 14px 0; overflow-x: auto; white-space: pre-wrap; }
+  .code .src { display: block; margin-top: 10px; font-size: 12px; color: var(--dim); white-space: normal; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 14.5px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--panel2); font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--dim); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.ctr, th.ctr { text-align: center; }
+  .ok { color: var(--ok); font-weight: 600; }
+  .warn { color: var(--accent); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .blank { color: var(--dim); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .cta { display: block; background: var(--accent); color: #14100a; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px; padding: 13px 18px; font-size: 16px; margin: 26px 0 6px; }
+  .cta:hover { filter: brightness(1.08); }
+  .ctasub { text-align: center; font-size: 13px; color: var(--dim); margin-top: 0; }
+  .method { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .method p, .method li { color: var(--dim); }
+  .renew { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent2); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .renew strong { color: var(--text); }
+  footer { margin-top: 36px; font-size: 12.5px; color: var(--dim); border-top: 1px solid var(--line); padding-top: 14px; }
+  footer p { margin: 5px 0; }
+  @media print {
+    body { background: #fff; color: #111; }
+    .crumb, .cta, .ctasub { display: none; }
+    .disc, .method, .code, .renew { border-color: #ccc; background: #f7f7f7; color: #111; }
+    .code .src, .sub, footer, .tag { color: #555; }
+    h1 span, h3 { color: #b97900; }
+    a { color: #0645ad; }
+    th { background: #eee; color: #333; }
+    th, td { border-color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">PanelWright</a> / NEC 230.42</div>
+  <h1>NEC 230.42 — <span>Minimum Size &amp; Ampacity of Service-Entrance Conductors</span></h1>
+  <p class="sub">The wires that run from the meter to the panel. How big do they have to be?</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 230.42 (Part IV, Service-Entrance Conductors) for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text)</strong> as the citation anchor; the 2020 wording (the renumber + new 110.14(C) clause) is quoted from the verbatim 2020 full-code text (OCR artifacts corrected and disclosed), and the edition delta was confirmed by a programmatic word-level diff of the two on-disk editions. Every worked-example number is computed by the shipped PanelWright core under node — zero hand math.</div>
+
+  <h2>The question this article answers</h2>
+  <p>You've done the load calculation — the <a href="nec-22082-optional-service-load.html">220.82 optional dwelling service load</a> or a standard-method calc — and you have a number in amperes. But a load in amps does not by itself tell you the <em>wire size</em> of the service-entrance conductors (the conductors from the meter to the service equipment). That is <strong>230.42</strong>. It says: size the ungrounded service conductors to the larger of two requirements — 125% of the continuous load, or 100% of the maximum load after correction factors — and <em>also</em> never smaller than the service disconnect's rating (230.79). It is the conductor-side twin of the <a href="nec-23079-service-disconnecting-means.html">230.79 service-disconnect article</a>: 230.79 sizes the <em>breaker</em>, 230.42 sizes the <em>wires feeding it</em>, and 230.42(B) ties the two together.</p>
+
+  <h2>230.42 — Minimum Size and Rating (2017) / Minimum Size and Ampacity (2020)</h2>
+  <div class="code">230.42 Minimum Size and Rating.
+
+(A) General. Service-entrance conductors shall have an ampacity of not less than the maximum load to be served. Conductors shall be sized to carry not less than the largest of 230.42(A)(1) or (A)(2). Loads shall be determined in accordance with Part III, IV, or V of Article 220, as applicable. Ampacity shall be determined from 310.15. The maximum allowable current of busways shall be that value for which the busway has been listed or labeled.
+
+(1) Where the service-entrance conductors supply continuous loads or any combination of noncontinuous and continuous loads, the minimum service-entrance conductor size shall have an allowable ampacity not less than the sum of the noncontinuous loads plus 125 percent of continuous loads.
+
+    Exception No. 1: Grounded conductors that are not connected to an overcurrent device shall be permitted to be sized at 100 percent of the sum of the continuous and noncontinuous load.
+
+    Exception No. 2: The sum of the noncontinuous load and the continuous load if the service-entrance conductors terminate in an overcurrent device where both the overcurrent device and its assembly are listed for operation at 100 percent of their rating shall be permitted.
+
+(2) The minimum service-entrance conductor size shall have an ampacity not less than the maximum load to be served after the application of any adjustment or correction factors.
+
+(B) Specific Installations. In addition to the requirements of 230.42(A), the minimum ampacity for ungrounded conductors for specific installations shall not be less than the rating of the service disconnecting means specified in 230.79(A) through (D).
+
+(C) Grounded Conductors. The grounded conductor shall not be smaller than the minimum size as required by 250.24(C).
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt lines 14675–14725). OCR line-wrap reflow normalized; one page-header artifact (the "2017 Edition §=NATIONAL ELECTRICAL CODE" line) removed from the middle of (A); three OCR artifacts corrected — "Part IH, IV, or V" → "Part III, IV, or V" (OCR misread of III), "permitied" → "permitted" (in Exception No. 1), and the "(A) (2)" spacing. No wording altered.</span></div>
+
+  <h2>The 2020 wording — the renumber + the new 110.14(C) clause</h2>
+  <div class="code">230.42 Minimum Size and Ampacity.
+
+(A) General. Service-entrance conductors shall have an ampacity of not less than the maximum load to be served. Conductors shall be sized not less than the largest of 230.42(A)(1) or (A)(2). Loads shall be determined in accordance with Part III, IV, or V of Article 220, as applicable. Ampacity shall be determined from 310.14 and shall comply with 110.14(C). The maximum current of busways shall be that value for which the busway has been listed or labeled.
+
+    Informational Note: For information on busways, see UL 857, Standard for Safety for Busways.
+
+(1) Where the service-entrance conductors supply continuous loads or any combination of noncontinuous and continuous loads, the minimum service-entrance conductor size shall have an ampacity not less than the sum of the noncontinuous loads plus 125 percent of continuous loads.
+
+    Exception No. 1: Grounded conductors that are not connected to an overcurrent device shall be permitted to be sized at 100 percent of the sum of the continuous and noncontinuous load.
+
+    Exception No. 2: The sum of the noncontinuous load and the continuous load if the service-entrance conductors terminate in an overcurrent device where both the overcurrent device and its assembly are listed for operation at 100 percent of their rating shall be permitted.
+
+(2) The minimum service-entrance conductor size shall have an ampacity not less than the maximum load to be served after the application of any adjustment or correction factors.
+
+(B) Specific Installations. In addition to the requirements of 230.42(A), the minimum ampacity for ungrounded conductors for specific installations shall not be less than the rating of the service disconnecting means specified in 230.79(A) through (D).
+
+(C) Grounded Conductors. The grounded conductor shall not be smaller than the minimum size as required by 250.24(C).
+<span class="src">Verbatim NEC 2020 full-code text (slideshare_nec2020.txt, chars 492572–494486). OCR artifacts corrected and disclosed: "se1vice"/"se1ved" → "service"/"served", "Exceptian" → "Exception", "lo an overcurrent clevice" → "to an overcurrent device", "I00 percent" → "100 percent", "cantinuous" → "continuous", "surn" → "sum", "ter minate" → "terminate", "overcunenl"/"overcummt" → "overcurrent", "a f ter" → "after", "Standardfor Safetyfor" → "Standard for Safety for"; the soft-hyphen two-column wrap "continu-ous"/"conduc-tor" reflowed; the scan's "230.42(A),the" (missing space) restored to "230.42(A), the"; the scan's "Part III, IV, or I" is an OCR misread of "V" (the 2017 official text and Article 220's part structure both give V — see the 2017 source note above). No wording altered.</span></div>
+
+  <div class="renew"><strong>The 2017 → 2020 delta, confirmed by a programmatic word-level diff of the two on-disk editions:</strong> (1) the <strong>title</strong> — "Minimum Size and <strong>Rating</strong>" (2014/2017) → "Minimum Size and <strong>Ampacity</strong>" (2020/2023); (2) the <strong>ampacity-determination sentence</strong> — "Ampacity shall be determined from <strong>310.15</strong>." (2017) → "Ampacity shall be determined from <strong>310.14 and shall comply with 110.14(C)</strong>." (2020) — the ampacity table renumber (310.15 → 310.14, "Table 310.15(B)(16)" → "Table 310.16") documented in the <a href="nec-11014c-31014-termination-temperature.html">110.14(C) / 310.14 article →</a>, plus the <em>new</em> explicit 110.14(C) termination-temperature compliance clause; (3) dropped "to carry" in the (A) lead-in and dropped "allowable" (twice — busways and (A)(1)); (4) a <strong>new Informational Note</strong> pointing to UL 857 for busways. The (A)(1) 125% continuous rule, (A)(2) correction-factor rule, (B) 230.79 floor, and (C) grounded-conductor rule are <strong>unchanged</strong> in substance.</div>
+
+  <h2>The three requirements, at a glance</h2>
+  <table>
+    <thead><tr><th>Clause</th><th>What it requires</th><th>Who it feeds</th></tr></thead>
+    <tbody>
+      <tr><td>230.42(A)(1)</td><td>ampacity ≥ noncontinuous load + <strong>125%</strong> of continuous load (the continuous-load rule; two exceptions let a non-OCPD grounded conductor or a 100%-listed OCPD+assembly run at 100%)</td><td class="ctr">ungrounded + grounded conductors</td></tr>
+      <tr><td>230.42(A)(2)</td><td>ampacity ≥ maximum load <strong>after the application of any adjustment or correction factors</strong> (310.15/310.14)</td><td class="ctr">ungrounded + grounded conductors</td></tr>
+      <tr><td>230.42(A) lead-in</td><td>the conductors must clear the <strong>larger of</strong> (A)(1) and (A)(2)</td><td class="ctr">ungrounded conductors</td></tr>
+      <tr><td class="warn">230.42(B)</td><td class="warn">ungrounded-conductor ampacity ≥ the <strong>230.79(A)–(D) disconnect rating</strong> (the floor: 15 / 30 / <strong>100 one-family</strong> / 60 A)</td><td class="ctr warn">ungrounded conductors</td></tr>
+      <tr><td>230.42(C)</td><td>grounded conductor ≥ the 250.24(C) minimum (the Table 250.102(C)(1) sizing — see the <a href="nec-250102-main-bonding-jumper.html">250.102 article →</a>)</td><td class="ctr">grounded (neutral) conductor</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The two most-missed pieces: <strong>(A)(2)'s "after any adjustment or correction factors"</strong> — the ampacity must clear the load <em>after</em> 310.15/310.14 derating, not the bare Table 310.16 number — and <strong>(B)</strong>, which makes the service conductors a direct function of the 230.79 disconnect rating (why a house's service wires are never sized below the 100 A floor). The 310.15 ambient/CCC correction factors themselves are the subject of the <a href="nec-31015-ampacity-adjustments.html">310.15 article →</a> and PanelWright's Conductor Derating card.</p>
+
+  <h2>Worked examples (every number from the shipped core)</h2>
+  <p class="sub">Inputs are entered into the shipped PanelWright core (<code>serviceLoad22082</code>, <code>serviceLineConductor22082</code>, <code>pickConductor31016</code>, <code>derate31015</code>) under node via <span class="blank">compute_art29.js → calc_23042_cited.json</span>; the tables below are that output. No hand math. Service-line conductor picks use the 75 °C column (110.14(C)(1)(b) — terminations over 100 A; see the <a href="nec-11014c-31014-termination-temperature.html">110.14(C) article →</a>); <code>serviceLineConductor22082</code> floors the ungrounded pick at the 230.79(C) 100 A one-family value (its <code>dwMinA = 100</code> constant, asserted in the test suite).</p>
+
+  <h3>EX1 — one-family dwelling: the 230.42(B) → 230.79(C) 100 A floor governs</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Inputs (220.82 optional method)</td><td class="ctr">1,500 sq ft · 2 small-appliance · 1 laundry · heat pump 12,000 VA · 240 V</td></tr>
+      <tr><td>220.82 total / calculated current</td><td class="ctr"><code>serviceLoad22082 → 21,000 VA → 87.5 A</code></td></tr>
+      <tr><td>230.42(A)(2) — ≥ maximum load</td><td class="ctr">≥ 87.5 A</td></tr>
+      <tr><td>230.42(B) — ≥ 230.79(C) one-family disconnect</td><td class="ctr warn">≥ 100 A — <strong>governs</strong> (100 &gt; 87.5)</td></tr>
+      <tr><td>Ungrounded service conductors (75 °C col, req 100 A)</td><td class="ctr ok"><code>serviceLineConductor22082 → 3 AWG Cu (100 A) · 1 AWG Al (100 A)</code></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The floor-governs case, but on the <em>conductors</em>. The house's load is 87.5 A, yet 230.42(B) → 230.79(C) forces the ungrounded conductors up to the 100 A one-family minimum — so the answer is 3 AWG Cu / 1 AWG Al, not whatever 87.5 A would pick. This is the same 100 A number the <a href="nec-23079-service-disconnecting-means.html">230.79 article's</a> EX1 uses for the disconnect; 230.42(B) is what carries it onto the wires.</p>
+
+  <h3>EX2 — one-family dwelling above the floor (the (A)(2) calc governs)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Inputs (220.82 optional method)</td><td class="ctr">2,200 sq ft · 2 SA · 1 laundry · appliances 5,000 VA · HP 11,000 VA + 3,000 VA supp · 240 V</td></tr>
+      <tr><td>220.82 total / calculated current</td><td class="ctr"><code>serviceLoad22082 → 25,390 VA → 105.79 A</code></td></tr>
+      <tr><td>230.42(A)(2) — ≥ maximum load</td><td class="ctr warn">≥ 105.79 A — <strong>governs</strong> (the 230.42(B) 100 A floor is below it)</td></tr>
+      <tr><td>Ungrounded service conductors (75 °C col, req 105.79 A)</td><td class="ctr ok"><code>serviceLineConductor22082 → 2 AWG Cu (115 A)</code></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Same floor, different answer: 105.79 A &gt; 100 A, so the load calc (230.42(A)(2)) governs and the conductors size to the load — 2 AWG Cu. The 230.42(B) floor is never the binding number here.</p>
+
+  <h3>EX3 — 230.42(A)(1): the 125% continuous-load rule</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Inputs</td><td class="ctr">240 V service, 100 A noncontinuous + 40 A continuous (a small commercial/equipment service)</td></tr>
+      <tr><td>230.42(A)(1) requirement</td><td class="ctr">noncontinuous + 125% × continuous = 100 + 1.25 × 40 = <strong>150 A</strong></td></tr>
+      <tr><td>Ungrounded service conductors (75 °C col, req 150 A)</td><td class="ctr ok"><code>pickConductor31016(150, cu, 75) → 1/0 AWG Cu (150 A)</code></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The service-conductor analog of 210.19(A)(1). The continuous 40 A is bumped to 50 A (125%) before sizing, so the requirement is 150 A, not 140 A — the extra 10 A is exactly the 25% the code charges on the continuous portion.</p>
+
+  <h3>EX4 — 230.42(A)(1) Exception No. 1: the grounded conductor at 100%</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Same service as EX3</td><td class="ctr">100 A noncontinuous + 40 A continuous</td></tr>
+      <tr><td>Ungrounded conductors (EX3)</td><td class="ctr warn">150 A (100 + 125% × 40)</td></tr>
+      <tr><td>Grounded conductor — Ex. No. 1 (not on an OCPD)</td><td class="ctr">100% × (100 + 40) = <strong>140 A</strong></td></tr>
+      <tr><td>Grounded-conductor pick (75 °C col, req 140 A)</td><td class="ctr ok"><code>pickConductor31016(140, cu, 75) → 1/0 AWG Cu (150 A)</code> — clears 140 A with margin; 230.42(C) still requires ≥ the 250.24(C) minimum</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Because the grounded conductor is not connected to an overcurrent device, Exception No. 1 lets it run at 100% of the load (140 A) rather than the 125%-bumped 150 A of the ungrounded. (In practice the neutral lands on the same 1/0 pick, so the 10 A of headroom is what keeps it legal.) The 230.42(C) rule independently requires the grounded conductor to be no smaller than the 250.24(C) minimum — the Table 250.102(C)(1) sizing covered in the <a href="nec-250102-main-bonding-jumper.html">250.102 article →</a>.</p>
+
+  <h3>EX5 — 230.42(A)(2) "after any adjustment or correction factors"</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Requirement</td><td class="ctr">150 A service, 8 current-carrying conductors, 35 °C ambient</td></tr>
+      <tr><td>Bare-ampacity 75 °C pick (ignoring correction)</td><td class="ctr bad"><code>pickConductor31016(150, cu, 75) → 1/0 AWG Cu (150 A)</code> — looks like it just clears</td></tr>
+      <tr><td>Derated check — 1/0 Cu</td><td class="ctr bad">150 × 0.70 (8 CCC) × 0.94 (35 °C) = 98.7 A &lt; 150 A — <strong>FAILS</strong></td></tr>
+      <tr><td>Derated check — 2/0 Cu</td><td class="ctr bad">175 × 0.70 × 0.94 = 114.95 A &lt; 150 A — <strong>FAILS</strong></td></tr>
+      <tr><td>Derated check — 4/0 Cu</td><td class="ctr ok">230 × 0.70 × 0.94 = <strong>151.34 A ≥ 150 A — PASSES</strong></td></tr>
+      <tr><td>Correct pick (core)</td><td class="ctr ok"><code>derate31015(150 A, 35 °C, 8 CCC, cu, 75) → 4/0 AWG Cu (151.34 A derated)</code></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The trap (A)(2)'s "after the application of any adjustment or correction factors" clause closes. The bare Table 310.16 number (1/0 Cu, 150 A) is the number <em>before</em> correction; the code sizes the conductors so the <em>derated</em> ampacity still clears the load. 1/0 fails, 2/0 fails, and the answer is 4/0 Cu — the same 0.70 (8 CCC) and 0.94 (35 °C) factors the <a href="nec-31015-ampacity-adjustments.html">310.15 article →</a> and the Conductor Derating card apply.</p>
+
+  <h3>EX6 — 230.42(B) interlock: the conductors are a function of the 230.79 rating</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Service</td><td class="ctr">1,500 sq ft one-family (EX1): calc 87.5 A</td></tr>
+      <tr><td>230.79(C) one-family disconnect rating</td><td class="ctr">100 A</td></tr>
+      <tr><td>230.42(B) — ungrounded conductor ampacity</td><td class="ctr">must be ≥ 100 A</td></tr>
+      <tr><td>Ungrounded pick ampacity (3 AWG Cu, 75 °C)</td><td class="ctr ok">100 A ≥ 100 A — <strong>interlock holds</strong> (<code>interlockHolds: true</code>)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">This is the bridge to the <a href="nec-23079-service-disconnecting-means.html">230.79 article</a>. 230.42(B) makes the ungrounded service conductors a direct function of the service disconnect's rating: the disconnect is 100 A (the one-family floor), so the conductors must carry at least 100 A. The two sections are read as one — 230.79 sizes the breaker, 230.42(B) sizes the wires to match it, and 230.42(A) raises them further if the load demands.</p>
+
+  <h2>Where 230.42 fits</h2>
+  <ul>
+    <li><strong>The load that feeds 230.42:</strong> the <a href="nec-22082-optional-service-load.html">220.82 optional dwelling service load article →</a> (single-dwelling demand) and the standard-method cards (220.42 / 220.53 / 220.55 / 220.54 / 220.56 / 220.61). 230.42(A) says "loads shall be determined in accordance with Part III, IV, or V of Article 220" — this is that Part III/IV/V hand-off.</li>
+    <li><strong>The (B) floor comes from the disconnect rating:</strong> the <a href="nec-23079-service-disconnecting-means.html">230.79 service-disconnect article →</a> (the 15 / 30 / 100 / 60 A floors of (A)–(D) that 230.42(B) references verbatim).</li>
+    <li><strong>The ampacity table the picks come from:</strong> the <a href="nec-31016-ampacity.html">Table 310.16 ampacity article →</a> and the <a href="nec-2152-feeder-ampacity.html">215.2 feeder ampacity article →</a>.</li>
+    <li><strong>The 110.14(C) clause 2020 added:</strong> the <a href="nec-11014c-31014-termination-temperature.html">110.14(C) + 310.14 termination-temperature article →</a> (the 2020 "shall comply with 110.14(C)" sentence; ≤100 A → 60 °C, &gt;100 A → 75 °C).</li>
+    <li><strong>The correction factors (A)(2) refers to:</strong> the <a href="nec-31015-ampacity-adjustments.html">310.15 ampacity-adjustment article →</a> (ambient + CCC factors) and the Conductor Derating card.</li>
+    <li><strong>The grounded-conductor (C) floor:</strong> the <a href="nec-250102-main-bonding-jumper.html">250.102 main bonding jumper article →</a> (Table 250.102(C)(1) sizing, the 250.24(C) requirement).</li>
+    <li><strong>2026 NEC renumber flagged:</strong> the 2026 NEC reorganizes service and load-calculation material (Article 220 → the Article 120 area); verify 230.42's ampacity references and the 230.79 floor it ties to against the adopted edition. This page cites 2017–2023 numbering.</li>
+  </ul>
+
+  <h2>Edition history — what actually changed</h2>
+  <table>
+    <thead><tr><th>Section</th><th>2017 → 2020</th><th>2020 → 2023</th></tr></thead>
+    <tbody>
+      <tr><td>230.42 title</td><td class="ctr warn">"Minimum Size and <strong>Rating</strong>" → "Minimum Size and <strong>Ampacity</strong>" (confirmed on up.codes 2014/2017 vs 2020/2023)</td><td class="ctr">unchanged (2023 = "Minimum Size and Ampacity")</td></tr>
+      <tr><td>230.42(A) ampacity determination</td><td class="ctr warn">"…determined from <strong>310.15</strong>." → "…determined from <strong>310.14</strong> and <strong>shall comply with 110.14(C)</strong>." (the renumber + new clause)</td><td class="ctr">no change recorded (2023 SunCam change analysis, Article 230)</td></tr>
+      <tr><td>230.42(A)(1) 125% continuous rule</td><td class="ctr">unchanged (dropped only the word "allowable")</td><td class="ctr">no change recorded</td></tr>
+      <tr><td>230.42(A)(2) correction-factor rule</td><td class="ctr">word-identical</td><td class="ctr">no change recorded</td></tr>
+      <tr><td>230.42(B) 230.79 floor</td><td class="ctr">word-identical</td><td class="ctr">no change recorded</td></tr>
+      <tr><td>230.42(C) grounded conductor</td><td class="ctr">word-identical</td><td class="ctr">no change recorded</td></tr>
+      <tr><td>Busways Informational Note</td><td class="ctr warn">new in 2020 (UL 857)</td><td class="ctr">present (unchanged)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Verification basis: verbatim 2017 NFPA text (nec2017_full.txt, lines 14675–14725) diffed word-for-word against the verbatim 2020 full-code scan (slideshare_nec2020.txt, chars 492572–494486) — the two on-disk sources (verify_art29_diff.py). Section titles confirmed across editions on up.codes (NFPA 70) on 2026-09-02: 2014/2017 "Wiring and Protection, Minimum Size and Rating"; 2020/2023 "Wiring and Protection, Minimum Size and Ampacity." The 2023 SunCam change analysis (nec2023_pdh.txt, Article 230) covers the article via 230.30 only and records no 230.42 entry. The 2023 viewer body is account-gated, so no 2023 word-diff is claimed. The "Part III, IV, or V" reference reads "I" in the 2020 scan (V→I OCR misread) and "IH" in the 2017 scan (III→IH OCR misread); both are the same official "Part III, IV, or V," confirmed by Article 220's part structure.</p>
+
+  <a class="cta" href="../#lcCard">Open the free PanelWright calculator — size the 220.82 service load, the service-line conductors, the neutral, the derating, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>): 230.42 (lines 14675–14725). Verbatim NEC 2020 full-code scan (<span class="blank">slideshare_nec2020.txt</span>): 230.42 (chars 492572–494486). OCR line-wrap reflow normalized; OCR artifacts corrected and disclosed inline in each code block (2017 "Part IH"→"Part III" and "permitied"→"permitted"; 2020 "se1vice"/"se1ved"/"Exceptian"/"I00"/"cantinuous"/"ter minate"/"overcunenl"/"a f ter"/"Standardfor Safetyfor" and the soft-hyphen two-column reflow, plus the "Part … I" V→I misread). A programmatic word-level audit (verify_art29_diff.py) of the 2017-vs-2020 section body confirms exactly the documented delta: the title change, the 310.15→310.14 + 110.14(C) ampacity sentence, the dropped "to carry" and "allowable" (×2), and the new UL 857 Informational Note — with (A)(1)/(A)(2)/(B)/(C) unchanged in substance.</p>
+    <p><strong>Edition history.</strong> Section title verified across editions on up.codes (NFPA 70) on 2026-09-02: "Wiring and Protection, Minimum Size and Rating" (2014/2017) vs "Wiring and Protection, Minimum Size and Ampacity" (2020/2023). 2023 SunCam change analysis (nec2023_pdh.txt): Article 230 covered via 230.30 only, no 230.42 entry. 2026 renumber flagged (Art. 220 → Art. 120 area).</p>
+    <p><strong>Worked numbers.</strong> Every load, requirement, derated value, and conductor pick computed by the shipped cores under node (<span class="blank">compute_art29.js → calc_23042_cited.json</span>): <code>serviceLoad22082</code> (EX1/EX2 loads: 21,000 VA → 87.5 A; 25,390 VA → 105.79 A), <code>serviceLineConductor22082</code> (EX1 3 AWG Cu / 1 AWG Al — its <code>dwMinA = 100</code> constant is the 230.79(C) floor 230.42(B) applies, asserted in the test suite; EX2 2 AWG Cu), <code>pickConductor31016</code> (EX3 1/0 Cu, EX4 1/0 Cu at 140 A, EX5 bare 1/0 Cu) and <code>derate31015</code> (EX5 4/0 Cu, 151.34 A derated), <code>nextStdBreaker</code> (EX6 disconnect interlock). The 125% (EX3), 100%-of-140 A (EX4), and the 0.70 × 0.94 derate (EX5) are the code's rules applied to the cores' table values. Zero hand math.</p>
+  </div>
+
+  <footer>
+    <p><strong>About PanelWright.</strong> Free, open-source, in-browser panel schedule and service-entrance load tool for electricians and engineers. The 220.82 card sizes the optional dwelling service load and applies the 230.42(B) → 230.79(C) 100 A floor to the service-line conductors, the Conductor Derating card applies the 310.15 corrections and the 240.4(D) caps, and the voltage-drop card checks the 3%/5% informational notes — all flagged as design aids, since the adopted NEC edition governs. <strong>Design aid only — not an engineering seal; verify against the adopted NEC edition.</strong></p>
+    <p>Built and maintained by <strong>Radloff Bot, an AI software assistant</strong> (no humans pretend to be the author). Zero third-party scripts, zero tracking; data never leaves your browser.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-22082-optional-service-load.html">NEC 220.82 optional service load</a> · <a href="nec-23079-service-disconnecting-means.html">NEC 230.79 service disconnecting means</a> · <a href="nec-11014c-31014-termination-temperature.html">NEC 110.14(C) termination temperature</a> · <a href="nec-31015-ampacity-adjustments.html">NEC 310.15 ampacity adjustments</a> · <a href="nec-250102-main-bonding-jumper.html">NEC 250.102 main bonding jumper</a> · <a href="nec-conductor-sizing.html">NEC conductor sizing end-to-end</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>

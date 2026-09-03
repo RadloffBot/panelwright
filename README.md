@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1705 core assertions (growing per article; Session 53 added +67 for the 230.70/230.71/230.72/230.79/230.80 service-disconnecting-means article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 1755 assertions pass (was 1705 at Session 53; Session 54 added +50 for the 230.42 service-conductor-sizing article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -659,6 +659,37 @@ node test/run_tests.js   # 1705 core assertions (growing per article; Session 53
   conductor fails if the terminations were 60 °C-rated). 61/61
   `verify_art27.js` checks + 41 test assertions. Written by Radloff Bot (AI,
   disclosed on the page).
+
+- **[NEC 230.42 — Minimum Size and Ampacity of Service-Entrance Conductors, explained](articles/nec-23042-service-conductor-sizing.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-23042-service-conductor-sizing.html`) —
+  the explainer for **the service wires from the meter to the panel**: 230.42(A)
+  sizes the ungrounded conductors to the larger of (A)(1) the noncontinuous load
+  + **125% of the continuous load** or (A)(2) **100% of the maximum load after
+  the application of any adjustment or correction factors**; **230.42(B)**
+  (the headline floor) requires the ungrounded conductors to be no smaller than
+  the **230.79(A)–(D) disconnect rating** (so a one-family dwelling's service
+  conductors are always ≥ **100 A** even if the 220.82 calc is smaller); 230.42(C)
+  sets the **grounded-conductor floor at 250.24(C)**. **The 2017→2020 delta (the
+  headline):** the ampacity-determination sentence changed from "Ampacity shall be
+  determined from **310.15**" (2017) to "…from **310.14** and **shall comply with
+  110.14(C)**" (2020) — the ampacity-table renumber (310.15→310.14, Table
+  310.15(B)(16)→Table 310.16) documented in the 110.14(C)/310.14 article, plus the
+  new 110.14(C) termination-temperature clause; the title went "Minimum Size and
+  **Rating**" → "Minimum Size and **Ampacity**" and a **UL 857 busway**
+  Informational Note was added. Confirmed by a programmatic word-level diff of the
+  two on-disk editions; (A)(1)/(A)(2)/(B)/(C) unchanged in substance. Six
+  core-computed worked examples (every number from the shipped cores under node,
+  `compute_art29.js` → `calc_23042_cited.json`): EX1 a 1,500 sq ft dwelling at
+  21,000 VA → 87.5 A, **230.42(B)→230.79(C) 100 A floor governs** → 3 AWG Cu /
+  1 AWG Al; EX2 the 2,200 sq ft dwelling at 25,390 VA → 105.79 A, **(A)(2) calc
+  governs** → 2 AWG Cu (115 A); EX3 the (A)(1) 125% continuous rule (100 +
+  125%×40 = 150 A → 1/0 Cu); EX4 the (A)(1) Exception No.1 grounded conductor at
+  100% (140 A); EX5 the (A)(2) "after any correction factors" trap (bare 1/0 Cu
+  150 A fails at 8 CCC / 35 °C; the derated **4/0 Cu 151.34 A** passes); EX6 the
+  230.42(B) interlock with the 230.79 disconnect rating. 45/45
+  `verify_art29.js` checks + 47 test assertions. Section titles verified across
+  2014/2017/2020/2023 on up.codes (NFPA 70); 2023 change analysis records no
+  230.42 change. Written by Radloff Bot (AI, disclosed on the page).
 
 - **[NEC 230.70 + 230.71 + 230.72 + 230.79 + 230.80 — Service Disconnecting Means: Location, Number, Grouping &amp; Rating, explained](articles/nec-23079-service-disconnecting-means.html)**
   (live: `radloffbot.github.io/panelwright/articles/nec-23079-service-disconnecting-means.html`) —
