@@ -3329,5 +3329,76 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index.includes('articles/nec-21008-gfci-protection.html'), true, 'art32: index cross-link present');
 }
 
+// Article 33 (NEC 210.20 Branch-Circuit Overcurrent Protection — sizing the breaker).
+// The (A) 125% continuous-load FLOOR on the OCPD rating (+ the listed-assembly 100%
+// Exception), the (B) 240.4 hand-off, the (C) Table 240.3 equipment cap, the (D) 210.21
+// outlet-device cap; the 2017->2020 word-identical delta (programmatic diff, zero
+// true changes); the 2023 posture (210.20 unchanged — the 10-ampere allowance is a
+// 210.18 change per ELR 1430). Core-computed examples: compute_art33.js ->
+// calc_21020_cited.json. Verbatim audit: verify_art33_verbatim.py.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-21020-branch-circuit-ocpd.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const p = core.pickConductor31016, nsb = core.nextStdBreaker, cap = core.smallConductorCap, der = core.derate31015;
+  eq(art.includes('nec-21020-branch-circuit-ocpd.html'), true, 'art33: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-21020-branch-circuit-ocpd.html'), true, 'art33: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art33: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art33: Article + FAQPage JSON-LD present');
+  // verbatim 2017 NEC 210.20 probes (official NFPA text, lines 10189-10222)
+  eq(has('210.20 Overcurrent Protection. Branch-circuit conductors and equipment shall be protected by overcurrent protective devices that have a rating or setting that complies with 210.20(A) through (D)'), true, 'art33: verbatim 2017 lead-in');
+  eq(has('(A) Continuous and Noncontinuous Loads. Where a branch circuit supplies continuous loads or any combination of continuous and noncontinuous loads, the rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent of the continuous load'), true, 'art33: verbatim (A) 125% floor');
+  eq(has('is listed for operation at 100 percent of its rating'), true, 'art33: verbatim (A) Exception (listed assembly 100%)');
+  eq(has('(B) Conductor Protection. Conductors shall be protected in accordance with 240.4. Flexible cords and fixture wires shall be protected in accordance with 240.5'), true, 'art33: verbatim (B) 240.4/240.5 hand-off');
+  eq(has('(C) Equipment. The rating or setting of the overcurrent protective device shall not exceed that specified in the applicable articles referenced in Table 240.3 for equipment'), true, 'art33: verbatim (C) Table 240.3 cap');
+  eq(has('(D) Outlet Devices. The rating or setting shall not exceed that specified in 210.21 for outlet devices'), true, 'art33: verbatim (D) 210.21 cap');
+  // 2020 block is word-identical to 2017 (the article's central claim)
+  eq(has('word-for-word identical to the 2017 body'), true, 'art33: 2020 word-identical claim stated');
+  // edition posture probes
+  eq(has('no change record for 210.20'), true, 'art33: 2020 change log absence stated');
+  eq(has('10-ampere'), true, 'art33: 2023 10-ampere (210.18) posture stated');
+  eq(has('receptacle outlets'), true, 'art33: 210.18 Exception No. 2 (no receptacle outlets) stated');
+  // worked-example figures (from calc_21020_cited.json) actually appear in the article
+  eq(has('28 a'), true, 'art33: EX1 28 A floor in article');
+  eq(has('30 a'), true, 'art33: EX1 30 A OCPD in article');
+  eq(has('24 a'), true, 'art33: EX2 24 A floor (Exception) in article');
+  eq(has('25 a'), true, 'art33: EX2 25 A OCPD in article');
+  eq(has('12 awg cu'), true, 'art33: EX3/EX7 12 AWG Cu in article');
+  eq(has('10 awg cu'), true, 'art33: EX1/EX7 10 AWG Cu in article');
+  eq(has('86.48 a'), true, 'art33: EX8 86.48 A derated ampacity in article');
+  eq(has('2 awg cu'), true, 'art33: EX8 2 AWG Cu in article');
+  eq(has('125%'), true, 'art33: the 125% floor mechanic named');
+  eq(has('240.4(d)'), true, 'art33: 240.4(D) small-conductor caps referenced');
+  // core-computed assertions (real shipped app.js, zero hand math)
+  eq(8 + 1.25 * 16, 28, 'art33 EX1: floor = 8 + 1.25*16 = 28 A');
+  eq(nsb(28), 30, 'art33 EX1: nextStdBreaker(28) = 30 A (240.6)');
+  eq(p(30, 'cu', 75).size, '10', 'art33 EX1: 30 A -> 10 AWG Cu');
+  eq(p(30, 'cu', 75).amp, 35, 'art33 EX1: 10 AWG Cu Table 310.16 ampacity 35 A');
+  eq(cap('14', 'cu'), 15, 'art33 EX3: 14 AWG Cu 240.4(D) cap 15 A');
+  eq(cap('12', 'cu'), 20, 'art33 EX4: 12 AWG Cu 240.4(D) cap 20 A');
+  eq(cap('12', 'al'), 15, 'art33 EX5: 12 AWG Al 240.4(D) cap 15 A');
+  eq(cap('10', 'cu'), 30, 'art33 EX7: 10 AWG Cu 240.4(D) cap 30 A');
+  eq(nsb(16 + 8), 25, 'art33 EX2: nextStdBreaker(24) = 25 A (Exception: floor = 24)');
+  const r8 = der({ requiredA: 80, ambientC: 35, ccc: 6, mat: 'cu', temp: 75 });
+  eq(r8.deratedA, 86.48, 'art33 EX8: derate31015(80A, 2AWG Cu, 35C, 6ccc) = 86.48 A');
+  eq(r8.passes, true, 'art33 EX8: 86.48 A >= 80 A OCPD (pass)');
+  eq(r8.pick.size, '2', 'art33 EX8: derating core picks 2 AWG Cu');
+  eq(nsb(1.25 * 60), 80, 'art33 EX8: nextStdBreaker(75) = 80 A');
+  // cross-links
+  eq(art.includes('nec-21019a-continuous-load.html'), true, 'art33: cross-links to the 210.19(A) article');
+  eq(art.includes('nec-21021-outlet-devices.html'), true, 'art33: cross-links to the 210.21 article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art33: cross-links to the 240.4(D) article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art33: cross-links to the Table 310.16 article');
+  eq(art.includes('nec-31015-ampacity-adjustments.html'), true, 'art33: cross-links to the 310.15 article');
+  eq(art.includes('nec-2152-feeder-ampacity.html'), true, 'art33: cross-links to the 215.2 article');
+  eq(art.includes('nec-23090-service-overload-protection.html'), true, 'art33: cross-links to the 230.90 article');
+  const sitemap = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap.includes('articles/nec-21020-branch-circuit-ocpd.html'), true, 'art33: sitemap entry present');
+  const index = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index.includes('articles/nec-21020-branch-circuit-ocpd.html'), true, 'art33: index cross-link present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

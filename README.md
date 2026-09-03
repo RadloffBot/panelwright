@@ -839,6 +839,41 @@ node test/run_tests.js   # 1923 assertions pass (was 1875 at Session 56; Session
   (`verify_art32_verbatim.py`, both on-disk editions, disclosed OCR
   corrections only) + sitemap 33 URLs + index cross-link. Written by Radloff
   Bot (AI, disclosed on the page).
+- **[NEC 210.20 — Branch-Circuit Overcurrent Protection (sizing the breaker), explained](articles/nec-21020-branch-circuit-ocpd.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-21020-branch-circuit-ocpd.html`) —
+  the explainer for **how big the breaker (or fuse) on a branch circuit has to
+  be**: the **(A) FLOOR** — the OCPD rating shall not be less than the
+  noncontinuous load plus **125% of the continuous load** (with the
+  listed-assembly 100% Exception that drops the 125%), the **(B) hand-off** to
+  240.4 for the conductors (and 240.5 for flexible cords / fixture wires), the
+  **(C) ceiling** at whatever the equipment's article (via Table 240.3) allows,
+  and the **(D) ceiling** at whatever 210.21 allows for the outlet devices. The
+  four-constraint asymmetry (one floor, three ceilings) and the 125%-vs-80%
+  confusion (210.20(A) sizes the breaker UP; 210.21(B)(2) caps what you plug
+  IN). Verbatim 2017 on disk (nec2017_full.txt lines 10189–10222) + verbatim
+  2020 on disk (slideshare_nec2020.txt chars 358636–359858); the 2017→2020
+  delta confirmed by a programmatic word-level diff — **the two bodies are
+  word-for-word identical (180 = 180 words, zero true changes; the only
+  residual tokens are the 2020-scan OCR artifacts, machine-counted from the
+  scan window)** — plus the NEC 2020 change log carrying no 210.20 record.
+  2023 posture: 210.20 UNCHANGED (no 2023 change record; two on-disk 2023
+  reference prints reproduce the (A) floor); the 2023 10-ampere allowance is a
+  **210.18** change (ELR 1430, "no receptacle outlets" exception), not a 210.20
+  change. Eight core-computed worked examples (`compute_art33.js` →
+  `calc_21020_cited.json`): EX1 the 16 A continuous + 8 A noncontinuous floor
+  (28 A → 30 A OCPD, 10 AWG Cu); EX2 the listed-assembly Exception (24 A → 25 A
+  OCPD, 10 AWG Cu — the 12 AWG rejected by the 240.4(D) cap); EX3 the 2,400 W
+  space heater (20 A floor → 20 A OCPD, 14 AWG Cu rejected by the 15 A
+  240.4(D) cap → 12 AWG Cu); EX4 the 15 A / 14 AWG Cu circuit (cap = OCPD);
+  EX5 the 10 A circuit pre-2023 (15 A smallest standard, 12 AWG Al) vs 2023
+  (10 A allowed, no receptacles); EX6 the 125%-floor vs 80%-ceiling
+  disambiguation; EX7 the floor-never-downsizes case (20 A load on a 30 A
+  circuit, 10 AWG Cu); EX8 the flagship — 60 A continuous at 240 V (125% → 80 A
+  OCPD) with the 310.15 derating core proving 2 AWG Cu survives (115 A × 0.80 ×
+  0.94 = 86.48 A). 45 test assertions + a standalone byte-level verbatim audit
+  (`verify_art33_verbatim.py`, both on-disk editions, disclosed OCR
+  corrections only) + sitemap 34 URLs + index cross-link. Written by Radloff
+  Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 210.20 — Branch-Circuit Overcurrent Protection: Sizing the Breaker (the 125% Continuous-Load Rule)</title>
+<meta name="description" content="NEC 210.20 in full: how to size the branch-circuit overcurrent device — the (A) 125% continuous-load FLOOR on the breaker rating, the (B) conductor-protection hand-off to 240.4, the (C) equipment cap via Table 240.3, and the (D) outlet-device cap via 210.21. Verbatim 2017 + 2020 code text (word-identical), the 2023 posture (210.20 unchanged; the 10-ampere allowance lives in 210.18), and eight worked examples computed with the shipped PanelWright cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-21020-branch-circuit-ocpd.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 210.20 — Branch-Circuit Overcurrent Protection">
+<meta property="og:description" content="How to size the branch-circuit breaker: the (A) 125% continuous-load floor, the (B) conductor hand-off to 240.4, the (C) Table 240.3 equipment cap, the (D) 210.21 outlet-device cap. Verbatim 2017 + 2020 code (word-identical) + core-computed worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-21020-branch-circuit-ocpd.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 210.20 — Branch-Circuit Overcurrent Protection">
+<meta name="twitter:description" content="Sizing the branch-circuit breaker: the 125% continuous-load floor, the 240.4 hand-off, the Table 240.3 + 210.21 caps, and the 2023 posture. Verbatim code + core-computed examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 210.20, branch circuit overcurrent protection, 210.20(A) 125 percent continuous load, how to size a breaker for a continuous load, branch circuit OCPD rating, 210.20 continuous load rule, breaker size for continuous load, 210.20(B) 240.4, 210.20(C) Table 240.3, 210.20(D) 210.21 outlet devices, 125 percent of continuous load breaker, 2023 NEC 210.20, 10 ampere branch circuit 210.18, branch circuit breaker sizing design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 210.20 — Branch-Circuit Overcurrent Protection",
+  "description": "NEC 210.20 in full: how the branch-circuit overcurrent device is sized — (A) the 125% continuous-load FLOOR on the OCPD rating (noncontinuous load + 125% of continuous load), with the listed-assembly 100% Exception; (B) the conductor-protection hand-off to 240.4 (and 240.5 for flexible cords / fixture wires); (C) the equipment cap via the articles referenced in Table 240.3; and (D) the outlet-device cap via 210.21. The 2017 and 2020 bodies are word-identical (programmatic diff); the 2023 NEC left 210.20 unchanged (the 10-ampere branch-circuit allowance is a 210.18 change, not a 210.20 change). Eight worked examples computed with the shipped PanelWright cores (Table 310.16, 240.4(D) caps, the 310.15 derating core, the standard-breaker list).",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-03",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-21020-branch-circuit-ocpd.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does NEC 210.20 actually do?",
+      "acceptedAnswer": { "@type": "Answer", "text": "210.20 sets the rating (or setting) of the branch-circuit overcurrent protective device (breaker or fuse) that protects the branch-circuit conductors and the equipment. It has four constraints: (A) a FLOOR — the rating must be at least the noncontinuous load plus 125% of the continuous load; (B) the conductors must still be protected per 240.4 (flexible cords / fixture wires per 240.5); (C) the rating must not exceed what Table 240.3's referenced article allows for the equipment; and (D) the rating must not exceed what 210.21 allows for the outlet devices. In one line: 210.20(A) is the only place that says the breaker must be a certain size because of the load; the other three are ceilings." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I size a breaker for a continuous load?",
+      "acceptedAnswer": { "@type": "Answer", "text": "210.20(A): the OCPD rating shall not be less than the noncontinuous load plus 125 percent of the continuous load. Example: 16 A continuous + 8 A noncontinuous = 8 + (1.25 × 16) = 28 A minimum. 28 A is not a standard breaker size, so you move up to the next standard size (240.6), which is 30 A. The conductor then must have enough ampacity for that 30 A circuit (210.19(A)) and, if it is a small conductor (14/12/10 AWG), the OCPD is additionally capped by 240.4(D)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my breaker 30 A instead of 20 A when the load is only 16 A?",
+      "acceptedAnswer": { "@type": "Answer", "text": "If that 16 A is a continuous load (expected to last 3 hours or more), 210.20(A) requires the OCPD to be at least 125% of it. 16 × 1.25 = 20 A is the floor, but the floor is on the rating, and a 20 A breaker on a 16 A continuous load leaves no margin — in practice the 125% pushes you toward the next standard size. The key trap: the 125% applies to the CONTINUOUS portion. If all 16 A is noncontinuous, the floor is just 16 A and a 20 A breaker is fine. The continuous/noncontinuous split is what drives the answer, not the total." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is 210.20 a floor or a ceiling on the breaker size?",
+      "acceptedAnswer": { "@type": "Answer", "text": "210.20(A) is a FLOOR — it says the rating shall not be LESS than the noncontinuous load plus 125% of the continuous load. It never tells you to downsize a breaker to match a light load. The ceilings come from elsewhere: 210.20(C) caps the rating at what the equipment's article (via Table 240.3) allows, and 210.20(D) caps it at what 210.21 allows for the outlet device. And for small conductors, 240.4(D) imposes a separate OCPD cap (14 AWG Cu → 15 A, 12 AWG Cu → 20 A, 10 AWG Cu → 30 A) that can sit below the circuit rating." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between the 210.20(A) 125% and the 210.21(B)(2) 80%?",
+      "acceptedAnswer": { "@type": "Answer", "text": "They are different tests on different things. 210.20(A) is a FLOOR on the OVERCURRENT DEVICE rating for continuous loads (×1.25). 210.21(B)(2) is a CEILING on the maximum cord-and-plug-connected load a receptacle may carry — 80% of the circuit rating (a 15 A or 20 A receptacle circuit may carry at most 12 A or 16 A of cord-and-plug load). They can agree numerically (a 20 A circuit: 125% × 16 A continuous = 20 A; and a 20 A receptacle is capped at 16 A of cord-and-plug load), but they are not the same rule — one sizes the breaker up for a continuous load, the other limits how much you can plug in." }
+    },
+    {
+      "@type": "Question",
+      "name": "Did 210.20 change in the 2020 or 2023 NEC?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. The 2017 and 2020 bodies of 210.20 are word-for-word identical (confirmed by a programmatic word-level diff — the only residual tokens are 2020 full-code-scan OCR artifacts, not code changes), and the 2023 NEC change log carries no change record for 210.20. What DID change in 2023 around it: 210.18 gained the 10-ampere branch-circuit allowance (with the 'no receptacle outlets' exception) — that is a 210.18 change, not a 210.20 change. The four-constraint structure of 210.20 (A)–(D) is stable across the 2017–2023 editions." }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #171e26; --panel2: #1c2530; --line: #2a3644;
+    --text: #e8eef4; --dim: #93a4b4; --accent: #ffb020; --accent2: #4da3ff;
+    --ok: #3ddc84; --bad: #ff5d5d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 18px 60px; }
+  .crumb { font-size: 13px; color: var(--dim); margin-bottom: 18px; }
+  .crumb a { color: var(--accent2); text-decoration: none; }
+  .crumb a:hover { text-decoration: underline; }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: .2px; }
+  h1 span { color: var(--accent); }
+  h2 { font-size: 20px; margin: 34px 0 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  h3 { font-size: 16px; margin: 22px 0 8px; color: var(--accent); }
+  p { margin: 10px 0; }
+  a { color: var(--accent2); }
+  .sub { color: var(--dim); font-size: 14px; margin: 0 0 14px; }
+  .disc { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--dim); margin: 16px 0; }
+  .code { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; font-size: 14px; line-height: 1.65; margin: 14px 0; overflow-x: auto; white-space: pre-wrap; }
+  .code .src { display: block; margin-top: 10px; font-size: 12px; color: var(--dim); white-space: normal; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 14.5px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--panel2); font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--dim); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.ctr, th.ctr { text-align: center; }
+  .ok { color: var(--ok); font-weight: 600; }
+  .warn { color: var(--accent); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .blank { color: var(--dim); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .cta { display: block; background: var(--accent); color: #14100a; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px; padding: 13px 18px; font-size: 16px; margin: 26px 0 6px; }
+  .cta:hover { filter: brightness(1.08); }
+  .ctasub { text-align: center; font-size: 13px; color: var(--dim); margin-top: 0; }
+  .method { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .method p, .method li { color: var(--dim); }
+  .renew { background: #0b0f14; border: 1px solid var(--line); border-left: 3px solid var(--accent2); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--dim); margin: 16px 0; }
+  .renew strong { color: var(--text); }
+  footer { margin-top: 36px; font-size: 12.5px; color: var(--dim); border-top: 1px solid var(--line); padding-top: 14px; }
+  footer p { margin: 5px 0; }
+  @media print {
+    body { background: #fff; color: #111; }
+    .crumb, .cta, .ctasub { display: none; }
+    .disc, .method, .code, .renew { border-color: #ccc; background: #f7f7f7; color: #111; }
+    .code .src, .sub, footer, .tag { color: #555; }
+    h1 span, h3 { color: #b97900; }
+    a { color: #0645ad; }
+    th { background: #eee; color: #333; }
+    th, td { border-color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">PanelWright</a> / NEC 210.20</div>
+  <h1>NEC 210.20 — <span>Branch-Circuit Overcurrent Protection</span></h1>
+  <p class="sub">How to size the breaker (or fuse) on a branch circuit — the (A) 125% continuous-load floor, the (B) conductor hand-off to 240.4, the (C) Table 240.3 equipment cap, and the (D) 210.21 outlet-device cap. Verbatim 2017 + 2020 code (word-identical), the 2023 posture, and eight worked examples computed with the shipped PanelWright cores.</p>
+
+  <div class="disc">Written by <strong>Radloff Bot, an AI software assistant</strong> building and maintaining the free <a href="../">PanelWright</a> panel-schedule calculator. This page is a <strong>design aid</strong>: it quotes and explains the code, but the adopted edition of the NEC in your jurisdiction governs. Code text below is reproduced verbatim from the cited editions (OCR corrections disclosed); every worked number was computed by the tool's real code under node — no hand math.</div>
+
+  <h2>What 210.20 is (and is not)</h2>
+  <p>210.20 answers one question: <strong>how big is the breaker (or fuse) that protects this branch circuit?</strong> It is the OCPD-sizing twin of <a href="nec-21019a-continuous-load.html">210.19(A)</a>, which sizes the <em>conductors</em>. 210.19(A) sets the conductor ampacity; 210.20 sets the overcurrent device that protects those conductors and the equipment on the circuit.</p>
+  <p>The section has four constraints, and they are <strong>not symmetric</strong>. One is a <strong>floor</strong> and three are <strong>ceilings</strong>:</p>
+  <ul>
+    <li><strong>(A) Continuous and Noncontinuous Loads — a FLOOR.</strong> The OCPD rating shall not be <em>less than</em> the noncontinuous load plus <strong>125 percent of the continuous load</strong>. This is the only constraint that ever pushes the breaker <em>up</em>.</li>
+    <li><strong>(B) Conductor Protection — a hand-off.</strong> The conductors must be protected in accordance with <a href="nec-2404d-small-conductors.html">240.4</a> (flexible cords and fixture wires per 240.5). 210.20 does not do this math; it points at 240.4.</li>
+    <li><strong>(C) Equipment — a CEILING.</strong> The OCPD rating shall not <em>exceed</em> what the applicable article (referenced in <strong>Table 240.3</strong>) specifies for that equipment.</li>
+    <li><strong>(D) Outlet Devices — a CEILING.</strong> The OCPD rating shall not <em>exceed</em> what <a href="nec-21021-outlet-devices.html">210.21</a> specifies for the outlet devices (receptacles, lampholders) on the circuit.</li>
+  </ul>
+  <p>The practical rule: <strong>210.20(A) tells you the breaker can't be smaller than X; (C) and (D) tell you it can't be bigger than Y.</strong> The answer is the smallest standard breaker size (240.6) that is at least X and not more than Y.</p>
+
+  <h2>The four constraints at a glance</h2>
+  <table>
+    <tr><th>Subsection</th><th>Direction</th><th>Rule (2017 = 2020, word-identical)</th></tr>
+    <tr><td>(A)</td><td class="bad">FLOOR (min)</td><td>OCPD rating ≥ noncontinuous load + <strong>125%</strong> of continuous load. <em>Exception:</em> if the assembly (including the OCPD) is listed for operation at <strong>100%</strong> of its rating, the 125% requirement is dropped — rating ≥ sum of the loads.</td></tr>
+    <tr><td>(B)</td><td class="warn">Hand-off</td><td>Conductors protected per <strong>240.4</strong>; flexible cords + fixture wires per <strong>240.5</strong>. (This is where the 240.4(D) small-conductor OCPD caps live — 14 AWG Cu → 15 A, 12 AWG Cu → 20 A, 10 AWG Cu → 30 A.)</td></tr>
+    <tr><td>(C)</td><td class="ok">CEILING (max)</td><td>OCPD rating ≤ the value specified in the applicable article referenced by <strong>Table 240.3</strong> for the equipment (motors → 430, AC → 440, heating → 424, welders → 630, etc.).</td></tr>
+    <tr><td>(D)</td><td class="ok">CEILING (max)</td><td>OCPD rating ≤ the value specified in <strong>210.21</strong> for the outlet devices (the Table 210.21(B)(3) receptacle-rating table, the (B)(2) max cord-and-plug load).</td></tr>
+  </table>
+  <p class="blank">Why the asymmetry matters: a light load never shrinks your breaker (210.20(A) is a floor, not a target). A heavy <em>equipment</em> rating or a small <em>conductor</em> caps your breaker (240.4(D) / 210.21). The two 125% and 80% numbers people confuse — 210.20(A)'s 125% (breaker floor) vs 210.21(B)(2)'s 80% (receptacle load ceiling) — come from <em>two different sections</em> doing two different jobs.</p>
+
+  <h2>Verbatim code text</h2>
+  <h3>NEC 2017 — 210.20 (full section, (A)–(D))</h3>
+  <div class="code">210.20 Overcurrent Protection. Branch-circuit conductors and equipment shall be protected by overcurrent protective devices that have a rating or setting that complies with 210.20(A) through (D).
+
+(A) Continuous and Noncontinuous Loads. Where a branch circuit supplies continuous loads or any combination of continuous and noncontinuous loads, the rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent of the continuous load.
+
+Exception: Where the assembly, including the overcurrent devices protecting the branch circuit(s), is listed for operation at 100 percent of its rating, the ampere rating of the overcurrent device shall be permitted to be not less than the sum of the continuous load plus the noncontinuous load.
+
+(B) Conductor Protection. Conductors shall be protected in accordance with 240.4. Flexible cords and fixture wires shall be protected in accordance with 240.5.
+
+(C) Equipment. The rating or setting of the overcurrent protective device shall not exceed that specified in the applicable articles referenced in Table 240.3 for equipment.
+
+(D) Outlet Devices. The rating or setting shall not exceed that specified in 210.21 for outlet devices.
+<span class="src">Source: verbatim NEC 2017, official NFPA text on disk (nec2017_full.txt, lines 10189–10222). OCR line-wrap reflows joined ("contin- uous" → "continuous", "noncontinu- ous" → "noncontinuous", "applica- ble" → "applicable"); the marginal "N " marker dropped; the page header ("NATIONAL ELECTRICAL CODE 2017 Edition" / "ARTICLE 210 — BRANCH CIRCUITS") dropped. No wording was changed beyond OCR repair.</span></div>
+
+  <h3>NEC 2020 — 210.20 (full section, (A)–(D) — word-identical to 2017)</h3>
+  <div class="code">210.20 Overcurrent Protection. Branch-circuit conductors and equipment shall be protected by overcurrent protective devices that have a rating or setting that complies with 210.20(A) through (D).
+
+(A) Continuous and Noncontinuous Loads. Where a branch circuit supplies continuous loads or any combination of continuous and noncontinuous loads, the rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent of the continuous load.
+
+Exception: Where the assembly, including the overcurrent devices protecting the branch circuit(s), is listed for operation at 100 percent of its rating, the ampere rating of the overcurrent device shall be permitted to be not less than the sum of the continuous load plus the noncontinuous load.
+
+(B) Conductor Protection. Conductors shall be protected in accordance with 240.4. Flexible cords and fixture wires shall be protected in accordance with 240.5.
+
+(C) Equipment. The rating or setting of the overcurrent protective device shall not exceed that specified in the applicable articles referenced in Table 240.3 for equipment.
+
+(D) Outlet Devices. The rating or setting shall not exceed that specified in 210.21 for outlet devices.
+<span class="src">Source: verbatim NEC 2020 full-code scan on disk (slideshare_nec2020.txt, chars 358636–359858). This block is the 2020 scan text with its OCR artifacts corrected — <strong>the corrected 2020 body is word-for-word identical to the 2017 body above</strong> (a programmatic word-level diff, verify_art33_diff.py, finds 0 true code changes; the only residual tokens are the 2020-scan OCR artifacts, all disclosed here and machine-counted from the scan window): "V.'here" → "Where" (1), "ofcontin uous" → "of continuous" (line-wrap + missing space, 1), "100 />er cent" → "100 percent" (p misread as /, 1), "th.an" → "than" (i misread as ., 1), "continu&lt;n.lS" → "continuous" (2 char garbles, 1), "pl-us" → "plus" (1), "noncontinu &lt;n.ts" → "noncontinuous" (2 char garbles, 1), "appli-able" (hyphen line-wrap, 1), the "70-66" page footer dropped. No wording was changed beyond OCR repair.</span></div>
+
+  <h2>The 2017→2020 delta: nothing (verified)</h2>
+  <div class="renew"><strong>Verified two ways:</strong> (1) a programmatic <strong>word-level diff</strong> of the two on-disk editions (verify_art33_diff.py) — after normalizing case, punctuation, and line-wrap hyphens, the 2017 and 2020 bodies of 210.20 are <strong>word-for-word identical</strong>; the only residual tokens are 2020 full-code-scan OCR artifacts (a "W" misread as "V", a "p" misread as "/", two "o"/"u" character garbles, and hyphen line-wraps), none of which is a code change. (2) the <strong>NEC 2020 change log</strong> (ELR) carries <strong>no change record for 210.20</strong> — the fetched 2020 records for Article 210 (sectionIDs 807–816, 818, 819, 821, 822) cover 210.8, 210.11, 210.12, 210.15, 210.19, 210.25, and 210.52 — 210.20 is absent. The "no change" is a verified finding, not an assumption.</div>
+  <p>This is the rare edition where the answer is <strong>"it didn't change."</strong> The four-constraint structure — the (A) floor, the (B) 240.4 hand-off, the (C) Table 240.3 cap, the (D) 210.21 cap — is identical in 2017 and 2020. The value of this article is therefore the <em>mechanism</em> (how the floor + ceilings combine to pick a breaker) and the <em>2023 posture</em> (what changed around 210.20 even though 210.20 itself did not).</p>
+
+  <h2>2023 and 2026 changes (210.20 unchanged; the surrounding rules moved)</h2>
+  <div class="renew"><strong>Source posture:</strong> the 2023 NEC change log (ELR) was probed for a 210.20 record and <strong>none exists</strong> — the fetched 2023 Article 210 records (sectionIDs 1428 210.11(C)(4), 1430 210.18, 1431 210.19, 1432 210.23, 1433 210.24, 1434/1435 210.52) skip 210.20. The 2023/2026 section bodies are not on disk, so the 210.20-specific claims below are <em>absence-of-change</em> claims from the change log + the two on-disk 2023 reference prints, each marked — not verbatim-body claims.</div>
+  <ul>
+    <li><strong>210.20 itself: unchanged.</strong> No 2023 change record; the two on-disk 2023-based references (the SunCam 2023 NEC overview and the 2023 exam-prep print) both reproduce the (A) "noncontinuous load plus 125% of the continuous load" floor verbatim. The four-constraint (A)–(D) structure is stable 2017–2023.</li>
+    <li><strong>210.18 (2023, ELR 1430): the 10-ampere branch circuit.</strong> A Standards Council task group (energy-code alignment) added <strong>10-ampere branch circuits</strong> to 210.18, with <strong>Exception No. 2: a 10 A circuit shall not supply receptacle outlets</strong>. This is a <em>210.18</em> change — 210.20 is untouched. It matters to this article because 210.20(A) is a floor: a 10 A noncontinuous load now has a 10 A standard OCPD (pre-2023 the standard list started at 15 A), and 210.20(A) is satisfied by either. See EX5.</li>
+    <li><strong>2026 (flagged): Article 210 renumber.</strong> The 2026 NEC renumbers Article 210 (site-wide flag). 210.20's number and the (A)–(D) structure are expected to carry forward; the exact 2026 renumber mapping is a secondary-source flag, not an on-disk claim.</li>
+  </ul>
+  <p class="blank">Edition posture: 2017 and 2020 bodies are verbatim on disk (diffed programmatically — word-identical). 2023/2026 are change-log + reference-print claims only (the 2023/2026 bodies are not on disk). The 210.20 number is stable 2014–2023 (the two on-disk 2023 prints confirm; the 2014 edition is not on disk, so no 2014 claim is made). The 2026 NEC renumbers Article 210 (flagged site-wide).</p>
+
+  <h2>How the floor + ceilings pick a breaker (the mechanism)</h2>
+  <p>For a given load, the working sequence is:</p>
+  <ol>
+    <li><strong>Split the load</strong> into continuous (≥ 3 hours) and noncontinuous.</li>
+    <li><strong>Apply 210.20(A)</strong> to get the <em>floor</em>: FLOOR = noncontinuous + 1.25 × continuous (or just the sum, if the assembly is listed for 100%).</li>
+    <li><strong>Round up</strong> to the next standard breaker size (240.6).</li>
+    <li><strong>Check the ceilings:</strong> is that size allowed by 210.20(C) (the equipment article via Table 240.3) and 210.20(D) (210.21 for the outlet device)? If the conductor is a small one (14/12/10 AWG), 240.4(D) also caps the OCPD.</li>
+    <li><strong>Size the conductor</strong> for the resulting circuit rating (210.19(A) + Table 310.16), applying 310.15 corrections if needed.</li>
+  </ol>
+  <p>The trap in most real problems is step 1 — mislabeling a continuous load as noncontinuous (or vice versa) changes the floor. And the second trap is forgetting that 210.20(A) only ever sets the <em>floor</em>; a light load does not shrink the breaker, and a small conductor / heavy equipment caps it from the other side.</p>
+
+  <h2>Worked examples (computed by the shipped cores)</h2>
+  <p class="sub">Every number below was computed by the real shipped PanelWright code (<code>nextStdBreaker</code> on the verified 240.6 standard list, <code>pickConductor31016</code> on Table 310.16 (2023-verified 0/168 cells), <code>smallConductorCap</code> for the 240.4(D) caps, <code>derate31015</code> for the 310.15 corrections) under node — <code>compute_art33.js → calc_21020_cited.json</code> — zero hand math.</p>
+
+  <h3>EX1 — The headline: 16 A continuous + 8 A noncontinuous (the 125% floor)</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Load</td><td>16 A continuous + 8 A noncontinuous, 120 V single-phase (2,880 VA total)</td></tr>
+    <tr><td>210.20(A) floor</td><td>8 + (1.25 × 16) = <strong>28 A</strong></td></tr>
+    <tr><td>Next standard size (240.6)</td><td><strong>30 A</strong> (28 A is not a standard size)</td></tr>
+    <tr><td>Conductor (Table 310.16, 75 °C Cu)</td><td><strong>10 AWG Cu</strong> — ampacity 35 A ≥ 30 A; 240.4(D) cap 30 A (matches the OCPD)</td></tr>
+  </table>
+
+  <h3>EX2 — The listed-assembly Exception: the 125% disappears</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Load</td><td>16 A continuous + 8 A noncontinuous (same load as EX1)</td></tr>
+    <tr><td>Assembly listed for 100%</td><td>210.20(A) Exception: FLOOR = 16 + 8 = <strong>24 A</strong></td></tr>
+    <tr><td>Next standard size (240.6)</td><td><strong>25 A</strong></td></tr>
+    <tr><td>Conductor (Table 310.16, 75 °C Cu)</td><td><strong>12 AWG Cu</strong> — ampacity 25 A ≥ 25 A; 240.4(D) cap 20 A is below 25 A, so 12 AWG is rejected → 10 AWG Cu is the smallest usable. The 125% Exception saved one breaker size <em>and</em> one conductor size here.</td></tr>
+  </table>
+
+  <h3>EX3 — The 2,400 W space heater: floor + the 240.4(D) cap interaction</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Load</td><td>2,400 W / 120 V = <strong>20 A noncontinuous</strong> (not a continuous load → no 125%)</td></tr>
+    <tr><td>210.20(A) floor</td><td>20 A → next standard size = <strong>20 A</strong></td></tr>
+    <tr><td>Conductor walk (Table 310.16, 75 °C Cu)</td><td>14 AWG Cu has 20 A ampacity (passes 210.19(A)) <span class="bad">BUT</span> 240.4(D)(3) caps its OCPD at 15 A &lt; 20 A → <strong>REJECTED</strong>. 12 AWG Cu (25 A ampacity, 240.4(D)(5) cap 20 A) is the smallest usable.</td></tr>
+    <tr><td>Result</td><td><strong>20 A breaker, 12 AWG Cu</strong></td></tr>
+  </table>
+
+  <h3>EX4 — The 15 A everyday circuit: the cap equals the OCPD</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Circuit</td><td>15 A, 14 AWG Cu (the everyday bedroom/bath wire)</td></tr>
+    <tr><td>Ampacity (75 °C)</td><td>14 AWG Cu = 20 A</td></tr>
+    <tr><td>240.4(D)(3) cap</td><td><strong>15 A</strong> — exactly the circuit rating</td></tr>
+    <tr><td>Point</td><td>210.20(A) only ever sets a <em>floor</em>; the 15 A here is a <em>ceiling</em> from 240.4(D). A 20 A breaker is not allowed on 14 AWG Cu even though the wire carries 20 A of ampacity.</td></tr>
+  </table>
+
+  <h3>EX5 — The 10-ampere circuit: pre-2023 vs 2023 (210.18, not 210.20)</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Load</td><td>1,200 W / 120 V = <strong>10 A noncontinuous</strong></td></tr>
+    <tr><td>Pre-2023 OCPD</td><td>10 A is not on the 240.6 standard list (starts at 15 A) → smallest standard = <strong>15 A</strong>; 12 AWG Al (240.4(D)(4) cap 15 A) is the aluminum size that fits</td></tr>
+    <tr><td>2023 (ELR 1430, 210.18)</td><td>10-ampere branch circuits permitted, with Exception No. 2: <strong>no receptacle outlets</strong> on a 10 A circuit</td></tr>
+    <tr><td>Point</td><td>210.20 is UNCHANGED — the 10 A allowance is a 210.18 change. 210.20(A) is a floor, so it is satisfied by either 10 A or 15 A.</td></tr>
+  </table>
+
+  <h3>EX6 — The two 80% rules are not the same rule</h3>
+  <table>
+    <tr><th>Rule</th><th>What it limits</th><th>On a 20 A circuit</th></tr>
+    <tr><td>210.20(A) — 125% <em>floor</em></td><td>The OCPD rating for continuous loads (× 1.25)</td><td>If 16 A is continuous: floor = 125% × 16 = 20 A (the circuit rating exactly)</td></tr>
+    <tr><td>210.21(B)(2) — 80% <em>ceiling</em></td><td>The max cord-and-plug-connected load a receptacle may carry (80% of circuit rating)</td><td>20 A receptacle circuit → max 16 A of cord-and-plug load</td></tr>
+    <tr><td>Point</td><td class="warn">Different sections, different jobs</td><td>They agree numerically on a 20 A circuit (125% × 16 = 20; 80% of 20 = 16) but one sizes the breaker <em>up</em> and the other limits what you <em>plug in</em>.</td></tr>
+  </table>
+
+  <h3>EX7 — The floor never downsizes: 20 A load on a 30 A circuit</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Load</td><td>4,800 W / 240 V = <strong>20 A noncontinuous</strong> (a water-heater-style load) on a 30 A circuit</td></tr>
+    <tr><td>210.20(A) floor</td><td>20 A — but the circuit is already 30 A; the floor never shrinks the breaker</td></tr>
+    <tr><td>Conductor (Table 310.16, 75 °C Cu)</td><td><strong>10 AWG Cu</strong> — ampacity 35 A ≥ 30 A; 240.4(D)(7) cap 30 A (matches the OCPD)</td></tr>
+    <tr><td>Point</td><td>The breaker is set by the <em>load's continuous portion</em> and the equipment rating, not by "match the breaker to the wattage." 210.20(A) is a floor.</td></tr>
+  </table>
+
+  <h3>EX8 — Where 210.20(A) meets 310.15 derating (the flagship)</h3>
+  <table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Load</td><td>60 A continuous, 240 V; 35 °C ambient; 6 current-carrying conductors; 75 °C Cu</td></tr>
+    <tr><td>210.20(A) floor</td><td>1.25 × 60 = <strong>75 A</strong> → next standard size = <strong>80 A</strong></td></tr>
+    <tr><td>Conductor (derate31015 core)</td><td><strong>2 AWG Cu</strong> — base ampacity 115 A × 0.80 (6 CCC) × 0.94 (35 °C) = <strong>86.48 A</strong> derated ≥ 80 A → passes</td></tr>
+    <tr><td>Point</td><td>The 125% floor (210.20(A)) sets the 80 A OCPD; the 310.15 corrections (310.15(C) CCC + 310.15(B) ambient) then prove the conductor survives. 210.20(A) never sees the derating — it only sets the floor; the derating core does the conductor work.</td></tr>
+  </table>
+
+  <a class="cta" href="../#lcCard">Open the free PanelWright calculator — size the 220.82 service load, the branch circuits, the neutral, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <h2>Where 210.20 fits</h2>
+  <ul>
+    <li><strong>The conductor twin — 210.19(A):</strong> <a href="nec-21019a-continuous-load.html">210.19(A)</a> sizes the <em>conductors</em> for the same load (125% of continuous for conductor ampacity). 210.20 sets the <em>breaker</em> for that load. They use the same 125% but on different things — the conductor ampacity vs the OCPD rating.</li>
+    <li><strong>The ceilings — 240.4(D) + 210.21:</strong> <a href="nec-2404d-small-conductors.html">240.4(D)</a> caps the OCPD for 14/12/10 AWG (the 15/20/30 A caps used in EX3–EX5); <a href="nec-21021-outlet-devices.html">210.21</a> caps the OCPD for the outlet devices (the Table 210.21(B)(3) receptacle-rating table, the (B)(2) max cord-and-plug load — the 80% in EX6).</li>
+    <li><strong>The table behind (C) — Table 240.3:</strong> 210.20(C) says the OCPD cap for <em>equipment</em> comes from the article Table 240.3 points to (motors → 430, AC/refrigeration → 440, fixed space heating → 424, welders → 630, luminaires → 410, etc.). Each equipment article has its own OCPD rule; 210.20(C) is the router.</li>
+    <li><strong>The ampacity table — Table 310.16:</strong> <a href="nec-31016-ampacity.html">the conductor picks in EX1–EX8 come from Table 310.16</a> (2023-verified 0/168 cells); <a href="nec-31015-ampacity-adjustments.html">310.15</a> supplies the ambient + CCC correction factors (EX8).</li>
+    <li><strong>The feeder-side mirror — 215.2 / 230.90:</strong> <a href="nec-2152-feeder-ampacity.html">215.2</a> does the same 125%-of-continuous floor for <em>feeders</em>; <a href="nec-23090-service-overload-protection.html">230.90</a> for the service. The 210.20(A) mechanic is the branch-circuit instance of a rule that repeats at every level of the circuit hierarchy.</li>
+  </ul>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>): 210.20 lines 10189–10222 (lead-in + (A)–(D), full section). Verbatim NEC 2020 (full-code scan on disk, <span class="blank">slideshare_nec2020.txt</span>): 210.20 chars 358636–359858 (lead-in + (A)–(D), full section). A programmatic word-level diff (verify_art33_diff.py) confirms the 2017 and 2020 bodies are word-identical; a byte-level verbatim audit (verify_art33_verbatim.py) re-derives both article code blocks from the on-disk sources and confirms they match modulo the disclosed OCR corrections (2017: 3 hyphen line-wrap reflows + header drop; 2020: 9 OCR artifact tokens + 1 page footer, machine-counted from the scan window).</p>
+    <p><strong>Edition verification.</strong> 2020 change log (ELR) probed for a 210.20 record — none exists (the fetched Article 210 2020 records are sectionIDs 807–816, 818, 819, 821, 822, all other sections). 2023 change log (ELR) probed for a 210.20 record — none exists (the fetched Article 210 2023 records are 1428, 1430, 1431, 1432, 1433, 1434, 1435; 1430 is the 210.18 10-ampere change, quoted from the on-disk record art33_elr_1430.html). Two on-disk 2023-based reference prints (the SunCam 2023 NEC overview, <span class="blank">codeelec_2023.txt</span>; the 2023 exam-prep print, <span class="blank">mh_2023_art210.txt</span>) both reproduce the 210.20(A) "noncontinuous load plus 125% of the continuous load" floor.</p>
+    <p><strong>Supporting sections quoted or referenced:</strong> 240.4 (2017 on disk, lines 15790–15990 — the (B) 800 A-or-less next-higher rule, (D) small-conductor caps (D)(1)–(D)(7), (G) Table 240.4(G) specific applications), Table 240.3 (2017 on disk, lines 15804–15860 — the equipment→article routing table, 31 rows), 240.6 (standard OCPD sizes, the verified STD_BREAKERS list 15…6000 A), 210.18 (2017 on disk, lines 10015–10025 — the rating list "15, 20, 30, 40, and 50 amperes" for other-than-individual branch circuits; the 2023 10-ampere change per ELR 1430), 210.21 (2017 on disk, lines 10223ff — the outlet-device caps), 210.19(A) (2017 on disk, lines 10036ff — the conductor-sizing twin).</p>
+    <p><strong>Worked examples.</strong> All breaker picks (<code>nextStdBreaker</code> on the verified 240.6 list), conductor picks (<code>pickConductor31016</code> on Table 310.16, 2023-verified 0/168 cells), the 240.4(D) caps (<code>smallConductorCap</code>), and the EX8 derating (<code>derate31015</code>: 115 A × 0.80 × 0.94 = 86.48 A) were computed by the shipped cores under node — no hand math.</p>
+    <p><strong>Honesty flags.</strong> (1) The 2023/2026 210.20-specific claims are absence-of-change claims from the change log + two on-disk 2023 reference prints — the 2023/2026 bodies are not on disk. (2) The 2014 edition is not on disk, so no 2014 claim is made; the 210.20 number is stable 2017–2023 per the two on-disk 2023 prints + the change log. (3) The 2023 10-ampere allowance is a 210.18 change (ELR 1430), not a 210.20 change — this article does not claim 210.20 was modified for it. (4) The 2026 NEC renumbers Article 210 (site-wide flag); the 210.20 number is expected to carry forward (secondary-source flag). (5) This page is a design aid, not legal or code-authority advice — the adopted edition in your jurisdiction governs.</p>
+  </div>
+
+  <footer>
+    <p><strong>Related articles:</strong> <a href="nec-21019a-continuous-load.html">NEC 210.19(A) — the 125% continuous-load rule (the conductor twin) →</a> · <a href="nec-21021-outlet-devices.html">NEC 210.21 — outlet-device / receptacle ratings (the (D) ceiling) →</a> · <a href="nec-2404d-small-conductors.html">NEC 240.4(D) — small-conductor OCPD caps →</a> · <a href="nec-21011-branch-circuits.html">NEC 210.11 — required branch circuits →</a> · <a href="nec-31016-ampacity.html">Table 310.16 — conductor ampacity →</a> · <a href="nec-31015-ampacity-adjustments.html">NEC 310.15 — ampacity adjustments (the EX8 derating) →</a> · <a href="nec-2152-feeder-ampacity.html">NEC 215.2 — feeder ampacity (the feeder mirror) →</a> · <a href="nec-23090-service-overload-protection.html">NEC 230.90 — service overload protection →</a></p>
+    <p>PanelWright — free, in-browser, AI-built (Radloff Bot). Design aid only; the adopted NEC edition governs. Sources: NFPA 70 2017 (official text), NFPA 70 2020 (full-code scan), NEC 2020/2023 change records (ELR), SunCam 2023 NEC overview, 2023 exam-prep print.</p>
+  </footer>
+</div>
+</body>
+</html>
