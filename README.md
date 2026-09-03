@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 1822 assertions pass (was 1755 at Session 54; Session 55 added +67 for the 230.90 service-overload-protection article on top of the 230.42 service-conductor-sizing article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
+node test/run_tests.js   # 1875 assertions pass (was 1822 at Session 55; Session 56 added +53 for the 210.12 arc-fault circuit-interrupter-protection article on top of the 230.90 service-overload-protection article on top of the 230.42 service-conductor-sizing article on top of the 110.14(C) + 310.14 termination-temperature-column article on top of the 250.64 + 250.104 GEC-installation article on top of the 250.50 + 250.52 + 250.53 grounding-electrode-system article on top of the 250.26 + 250.30 separately-derived-systems article on top of the 250.102 main-bonding-jumper article on top of the 250.122 EGC-sizing article on top of the 310.15 ampacity-adjustments (ambient + conductor-count) article on top of the 250.119 + 310.120 EGC-identification & marking article on top of the 210.21 outlet-devices / 210.52 / 210.23+210.24 / 408.3 / 210.11 / v1.16 derating-card / 210.19(A) baselines)
 ```
 
 ## Articles
@@ -768,6 +768,41 @@ node test/run_tests.js   # 1822 assertions pass (was 1755 at Session 54; Session
   analysis records no 230.90 change; 83% rule content confirmed on disk for 2017
   (310.15(B)(7)) and via ELR for the 2020 home (310.12, Table 310.12(A)/(B));
   2026 renumber flagged. Written by Radloff Bot (AI, disclosed on the page).
+
+- **[NEC 210.12 — Arc-Fault Circuit-Interrupter (AFCI) Protection, explained](articles/nec-21012-afci-protection.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-21012-afci-protection.html`) —
+  the explainer for **which branch circuits need an AFCI and how to provide it**:
+  210.12(A) (all 120-V, single-phase, 15- and 20-ampere branch circuits in the
+  dwelling-unit room list — kitchens, family rooms, living rooms, bedrooms,
+  closets, hallways, laundry areas, etc.), (B) dormitory units, (C) guest rooms
+  and guest suites of hotels/motels, and (D) the extension/modification rule —
+  protected by **any of six means**: (1) a listed **combination-type AFCI** at the
+  origin (whole circuit, no distance limit), (2) **branch/feeder-type + outlet
+  AFCI**, (3) **supplemental arc-protection breaker + outlet AFCI**, (4)
+  **outlet AFCI + listed OCPD** listed as a "system combination-type AFCI",
+  (5) **metal raceway/gutter/MC/AC** to the first outlet + outlet AFCI, (6)
+  **conduit/MC encased in 2 in. concrete** + outlet AFCI. Means (3)/(4) carry
+  the **50 ft (14 AWG) / 70 ft (12 AWG)** distance limits + first-outlet marking;
+  the fire-alarm circuit may omit AFCI (210.12(A) Exception). **The 2017→2020
+  delta (exactly four changes per a programmatic word-level diff):** (C) adds
+  **patient sleeping rooms in nursing homes and limited-care facilities**, (D)
+  scope expands to **guest rooms and guest suites**, (D)(1) broadens from a single
+  combination-type AFCI to **"any of the means in 210.12(A)(1)–(6)"**, and the
+  (D) 6 ft extension exception adds "other than splicing devices" + the
+  enclosure/cabinet/junction-box measurement clarification (the (D) subsection
+  existed in 2017 — not new in 2020). **2023** restructures to (A)–(E) and adds
+  **10-ampere** circuits. Five core-computed worked examples (`compute_art31.js` →
+  `calc_21012_cited.json`): EX1 the 15 A bedroom circuit in scope (combination
+  AFCI at the origin); EX2 the 50/70 ft distance limit (40 ft on 14 AWG passes,
+  75 ft on 12 AWG fails); EX3 the 210.12(D) 6 ft extension-exemption test (4.5 ft
+  no-outlet exempt; 7 ft required; 5 ft + new outlet required); EX4 the 2023
+  10-amp inclusion (out of scope 2017/2020, in scope 2023); EX5 the six-means
+  matrix + fire-alarm exception. 53 test assertions + byte-level verbatim probes
+  of both on-disk editions (2017 lines 9816–9982, 2020 chars 344023–350530) and
+  the 2023 ELR text. Edition posture stated honestly: title identical in both
+  on-disk editions; 2023 restructure confirmed via ELR (sectionID 1429/1853/1855);
+  2014 not on disk (no claim); 2026 renumber flagged. Written by Radloff Bot
+  (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

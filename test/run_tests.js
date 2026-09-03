@@ -3182,5 +3182,80 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-conductor-sizing.html'), true, 'art30: cross-links to the conductor-sizing article');
 }
 
+// Article 31 (NEC 210.12 Arc-Fault Circuit-Interrupter Protection).
+// Where an AFCI is required (dwelling rooms, dormitories, guest rooms + [2020] patient sleeping
+// rooms in nursing homes/limited-care facilities), the six permitted means, the 50 ft / 70 ft
+// distance limits on means (3)/(4), the 6 ft extension-exemption test in (D), and the 2023
+// restructure to (A)-(E) with 10-ampere circuits. Core-computed examples: compute_art31.js ->
+// calc_21012_cited.json. 2017->2020 delta audit: verify_art31_diff.py.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-21012-afci-protection.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const p = core.pickConductor31016, nsb = core.nextStdBreaker;
+  eq(art.includes('nec-21012-afci-protection.html'), true, 'art31: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-21012-afci-protection.html'), true, 'art31: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art31: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art31: Article + FAQPage JSON-LD present');
+  // verbatim 2017 NEC 210.12 probes (official NFPA text, lines 9816-9982)
+  eq(has('210.12 Arc-Fault Circuit-Interrupter Protection. Arc-fault circuit-interrupter protection shall be provided as required in 210.12(A), (B), and (C)'), true, 'art31: verbatim 2017 lead-in (A),(B),(C)');
+  eq(has('kitchens, family rooms, dining rooms, living rooms, parlors, libraries, dens, bedrooms, sunrooms, recreation rooms, closets, hallways, laundry areas, or similar rooms or areas'), true, 'art31: verbatim 2017 (A) dwelling room list');
+  eq(has('The maximum length of the branch-circuit wiring from the branch-circuit overcurrent device to the first outlet shall not exceed 15.2 m (50 ft) for a 14 AWG conductor or 21.3 m (70 ft) for a 12 AWG conductor'), true, 'art31: verbatim 50 ft / 70 ft distance limit (means 3/4)');
+  eq(has('(C) Guest Rooms and Guest Suites.'), true, 'art31: verbatim 2017 (C) title (guest rooms only)');
+  eq(has('(D) Branch Circuit Extensions or Modifications — Dwelling Units and Dormitory Units.'), true, 'art31: verbatim 2017 (D) title (exists in 2017)');
+  eq(has('A listed combination-type AFCI located at the origin of the branch circuit'), true, 'art31: verbatim 2017 (D)(1) (combination-type only)');
+  eq(has('AFCI protection shall not be required where the extension of the existing conductors is not more than 1.8 m (6 ft) and does not include any additional outlets or devices.'), true, 'art31: verbatim 2017 (D) 6 ft extension exception');
+  // verbatim 2020 NEC 210.12 probes (the four real changes)
+  eq(has('210.12(A), (B), (C), and (D)'), true, 'art31: verbatim 2020 lead-in (A),(B),(C),(D)');
+  eq(has('(C) Guest Rooms, Guest Suites, and Patient Sleeping Rooms in Nursing Homes and Limited-Care Facilities.'), true, 'art31: verbatim 2020 (C) title (patient sleeping rooms added)');
+  eq(has('(D) Branch Circuit Extensions or Modifications — Dwelling Units, Dormitory Units, and Guest Rooms and Guest Suites.'), true, 'art31: verbatim 2020 (D) title (guest rooms added)');
+  eq(has('By any of the means described in 210.12(A)(1) through (A)(6)'), true, 'art31: verbatim 2020 (D)(1) (broadened to all six means)');
+  eq(has('other than splicing devices. This measurement shall not include the conductors inside an enclosure, cabinet, or junction box.'), true, 'art31: verbatim 2020 (D) exception additions');
+  // delta box probes
+  eq(has('exactly four changes'), true, 'art31: delta box names exactly four changes');
+  eq(has('unchanged in substance'), true, 'art31: delta box states the six means unchanged in substance');
+  eq(has('existed in 2017 already'), true, 'art31: delta box notes (D) existed in 2017');
+  // 2023 restructure probes
+  eq(has('210.12(B) through (E)'), true, 'art31: 2023 lead-in "(B) through (E)"');
+  eq(has('Means of Protection'), true, 'art31: 2023 (A) "Means of Protection"');
+  eq(has('Branch Circuit Wiring Extensions, Modifications, or Replacements'), true, 'art31: 2023 (E) title');
+  eq(has('10-ampere'), true, 'art31: 2023 (B) adds 10-ampere circuits');
+  // core-computed worked examples (real shipped app.js, zero hand math)
+  eq(nsb(15), 15, 'art31 EX1: nextStdBreaker(15) = 15 A (240.6(A))');
+  eq(p(15, 'cu', 75).size, '14', 'art31 EX1: 15 A -> 14 AWG Cu');
+  eq(p(15, 'cu', 75).amp, 20, 'art31 EX1: 14 AWG Cu Table 310.16 ampacity 20 A');
+  eq(p(25, 'cu', 75).size, '12', 'art31 EX2: 25 A -> 12 AWG Cu (the 20 A circuit wire)');
+  eq(p(25, 'cu', 75).amp, 25, 'art31 EX2: 12 AWG Cu Table 310.16 ampacity 25 A');
+  eq(nsb(10), 15, 'art31 EX4: nextStdBreaker(10) = 15 A (10 A is a standard 240.6(A) rating)');
+  eq(40 <= 50, true, 'art31 EX2: 40 ft run on 14 AWG within the 50 ft cap');
+  eq(75 > 70, true, 'art31 EX2: 75 ft run on 12 AWG exceeds the 70 ft cap');
+  eq(4.5 <= 6, true, 'art31 EX3-A: 4.5 ft, no new outlet -> within 6 ft, exempt');
+  eq(7.0 > 6, true, 'art31 EX3-B: 7 ft exceeds 6 ft -> AFCI required');
+  // worked-example figures actually appear in the article
+  eq(has('14 AWG Cu') && has('20 A') && has('15 A'), true, 'art31: EX1 14 AWG Cu (amp 20 / cap 15) in article');
+  eq(has('12 AWG Cu') && has('25 A') && has('20 A'), true, 'art31: EX2 12 AWG Cu (amp 25 / cap 20) in article');
+  eq(has('50 ft') && has('70 ft'), true, 'art31: EX2 50 ft / 70 ft limits in article');
+  eq(has('40 ft') && has('75 ft'), true, 'art31: EX2 run lengths in article');
+  eq(has('4.5 ft') && has('7.0 ft') && has('5.0 ft'), true, 'art31: EX3 run lengths in article');
+  eq(has('6 ft'), true, 'art31: EX3 6 ft exemption cap in article');
+  eq(has('exempt: true'), true, 'art31: EX3-A exempt verdict in article');
+  eq(has('exempt: false'), true, 'art31: EX3-B/EX3-C required verdict in article');
+  eq(has('inScope2023: true'), true, 'art31: EX4 2023 10-amp in-scope verdict in article');
+  eq(has('inScope2017: false'), true, 'art31: EX4 2017 10-amp out-of-scope verdict in article');
+  eq(has('inScope2020: false'), true, 'art31: EX4 2020 10-amp out-of-scope verdict in article');
+  eq(has('2 in. concrete'), true, 'art31: EX5 means (6) 2 in. concrete in article');
+  // cross-links
+  eq(art.includes('nec-21011-branch-circuits.html'), true, 'art31: cross-links to the 210.11 article');
+  eq(art.includes('nec-21052-dwelling-receptacle-outlets.html'), true, 'art31: cross-links to the 210.52 article');
+  eq(art.includes('nec-21023-permissible-loads.html'), true, 'art31: cross-links to the 210.23 article');
+  eq(art.includes('nec-21021-outlet-devices.html'), true, 'art31: cross-links to the 210.21 article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art31: cross-links to the 240.4(D) article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art31: cross-links to the Table 310.16 article');
+  eq(art.includes('nec-21019a-continuous-load.html'), true, 'art31: cross-links to the 210.19(A) article');
+  eq(art.includes('nec-2152-feeder-ampacity.html'), true, 'art31: cross-links to the 215.2 article');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
