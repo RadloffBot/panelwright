@@ -3874,5 +3874,94 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index38.includes('articles/nec-43022-43052-single-motor-branch-circuit.html'), true, 'art38: index cross-link present');
 }
 
+// ============================================================
+// Article 39: NEC 430.32 + 430.36 — Motor Overload Protection
+// (the nameplate-current pair to Article 38: 430.22/430.52 table-FLC)
+// The nameplate-vs-table split: 430.32(A)(1) separate overload device at
+// 125%/115% of the NAMEPLATE FLC; 430.32(A)(2) thermal protector at
+// 170/156/140% of the TABLE FLC (buckets ≤9 A / 9.1–20 A / >20 A); the
+// 430.32(C) higher-setting cap 140/130% of nameplate; 430.32(D)(2)(a)
+// branch-OCPD path for ≤1 hp manually-started in-sight motors; 430.35(A)
+// 400% shunt ceiling; 430.33 intermittent duty; 430.36/430.37/430.38 which
+// conductors / how many units / how many opened (Table 430.37).
+// Verbatim 2017 on disk (nec2017_full.txt lines 54039–54066, 54067–54307,
+// 54309–54321, 54324–54360, 54363–54381) + 2023 on disk
+// (art35_nec_csv.csv rows 430.31(A)/(B), 430.32(A)(1)–(E), 430.33,
+// 430.35(A)/(B), 430.36, 430.37, 430.38); 2020 body NOT on disk (scan ends
+// at Art 230 — disclosed). Verified deltas: 430.32(A)(2)/(B)(2) gain the
+// "electronically protected" sentence; 430.31 restructured (A)/(B); 430.33
+// re-cite 430.52→430.52(C)(1); 430.35 renumber (a)/(b)→(1)/(2),
+// (1)(2)(3)→a/b/c; 430.36/37/38 bodies word-identical (verify_art39.py
+// 73/73). Worked examples computed by the shipped core (nextStdBreaker /
+// pickConductor31016) under node (compute_art39.js → art39_examples.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-43032-43036-motor-overload-protection.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, nsb = core.nextStdBreaker;
+  eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art39: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-43032-43036-motor-overload-protection.html'), true, 'art39: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art39: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art39: Article + FAQPage JSON-LD present');
+  eq(has('Part III specifies overload devices intended to protect motors, motor-control apparatus, and motor branch-circuit conductors against excessive heating due to motor overloads and failure to start'), true, 'art39: verbatim 2017 430.31 lead');
+  eq(has('shall not require overload protection where a power loss would cause a hazard, such as in the case of fire pumps'), true, 'art39: verbatim 2017 430.31 fire-pump exclusion');
+  eq(has('The provisions of Part III shall not apply to motor circuits rated over 1000 volts, nominal'), true, 'art39: verbatim 2017 430.31 over-1000V exclusion');
+  eq(has('Each motor used in a continuous duty application and rated more than 1 hp shall be protected against overload by one of the means in 430.32(A)(1) through (A)(4)'), true, 'art39: verbatim 2017 430.32(A) lead (1 hp)');
+  eq(has('This device shall be selected to trip or shall be rated at no more than the following percent of the motor nameplate full-load current rating'), true, 'art39: verbatim 2017 430.32(A)(1) NAMEPLATE basis');
+  eq(has('For a multispeed motor, each winding connection shall be considered separately'), true, 'art39: verbatim 2017 430.32(A)(1) multispeed');
+  eq(has('The ultimate trip current of a thermally protected motor shall not exceed the following percentage of motor full-load current given in Table 430.248, Table 430.249, and Table 430.250'), true, 'art39: verbatim 2017 430.32(A)(2) TABLE FLC basis');
+  eq(has('Motor full-load current 9 amperes or less: 170%'), true, 'art39: verbatim 2017 430.32(A)(2) 170% bucket');
+  eq(has('from 9.1 to, and including, 20 amperes: 156%'), true, 'art39: verbatim 2017 430.32(A)(2) 156% bucket');
+  eq(has('Motor full-load current greater than 20 amperes: 140%'), true, 'art39: verbatim 2017 430.32(A)(2) 140% bucket');
+  eq(has('higher size sensing elements or incremental settings or sizing shall be permitted to be used, provided the trip current of the overload device does not exceed the following percentage of motor nameplate full-load current rating'), true, 'art39: verbatim 2017 430.32(C) higher-setting provision');
+  eq(has('If not shunted during the starting period of the motor as provided in 430.35, the overload device shall have sufficient time delay to permit the motor to start and accelerate its load'), true, 'art39: verbatim 2017 430.32(C) time-delay/shunt tie');
+  eq(has('A Class 20 overload relay will provide a longer motor acceleration time than a Class 10 or Class 10A overload relay'), true, 'art39: verbatim 2017 430.32(C) Class 10/20/30 note');
+  eq(has('Any motor of 1 hp or less that is started automatically shall be protected against overload by one of the following means'), true, 'art39: verbatim 2017 430.32(B) lead');
+  eq(has('(4) Impedance-Protected'), true, 'art39: verbatim 2017 430.32(B)(4) impedance-protected mean');
+  eq(has('Overload protection shall be permitted to be furnished by the branch-circuit short-circuit and ground-fault protective device; such device, however, shall not be larger than that specified in Part IV of Article 430'), true, 'art39: verbatim 2017 430.32(D)(2)(a) branch-OCPD path');
+  eq(has('Any such motor shall be permitted on a nominal 120-volt branch circuit protected at not over 20 amperes'), true, 'art39: verbatim 2017 430.32(D)(2)(a) 120V/20A exception');
+  eq(has('The secondary circuits of wound-rotor ac motors, including conductors, controllers, resistors, and so forth, shall be permitted to be protected against overload by the motor-overload device'), true, 'art39: verbatim 2017 430.32(E) wound-rotor secondaries');
+  eq(has('A motor used for a condition of service that is inherently short-time, intermittent, periodic, or varying duty, as illustrated by Table 430.22(E), shall be permitted to be protected against overload by the branch-circuit short-circuit and ground-fault protective device'), true, 'art39: verbatim 2017 430.33 intermittent duty');
+  eq(has('Any motor application shall be considered to be for continuous duty unless the nature of the apparatus it drives is such that the motor cannot operate continuously with load under any condition of use'), true, 'art39: verbatim 2017 430.33 continuous-duty default');
+  eq(has('the overload protection shall be permitted to be shunted or cut out of the circuit during the starting period of the motor if the device by which the overload protection is shunted or cut out cannot be left in the starting position'), true, 'art39: verbatim 2017 430.35(A) shunt permission');
+  eq(has('fuses or inverse time circuit breakers rated or set at not over 400 percent of the full-load current of the motor are located in the circuit so as to be operative during the starting period of the motor'), true, 'art39: verbatim 2017 430.35(A) 400% OCPD ceiling');
+  eq(has('The motor overload protection shall not be shunted or cut out during the starting period if the motor is automatically started'), true, 'art39: verbatim 2017 430.35(B) auto-start no-shunt');
+  eq(has('Where fuses are used for motor overload protection, a fuse shall be inserted in each ungrounded conductor and also in the grounded conductor if the supply system is 3-wire, 3-phase ac with one conductor grounded'), true, 'art39: verbatim 2017 430.36 fuse conductor rule');
+  eq(has('Where devices other than fuses are used for motor overload protection, Table 430.37 shall govern the minimum allowable number and location of overload units such as trip coils or relays'), true, 'art39: verbatim 2017 430.37 Table 430.37 governs');
+  eq(has('Motor overload devices, other than fuses or thermal protectors, shall simultaneously open a sufficient number of ungrounded conductors to interrupt current flow to the motor'), true, 'art39: verbatim 2017 430.38 conductors opened');
+  // 2023 deltas (on-disk CSV)
+  eq(has('An electronically protected motor shall be approved for use on the basis that it will prevent dangerous overheating due to the failure of the electronic control, overload, or failure to start the motor'), true, 'art39: 2023 (A)(2)/(B)(2) NEW electronically-protected sentence');
+  eq(has('thermally or electronically protected'), true, 'art39: 2023 delta "thermally or electronically protected" (edition table, 430.32(A)(2))');
+  // worked examples (core-computed; art39_examples.json)
+  approx(9.5 * 1.25, 11.875, 1e-6, 'art39 EX1: 430.32(A)(1) 125% x 9.5 nameplate = 11.88 A (SF >= 1.15)');
+  approx(9.5 * 1.4, 13.3, 1e-6, 'art39 EX1: 430.32(C) cap 140% x 9.5 nameplate = 13.30 A');
+  eq(pick(12, 'cu', 60).size, '14', 'art39 EX1: 430.22 125% of 9.6 table = 12.0 A -> 14 AWG Cu @60C (context)');
+  approx(15.6 * 1.15, 17.94, 1e-6, 'art39 EX2: 430.32(A)(1) 115% x 15.6 nameplate = 17.94 A (standard motor)');
+  approx(15.6 * 1.3, 20.28, 1e-6, 'art39 EX2: 430.32(C) cap 130% x 15.6 nameplate = 20.28 A');
+  approx(5.8 * 1.7, 9.86, 1e-6, 'art39 EX3: 430.32(A)(2) 170% x 5.8 table (1 hp 3-ph 230V, <=9A bucket) = 9.86 A');
+  approx(15.2 * 1.56, 23.712, 1e-6, 'art39 EX3: 430.32(A)(2) 156% x 15.2 table (5 hp 3-ph 230V, 9.1-20A bucket) = 23.71 A');
+  approx(4.4 * 1.25, 5.5, 1e-6, 'art39 EX4: 430.32(B)(1)->(A)(1) 125% x 4.4 nameplate (1/2 hp 1-ph auto-started) = 5.50 A');
+  approx(4.4 * 1.4, 6.16, 1e-6, 'art39 EX4: 430.32(C) cap 140% x 4.4 nameplate = 6.16 A');
+  eq(nsb(2.8 * 2.5), 15, 'art39 EX5: 430.52 250% x 2.8 table = 7.0 A -> next std 15 A (branch OCPD = overload per 430.32(D)(2)(a))');
+  eq(nsb(2.8 * 1.75), 15, 'art39 EX5: 175% x 2.8 = 4.9 A -> next std 15 A time-delay fuse');
+  approx(28.0 * 4.0, 112, 1e-6, 'art39 EX6: 430.35(A) shunt ceiling 400% x 28.0 table = 112 A');
+  eq(nsb(28.0 * 2.5), 70, 'art39 EX6: 430.52 250% x 28.0 table = 70 A inverse (standard)');
+  eq(nsb(28.0 * 2.5) <= 28.0 * 4.0, true, 'art39 EX6: 70 A OCPD <= 112 A (400% ceiling) -> shunting during start permitted');
+  approx(28.5 * 1.25, 35.625, 1e-6, 'art39 EX6: 430.32(A)(1) 125% x 28.5 nameplate = 35.63 A (overload restored after start)');
+  eq(pick(35, 'cu', 60).size, '8', 'art39 EX6: 430.22 125% of 28.0 table = 35.0 A -> 8 AWG Cu @60C');
+  // cross-links
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art39: cross-links back to article 38 (430.22/430.52)');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art39: cross-links to the 310.16 ampacity article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art39: cross-links to the 240.6 standard-ratings article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art39: cross-links to the 240.4(D) small-conductors article');
+  eq(art.includes('nec-31015-ampacity-adjustments.html'), true, 'art39: cross-links to the 310.15 adjustments article');
+  const sitemap39 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap39.includes('articles/nec-43032-43036-motor-overload-protection.html'), true, 'art39: sitemap entry present');
+  const index39 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index39.includes('articles/nec-43032-43036-motor-overload-protection.html'), true, 'art39: index cross-link present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

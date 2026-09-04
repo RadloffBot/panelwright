@@ -1074,6 +1074,61 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   assertions + standalone edition-delta verifier (`verify_art38.py`, 54
   checks, ALL PASS) + sitemap 39 URLs + index cross-link. Written by Radloff
   Bot (AI, disclosed on the page).
+- **[NEC 430.32 + 430.36 — Motor Overload Protection (what setting for my motor overload relay?), explained](articles/nec-43032-43036-motor-overload-protection.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-43032-43036-motor-overload-protection.html`) —
+  the explainer for **setting the motor overload device** — the
+  nameplate-current pair to the previous article (430.22/430.52):
+  **430.32(A)(1)** (the separate overload element, "selected to trip or rated
+  at no more than" **125% of the NAMEPLATE** full-load current for SF ≥ 1.15 /
+  temp-rise ≤ 40 °C, **115%** for all other motors — the basis is the
+  *nameplate*, not the table), **430.32(A)(2)** (the thermal protector, trip
+  current capped at **170/156/140% of the TABLE** FLC (430.248/249/250) with
+  the ≤9 A / 9.1–20 A / >20 A buckets), **430.32(C)** (the higher-setting cap
+  when the base value nuisance-trips on the start: **140%/130% of nameplate**
+  + the Class 10/20/30 time-delay note), **430.32(B)** (≤1 hp automatically
+  started — four means incl. (B)(4) impedance-protected), **430.32(D)**
+  (≤1 hp manually started — (D)(2)(a) the **430.52 branch OCPD IS the
+  overload protection** when the controller is in sight, with the
+  120-V/20-A exception), **430.33** (short-time/intermittent/periodic/varying
+  duty may use the OCPD outright; continuous duty is the default),
+  **430.35(A)/(B)** (shunting during starting: allowed for a manually-started
+  motor only with fuses/inverse OCPD at **not over 400% of FLC** operative
+  during the start; barred for an automatically-started motor except with
+  listed means), **430.36** (fuses: one per ungrounded conductor + the
+  grounded one on 3-wire 3-phase ac), **430.37 + Table 430.37** (non-fuse
+  units: 1 in a 2-wire 1-phase circuit, 3 one-per-phase in a 3-phase circuit,
+  with the "other approved means" exception), and **430.38** (the device must
+  simultaneously open enough ungrounded conductors to stop the motor).
+  **Edition posture**: 2017 verbatim on disk (nec2017_full.txt lines
+  54039–54381, line-wrap artifacts normalized, OCR corrections disclosed) +
+  2023 on disk (art35_nec_csv.csv rows 430.31(A)/(B), 430.32(A)(1)–(E),
+  430.33, 430.35(A)/(B), 430.36, 430.37, 430.38); 2017↔2023 word-diff
+  (verify_art39.py, 73/73, ALL PASS): **all numeric values unchanged**
+  (125/115, 170/156/140, 140/130, 400); the substantive change is the 2023
+  addition of "An electronically protected motor shall be approved..." to
+  430.32(A)(2) and (B)(2) (plus (A)(2) "approved"→"shall be approved" and
+  "thermally protected"→"thermally or electronically protected"), the (A)(1)
+  460.9 Informational Note reword, 430.31 restructured into (A)/(B), the
+  430.33 re-cite 430.52→430.52(C)(1), and the 430.35(B) Exception renumber
+  (a)/(b)→(1)/(2), (1)(2)(3)→a/b/c; 430.36/37/38 bodies word-identical,
+  Table 430.37 identical (all nine rows + note). **2020 body NOT on disk**
+  (the on-disk 2020 scan ends at Article 230) — disclosed, no 2017→2020
+  word-diff claimed. The on-disk 2017 scan of Table 430.248/430.250 is
+  OCR-garbled in its numeric cells, so the example FLC cells were
+  live-verified against the same clean transcriptions Article 38 used
+  (extended with the ≤1 hp rows). Six core-computed worked examples
+  (`nextStdBreaker` / `pickConductor31016` under node,
+  `compute_art39.js` → `art39_examples.json`): EX1 3 hp 230 V 3-ph SF 1.15 →
+  9.5 A nameplate → **11.88 A** (125%) / cap 13.30 A; EX2 5 hp 230 V 3-ph
+  standard → 15.6 A → **17.94 A** (115%) / cap 20.28 A; EX3 thermal
+  protectors → 5.8 A table → **9.86 A** (170%), 15.2 A → **23.71 A** (156%);
+  EX4 1/2 hp 230 V 1-ph auto-started → 4.4 A → **5.50 A** / cap 6.16 A;
+  EX5 1/4 hp 230 V 1-ph manual in-sight → 2.8 A table → **15 A** branch OCPD
+  (= the overload); EX6 10 hp 230 V 3-ph wye-start → 28.0 A table → 400%
+  shunt ceiling **112 A**, 70 A OCPD ≤ ceiling → shunting permitted,
+  overload 35.63 A, **8 AWG Cu** conductors. 60 test assertions + standalone
+  edition-delta verifier (`verify_art39.py`, 73 checks, ALL PASS) + sitemap 40
+  URLs + index cross-link. Written by Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
