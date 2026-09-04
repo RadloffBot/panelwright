@@ -3551,5 +3551,104 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index.includes('articles/nec-2406-standard-ampere-ratings.html'), true, 'art35: index cross-link present');
 }
 
+// Article 36 (NEC 215.1 Scope + 215.3 Feeder Overcurrent Protection).
+// 215.3: Part I of Art 240 hand-off + OCPD floor = noncont + 125%*cont; single 100%
+// listed-assembly exception (2020/2023 word-identical). 2017 carried Exception No. 2
+// (600-1000 V -> Parts I-VII of Art 240; >1000 V -> Part IX) — deleted 2020 (AJB 2020
+// change report; Part IX itself remained in the 2020 TOC). 2023: 215.1 scope narrowed
+// to <=1000 V ac / 1500 V dc (Info Note -> Art 235 Part III); Art 240 Part IX removed,
+// over-1000 V OCPD moved to new Article 245 (245.1). Worked examples EX1-EX5 computed
+// by the shipped core (reqBreakerA / nextStdBreaker / pickConductor31016).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-2151-2153-feeder-overcurrent.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nsb = core.nextStdBreaker, rb = core.reqBreakerA, pick = core.pickConductor31016;
+  const SB = core.STD_BREAKERS;
+  eq(art.includes('nec-2151-2153-feeder-overcurrent.html'), true, 'art36: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-2151-2153-feeder-overcurrent.html'), true, 'art36: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art36: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art36: Article + FAQPage JSON-LD present');
+  // verbatim 215.3 (2020/2023 text — 2020 on-disk scan, 2023 CSV; word-identical)
+  eq(has('215.3 overcurrent protection.'), true, 'art36: verbatim 215.3 heading');
+  eq(has('feeders shall be protected against overcurrent in accordance with part i of article 240'), true, 'art36: 215.3 hand-off sentence (2020/2023)');
+  eq(has('the rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent of the continuous load'), true, 'art36: 215.3 125% floor verbatim');
+  eq(has('where the assembly, including the overcurrent devices protecting the feeder(s), is listed for operation at 100 percent of its rating'), true, 'art36: 215.3 exception (100% listed assembly) verbatim');
+  // 2017 body deltas
+  eq(has('in accordance with the provisions of part i of article 240'), true, 'art36: 2017 "provisions of" phrasing (2020 cleanup removed it)');
+  eq(has('exception no. 2: overcurrent protection for feeders between 600 and 1000 volts shall comply with parts i through vii of article 240'), true, 'art36: 2017 Exception No. 2 verbatim');
+  eq(has('feeders over 1000 volts, nominal, shall comply with part ix of article 240'), true, 'art36: 2017 Exception No. 2 Part IX clause verbatim');
+  // 215.1 scope (2017/2020 vs 2023)
+  eq(has('215.1 scope. this article covers the installation requirements, overcurrent protection requirements, minimum size, and ampacity of conductors for feeders.'), true, 'art36: 2017/2020 215.1 scope verbatim');
+  eq(has('feeders for electrolytic cells as covered in 668.3(c)(1) and (c)(4)'), true, 'art36: 215.1 electrolytic-cell exception verbatim');
+  eq(has('for feeders not over 1000 volts ac or 1500 volts dc, nominal'), true, 'art36: 2023 215.1 narrowed scope verbatim');
+  eq(has('see part iii of article 235 for feeders over 1000 volts ac or 1500 volts dc'), true, 'art36: 2023 215.1 Info Note -> Art 235 verbatim');
+  // 215.2(A)(1) Exception No. 1 (conductor-side 100% twin; 2017 + 2020 on disk)
+  eq(has('the allowable ampacity of the feeder conductors shall be permitted to be not less than the sum of the continuous load plus the noncontinuous load'), true, 'art36: 215.2(A)(1) Exc 1 ampacity language (2017 wording)');
+  // edition-history claims
+  eq(has('article 240 part ix still present'), true, 'art36: 2020 Part IX still present (TOC-verified)');
+  eq(has('overcurrent protection over 1000 volts, nominal'), true, 'art36: Part IX title verbatim');
+  eq(has('new article 245'), true, 'art36: 2023 new Article 245 named');
+  eq(has('235.203'), true, 'art36: 235.203 OCPD pointer cited');
+  eq(has('all 600-volt statements have been increased to 1000 volts'), true, 'art36: AJB 2020 deletion rationale quoted');
+  // 240.4 / 240.4(B) / 240.4(C) (2023 CSV text)
+  eq(has('unless otherwise permitted or required in 240.4(a) through (h)'), true, 'art36: 2023 240.4 (A)-(H) range verbatim');
+  eq(has('the next higher standard overcurrent device rating (above the ampacity of the conductors being protected) shall be permitted to be used'), true, 'art36: 240.4(B) lead verbatim');
+  eq(has('the next higher standard rating selected does not exceed 800 amperes'), true, 'art36: 240.4(B) 800 A condition verbatim');
+  eq(has('where the overcurrent device is rated over 800 amperes, the ampacity of the conductors it protects shall be equal to or greater than the rating of the overcurrent device defined in 240.6'), true, 'art36: 240.4(C) >800 A rule verbatim');
+  // worked-example figures appear in the article
+  eq(has('3 awg cu'), true, 'art36: EX1 3 AWG Cu in article');
+  eq(has('2/0 awg cu'), true, 'art36: EX3 2/0 AWG Cu in article');
+  eq(has('250 kcmil cu'), true, 'art36: EX4 250 kcmil Cu in article');
+  eq(has('4/0 awg'), true, 'art36: EX4 4/0 AWG 240.4(B) trap in article');
+  // core-computed assertions (shipped app.js, zero hand math)
+  // EX1: 25 noncont + 60 cont -> 25 + 75 = 100 -> 100 A; 3 AWG Cu @75 (100 A)
+  eq(rb(60, true), 75, 'art36 EX1: reqBreakerA(60, cont) = 75');
+  eq(nsb(25 + rb(60, true)), 100, 'art36 EX1: nextStdBreaker(100) = 100 A');
+  eq(pick(100, 'cu', 75), { size: '3', amp: 100, label: '3 AWG Cu', over: null, notes: pick(100, 'cu', 75).notes }, 'art36 EX1: 100 A -> 3 AWG Cu @75C (100 A)');
+  // EX2 std path: same as EX1; 100% path: 85 -> 90 A; 4 AWG Cu @75 (85 A)
+  eq(nsb(25 + 60), 90, 'art36 EX2: 100% sum 85 -> 90 A standard');
+  eq(pick(85, 'cu', 75).size, '4', 'art36 EX2: 85 A -> 4 AWG Cu @75C (85 A)');
+  eq(pick(85, 'cu', 75).amp, 85, 'art36 EX2: 4 AWG Cu @75C = 85 A');
+  // EX3: 125 noncont + 40 cont -> 175 -> 175 A; 2/0 AWG Cu @75 (175 A)
+  eq(nsb(125 + rb(40, true)), 175, 'art36 EX3: nextStdBreaker(175) = 175 A');
+  eq(pick(175, 'cu', 75).size, '2/0', 'art36 EX3: 175 A -> 2/0 AWG Cu @75C');
+  eq(pick(175, 'cu', 75).amp, 175, 'art36 EX3: 2/0 AWG Cu @75C = 175 A');
+  eq(nsb(125 + 40), 175, 'art36 EX3: 100% sum 165 -> 175 A (buys nothing here)');
+  // EX4: 5 noncont + 200 cont -> 255 -> 300 A; 250 kcmil Cu @75 (255 A); 240.4(B) applies
+  eq(nsb(5 + rb(200, true)), 300, 'art36 EX4: nextStdBreaker(255) = 300 A (240.4(B) case)');
+  eq(pick(255, 'cu', 75).size, '250', 'art36 EX4: 255 A -> 250 kcmil Cu @75C');
+  eq(pick(255, 'cu', 75).amp, 255, 'art36 EX4: 250 kcmil Cu @75C = 255 A');
+  eq(nsb(5 + 200), 225, 'art36 EX4: 100% sum 205 -> 225 A');
+  eq(pick(225, 'cu', 75).size, '4/0', 'art36 EX4: trap — 225 A still needs 4/0 AWG Cu @75C (230 A)');
+  eq(pick(225, 'cu', 75).amp, 230, 'art36 EX4: 4/0 AWG Cu @75C = 230 A');
+  // EX5: 60 cont -> 75 -> 80 A; conductor column: 75C 4 AWG (85 A) vs 60C 3 AWG (85 A)
+  eq(nsb(rb(60, true)), 80, 'art36 EX5: nextStdBreaker(75) = 80 A');
+  eq(pick(75, 'cu', 75).size, '4', 'art36 EX5: 75 A -> 4 AWG Cu @75C (85 A)');
+  eq(pick(75, 'cu', 60).size, '3', 'art36 EX5: 75 A -> 3 AWG Cu @60C (4 AWG 60C = 70 A < 75)');
+  eq(pick(75, 'cu', 60).amp, 85, 'art36 EX5: 3 AWG Cu @60C = 85 A');
+  // 240.6(A) list (2017/2020 shipped: 15..6000, 37 values; 10 A is 2023-only)
+  eq(SB.length, 37, 'art36: shipped STD_BREAKERS = 37 values (2017/2020 table)');
+  eq(SB[0], 15, 'art36: smallest standard rating 15 A (pre-2023)');
+  eq(SB.includes(10), false, 'art36: 10 A absent from shipped table (2023 addition, documented)');
+  eq(SB.includes(175) && SB.includes(225), true, 'art36: 175 A / 225 A ARE 240.6 standard ratings');
+  eq(SB.includes(165), false, 'art36: 165 A is NOT a standard rating (EX3 trap)');
+  // cross-links
+  eq(art.includes('nec-2152-feeder-ampacity.html'), true, 'art36: cross-links to the 215.2 article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art36: cross-links to the 240.6 article');
+  eq(art.includes('nec-conductor-sizing.html'), true, 'art36: cross-links to the conductor-sizing article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art36: cross-links to the Table 310.16 article');
+  eq(art.includes('nec-11014c-31014-termination-temperature.html'), true, 'art36: cross-links to the 110.14(C) article');
+  eq(art.includes('nec-21018-branch-circuit-ratings.html'), true, 'art36: cross-links to the 210.18 article');
+  eq(art.includes('nec-21020-branch-circuit-ocpd.html'), true, 'art36: cross-links to the 210.20 article');
+  eq(art.includes('nec-22061-neutral-load.html'), true, 'art36: cross-links to the 220.61 article');
+  const sitemap = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap.includes('articles/nec-2151-2153-feeder-overcurrent.html'), true, 'art36: sitemap entry present');
+  const index = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index.includes('articles/nec-2151-2153-feeder-overcurrent.html'), true, 'art36: index cross-link present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
