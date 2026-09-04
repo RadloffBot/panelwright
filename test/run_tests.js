@@ -3481,5 +3481,75 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index.includes('articles/nec-21018-branch-circuit-ratings.html'), true, 'art34: index cross-link present');
 }
 
+// Article 35 (NEC 240.6 Standard Ampere Ratings — the official breaker/fuse rating list).
+// (A) Table 240.6(A) 15..6000 A (2017/2020, 37 values; 2023 prepends 10 A) + fuse-only
+// 1,3,6,10,601 (2023: 1,3,6,601); (B) adjustable-trip = maximum setting; (C) restricted
+// access = adjusted setting ((C)(4) password added 2020; NFPA 730/TIA-5017 note 2023);
+// (D) NEW 2023 remote-adjust with cybersecurity conditions.
+// Core-computed examples: compute_art35.js -> calc_24006_cited.json.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-2406-standard-ampere-ratings.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nsb = core.nextStdBreaker, SB = core.STD_BREAKERS;
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art35: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-2406-standard-ampere-ratings.html'), true, 'art35: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art35: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art35: Article + FAQPage JSON-LD present');
+  // verbatim 2017 NEC 240.6 probes (official NFPA text, lines 16129-16195)
+  eq(has('240.6 Standard Ampere Ratings.'), true, 'art35: verbatim 2017 section heading');
+  eq(has('The standard ampere ratings for fuses and inverse time circuit breakers shall be considered as shown in Table 240.6(A)'), true, 'art35: verbatim 2017 (A) sentence 1');
+  eq(has('Additional standard ampere ratings for fuses shall be 1, 3, 6, 10, and 601'), true, 'art35: verbatim 2017 (A) fuse add-ons (1,3,6,10,601)');
+  eq(has('The use of fuses and inverse time circuit breakers with nonstandard ampere ratings shall be permitted'), true, 'art35: verbatim 2017 (A) nonstandard-permitted sentence');
+  eq(has('not meeting the requirements of 240.6(C), shall be the maximum setting possible'), true, 'art35: verbatim (B) maximum-setting rule');
+  eq(has('shall be the maximum setting possible'), true, 'art35: (B) quote complete');
+  // 2020 (C) delta (change record ELR 848)
+  eq(has('Restricted access shall be defined as located behind one of the following'), true, 'art35: 2017 (C) lead-in verbatim');
+  eq(has('Restricted access shall be achieved by one of the following methods'), true, 'art35: 2020 (C) reworded lead-in verbatim');
+  eq(has('(4) Password protected, with password accessible only to qualified personnel'), true, 'art35: 2020 (C)(4) password method verbatim');
+  eq(has('(3) Locked doors accessible only to qualified personnel'), true, 'art35: (C)(3) locked-doors method verbatim (2017/2020/2023)');
+  // 2023 (D) new subsection
+  eq(has('(D) Remotely Accessible Adjustable-Trip Circuit Breakers'), true, 'art35: 2023 (D) heading verbatim');
+  eq(has('can be adjusted remotely to modify the adjusting means'), true, 'art35: 2023 (D) remote-adjust clause verbatim');
+  eq(has('evaluated for cybersecurity'), true, 'art35: 2023 (D)(2)(a) cybersecurity-evaluated clause verbatim');
+  eq(has('A cybersecurity assessment of the network is completed'), true, 'art35: 2023 (D)(2)(b) assessment clause verbatim');
+  eq(has('NFPA 730'), true, 'art35: 2023 (C) NFPA 730 informational note present');
+  eq(has('ANSI/TIA-5017'), true, 'art35: 2023 (C) TIA-5017 informational note present');
+  // 2023 table change: 10 A prepended; fuse list drops 10
+  eq(has('10, 15, 20, 25, 30'), true, 'art35: 2023 table starts 10,15,20,25,30');
+  eq(has('1, 3, 6, and 601'), true, 'art35: 2023 fuse list (1,3,6,601) — 10 removed');
+  eq(has('601'), true, 'art35: 601 A fuse rating discussed');
+  // worked-example figures appear in the article
+  eq(has('2,880 w'), true, 'art35: EX3 2,880 W water-heater load in article');
+  // core-computed assertions (real shipped app.js, zero hand math)
+  eq(SB.length, 37, 'art35 EX1: shipped STD_BREAKERS has 37 values (2017/2020 table)');
+  eq(SB[0], 15, 'art35 EX1: smallest standard rating = 15 A (pre-2023)');
+  eq(SB[SB.length - 1], 6000, 'art35 EX1: largest standard rating = 6000 A');
+  eq(SB.includes(140), false, 'art35 EX2: 140 A is NOT standard (125 -> 150 gap)');
+  eq(SB.includes(165), false, 'art35 EX2: 165 A is NOT standard');
+  eq(SB.includes(3500), false, 'art35: 3500 A is NOT standard (3000 -> 4000)');
+  eq(SB.includes(4000) && SB.includes(5000) && SB.includes(6000), true, 'art35 EX2: 4000/5000/6000 A ARE standard (the v1.15.2 regression)');
+  eq(nsb(165), 175, 'art35 EX2: nextStdBreaker(165) = 175 A');
+  eq(nsb(95), 100, 'art35 EX2: nextStdBreaker(95) = 100 A');
+  eq(nsb(24), 25, 'art35 EX3: nextStdBreaker(24) = 25 A (25 A IS a 240.6 standard rating)');
+  eq(SB.includes(25), true, 'art35 EX3: 25 A on the 240.6 standard list');
+  eq([15, 20, 30, 40, 50].includes(25), false, 'art35 EX3: 25 A NOT on the 210.18 multioutlet list (two different lists)');
+  eq(nsb(10), 15, 'art35 EX7: pre-2023 nextStdBreaker(10) = 15 A (10 A not in the 2017/2020 breaker table)');
+  eq(SB.includes(10), false, 'art35 EX7: 10 A absent from shipped (2017/2020) table; 2023 prepends it (1,3,6,10,601 -> 1,3,6,601 on the fuse list)');
+  // cross-links
+  eq(art.includes('nec-21018-branch-circuit-ratings.html'), true, 'art35: cross-links to the 210.18 article');
+  eq(art.includes('nec-21020-branch-circuit-ocpd.html'), true, 'art35: cross-links to the 210.20 article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art35: cross-links to the 240.4(D) article');
+  eq(art.includes('nec-conductor-sizing.html'), true, 'art35: cross-links to the conductor-sizing article');
+  eq(art.includes('nec-23090-service-overload-protection.html'), true, 'art35: cross-links to the 230.90 article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art35: cross-links to the Table 310.16 article');
+  const sitemap = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap.includes('articles/nec-2406-standard-ampere-ratings.html'), true, 'art35: sitemap entry present');
+  const index = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index.includes('articles/nec-2406-standard-ampere-ratings.html'), true, 'art35: index cross-link present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

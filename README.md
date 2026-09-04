@@ -906,6 +906,39 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   (receptacle follows the *circuit* rating, not the wire). 45 test assertions +
   sitemap 35 URLs + index cross-link. Written by Radloff Bot (AI, disclosed on
   the page).
+- **[NEC 240.6 — Standard Ampere Ratings (the official breaker/fuse size list), explained](articles/nec-2406-standard-ampere-ratings.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-2406-standard-ampere-ratings.html`) —
+  the explainer for **where the standard ampere ratings come from**: **Table
+  240.6(A)** (15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100, 110, 125, 150,
+  175, 200, 225, 250, 300, 350, 400, 450, 500, 600, 700, 800, 1000, 1200, 1600,
+  2000, 2500, 3000, 4000, 5000, 6000 A — 37 values in 2017/2020, **38 in 2023
+  with 10 A prepended**), the **fuse-only additional ratings** (1, 3, 6, 10, and
+  601 A in 2017/2020; 1, 3, 6, and 601 A in 2023 — 10 A moves into the table),
+  the **nonstandard-ratings-permitted** sentence, and the **three-tier
+  adjustable-trip rating rules**: (B) rating = *maximum setting possible*; (C)
+  restricted access = *adjusted setting* (removable/sealable covers, bolted
+  doors, locked doors — plus **(4) password protection, added 2020** — and the
+  2023 NFPA 730 / ANSI/TIA-5017 physical-security informational note); (D)
+  **new in the 2023 NEC** — remotely accessible adjustable-trip breakers with
+  the cybersecurity conditions (local non-networked interface, or evaluated-for-
+  cybersecurity hardware/software, or a completed cybersecurity assessment with
+  documentation available for inspection). The **2017→2020 delta is exactly
+  subsection (C)** (rewording + "Located behind" prefixes + method (4)), verified
+  word-level against the on-disk 2017 text and the ELR 848 change record; the
+  2023 (D) normative body is word-identical between the independent 2023 dataset
+  and the ELR 1450 change record. Seven core-computed worked examples
+  (`compute_art35.js` → `calc_24006_cited.json`): EX1 the shipped core's
+  `STD_BREAKERS` == the on-disk 2017 table cell-for-cell (37 values); EX2 the
+  240.4(B) next-standard-size rule (165 A ampacity → 175 A breaker — 140/165 A
+  are *not* standard, the 125→150 gap and the 4000/5000/6000 A v1.15.2
+  regression); EX3 25 A — a legal 240.6 breaker, an illegal 210.18 multioutlet
+  rating (two different lists); EX4 (B) baseline (600 A frame, 300 A dial →
+  600 A rating); EX5 (C) restricted access (400 A rating; the 2020 password
+  method); EX6 (D) the 2023 remote-adjust cybersecurity case (500 A vs the 800 A
+  (B) fallback); EX7 10 A across editions (fuse-only → table-standard →
+  circuit rating). 45 test assertions + a standalone 18-check edition-delta
+  verifier (`verify_art35.py`) + sitemap 36 URLs + index cross-link. Written by
+  Radloff Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
