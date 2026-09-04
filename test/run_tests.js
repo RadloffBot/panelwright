@@ -3743,5 +3743,136 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index37.includes('articles/nec-25032-separate-building-grounding.html'), true, 'art37: index cross-link present');
 }
 
+// ---------------------------------------------------------------------------
+// Article 38 — NEC 430.22 (single-motor branch-circuit conductors, 125% of
+// the 430.6(A)(1) full-load current from Table 430.248/430.250) + 430.52 +
+// Table 430.52 (OCPD rating/setting: 250% inverse / 175% time-delay / 300%
+// nontime / 800% instantaneous, Exception No. 2 increases to 400/225/300/300%)
+// + the 240.4(D)/(G) interaction (motor circuits are "specific conductor
+// applications" — the 240.4(D) small-conductor caps do NOT govern). Verbatim
+// 2017 on disk (nec2017_full.txt lines 52750-52910, 53613-53770, 54616-54660,
+// 54716-54799, 15905-15952, 15989-16044) + 2023 on disk (art35_nec_csv.csv
+// rows 430.6, 430.6(A), 430.6(A)(1), 430.22(A)-(G)(2), 430.52(A)-(D));
+// 2020 NOT on disk (scan ends at Art 230 — disclosed, no 2017→2020 diff).
+// Worked examples EX1-EX6 computed by the shipped core (nextStdBreaker /
+// pickConductor31016 / smallConductorCap) + encoded Table 430.52 / 430.248 /
+// 430.250 data (verify_art38.py 54/54; FLC cells live-verified this session
+// because the on-disk 2017 scan of those tables is OCR-garbled).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-43022-43052-single-motor-branch-circuit.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, nsb = core.nextStdBreaker, cap = core.smallConductorCap;
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art38: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-43022-43052-single-motor-branch-circuit.html'), true, 'art38: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art38: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art38: Article + FAQPage JSON-LD present');
+  // verbatim 2017 — 430.22 lead + subsections (on-disk lines 53613-53770)
+  eq(has('conductors that supply a single motor used in a continuous duty application shall have an ampacity of not less than 125 percent of the motor full-load current rating, as determined by 430.6(a)(1)'), true, 'art38: verbatim 2017 430.22 lead (125% of 430.6(A)(1) FLC)');
+  eq(has('shall not be less than 125 percent of the rated input current to the rectifier'), true, 'art38: verbatim 430.22(A) rectifier input 125%');
+  eq(has('(1) where a rectifier bridge of the single-phase, half-wave type is used, 190 percent'), true, 'art38: verbatim 430.22(A) half-wave 190%');
+  eq(has('(2) where a rectifier bridge of the single-phase, full-wave type is used, 150 percent'), true, 'art38: verbatim 430.22(A) full-wave 150%');
+  eq(has('the selection of branch-circuit conductors on the line side of the controller shall be based on the highest of the full-load current ratings shown on the motor nameplate'), true, 'art38: verbatim 430.22(B) multispeed highest nameplate');
+  eq(has('not be less than 72 percent of the motor full-load current rating as determined by 430.6(a)(1)'), true, 'art38: verbatim 430.22(C) wye-start controller side 72%');
+  eq(has('the multiplier of 72 percent is obtained by multiplying 58 percent by 1.25'), true, 'art38: verbatim 430.22(C) Info Note (58% × 1.25)');
+  eq(has('not be less than 62.5 percent of the motor full-load current rating as determined by 430.6(a)(1)'), true, 'art38: verbatim 430.22(D) part-winding controller side 62.5%');
+  eq(has('the multiplier of 62.5 percent is obtained by multiplying 50 percent by 1.25'), true, 'art38: verbatim 430.22(D) Info Note (50% × 1.25)');
+  eq(has('shall have an ampacity of not less than the percentage of the motor nameplate current rating shown in table 430.22(e)'), true, 'art38: verbatim 430.22(E) other-than-continuous per Table 430.22(E)');
+  eq(has('shall be permitted to be smaller than 14 awg but not smaller than 18 awg, provided they have an ampacity as specified in 430.22'), true, 'art38: verbatim 430.22(F) separate-terminal-enclosure 18 AWG');
+  eq(has('conductors for small motors shall not be smaller than 14 awg unless otherwise permitted in 430.22(g)(1) or (g)(2)'), true, 'art38: verbatim 430.22(G) 14 AWG floor');
+  // verbatim 2017 — 430.52 (A)-(C)(1) (on-disk lines 54616-54660)
+  eq(has('430.52 rating or setting for individual motor circuit'), true, 'art38: verbatim 2017 430.52 section title (2023 renames it)');
+  eq(has('shall be capable of carrying the starting current of the motor'), true, 'art38: verbatim 430.52(B) starting-current rule');
+  eq(has('has a rating or setting not exceeding the value calculated according to the values given in table 430.52 shall be used'), true, 'art38: verbatim 430.52(C)(1) table rule');
+  eq(has('a higher size, rating, or possible setting that does not exceed the next higher standard ampere rating shall be permitted'), true, 'art38: verbatim 430.52(C)(1) Exception No. 1 (next standard size)');
+  eq(has('shall in no case exceed 400 percent of the full-load current'), true, 'art38: verbatim 430.52(C)(1) Exception No. 2(a) nontime/Class CC 400%');
+  eq(has('shall in no case exceed 225 percent of the full-load current'), true, 'art38: verbatim 430.52(C)(1) Exception No. 2(b) time-delay 225%');
+  // Table 430.52 (2017, on-disk lines 54716-54799) — all seven rows + note
+  eq(has('single-phase motors | 300 | 175 | 800 | 250'), true, 'art38: Table 430.52 single-phase row 300/175/800/250');
+  eq(has('ac polyphase motors other than wound-rotor | 300 | 175 | 800 | 250'), true, 'art38: Table 430.52 polyphase row 300/175/800/250');
+  eq(has('squirrel cage — other than design b energy-efficient | 300 | 175 | 800 | 250'), true, 'art38: Table 430.52 squirrel-cage row');
+  eq(has('design b energy-efficient | 300 | 175 | 1100 | 250'), true, 'art38: Table 430.52 Design B row (1100% instantaneous)');
+  eq(has('wound-rotor | 150 | 150 | 800 | 150'), true, 'art38: Table 430.52 wound-rotor row 150/150/800/150');
+  eq(has('dc (constant voltage) | 150 | 150 | 250 | 150'), true, 'art38: Table 430.52 DC row 150/150/250/150');
+  eq(has('the values in the nontime delay fuse column apply to time-delay class cc fuses'), true, 'art38: Table 430.52 Note 1 (Class CC)');
+  // 430.6(A)(1) + the nameplate-vs-table rule (on-disk lines 52750-52910)
+  eq(has('table 430.247, table 430.248, table 430.249, and table 430.250'), true, 'art38: 430.6(A)(1) FLA table citation (247/248/249/250)');
+  eq(has('instead of the actual current rating marked on the motor nameplate'), true, 'art38: 430.6(A)(1) "instead of nameplate" rule');
+  // 240.4(D)/(G) interaction (on-disk lines 15905-15952, 15989-16044)
+  eq(has('unless specifically permitted in 240.4(e) or (g)'), true, 'art38: verbatim 240.4(D) lead-in (E)/(G) carve-out');
+  eq(has('430, parts ii, iv, and vii'), true, 'art38: Table 240.4(G) motor row -> 430 Parts II/IV/VII');
+  // edition posture
+  eq(has('2020'), true, 'art38: 2020 edition referenced');
+  eq(has('ends at article 230'), true, 'art38: 2020 gap disclosed (on-disk scan ends at Art 230)');
+  eq(has('not on disk'), true, 'art38: 2020 body explicitly not on disk');
+  eq(has('ocr-garbled'), true, 'art38: on-disk 430.248/430.250 OCR garble disclosed');
+  eq(has('live-verified'), true, 'art38: FLC values live-verified against clean sources');
+  eq(has('art35_nec_csv.csv'), true, 'art38: 2023 on-disk CSV source cited');
+  eq(has('53613'), true, 'art38: 430.22 on-disk line citation');
+  eq(has('54619'), true, 'art38: 430.52 on-disk line citation');
+  eq(has('table 430.52(c)(1)'), true, 'art38: 2023 table rename documented');
+  eq(has('design b premium efficiency'), true, 'art38: 2023 Design B "premium efficiency" addition documented');
+  eq(has('nema mg 1-2016'), true, 'art38: 2023 NEMA MG 1-2016 citation documented');
+  eq(has('1300 percent'), true, 'art38: Exception No. 2 instantaneous 1300% increase documented');
+  eq(has('1700 percent'), true, 'art38: Exception No. 2 Design B 1700% increase documented');
+  // worked-example figures (core-computed) appear in the article
+  eq(has('17.0 a'), true, 'art38: EX1 3 hp 1-ph FLC 17.0 A');
+  eq(has('21.25 a'), true, 'art38: EX1 125% = 21.25 A');
+  eq(has('15.2 a'), true, 'art38: EX2 5 hp 3-ph FLC 15.2 A (Table 430.250, not 28.0)');
+  eq(has('12.0 a'), true, 'art38: EX3 2 hp 1-ph FLC 12.0 A');
+  eq(has('20.16 a'), true, 'art38: EX4 wye-start 72% × 28.0 = 20.16 A');
+  eq(has('17.5 a'), true, 'art38: EX5 part-winding 62.5% × 28.0 = 17.5 A');
+  eq(has('52.5 a'), true, 'art38: EX6 125% × 42.0 = 52.5 A');
+  eq(has('10 awg cu'), true, 'art38: EX1 10 AWG Cu (60 °C) in article');
+  eq(has('8 awg cu'), true, 'art38: EX4/EX5 8 AWG Cu line in article');
+  eq(has('6 awg cu'), true, 'art38: EX6 6 AWG Cu in article');
+  // core-computed assertions (shipped app.js, zero hand math)
+  // EX1: 3 hp 230 V 1-ph: FLC 17.0 -> 125% = 21.25 A
+  eq(pick(21.25, 'cu', 60).size, '10', 'art38 EX1: 21.25 A -> 10 AWG Cu @60C');
+  eq(pick(21.25, 'cu', 60).amp, 30, 'art38 EX1: 10 AWG Cu @60C = 30 A');
+  eq(pick(21.25, 'cu', 75).size, '12', 'art38 EX1: 21.25 A -> 12 AWG Cu @75C (column trap)');
+  eq(nsb(17 * 2.5), 45, 'art38 EX1: 250% × 17.0 = 42.5 -> next std 45 A inverse breaker');
+  eq(nsb(17 * 1.75), 30, 'art38 EX1: 175% × 17.0 = 29.75 -> next std 30 A time-delay fuse');
+  // EX2: 5 hp 230 V 3-ph: FLC 15.2 -> 19.0 A
+  eq(pick(19, 'cu', 60).size, '12', 'art38 EX2: 19.0 A -> 12 AWG Cu @60C');
+  eq(pick(19, 'cu', 75).size, '14', 'art38 EX2: 19.0 A -> 14 AWG Cu @75C');
+  eq(nsb(15.2 * 2.5), 40, 'art38 EX2: 250% × 15.2 = 38 -> next std 40 A inverse breaker');
+  // EX3: 2 hp 230 V 1-ph: FLC 12.0 -> 15.0 A; 30 A breaker on 14 AWG (240.4(G) case)
+  eq(pick(15, 'cu', 60).size, '14', 'art38 EX3: 15.0 A -> 14 AWG Cu @60C');
+  eq(pick(15, 'cu', 75).size, '14', 'art38 EX3: 15.0 A -> 14 AWG Cu @75C');
+  eq(nsb(12 * 2.5), 30, 'art38 EX3: 250% × 12.0 = 30 -> 30 A inverse breaker (exactly standard)');
+  eq(nsb(12 * 3.0), 40, 'art38 EX3: 300% × 12.0 = 36 -> next std 40 A nontime fuse');
+  eq(cap('14', 'cu'), 15, 'art38 EX3: 240.4(D) cap for 14 AWG Cu = 15 A (does NOT govern — 240.4(G) motor carve-out)');
+  // EX4: 10 hp 230 V 3-ph wye-start: FLC 28.0; line 125% = 35 A, controller 72% = 20.16 A
+  eq(pick(35, 'cu', 60).size, '8', 'art38 EX4: line 35.0 A -> 8 AWG Cu @60C');
+  eq(pick(35, 'cu', 75).size, '10', 'art38 EX4: line 35.0 A -> 10 AWG Cu @75C');
+  eq(pick(20.16, 'cu', 60).size, '10', 'art38 EX4: controller 20.16 A -> 10 AWG Cu @60C');
+  eq(pick(20.16, 'cu', 75).size, '12', 'art38 EX4: controller 20.16 A -> 12 AWG Cu @75C');
+  eq(nsb(28 * 2.5), 70, 'art38 EX4: 250% × 28.0 = 70 -> 70 A inverse (already standard)');
+  // EX5: 5 hp 230 V 1-ph part-winding: FLC 28.0; line 35 A, controller 62.5% = 17.5 A
+  eq(pick(17.5, 'cu', 60).size, '12', 'art38 EX5: controller 17.5 A -> 12 AWG Cu @60C');
+  eq(pick(17.5, 'cu', 75).size, '14', 'art38 EX5: controller 17.5 A -> 14 AWG Cu @75C');
+  // EX6: 15 hp 230 V 3-ph heavy start: FLC 42.0 -> 52.5 A; base 250% = 105 -> 110 A
+  eq(pick(52.5, 'cu', 60).size, '6', 'art38 EX6: 52.5 A -> 6 AWG Cu @60C');
+  eq(pick(52.5, 'cu', 75).size, '6', 'art38 EX6: 52.5 A -> 6 AWG Cu @75C');
+  eq(nsb(42 * 2.5), 110, 'art38 EX6: 250% × 42.0 = 105 -> next std 110 A inverse');
+  eq(nsb(42 * 4.0), 175, 'art38 EX6: Exc No. 2 inverse 400% × 42.0 = 168 -> max 175 A (FLC ≤ 100 A band)');
+  eq(nsb(42 * 2.25), 100, 'art38 EX6: Exc No. 2 time-delay 225% × 42.0 = 94.5 -> 100 A');
+  // cross-links
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art38: cross-links to the 240.4(D) small-conductors article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art38: cross-links to the 310.16 ampacity article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art38: cross-links to the 240.6 standard-ratings article');
+  eq(art.includes('nec-conductor-sizing.html'), true, 'art38: cross-links to the conductor-sizing pipeline article');
+  eq(art.includes('nec-31015-ampacity-adjustments.html'), true, 'art38: cross-links to the 310.15 adjustments article');
+  eq(art.includes('nec-21020-branch-circuit-ocpd.html'), true, 'art38: cross-links to the 210.20 (non-motor) OCPD article');
+  eq(art.includes('nec-25032-separate-building-grounding.html'), true, 'art38: cross-links back to article 37 (250.32)');
+  const sitemap38 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap38.includes('articles/nec-43022-43052-single-motor-branch-circuit.html'), true, 'art38: sitemap entry present');
+  const index38 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index38.includes('articles/nec-43022-43052-single-motor-branch-circuit.html'), true, 'art38: index cross-link present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

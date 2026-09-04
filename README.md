@@ -1012,6 +1012,68 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   54 test assertions + standalone edition-delta verifier (`verify_art37.py`, 43 checks) +
   sitemap 38 URLs + index cross-link. Written by Radloff Bot (AI, disclosed on
   the page).
+- **[NEC 430.22 + 430.52 — Single-Motor Branch-Circuit Conductors & OCPD Rating (what breaker and wire for my motor?), explained](articles/nec-43022-43052-single-motor-branch-circuit.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-43022-43052-single-motor-branch-circuit.html`) —
+  the explainer for **sizing a single-motor branch circuit** — the two sections
+  that do the everyday motor work, which people constantly mix up: **430.22**
+  (the CONDUCTOR rule — continuous-duty single motor at **125% of the full-load
+  current**, and the FLC comes from **Table 430.248** (single-phase) /
+  **Table 430.250** (three-phase) per **430.6(A)(1)** — *not* the nameplate —
+  plus the special cases: (A) DC rectifier 125%/190%/150%, (B) multispeed
+  highest nameplate, **(C) wye-start delta-run 72% on the controller side**
+  (58% carried × 1.25), **(D) part-winding 62.5%** (50% × 1.25), (E)
+  other-than-continuous per **Table 430.22(E)** (quoted in full), (F) 18 AWG
+  floor, (G) 14 AWG floor with the 18/16 AWG Cu small-motor exceptions), and
+  **430.52 + Table 430.52** (the OCPD rule — (A) the routing rule, (B) the
+  device must carry the starting current, (C)(1) **Table 430.52: 250%
+  inverse-time / 175% time-delay / 300% nontime-delay / 800% instantaneous**
+  of FLC with the **next-standard-size step** (Exception No. 1) and the
+  **starting-current increase path** (Exception No. 2: 400/225/300/300%
+  maximums), (C)(2) the controller's overload relay table cap, (C)(3) the
+  instantaneous-trip (MCP) 800/1100% provision, (C)(4)–(7) multispeed /
+  semiconductor / self-protected / motor short-circuit protector, (D) torque
+  motors — all seven Table 430.52 rows quoted verbatim with all four notes).
+  The **240.4(D)/(G) interaction** is the teaching point: 240.4(D) caps
+  small-conductor OCPDs *unless specifically permitted in 240.4(E) or (G)*,
+  and Table 240.4(G) sends "Motor and motor-control circuit conductors" to
+  **430, Parts II, IV, and VII** — so a **30 A breaker on 14 AWG Cu is code
+  for a 12 A-FLC motor**; the starter's overload device (430.32/430.36, on the
+  nameplate) is what protects the conductor at running current. **Edition
+  posture**: 2017 verbatim on disk (nec2017_full.txt lines 52750–52910,
+  53613–53826, 54619–54906, 15905–15952, 15989–16044) + 2023 on disk
+  (art35_nec_csv.csv rows 430.6, 430.6(A), 430.6(A)(1), 430.22, 430.22(A)–(G)(2),
+  430.52(A)–(D) incl. the renamed Table 430.52(C)(1)); 2017↔2023 word-diff:
+  **430.22 (A)–(G) substantively word-identical** (same numbers throughout),
+  430.52 deltas structural (table renamed Table 430.52(C)(1), Exception No. 1
+  folded into main text, (C)(3) split into (a)/(b), **"Design B premium
+  efficiency" added** to the 1100% instantaneous row, NEMA MG 1-2016);
+  430.6's ampacity reference renumbers 310.15(B)/(C) → 310.15/310.14(B).
+  **2020 body NOT on disk** (the on-disk 2020 scan ends at Article 230 — its
+  only Article 430 references are cross-refs in Articles 110–230) — disclosed
+  in the article, no 2017→2020 word-diff claimed. The on-disk 2017 scan of
+  Table 430.248/430.250 is **OCR-garbled in its numeric cells** (the 5 hp row
+  prints the 200 V value under the 230 V header) — every example FLC was
+  therefore **live-verified this session against two independent clean
+  transcriptions** (Table 430.250 and Table 430.248) before use. Six
+  core-computed worked examples (`nextStdBreaker` / `pickConductor31016` under
+  node, both 60 °C and 75 °C termination columns): EX1 3 hp 230 V 1-ph → 17.0 A
+  FLC → 21.25 A → **10 AWG Cu** (60 °C) / 12 AWG Cu (75 °C), **45 A inverse**
+  (250% → 42.5 → next std), 30 A time-delay fuse (175% → 29.75 → next std);
+  EX2 5 hp 230 V 3-ph → 15.2 A FLC → 19.0 A → **12 AWG Cu** (60 °C) / 14 AWG
+  Cu (75 °C), **40 A inverse** (250% → 38 → next std); EX3 2 hp 230 V 1-ph →
+  12.0 A FLC → 15.0 A → **14 AWG Cu**, **30 A inverse on 14 AWG** (the
+  240.4(G) case — 240.4(D)(3) would cap it at 15 A, 430.52 governs);
+  EX4 10 hp 230 V 3-ph wye-start → 28.0 A FLC → line 35 A → **8 AWG Cu**,
+  controller side 72% → 20.16 A → **10 AWG Cu**, **70 A inverse** (250% →
+  70, standard); EX5 5 hp 230 V 1-ph part-winding → 28.0 A FLC → line 35 A →
+  **8 AWG Cu**, controller side 62.5% → 17.5 A → **12 AWG Cu**, **70 A
+  inverse**; EX6 15 hp 230 V 3-ph heavy start → 42.0 A FLC → 52.5 A → **6 AWG
+  Cu**, base inverse 250% → 105 → **110 A**, Exception No. 2 increases to
+  **max 175 A** (inverse, FLC ≤ 100 A) / 100 A (time-delay, 225%) / 175 A
+  (nontime ≤ 600 A, 400%) — conductors unchanged at 6 AWG. 60 test
+  assertions + standalone edition-delta verifier (`verify_art38.py`, 54
+  checks, ALL PASS) + sitemap 39 URLs + index cross-link. Written by Radloff
+  Bot (AI, disclosed on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
