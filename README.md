@@ -971,6 +971,47 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   (the 60 °C vs 75 °C column that bites: 4 AWG → 3 AWG). 64 test assertions +
   sitemap 37 URLs + index cross-link. Written by Radloff Bot (AI, disclosed on
   the page).
+- **[NEC 250.32 — Separate Buildings & Structures Supplied by a Feeder (do I need a ground rod in my detached garage?), explained](articles/nec-25032-separate-building-grounding.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-25032-separate-building-grounding.html`) —
+  the explainer for **grounding a separate building or structure** — the
+  detached garage / workshop / barn / pool-house question: **250.32(A)** (the
+  building **shall have a grounding electrode / electrode system** per Part III
+  of Article 250 — with the **Exception: no electrode required where only a
+  single branch circuit** (including multiwire) supplies the building and the
+  branch circuit includes an EGC), **250.32(B)** grounded systems (**(1) an EGC
+  shall be run with the supply conductors** and connected to the disconnecting
+  means + the grounding electrode(s); sized per **250.122**; **any installed
+  grounded conductor shall NOT be connected to the EGC or the electrode(s)** —
+  the neutral-bonding prohibition that trips up most people; **Exception No. 1**
+  previous-edition installations where no EGC was run + **Exception No. 2** the
+  **250.30(A)(1) Exception No. 2** separately-derived-system tie where the
+  neutral *may* be bonded), **250.32(C)** ungrounded systems, **250.32(D)**
+  remote disconnecting means (the location rules + the **(D)(1) neutral-bonding
+  prohibition at the remote disconnect** + the **(D)(3) junction-box rule**),
+  and **250.32(E)** (GEC size **per Table 250.66, based on the largest
+  ungrounded supply conductor**). The **edition deltas are real**: 2017 (A)
+  carried the "no existing grounding electrode → install per 250.50" sentence
+  (dropped in 2023); 2023 (B)(1) Exception No. 1 was reworded to the
+  **220.61 calculated neutral load / 250.122 minimum EGC** sizing; and
+  **250.32(D) in 2023 cites 225.31(B)** (2017 cited 225.32, which was
+  consolidated) with the renumbered 700.12(D)(4) / 701.12(D)(3) references.
+  2020 text **not on disk** (the local 2020 scan ends at Article 230) —
+  disclosed in the article. Six core-computed worked examples
+  (`reqBreakerA` / `nextStdBreaker` / `neutralLoad22061` /
+  `pickConductor31016` under node + encoded Tables 250.122 / 250.66): EX1 60 A
+  garage feeder → 6 AWG Cu @75 °C, 8 AWG Cu EGC (250.122) **and** 8 AWG Cu GEC
+  (250.66); EX2 100 A shop → 3 AWG Cu feeder, 6 AWG Cu EGC but **only 8 AWG Cu
+  GEC** (the GEC is sized off the largest *ungrounded* conductor — not the
+  OCPD — a teaching moment); EX3 single 16 A receptacle circuit → 20 A breaker,
+  **no electrode required** (the 250.32(A) Exception); EX4 a previous-edition
+  garage without an EGC → **220.61 calculated neutral load = 92.5 A** governs
+  the ground-fault return sizing; EX5 ungrounded 240 V three-wire → electrode
+  bonded to the disconnecting means per (C); EX6 200 A barn → 3/0 AWG Cu
+  feeder → 4 AWG Cu EGC (250.122) / **4 AWG Cu GEC** (250.66's
+  2/0–3/0 band — here the two tables agree).
+  54 test assertions + standalone edition-delta verifier (`verify_art37.py`, 43 checks) +
+  sitemap 38 URLs + index cross-link. Written by Radloff Bot (AI, disclosed on
+  the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's

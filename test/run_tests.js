@@ -3650,5 +3650,98 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index.includes('articles/nec-2151-2153-feeder-overcurrent.html'), true, 'art36: index cross-link present');
 }
 
+// ============================================================================
+// Article 37 (Session 62) — NEC 250.32 Buildings or Structures Supplied by a
+// Feeder(s) or Branch Circuit(s): the detached-garage / separate-building
+// grounding rule. 250.32(A) electrode + single-branch-circuit Exception, (B)
+// grounded systems (EGC with the supply + neutral-bonding prohibition + the
+// two exceptions), (C) ungrounded, (D) remote disconnecting means (the
+// 225.32 -> 225.31(B) 2023 renumber), (E) GEC sizing per 250.66. Verbatim 2017
+// on disk (nec2017_full.txt lines 18947-19098) + 2023 on disk (art35_nec_csv.csv
+// rows 250.32(A)-(E)); 2020 NOT on disk (scan ends at Art 230 - disclosed).
+// Worked examples EX1-EX6 computed by the shipped core (reqBreakerA /
+// nextStdBreaker / neutralLoad22061 / pickConductor31016) + the encoded
+// Table 250.122 / Table 250.66 data (3-way live-verified in Sessions 47/49).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-25032-separate-building-grounding.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, rb = core.reqBreakerA, nsb = core.nextStdBreaker;
+  eq(art.includes('nec-25032-separate-building-grounding.html'), true, 'art37: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-25032-separate-building-grounding.html'), true, 'art37: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art37: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art37: Article + FAQPage JSON-LD present');
+  // section title (verified 2014-2023 identical)
+  eq(has('buildings or structures supplied by a feeder(s) or branch circuit(s)'), true, 'art37: carries the verified section title');
+  // verbatim 2017 (on-disk nec2017_full.txt lines 18947-19098)
+  eq(has('(a) grounding electrode. building(s) or structure(s) supplied by feeder(s) or branch circuit(s) shall have a grounding electrode or grounding electrode system installed in accordance with part iii of article 250'), true, 'art37: verbatim 2017 250.32(A) lead');
+  eq(has('where there is no existing grounding electrode, the grounding electrode(s) required in 250.50 shall be installed'), true, 'art37: verbatim 2017 250.32(A) "no existing electrode" sentence (dropped in 2023)');
+  eq(has('exception: a grounding electrode shall not be required where only a single branch circuit, including a multiwire branch circuit, supplies the building or structure and the branch circuit includes an equipment grounding conductor'), true, 'art37: verbatim 2017 250.32(A) Exception');
+  eq(has('an equipment grounding conductor, as described in 250.118, shall be run with the supply conductors and be connected to the building or structure disconnecting means and to the grounding electrode(s)'), true, 'art37: verbatim 250.32(B)(1) EGC-with-supply rule');
+  eq(has('the equipment grounding conductor shall be sized in accordance with 250.122'), true, 'art37: verbatim 250.32(B)(1) EGC sizing hand-off');
+  eq(has('any installed grounded conductor shall not be connected to the equipment grounding conductor or to the grounding electrode(s)'), true, 'art37: verbatim 250.32(B)(1) neutral-bonding PROHIBITION');
+  eq(has('exception no. 1: for installations made in compliance with previous editions of this code that permitted such connection, the grounded conductor run with the supply to the building or structure shall be permitted to serve as the ground-fault return path'), true, 'art37: verbatim 250.32(B)(1) Exception No. 1 (previous-edition) lead');
+  eq(has('an equipment grounding conductor is not run with the supply to the building or structure'), true, 'art37: verbatim 250.32(B)(1) Exc No. 1 condition (1)');
+  eq(has('ground-fault protection of equipment has not been installed on the supply side of the feeder(s)'), true, 'art37: verbatim 250.32(B)(1) Exc No. 1 condition (3)');
+  eq(has('exception no. 2: if system bonding jumpers are installed in accordance with 250.30(a)(1), exception no. 2, the feeder grounded circuit conductor at the building or structure served shall be connected to the equipment grounding conductors, grounding electrode conductor, and the enclosure for the first disconnecting means'), true, 'art37: verbatim 250.32(B)(1) Exception No. 2 (derived-system tie)');
+  eq(has('the grounding electrode(s) shall also be connected to the building or structure disconnecting means'), true, 'art37: verbatim 250.32(C)(1) ungrounded-system electrode rule');
+  // 250.32(D) — 2017 (225.32) vs 2023 (225.31(B)) citation delta
+  eq(has('in accordance with the provisions of 225.32, exception no. 1 and no. 2, 700.12(b)(6), 701.12(b)(5), or 702.12'), true, 'art37: verbatim 2017 250.32(D) citation (225.32 + 700.12(B)(6)/701.12(B)(5))');
+  eq(has('in accordance with 225.31(b), exception no. 1 and no. 2, 700.12(d)(4), 701.12(d)(3), or 702.12'), true, 'art37: verbatim 2023 250.32(D) citation (225.31(B) + renumbered 700/701)');
+  eq(has('the connection of the grounded conductor to the grounding electrode, to normally non-current-carrying metal parts of equipment, or to the equipment grounding conductor at a separate building or structure shall not be made'), true, 'art37: verbatim 250.32(D)(1) neutral-bonding prohibition (remote disconnect)');
+  eq(has('the connection between the equipment grounding conductor and the grounding electrode at a separate building or structure shall be made in a junction box, panelboard, or similar enclosure'), true, 'art37: verbatim 250.32(D)(3) junction-box rule');
+  // 250.32(E) GEC sizing
+  eq(has('the size of the grounding electrode conductor to the grounding electrode(s) shall not be smaller than given in 250.66, based on the largest ungrounded supply conductor'), true, 'art37: verbatim 250.32(E) GEC sizing rule (250.66, largest ungrounded)');
+  // 2023 250.32(A) restructure (on-disk CSV)
+  eq(has('shall have a grounding electrode system and grounding electrode conductor installed in accordance with part iii of article 250'), true, 'art37: verbatim 2023 250.32(A) restructured lead');
+  eq(has('the calculated neutral load in accordance with 220.61'), true, 'art37: 2023 250.32(B)(1) Exc No. 1 sizing reword (220.61)');
+  eq(has('the minimum equipment grounding conductor sized in accordance with 250.122'), true, 'art37: 2023 250.32(B)(1) Exc No. 1 sizing reword (250.122)');
+  // 2020 gap disclosed (scan ends at Art 230)
+  eq(has('2020'), true, 'art37: 2020 edition referenced');
+  eq(has('ends at article 230'), true, 'art37: 2020 gap disclosed (on-disk scan ends at Art 230)');
+  // Table 250.122 / Table 250.66 data (encoded; 3-way live-verified S47/S49).
+  // The article quotes the rows its worked examples actually use (20/60/100/200 A)
+  // + the 250.66 GEC cap; it does not reproduce the full 18-row 250.122 table.
+  eq(has('3/0 awg'), true, 'art37: Table 250.66 cap / 200 A row (3/0 AWG Cu) referenced');
+  eq(has('250 kcmil'), true, 'art37: Table 250.66 GEC cap (250 kcmil Al) referenced');
+  // worked-example figures appear in the article
+  eq(has('6 awg cu'), true, 'art37: EX1 6 AWG Cu feeder in article');
+  eq(has('8 awg cu'), true, 'art37: EX1 8 AWG Cu EGC/GEC in article');
+  eq(has('3 awg cu'), true, 'art37: EX2 3 AWG Cu feeder in article');
+  eq(has('12 awg cu'), true, 'art37: EX3 12 AWG Cu EGC (20 A) in article');
+  eq(has('3/0 awg cu'), true, 'art37: EX6 3/0 AWG Cu feeder in article');
+  // core-computed assertions (shipped app.js, zero hand math)
+  // EX1: 60 A garage -> 6 AWG Cu @75 (65 A); EGC 250.122 60 A = 8 AWG Cu; GEC 250.66 (6 AWG Cu -> 2AWG-or-smaller) = 8 AWG Cu
+  eq(pick(60, 'cu', 75).size, '6', 'art37 EX1: 60 A -> 6 AWG Cu @75C');
+  eq(pick(60, 'cu', 75).amp, 65, 'art37 EX1: 6 AWG Cu @75C = 65 A');
+  eq(pick(100, 'cu', 75).size, '3', 'art37 EX2: 100 A -> 3 AWG Cu @75C');
+  eq(pick(100, 'cu', 75).amp, 100, 'art37 EX2: 3 AWG Cu @75C = 100 A');
+  eq(pick(200, 'cu', 75).size, '3/0', 'art37 EX6: 200 A -> 3/0 AWG Cu @75C');
+  eq(pick(200, 'cu', 75).amp, 200, 'art37 EX6: 3/0 AWG Cu @75C = 200 A');
+  // EX3: single 16 A circuit -> 20 A OCPD; 250.32(A) Exception -> no electrode
+  eq(rb(16, false), 16, 'art37 EX3: reqBreakerA(16, noncont) = 16');
+  eq(nsb(16), 20, 'art37 EX3: nextStdBreaker(16) = 20 A (single branch circuit)');
+  // EX4: 250.32(B)(1) Exc No. 1 — 220.61 calculated neutral load governs (92.5 A)
+  const nl = core.neutralLoad22061({ volt: 240, totalVA: 24000, cookingDryerVA: 6000, applyB1: true, applyB2: false, dwelling: true });
+  eq(nl.basicA, 92.5, 'art37 EX4: 220.61 basic neutral = 92.5 A (24000-6000+4200 VA / 240 V)');
+  eq(nl.cookDemandVA, 4200, 'art37 EX4: 220.61(B)(1) 70% on 6000 VA cooking/dryer = 4200 VA');
+  eq(nl.basicVA, 22200, 'art37 EX4: 220.61 basic VA = 22,200 VA');
+  eq(nl.minAmpA, 76.77, 'art37 EX4: 310.12(B) 83% one-dwelling floor = 76.77 A (EX4 uses 220.61 basicA, not the 83% floor, per 250.32(B)(1) Exc No. 1)');
+  // cross-links
+  eq(art.includes('nec-250122-egc-sizing.html'), true, 'art37: cross-links to the 250.122 EGC article');
+  eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art37: cross-links to the 250.26/250.30 (250.66 GEC table) article');
+  eq(art.includes('nec-25050-25052-25053-grounding-electrode-system.html'), true, 'art37: cross-links to the 250.50/250.52/250.53 electrode article');
+  eq(art.includes('nec-25064-250104-gec-installation-bonding.html'), true, 'art37: cross-links to the 250.64/250.104 GEC-installation article');
+  eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art37: cross-links to the 250.102 bonding-jumper article');
+  eq(art.includes('nec-22061-neutral-load.html'), true, 'art37: cross-links to the 220.61 neutral-load article');
+  eq(art.includes('nec-23042-service-conductor-sizing.html'), true, 'art37: cross-links to the 230.42 service-conductor article');
+  const sitemap37 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap37.includes('articles/nec-25032-separate-building-grounding.html'), true, 'art37: sitemap entry present');
+  const index37 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index37.includes('articles/nec-25032-separate-building-grounding.html'), true, 'art37: index cross-link present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
