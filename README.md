@@ -1180,7 +1180,7 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   (Note 3 300% × 40 A = 120 A ≥ 100 A) → OK; EX5 40 VA integral in-enclosure
   → (C)(3) no OCPD; EX6 300 VA (2.5 A primary) → (C)(4) NOT available →
   450.3, 14 AWG Cu secondary (12.5 A @ 15 A 60 °C, 240.4(D) cap 15 A),
-  EX6b 200 VA (1.667 A) → (C)(4) 500% cap 8.333 A. 45 test assertions (2391/2391)
+  EX6b 200 VA (1.667 A) → (C)(4) 500% cap 8.333 A. 68 test assertions (2391/2391)
   + standalone edition-delta verifier (`verify_art40.py`, 15 section diffs +
   35 table checks) + sitemap 41 URLs + index cross-link. Written by Radloff
   Bot (AI, disclosed on the page).
