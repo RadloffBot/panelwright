@@ -4074,5 +4074,140 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index40.includes('articles/nec-43072-43075-motor-control-circuit-protection.html'), true, 'art40: index cross-link present');
 }
 
+// ===== Article 41: NEC 430.81-430.90 — Part VII MOTOR CONTROLLERS =====
+// The fourth in the motor series: the DEVICE that starts/stops the motor.
+// 430.81 (1/8 hp stationary left-running / 1/3 hp portable exceptions — the
+// 2017 scan garbles both fractions; corrected from clean 2023), 430.82 (design:
+// start/stop + interrupt locked-rotor current; autotransformer; rheostat),
+// 430.83 (ratings: (A)(1) hp, (A)(2) inverse breaker, (A)(3) molded case,
+// (C) 2 hp/300 V 2× / 80% snap, (D) torque motor, (E) voltage rating,
+// (F) NEW 2023 short-circuit-current-rating installation limit), 430.84 (need
+// not open all), 430.85 (pole in grounded conductor), 430.87 (one per motor;
+// group exception by equivalent hp), 430.88 (weak field), 430.89 (speed
+// limiting), 430.90 (combination fuseholder fits Part III overload fuse),
+// + 430.8 (SCR marking, 4 exceptions) + 430.9 (terminals, 0.8 N-m).
+// Verbatim 2017 on disk (nec2017_full.txt lines 53147-53214 + 55435-55653,
+// OCR corrections disclosed) + 2023 on disk (art35_nec_csv.csv). Verified
+// deltas (verify_art41.py, 32 checks): 430.83(F) is the ONLY structural
+// addition 2017->2023; section set identical; all numerics unchanged; 430.86
+// does not exist. Worked examples computed by the shipped core under node
+// (compute_art41.js -> art41_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-43081-43090-motor-controllers.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, nsb = core.nextStdBreaker;
+  // meta
+  eq(art.includes('nec-43081-43090-motor-controllers.html'), true, 'art41: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-43081-43090-motor-controllers.html'), true, 'art41: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art41: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art41: Article + FAQPage JSON-LD present');
+  // verbatim 2017 — 430.81 small-motor exceptions (fractions corrected from OCR)
+  eq(has('Part VII is intended to require suitable controllers for all motors'), true, 'art41: verbatim 2017 430.81 scope');
+  eq(has('stationary motor rated at 1/8 hp or less that is normally left running and is constructed so that it cannot be damaged by overload or failure to start, such as clock motors and the like'), true, 'art41: verbatim 2017 430.81(A) 1/8 hp stationary (OCR-corrected)');
+  eq(has('portable motor rated at 1/3 hp or less'), true, 'art41: verbatim 2017 430.81(B) 1/3 hp portable (OCR-corrected)');
+  // verbatim 2017 — 430.82 design
+  eq(has('Each controller shall be capable of starting and stopping the motor it controls and shall be capable of interrupting the locked-rotor current of the motor'), true, 'art41: verbatim 2017 430.82(A) start/stop + locked-rotor');
+  eq(has('Motor-starting rheostats for dc motors operated from a constant voltage supply shall be equipped with automatic devices that will interrupt the supply before the speed of the motor has fallen to less than one-third its normal rate'), true, 'art41: verbatim 2017 430.82(C)(2) one-third rate');
+  // verbatim 2017 — 430.83 ratings (A)(1)-(E)
+  eq(has('Controllers, other than inverse time circuit breakers and molded case switches, shall have horsepower ratings at the application voltage not lower than the horsepower rating of the motor'), true, 'art41: verbatim 2017 430.83(A)(1) hp rating');
+  eq(has('A branch-circuit inverse time circuit breaker rated in amperes shall be permitted as a controller for all motors'), true, 'art41: verbatim 2017 430.83(A)(2) inverse breaker');
+  eq(has('A molded case switch rated in amperes shall be permitted as a controller for all motors'), true, 'art41: verbatim 2017 430.83(A)(3) molded case');
+  eq(has('For stationary motors rated at 2 hp or less and 300 volts or less'), true, 'art41: verbatim 2017 430.83(C) 2 hp/300 V');
+  eq(has('A general-use switch having an ampere rating not less than twice the full-load current rating of the motor'), true, 'art41: verbatim 2017 430.83(C)(1) 2x FLC');
+  eq(has('On ac circuits, a general-use snap switch suitable only for use on ac (not general-use ac-dc snap switches) where the motor full-load current rating is not more than 80 percent of the ampere rating of the switch'), true, 'art41: verbatim 2017 430.83(C)(2) 80% ac-only snap');
+  eq(has('For torque motors, the controller shall have a continuous-duty, full-load current rating not less than the nameplate current rating of the motor'), true, 'art41: verbatim 2017 430.83(D) torque motor');
+  eq(has('A controller with a straight voltage rating, for example, 240 volts or 480 volts'), true, 'art41: verbatim 2017 430.83(E) straight voltage');
+  eq(has('A controller with a slash rating, for example, 120/240 volts or 480Y/277 volts, shall only be applied in a solidly grounded circuit'), true, 'art41: verbatim 2017 430.83(E) slash voltage');
+  // 430.83(F) — the NEW 2023 subsection (verbatim from on-disk 2023 CSV)
+  eq(has('A motor controller shall not be installed where the available fault current exceeds the motor controller\'s short-circuit current rating'), true, 'art41: verbatim 2023 430.83(F) SCR rule (NEW)');
+  eq(has('The short-circuit current rating might be marked on the device or might be a rating for a tested combination specified in the motor controller\'s technical manual or instruction sheet'), true, 'art41: verbatim 2023 430.83(F) Informational Note');
+  // verbatim 2017 — 430.84 / 430.85 / 430.87 / 430.88 / 430.89 / 430.90
+  eq(has('The controller shall not be required to open all conductors to the motor'), true, 'art41: verbatim 2017 430.84 need not open all');
+  eq(has('Where the controller serves also as a disconnecting means, it shall open all ungrounded conductors to the motor as provided in 430.111'), true, 'art41: verbatim 2017 430.84 Exception (430.111)');
+  eq(has('One pole of the controller shall be permitted to be placed in a permanently grounded conductor, provided the controller is designed so that the pole in the grounded conductor cannot be opened without simultaneously opening all conductors of the circuit'), true, 'art41: verbatim 2017 430.85 grounded-conductor pole');
+  eq(has('Each motor shall be provided with an individual controller'), true, 'art41: verbatim 2017 430.87 one per motor');
+  eq(has('For motors rated 1000 volts or less, a single controller rated at not less than the equivalent horsepower, as determined in accordance with 430.110(C)(1), of all the motors in the group'), true, 'art41: verbatim 2017 430.87 Exc No. 1 equivalent hp');
+  eq(has('Adjustable-speed motors that are controlled by means of field regulation shall be equipped and connected so that they cannot be started under a weakened field'), true, 'art41: verbatim 2017 430.88 weak field');
+  eq(has('Machines of the following types shall be provided with speed-limiting devices or other speed-limiting means'), true, 'art41: verbatim 2017 430.89 speed limiting');
+  eq(has('The rating of a combination fuseholder and switch used as a motor controller shall be such that the fuseholder will accommodate the size of the fuse specified in Part III of this article for motor overload protection'), true, 'art41: verbatim 2017 430.90 combination fuseholder');
+  // 430.8 marking (2017) — SCR marking + exceptions
+  eq(has('A controller shall be marked with the manufacturer\'s name or identification, the voltage, the current or horsepower rating, the short-circuit current rating, and other necessary data to properly indicate the applications for which it is suitable'), true, 'art41: verbatim 2017 430.8 marking incl. SCR');
+  // 430.9 terminals (2017)
+  eq(has('Control circuit devices with screw-type pressure terminals used with 14 AWG or smaller copper conductors shall be torqued to a minimum of 0.8'), true, 'art41: verbatim 2017 430.9(C) 0.8 N-m torque');
+  // 2023 delta claims (on-disk CSV)
+  eq(has('NEW'), true, 'art41: flags 430.83(F) as the NEW subsection');
+  eq(has('in 2023, not in 2017'), true, 'art41: edition claim is the verifiable 2017->2023 delta');
+  eq(has('430.86'), true, 'art41: flags the 430.86 mis-citation (does not exist)');
+  eq(has('430.86 does not exist'), true, 'art41: 430.86 non-existence stated');
+  eq(has('2020 scan ends at Article 230'), true, 'art41: 2020 gap disclosed');
+  // OCR fraction disclosure
+  eq(has('OCR'), true, 'art41: OCR correction disclosed');
+  eq(has('1/8 hp'), true, 'art41: clean 1/8 hp value present');
+  eq(has('1/3 hp'), true, 'art41: clean 1/3 hp value present');
+  // worked examples (core-computed; art41_numbers.json)
+  // EX1: 1 hp 1-ph 230 V (C)(1) 2x  [FLC 8.0 A from on-disk Table 430.248]
+  eq(2 * 8.0, 16.0, 'art41 EX1: 2x x 8.0 A FLC = 16.0 A (C)(1) general-use switch requirement');
+  eq(nsb(16.0), 20, 'art41 EX1: next std >= 16.0 A = 20 A');
+  eq(1.25 * 8.0, 10.0, 'art41 EX1: 125% x 8.0 A = 10.0 A conductor requirement (430.22)');
+  eq(pick(10.0, 'cu', 75).size, '14', 'art41 EX1: 10.0 A -> 14 AWG Cu @75C (20 A)');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art41 EX1: 240.4(D) cap on 14 AWG Cu = 15 A');
+  // EX2: 1 hp 1-ph 230 V (C)(2) 80% snap
+  eq(8.0 / 0.8, 10.0, 'art41 EX2: 8.0 A / 0.80 = 10.0 A (C)(2) ac-only snap requirement');
+  eq(nsb(10.0), 15, 'art41 EX2: next std >= 10.0 A = 15 A');
+  eq(0.8 * 15 >= 8.0, true, 'art41 EX2: 80% x 15 A = 12 A >= 8.0 A FLC -> pass');
+  // EX2b: (C) ceiling 2 hp 1-ph 230 V
+  eq(2 * 12.0, 24.0, 'art41 EX2b: 2x x 12.0 A (2 hp) = 24.0 A -> 25 A general-use');
+  eq(nsb(24.0), 25, 'art41 EX2b: next std >= 24.0 A = 25 A');
+  eq(12.0 / 0.8, 15.0, 'art41 EX2b: 12.0 A / 0.80 = 15.0 A (C)(2) snap (boundary: 80%x15=12=FLC)');
+  // EX3: 3 hp OUTSIDE (C)
+  eq((3 <= 2) && (230 <= 300), false, 'art41 EX3: 3 hp NOT <= 2 hp -> (C) not available');
+  // EX4: torque motor (D)
+  eq(10.0, 10.0, 'art41 EX4: 10 A nameplate -> >= 10 A controller (D)');
+  eq(1.25 * 10.0, 12.5, 'art41 EX4: 125% x 10 A = 12.5 A conductor req');
+  eq(pick(12.5, 'cu', 75).size, '14', 'art41 EX4: 12.5 A -> 14 AWG Cu @75C');
+  eq(1.25 * 25.0, 31.25, 'art41 EX4b: 125% x 25 A = 31.25 A');
+  eq(pick(31.25, 'cu', 75).size, '10', 'art41 EX4b: 31.25 A -> 10 AWG Cu @75C (35 A)');
+  // EX5: voltage rating (E)
+  eq(460 <= 480, true, 'art41 EX5: straight 480 V controller on 460 V system -> legal');
+  eq(277 <= 277 && 480 <= 480, true, 'art41 EX5: 480Y/277 on 480Y/277 (LN<=277, LL<=480) -> legal');
+  eq(300 <= 277, false, 'art41 EX5: 300 V-to-ground > 277 (lower slash value) -> NOT permitted');
+  // EX6: 430.83(F) fault current (CH9_T8 core)
+  const r20 = core.CH9_T8.find(r => r.s === '2/0').cu;
+  eq(r20, 0.0967, 'art41 EX6: CH9_T8 2/0 Cu R = 0.0967 ohm/kft (shipped core)');
+  const Vph480 = 480/Math.sqrt(3), Zs = (Vph480/1000)/100, Zc = r20*25/1000;
+  const IscA = Vph480/(Zs+Zc)/1000;
+  approx(IscA, 53.41, 0.05, 'art41 EX6a: 480 V bus 100 kA source 25 ft 2/0 Cu -> 53.41 kA at controller');
+  eq(50 >= IscA, false, 'art41 EX6a: 50 kA SCR < 53.41 kA -> FAILS 430.83(F)');
+  eq(65 >= IscA, true, 'art41 EX6a: 65 kA SCR >= 53.41 kA -> passes');
+  const Vph208 = 208/Math.sqrt(3), Zs208 = Zs*(208/480)**2, Zt = (208*208)*(5/100)/100000;
+  const IscB = Vph208/(Zs208+Zt+Zc)/1000;
+  approx(IscB, 4.89, 0.05, 'art41 EX6b: behind 100 kVA 5% xfmr -> 4.89 kA at controller');
+  eq(10 >= IscB, true, 'art41 EX6b: 10 kA SCR >= 4.89 kA -> passes (location matters)');
+  // EX7: group controller (430.87)
+  approx(3 * 7.6, 22.8, 1e-9, 'art41 EX7: 3 x 5 hp 3-ph 460 V (7.6 A each) = 22.8 A combined FLC');
+  eq(27 >= 22.8, true, 'art41 EX7: 20 hp (27 A FLC) >= 22.8 A -> equivalent 20 hp controller');
+  eq(21 >= 22.8, false, 'art41 EX7: 15 hp (21 A) < 22.8 A -> 15 hp too small');
+  // EX8: 430.90 combination fuseholder
+  eq(1.25 * 28.0, 35.0, 'art41 EX8: 125% x 28.0 A (5 hp 1-ph 230 V) = 35.0 A overload fuse -> 35 A holder');
+  // EX9: small-motor boundary (430.81)
+  eq(2.9, 2.9, 'art41 EX9: 1/4 hp 1-ph 230 V = 2.9 A FLC (outside the 1/8 hp exception)');
+  eq(4.9, 4.9, 'art41 EX9: 1/2 hp 1-ph 230 V = 4.9 A FLC (outside the 1/3 hp exception)');
+  // cross-links
+  eq(art.includes('nec-43072-43075-motor-control-circuit-protection.html'), true, 'art41: cross-links back to article 40 (430.72/430.75)');
+  eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art41: cross-links back to article 39 (430.32/430.36)');
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art41: cross-links back to article 38 (430.22/430.52)');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art41: cross-links to the 240.6 standard-ratings article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art41: cross-links to the 310.16 ampacity article');
+  const sitemap41 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap41.includes('articles/nec-43081-43090-motor-controllers.html'), true, 'art41: sitemap entry present');
+  const index41 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index41.includes('articles/nec-43081-43090-motor-controllers.html'), true, 'art41: index cross-link present');
+  const readme41 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme41.includes('articles/nec-43081-43090-motor-controllers.html'), true, 'art41: README entry present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

@@ -1185,6 +1185,85 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   35 table checks) + sitemap 41 URLs + index cross-link. Written by Radloff
   Bot (AI, disclosed on the page).
 
+- **[NEC 430.81–430.90 — Motor Controllers (Part VII) (what controller is legal for my motor?), explained](articles/nec-43081-43090-motor-controllers.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-43081-43090-motor-controllers.html`) —
+  the fourth in the motor series (after 430.22/430.52 branch circuit,
+  430.32/430.36 overload, and 430.72/430.75 control circuit): the explainer
+  for the **device that actually starts and stops the motor**. **430.81**
+  (the two small-motor exceptions: a stationary **1/8 hp** motor normally left
+  running and built so it can't be damaged by overload or failure to start
+  (clock motors) makes the branch-circuit disconnecting means the controller;
+  a portable **1/3 hp** motor makes the attachment plug and receptacle / cord
+  connector the controller), **430.82** (controller design: capable of
+  starting and stopping the motor *and interrupting its locked-rotor current*;
+  autotransformer starters can't rest in the starting position; rheostat
+  rules incl. the dc constant-voltage one-third-speed automatic cutoff),
+  **430.83** (ratings: (A)(1) hp-rated controllers ≥ motor hp at the
+  application voltage, (A)(2) branch-circuit **inverse-time circuit breaker**
+  rated in amperes as controller for *all* motors, (A)(3) **molded-case
+  switch** rated in amperes, (C) stationary motors ≤ **2 hp and 300 V** —
+  general-use switch ≥ **2× FLC** or **ac-only** snap switch with FLC ≤
+  **80%** of the switch rating (the ac-dc kind is explicitly disqualified),
+  (D) **torque motors** by continuous-duty nameplate current, (E) **straight
+  vs slash voltage ratings** (slash = solidly grounded only; to-ground ≤
+  lower value, line-to-line ≤ higher), and the **one real 2017→2023 change:
+  new (F)** — a motor controller shall not be installed where the available
+  fault current exceeds its **short-circuit current rating** (marked on the
+  device or a tested-combination rating from the technical manual)),
+  **430.84** (need not open all conductors — but as a disconnecting means it
+  must open all ungrounded conductors per 430.111), **430.85** (one pole in a
+  permanently grounded conductor only if it can't open without opening all),
+  **430.87** (one controller per motor; Exception No. 1 group controllers ≤
+  1000 V by **equivalent horsepower** per 430.110(C)(1) when the motors drive
+  parts of one machine / share one overcurrent device / are in one room in
+  sight; Exception No. 2 the 430.81(A) disconnect), **430.88** (no weak-field
+  starting of field-regulated adjustable-speed motors unless designed for
+  it), **430.89** (speed-limiting devices for separately excited dc, series
+  motors, and dc-end-drive motor-generators/converters, with the two
+  exceptions), **430.90** (combination fuseholder-and-switch: the holder must
+  accommodate the **Part III overload fuse** size; time-delay fuses may
+  shrink it) — plus **430.8** (SCR marking on controllers, the 4 exceptions)
+  and **430.9** (terminals: marked/colored, copper conductors, **0.8 N·m
+  (7 lb·in)** minimum torque for 14 AWG-and-smaller screw terminals).
+  **Edition posture**: 2017 verbatim on disk (nec2017_full.txt lines
+  53147–53214 for 430.8/430.9 and 55435–55653 for Part VII, line-wrap
+  artifacts normalized, OCR corrections disclosed — incl. the scan's garbled
+  **1/8 hp / 1/3 hp** fractions in 430.81(A)/(B) corrected from the clean
+  2023 text) + 2023 on disk (art35_nec_csv.csv rows 430.8, 430.9(A)–(C),
+  430.81, 430.81(A)/(B), 430.82(A)–(C), 430.83, 430.83(A)(1)–(3),
+  430.83(B)–(F), 430.84, 430.85, 430.87, 430.88, 430.89, 430.90);
+  2017↔2023 programmatic diff (`verify_art41.py`, 32 checks): **430.83(F) is
+  the ONLY structural addition** (2023 letter-subsection set minus 2017 ==
+  {(F)}); the Part VII section-number set is identical in both editions
+  (81,82,83,84,85,87,88,89,90); every numeric value unchanged (2 hp / 300 V,
+  2×, 80%, 1000 V, one-third, 0.8 N·m); the "motor controller" wording pass
+  is bookkeeping. **2020 body NOT on disk** (the on-disk 2020 scan ends at
+  Article 230) — disclosed; the edition of origin for 430.83(F) cannot be
+  pinned from the on-disk sources, so the article claims only the verifiable
+  2017→2023 delta. **Note**: **430.86 does not exist** in either 2017 or
+  2023 (the Part VII sequence skips 430.85 → 430.87) — older "430.86"
+  citations are mis-citations. Nine core-computed worked examples
+  (`pickConductor31016` / `nextStdBreaker` / `smallConductorCap` / `T31016` /
+  `CH9_T8` under node, `compute_art41.js` → `art41_numbers.json`): EX1 1 hp
+  1∅ 230 V (C)(1) 2× 8.0 A = 16 A → 20 A switch (conductors 125% × 8.0 =
+  10.0 A → 14 AWG Cu); EX2 same motor (C)(2) 8.0 ÷ 0.80 = 10 A → 15 A
+  ac-only snap switch; EX2b the (C) ceiling 2 hp 1∅ 230 V: 25 A general-use
+  vs 15 A snap (80% × 15 A = 12.0 A = FLC, boundary); EX3 3 hp outside (C) →
+  (A)(1)/(A)(2)/(A)(3); EX4 torque motor 10 A nameplate → ≥10 A controller,
+  conductors 12.5 A → 14 AWG Cu (25 A nameplate → 31.25 A → 10 AWG Cu);
+  EX5 straight-480 V controller on a 460 V system OK, 480Y/277 on a
+  480 V/300 V-to-ground delta NOT permitted; EX6 430.83(F) fault-current
+  check (CH9_T8 2/0 Cu R = 0.0967 Ω/kft from the shipped core): 480 V bus,
+  100 kA source, 25 ft → **53.41 kA** at the controller → 50 kA SCR fails,
+  65 kA passes; behind a 100 kVA 5% transformer → **4.89 kA** → 10 kA
+  passes; EX7 3 × 5 hp 3∅ 460 V group (430.87 Exc 1(a)) 22.8 A combined FLC →
+  equivalent **20 hp** (next 460 V Table 430.250 entry ≥ 22.8 A); EX8 5 hp
+  1∅ 230 V 430.90 fuseholder fits the Part III 125% × 28.0 A = 35 A overload
+  fuse; EX9 the 1/8 hp / 1/3 hp small-motor boundary values. 70+ test
+  assertions (run_tests.js, Article 41 block) + standalone edition-delta
+  verifier (`verify_art41.py`, 32 checks) + sitemap 42 URLs + index
+  cross-link. Written by Radloff Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
