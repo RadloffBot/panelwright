@@ -3963,5 +3963,116 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index39.includes('articles/nec-43032-43036-motor-overload-protection.html'), true, 'art39: index cross-link present');
 }
 
+// ===== Article 40: NEC 430.72 + 430.75 — motor CONTROL circuit protection =====
+// The third in the motor trilogy: 430.72 (overcurrent protection of the motor
+// control circuit — tapped-control-circuit rule, Table 430.72(B) Columns A/B/C,
+// fire-pump Exception No. 1, two-wire-transformer Exception No. 2, and the
+// 430.72(C)(1)–(5) control-transformer paths incl. <50 VA no-protection and
+// <2 A / 500% primary) + 430.75 (disconnection: two-device rule, adjacency,
+// >12-conductor remote exception, transformer on the load side), with
+// 430.71/430.73/430.74 as scope. Verbatim 2017 on disk
+// (nec2017_full.txt lines 55194–55432, OCR corrections disclosed) + 2023 on
+// disk (art35_nec_csv.csv). Verified deltas (verify_art40.py, 15 section
+// diffs + 35 table checks): all Table 430.72(B) values unchanged; 725.43→
+// 724.43; 430.72(C)(1) restructured into the 724/725 split; 430.75(A)
+// (a)/(b)→(1)/(2) + "complied with"→"met" + "motor controller"; 430.75(B)
+// "controller enclosure"→"motor controller enclosure"; Table 430.72(B)
+// renumbered Table 430.72(B)(2) with Notes 2/3 citing 310.17/310.16. Worked
+// examples computed by the shipped core under node (compute_art40.js →
+// art40_numbers.json). "430.78" does not exist in Part VI (mis-citation).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-43072-43075-motor-control-circuit-protection.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, nsb = core.nextStdBreaker;
+  const T31016_60 = Object.fromEntries(core.T31016.map(r => [r.s, r.cu[0]])); // 60C Cu col
+  // meta
+  eq(art.includes('nec-43072-43075-motor-control-circuit-protection.html'), true, 'art40: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-43072-43075-motor-control-circuit-protection.html'), true, 'art40: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art40: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art40: Article + FAQPage JSON-LD present');
+  // verbatim 2017
+  eq(has('430.71 General. Part VI contains modifications of the general requirements and applies to the particular conditions of motor control circuits'), true, 'art40: verbatim 2017 430.71 scope');
+  eq(has('A motor control circuit tapped from the load side of a motor branch-circuit short-circuit and ground-fault protective device(s) and functioning to control the motor(s) connected to that branch circuit shall be protected against overcurrent in accordance with 430.72'), true, 'art40: verbatim 2017 430.72(A) tapped rule');
+  eq(has('Such a tapped control circuit shall not be considered to be a branch circuit'), true, 'art40: verbatim 2017 430.72(A) not-a-branch-circuit');
+  eq(has('shall be protected against overcurrent in accordance with 725.43 or the notes to Table 11(A) and Table 11(B) in Chapter 9'), true, 'art40: verbatim 2017 430.72(A) 725.43/Ch9 cite');
+  eq(has('The overcurrent protection for conductors shall be provided as specified in 430.72(B)(1) or (B)(2)'), true, 'art40: verbatim 2017 430.72(B) lead');
+  eq(has('Where the opening of the control circuit would create a hazard as, for example, the control circuit of a fire pump motor, and the like, conductors of control circuits shall require only short-circuit and ground-fault protection'), true, 'art40: verbatim 2017 430.72(B) Exception No. 1 (fire pump)');
+  eq(has('Conductors supplied by the secondary side of a single-phase transformer having only a two-wire (single-voltage) secondary shall be permitted to be protected by overcurrent protection provided on the primary (supply) side of the transformer'), true, 'art40: verbatim 2017 430.72(B) Exception No. 2 (two-wire xfmr)');
+  eq(has('The overcurrent protection shall not exceed the values specified in Column A of Table 430.72(B)'), true, 'art40: verbatim 2017 430.72(B)(1) Column A cap');
+  eq(has('Where the conductors do not extend beyond the motor control equipment enclosure, the rating of the protective device(s) shall not exceed the value specified in Column B of Table 430.72(B)'), true, 'art40: verbatim 2017 430.72(B)(2) Column B (within)');
+  eq(has('Where the conductors extend beyond the motor control equipment enclosure, the rating of the protective device(s) shall not exceed the value specified in Column C of Table 430.72(B)'), true, 'art40: verbatim 2017 430.72(B)(2) Column C (beyond)');
+  eq(has('the transformer shall be protected in accordance with 430.72(C)(1), (C)(2), (C)(3), (C)(4), or (C)(5)'), true, 'art40: verbatim 2017 430.72(C) five paths');
+  eq(has('Overcurrent protection shall be omitted where the opening of the control circuit would create a hazard as, for example, the control circuit of a fire pump motor and the like'), true, 'art40: verbatim 2017 430.72(C) Exception (fire pump)');
+  eq(has('Control circuit transformers rated less than 50 volt-amperes (VA) and that are an integral part of the motor controller and located within the motor controller enclosure shall be permitted to be protected by primary overcurrent devices, impedance limiting means, or other inherent protective means'), true, 'art40: verbatim 2017 430.72(C)(3) <50 VA no OCPD');
+  eq(has('Where the control circuit transformer rated primary current is less than 2 amperes, an overcurrent device rated or set at not more than 500 percent of the rated primary current shall be permitted in the primary circuit'), true, 'art40: verbatim 2017 430.72(C)(4) <2A 500% primary');
+  eq(has('Where damage to a motor control circuit would constitute a hazard, all conductors of such a remote motor control circuit that are outside the control device itself shall be installed in a raceway or be otherwise protected from physical damage'), true, 'art40: verbatim 2017 430.73 physical damage');
+  eq(has('Where one conductor of the motor control circuit is grounded, the motor control circuit shall be arranged so that a ground fault in the control circuit remote from the motor controller will (1) not start the motor and (2) not bypass manually operated shutdown devices or automatic safety shutdown devices'), true, 'art40: verbatim 2017 430.74 ground-fault logic');
+  eq(has('The disconnecting means shall be permitted to consist of two or more separate devices, one of which disconnects the motor and the controller from the source(s) of power supply for the motor'), true, 'art40: verbatim 2017 430.75(A) two-device rule');
+  eq(has('Where separate devices are used, they shall be located immediately adjacent to each other'), true, 'art40: verbatim 2017 430.75(A) adjacency');
+  eq(has('Where more than 12 motor control circuit conductors are required to be disconnected, the disconnecting means shall be permitted to be located other than immediately adjacent to each other'), true, 'art40: verbatim 2017 430.75(A) Exception No. 1 >12 cond');
+  eq(has('such transformer or other device shall be connected to the load side of the disconnecting means for the motor control circuit'), true, 'art40: verbatim 2017 430.75(B) transformer load side');
+  // Table 430.72(B) cells (2017 = 2023 values)
+  eq(has('160') && has('140') && has('90') && has('75'), true, 'art40: Table 430.72(B) 10 AWG row cells (160/140/90/75)');
+  eq(has('120') && has('100') && has('60') && has('45'), true, 'art40: Table 430.72(B) 12 AWG row cells (120/100/60/45)');
+  eq(has('400 percent of value specified in Table 310.15(B) (17) for 60'), true, 'art40: Table 430.72(B) Note 2 (400% free-air, 2017 cite)');
+  eq(has('300 percent of value specified in Table 310.15(B) (16) for 60'), true, 'art40: Table 430.72(B) Note 3 (300% in-raceway, 2017 cite)');
+  // 2023 deltas (on-disk CSV)
+  eq(has('724.43'), true, 'art40: 2023 delta 430.72(A) 725.43 -> 724.43 renumber');
+  eq(has('724.30 through 724.52'), true, 'art40: 2023 delta 430.72(C)(1) Class 1 power-limited 724.30-52');
+  eq(has('the requirements of Part II of Article 725'), true, 'art40: 2023 delta 430.72(C)(1) Class 2/3 -> 725 Part II');
+  eq(has('Table 430.72(B)(2)'), true, 'art40: 2023 delta table renumbered 430.72(B)(2)');
+  eq(has('Table 310.17'), true, 'art40: 2023 delta Note 2 re-cite Table 310.17 (free air)');
+  eq(has('Table 310.16'), true, 'art40: 2023 delta Note 3 re-cite Table 310.16 (in-raceway)');
+  eq(has('conditions are met'), true, 'art40: 2023 delta 430.75(A) "conditions are met"');
+  eq(has('the motor controller power supply disconnecting means'), true, 'art40: 2023 delta 430.75(A) "motor controller"');
+  eq(has('motor controller enclosure'), true, 'art40: 2023 delta 430.75(B) "motor controller enclosure"');
+  // mis-citation callout
+  eq(has('430.78'), true, 'art40: flags the 430.78 mis-citation (does not exist in Part VI)');
+  // worked examples (core-computed; art40_numbers.json)
+  // EX1: 10 AWG Cu in-enclosure, 30 A branch OCPD <= Column B
+  eq(T31016_60['10'], 30, 'art40 EX1: T31016 10 AWG Cu 60C in-raceway = 30 A (Column A basis)');
+  eq(40 * 4, 160, 'art40 EX1: Note 2 400% x 10 AWG Cu 60C free-air (40 A) = 160 A (Column B printed value)');
+  eq(30 <= 160, true, 'art40 EX1: 30 A branch OCPD <= Column B (10 AWG Cu within = 160 A) -> ride branch');
+  // EX2: 12 AWG Cu beyond, 30 A branch OCPD <= Column C
+  approx(20 * 300 / 100, 60, 1e-6, 'art40 EX2: 300% of 12 AWG Cu 60C in-raceway (20 A) = 60 A (Column C)');
+  eq(30 <= 60, true, 'art40 EX2: 30 A branch OCPD <= Column C (12 AWG Cu beyond = 60 A) -> ride branch');
+  // EX3: 12 AWG Cu beyond, 60 A branch OCPD = exactly Column C
+  eq(60 <= 60, true, 'art40 EX3: 60 A branch OCPD = exactly Column C (12 AWG Cu beyond) -> at the cap, permitted');
+  eq(nsb(60), 60, 'art40 EX3: 60 A is a standard rating');
+  eq(core.STD_BREAKERS.indexOf(70) >= 0, true, 'art40 EX3: 70 A IS a standard rating (next size up that would fail)');
+  // EX4: 12 AWG Cu beyond, 100 A branch OCPD -> fails; upsizer to 8 AWG Cu
+  eq(100 <= 60, false, 'art40 EX4: 100 A branch OCPD > Column C (12 AWG Cu beyond = 60 A) -> fails (B)(2)');
+  approx(40 * 300 / 100, 120, 1e-6, 'art40 EX4: Note 3 300% of 8 AWG Cu 60C in-raceway (40 A) = 120 A (larger-than-10)');
+  eq(120 >= 100, true, 'art40 EX4: 120 A (8 AWG Cu Note 3) >= 100 A branch OCPD -> branch OCPD now permitted');
+  eq(pick(12.5, 'cu', 60).size, '14', 'art40 EX4: (context) 12.5 A -> 14 AWG Cu @60C');
+  // EX5: 40 VA integral in-enclosure -> (C)(3) no OCPD
+  approx(40 / 120, 0.333, 1e-3, 'art40 EX5: 40 VA / 120 V = 0.333 A primary');
+  approx(40 / 24, 1.667, 1e-3, 'art40 EX5: 40 VA / 24 V = 1.667 A secondary');
+  eq(40 < 50, true, 'art40 EX5: 40 VA < 50 VA integral in-enclosure -> (C)(3) no separate OCPD');
+  // EX6: 300 VA (2.5 A primary) -> (C)(4) NOT available
+  approx(300 / 120, 2.5, 1e-3, 'art40 EX6: 300 VA / 120 V = 2.5 A primary');
+  eq(2.5 < 2, false, 'art40 EX6: 2.5 A primary NOT < 2 A -> (C)(4) 500% shortcut unavailable -> 450.3');
+  approx(300 / 24, 12.5, 1e-3, 'art40 EX6: 300 VA / 24 V = 12.5 A secondary');
+  eq(pick(12.5, 'cu', 60).size, '14', 'art40 EX6: secondary 12.5 A -> 14 AWG Cu @60C (15 A)');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art40 EX6: 240.4(D) cap on 14 AWG Cu = 15 A');
+  // EX6b: 200 VA (1.667 A) -> (C)(4) 500% cap
+  approx(200 / 120, 1.667, 1e-3, 'art40 EX6b: 200 VA / 120 V = 1.667 A primary (< 2 A)');
+  eq(1.667 < 2, true, 'art40 EX6b: 1.667 A primary < 2 A -> (C)(4) applies');
+  approx(200 / 120 * 5, 8.3333, 1e-3, 'art40 EX6b: (C)(4) 500% cap = 500% x (200/120 A) = 8.333 A (a cap, not a target)');
+  // cross-links
+  eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art40: cross-links back to article 39 (430.32/430.36)');
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art40: cross-links back to article 38 (430.22/430.52)');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art40: cross-links to the 310.16 ampacity article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art40: cross-links to the 240.6 standard-ratings article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art40: cross-links to the 240.4(D) small-conductors article');
+  const sitemap40 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap40.includes('articles/nec-43072-43075-motor-control-circuit-protection.html'), true, 'art40: sitemap entry present');
+  const index40 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index40.includes('articles/nec-43072-43075-motor-control-circuit-protection.html'), true, 'art40: index cross-link present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

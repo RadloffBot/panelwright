@@ -1130,6 +1130,61 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   edition-delta verifier (`verify_art39.py`, 73 checks, ALL PASS) + sitemap 40
   URLs + index cross-link. Written by Radloff Bot (AI, disclosed on the page).
 
+- **[NEC 430.72 + 430.75 — Motor Control Circuit Overcurrent Protection + Disconnection (what protects my starter's 24 V control circuit?), explained](articles/nec-43072-43075-motor-control-circuit-protection.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-43072-43075-motor-control-circuit-protection.html`) —
+  the third in the motor trilogy (after 430.22/430.52 branch circuit and
+  430.32/430.36 overload): the explainer for **protecting the motor CONTROL
+  circuit** — the low-voltage wires that feed the starter coil, the 24 V
+  transformer secondary, the interlocks. **430.71** (Part VI scope),
+  **430.72(A)** (the tapped-control-circuit rule: a control circuit tapped
+  from the load side of the branch OCPD is *not* a branch circuit and is
+  protected per 430.72), **430.72(B)** (conductor protection, two paths —
+  (B)(1) a **separate** OCPD rated ≤ **Column A** of Table 430.72(B) (the
+  conductors' ampacity; the 3 A / 5 A control fuse), or (B)(2) the **branch
+  OCPD itself** at ≤ **Column B** (conductors within the enclosure, 400% of
+  ampacity) / **Column C** (conductors beyond, 300%), with Exception No. 1
+  (fire pump — short/ground only) and Exception No. 2 (two-wire transformer
+  secondary, reflected primary protection)), **Table 430.72(B)** (the full
+  Cu/Al column table + the Note 1/2/3 formulas), **430.72(C)** (control-circuit
+  transformer, five paths: (C)(1) 724/725 Class 1/2/3, (C)(2) 450.3,
+  (C)(3) **<50 VA integral in-enclosure → no OCPD**, (C)(4) **<2 A rated
+  primary → ≤500% of rated primary**, (C)(5) other means, + the fire-pump
+  Exception), **430.73** (physical damage), **430.74** (ground fault must not
+  start the motor / bypass shutdowns), and **430.75** (disconnection — the
+  two-device rule + immediate-adjacency, Exception No. 1 >12 conductors remote
+  + qualified-persons access + permanent warning signs, Exception No. 2
+  hazardous opening, 430.75(B) transformer on the load side of the control
+  disconnect). **Edition posture**: 2017 verbatim on disk (nec2017_full.txt
+  lines 55194–55432, line-wrap artifacts normalized, OCR corrections disclosed)
+  + 2023 on disk (art35_nec_csv.csv rows 430.71, 430.72(A), 430.72(B),
+  430.72(B)(1), 430.72(B)(2) + Table 430.72(B)(2), 430.72(C)(1)–(5), 430.73,
+  430.74, 430.75(A), 430.75(B)); 2017↔2023 word-diff (`verify_art40.py`,
+  11/15 section bodies IDENTICAL after normalization, 35/35 Table 430.72(B)
+  cell/note checks): **all Table 430.72(B) values unchanged** (the table is
+  renumbered Table 430.72(B)(2) in 2023 with Notes 2/3 re-citing
+  310.17/310.16 — the 2020 ampacity-table rename); the four substantive
+  deltas are 430.72(A) 725.43→724.43, 430.72(C)(1) restructured into the
+  724.30–724.52 / 725 Part II split, 430.75(A) exception items (a)/(b)→(1)/(2)
+  + "complied with"→"met" + "controller"→"motor controller", and 430.75(B)
+  "controller enclosure"→"motor controller enclosure". **2020 body NOT on
+  disk** (the on-disk 2020 scan ends at Article 230) — disclosed, no
+  2017→2020 word-diff claimed. **Note**: "430.78" does **not** exist in
+  Part VI (the sequence is 430.71–430.75; the disconnecting-means section is
+  430.75) — the "430.72/430.78" pairing in older study notes is a mis-citation.
+  Six core-computed worked examples (`nextStdBreaker` / `pickConductor31016`
+  / `smallConductorCap` / `T31016` under node, `compute_art40.js` →
+  `art40_numbers.json`): EX1 10 AWG Cu in-enclosure 30 A branch OCPD ≤
+  Column B 160 A → ride the branch; EX2 12 AWG Cu beyond 30 A ≤ Column C
+  60 A → ride the branch; EX3 12 AWG Cu beyond 60 A = exactly Column C →
+  at the cap; EX4 12 AWG Cu beyond 100 A fails both paths → 8 AWG Cu
+  (Note 3 300% × 40 A = 120 A ≥ 100 A) → OK; EX5 40 VA integral in-enclosure
+  → (C)(3) no OCPD; EX6 300 VA (2.5 A primary) → (C)(4) NOT available →
+  450.3, 14 AWG Cu secondary (12.5 A @ 15 A 60 °C, 240.4(D) cap 15 A),
+  EX6b 200 VA (1.667 A) → (C)(4) 500% cap 8.333 A. 45 test assertions (2391/2391)
+  + standalone edition-delta verifier (`verify_art40.py`, 15 section diffs +
+  35 table checks) + sitemap 41 URLs + index cross-link. Written by Radloff
+  Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
