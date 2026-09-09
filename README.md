@@ -1264,6 +1264,77 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   verifier (`verify_art41.py`, 32 checks) + sitemap 42 URLs + index
   cross-link. Written by Radloff Bot (AI, disclosed on the page).
 
+- **[NEC 430.101–430.113 — Disconnecting Means (Part IX) (where the lockable disconnect must be, and what it must be rated for?), explained](articles/nec-430101-430113-disconnecting-means.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-430101-430113-disconnecting-means.html`) —
+  the fifth in the motor series (after 430.22/430.52 branch circuit,
+  430.32/430.36 overload, 430.72/430.75 control circuit, and 430.81–430.90
+  controllers): the explainer for **the device that takes the circuit and the
+  controller dead for service**. **430.101** (scope: Part IX requires
+  disconnecting means capable of disconnecting motors and controllers),
+  **430.102** (location: the controller disconnect in sight of the controller
+  (A); the motor disconnect in sight of the motor AND the driven machinery
+  (B)(1), or the controller disconnect doubles (B)(2); the lockable-110.25
+  exceptions (a)/(b) that let the motor disconnect be omitted — the 2023
+  edition renumbers (a)/(b) → (1)/(2), drops "warning" from "label", and
+  cites NFPA 70E-2021 instead of 70E-2015), **430.103** (operation: opens all
+  ungrounded conductors, no pole independently operable, no auto-close),
+  **430.104** (plainly indicates open/closed), **430.105** (one pole may sit
+  in the permanently grounded conductor if mechanically tied so it can't open
+  alone), **430.107** (at least one readily accessible), **430.108** (every
+  disconnect in the circuit complies), **430.109** (type: the closed list of
+  seven (A) devices — hp-rated motor-circuit switch, molded case CB, molded
+  case switch, instantaneous-trip CB in a listed combination controller,
+  self-protected combination controller, manual motor controller marked
+  "Suitable as Motor Disconnect", listed system isolation equipment — plus
+  the small-motor relaxations: (B) 1/8 hp → the branch OCPD; (C) ≤ 2 hp /
+  300 V → 2× FLC general-use switch / 80% ac-only snap switch / marked manual
+  controller; (D) 2–100 hp autotransformer → general-use switch if 3
+  conditions hold (generator w/ overload, controller interrupts LRA +
+  no-voltage release + 125% running overload, separate 150% fuses/CB);
+  (E) > 40 hp dc / 100 hp ac → "Do not operate under load" isolating switch;
+  (F) cord-and-plug → hp-rated plug (not required ≤ 1/3 hp portable, 422.33
+  appliances, 440.63 AC); (G) torque → any general-use switch), **430.110**
+  (rating: (A) 115% of the table FLC for ≤ 1000 V nominal, with the
+  unfused-hp-switch exception; (B) torque 115% of nameplate; (C) combined
+  loads — sum FLCs and sum LRAs, equivalent-hp lookup, (C)(2) 115% of the FLC
+  sum, (C)(3) 6× FLC for sub-table small motors; **the substantive 2017→2023
+  change: new Exception No. 1 to (C)(1) — the design letter A locked-rotor
+  rule** — marked LRA if available, else
+  Equation 430.110(C)(1)a: I = 1000 × (kVA/hp) × hp ÷ (√3 × V_LL) with
+  kVA/hp = the max of the Table 430.7(B) range for the marked code letter
+  (A → 3.14), closing the gap where Table 430.251(B) — B/C/D only — had no
+  LRA for unmarked design A motors; the 2017 resistance-load exception
+  becomes 2023's No. 2), **430.111** (a switch or CB may be both controller
+  and disconnect: air-break / inverse time / oil 1000 V–100 A; never an
+  autotransformer controller), **430.112** (group disconnects: one machine /
+  one set of branch protection / one room in sight), **430.113** (multi-source
+  equipment: disconnect per source immediately adjacent; **second 2017→2023
+  delta: 2023 requires the sign to state that multiple sources must be shut
+  off to remove all power and to identify the other specific circuits**;
+  lockable-110.25 main-power exception; no separate disconnect for Class 2
+  ≤ 30 V isolated remote-control). **The 430.106 gap: the section does not
+  exist** in either 2017 or 2023 (verified). Eight core-computed worked
+  examples (`nextStdBreaker` / `pickConductor31016` under node,
+  `compute_art42.js` → `art42_numbers.json`): EX1 1 hp 1∅ 230 V (C) paths
+  (16.0 A → 20 A switch; 10.0 A → 15 A ac-only snap; conductors 14 AWG Cu);
+  EX2 5 hp 3∅ 460 V 115% (8.74 A → 15 A disconnect; unfused 5 hp mark
+  suffices); EX3 3 × 5 hp 460 V group → 22.8 A FLC / 138 A LRA → one 20 hp
+  switch or 30 A MCB; EX4 the 2023 equation: 25 hp 460 V design A (3.14
+  kVA/hp) + 10 A heater → 98.5 A LRA vs 183 A B/C/D table → 60 A disconnect;
+  EX5 20 A 3-pole inverse CB as OCPD + controller + disconnect; EX6 50 hp
+  autotransformer (D) conditions (150% × 65 A = 97.5 A fuse cap); EX7
+  cord-and-plug boundary 3.6 A (1/3 hp, exempt) → 4.9 A (1/2 hp, hp-rated
+  plug); EX8 the 2-pole grounded-conductor-pole legality (mechanically tied).
+  70+ test assertions (run_tests.js, Article 42 block) + standalone
+  edition-delta verifier (`verify_art42.py`, 67 checks: two substantive
+  changes — 430.110(C)(1) Exception No. 1 design-A equation + 430.113 sign
+  content; every numeric value unchanged; 430.106 absent in both editions;
+  Table 430.251(B) 25/27 rows verified VA-constant from the raw scan) +
+  standalone verbatim audit (`audit_art42_verbatim.py`: all 12 section
+  blockquotes are character-stream substrings of the 2017 scan after the
+  disclosed OCR corrections) + sitemap 43 URLs + index cross-link. Written by
+  Radloff Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

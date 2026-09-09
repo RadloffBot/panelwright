@@ -4209,5 +4209,114 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(readme41.includes('articles/nec-43081-43090-motor-controllers.html'), true, 'art41: README entry present');
 }
 
+// ===== Article 42: NEC 430.101-430.113 — Part IX DISCONNECTING MEANS =====
+// The fifth in the motor series: the DEVICE that takes the circuit + controller
+// dead for service. 430.101 (scope), 430.102 (location: in sight, lockable-110.25
+// exceptions), 430.103 (operation: all ungrounded, no auto-close), 430.104
+// (indicating), 430.105 (pole in grounded conductor, mechanically tied),
+// 430.107 (readily accessible), 430.108 (sweep), 430.109 (type: 7 devices +
+// (B)-(G) small-motor relaxations), 430.110 (115% rating; combined loads;
+// NEW 2023 design letter A LRA equation), 430.111 (switch/CB as controller +
+// disconnect), 430.112 (group disconnects), 430.113 (multi-source; NEW 2023
+// sign content). 430.106 does NOT exist (verified both editions).
+// Verbatim 2017 on disk (nec2017_full.txt lines 55811-56248; OCR corrections
+// disclosed) + 2023 on disk (art35_nec_csv.csv). Verified deltas
+// (verify_art42.py, 67 checks): two substantive changes — 430.110(C)(1)
+// Exception No. 1 (design A LRA equation) + 430.113 sign content; all numbers
+// unchanged. Verbatim audit (audit_art42_verbatim.py): all 12 blockquotes are
+// char-stream substrings of the scan. Worked examples computed by the shipped
+// core under node (compute_art42.js -> art42_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-430101-430113-disconnecting-means.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, nsb = core.nextStdBreaker;
+  // meta
+  eq(art.includes('nec-430101-430113-disconnecting-means.html'), true, 'art42: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-430101-430113-disconnecting-means.html'), true, 'art42: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art42: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art42: Article + FAQPage JSON-LD present');
+  // verbatim 2017 (char-stream audit separately verifies full blockquotes)
+  eq(has('Part IX is intended to require disconnecting means capable of disconnecting motors and controllers from the circuit'), true, 'art42: verbatim 2017 430.101');
+  eq(has('A disconnecting means for the motor shall be located in sight from the motor location and the driven machinery location'), true, 'art42: verbatim 2017 430.102(B)(1)');
+  eq(has('The disconnecting means shall open all ungrounded supply conductors and shall be designed so that no pole can be operated independently'), true, 'art42: verbatim 2017 430.103');
+  eq(has('One pole of the disconnecting means shall be permitted to disconnect a permanently grounded conductor, provided the disconnecting means is designed so that the pole in the grounded conductor cannot be opened without simultaneously disconnecting all conductors of the circuit'), true, 'art42: verbatim 2017 430.105');
+  eq(has('A listed motor-circuit switch rated in horsepower'), true, 'art42: verbatim 2017 430.109(A)(1)');
+  eq(has('For stationary motors of 1/8 hp or less, the branch-circuit overcurrent device shall be permitted to serve as the disconnecting means'), true, 'art42: verbatim 2017 430.109(B) (OCR-corrected 1/8)');
+  eq(has('For stationary motors rated at more than 40 hp dc or 100 hp ac'), true, 'art42: verbatim 2017 430.109(E) (OCR-corrected dc)');
+  eq(has('or portable motors rated 1/3 hp or less'), true, 'art42: verbatim 2017 430.109(F) (OCR-corrected 1/3)');
+  eq(has('A listed unfused motor-circuit switch having a horsepower rating not less than the motor horsepower shall be permitted to have an ampere rating less than 115 percent of the full-load current rating of the motor'), true, 'art42: verbatim 2017 430.110(A) Exception');
+  eq(has('For small motors not covered by Table 430.247, Table 430.248, Table 430.249, or Table 430.250, the locked-rotor current shall be assumed to be six times the full-load current'), true, 'art42: verbatim 2017 430.110(C)(3) 6x');
+  eq(has('An autotransformer-type controller shall be provided with a separate disconnecting means'), true, 'art42: verbatim 2017 430.111(A) auto exclusion');
+  eq(has('Each motor shall be provided with an individual disconnecting means'), true, 'art42: verbatim 2017 430.112');
+  eq(has('Where multiple disconnecting means are provided, a permanent warning sign shall be provided on or adjacent to each disconnecting means'), true, 'art42: verbatim 2017 430.113 sign (2017 content-free)');
+  // 2023 NEW 430.110(C)(1) Exception No. 1 (on-disk CSV)
+  eq(has('The locked-rotor current equivalent to the horsepower rating of each polyphase motor with design letter A shall be one of following'), true, 'art42: verbatim 2023 430.110(C)(1) Exc No. 1 (NEW)');
+  eq(has('kva/hp = maximum range value of kilovolt-amperes per horsepower with locked rotor in table 430.7(b) associated with the motor'), true, 'art42: verbatim 2023 kVA/hp definition');
+  // 2023 NEW 430.113 sign content (on-disk CSV)
+  eq(has('indicating that multiple sources must be shut off to remove all power to the equipment'), true, 'art42: verbatim 2023 430.113 sign content (NEW)');
+  eq(has('the sign at each disconnect shall identify the other specific circuits'), true, 'art42: verbatim 2023 430.113 sign identifies other circuits (NEW)');
+  // edition claims
+  eq(has('in 2023, not in 2017'), true, 'art42: edition claim is the verifiable 2017->2023 delta');
+  eq(has('430.106'), true, 'art42: flags the 430.106 gap');
+  eq(has('430.106 gap'), true, 'art42: 430.106 gap stated');
+  eq(has('2020 scan ends at Article 230'), true, 'art42: 2020 gap disclosed');
+  eq(has('OCR'), true, 'art42: OCR corrections disclosed');
+  eq(has('verify_art42.py'), true, 'art42: references the 67-check delta verifier');
+  eq(has('audit_art42_verbatim.py'), true, 'art42: references the verbatim audit');
+  // worked examples (core-computed; art42_numbers.json)
+  // EX1: 1 hp 1-ph 230 V (C) paths  [FLC 8.0 A from on-disk Table 430.248]
+  eq(2 * 8.0, 16.0, 'art42 EX1: 2x x 8.0 A FLC = 16.0 A (C)(1)');
+  eq(nsb(16.0), 20, 'art42 EX1: next std >= 16.0 A = 20 A');
+  eq(8.0 / 0.8, 10.0, 'art42 EX1: 8.0 A / 0.80 = 10.0 A (C)(2) snap');
+  eq(nsb(10.0), 15, 'art42 EX1: next std >= 10.0 A = 15 A');
+  eq(0.8 * 15 >= 8.0, true, 'art42 EX1: 80% x 15 A = 12 A >= 8.0 A FLC -> pass');
+  eq(1.25 * 8.0, 10.0, 'art42 EX1: 125% conductor req 10.0 A');
+  eq(pick(10.0, 'cu', 75).size, '14', 'art42 EX1: 10.0 A -> 14 AWG Cu @75C');
+  // EX2: 5 hp 3-ph 460 V 115% rule  [FLC 7.6 A from on-disk Table 430.250]
+  approx(1.15 * 7.6, 8.74, 1e-9, 'art42 EX2: 115% x 7.6 A = 8.74 A');
+  eq(nsb(8.74), 15, 'art42 EX2: next std >= 8.74 A = 15 A');
+  eq(1.25 * 7.6, 9.5, 'art42 EX2: 125% conductor req 9.5 A');
+  eq(pick(9.5, 'cu', 75).size, '14', 'art42 EX2: 9.5 A -> 14 AWG Cu @75C');
+  // EX3: group 3 x 5 hp 3-ph 460 V  [LRA 46 A, 20 hp = 27 A / 145 A; 15 hp = 21 A]
+  approx(3 * 7.6, 22.8, 1e-9, 'art42 EX3: combined FLC 22.8 A');
+  approx(3 * 46, 138, 1e-9, 'art42 EX3: combined LRA 138 A');
+  eq(21 < 22.8 && 27 >= 22.8, true, 'art42 EX3: 15 hp too small, 20 hp (27 A) suffices');
+  eq(145 >= 138, true, 'art42 EX3: 20 hp LRA 145 A >= 138 A combined');
+  approx(1.15 * 22.8, 26.22, 1e-9, 'art42 EX3: 115% x 22.8 A = 26.22 A');
+  eq(nsb(26.22), 30, 'art42 EX3: next std >= 26.22 A = 30 A');
+  // EX4: 2023 equation, design A, 25 hp 460 V, kVA/hp = 3.14 (max of 0-3.14)
+  approx(1000 * 3.14 * 25 / (Math.sqrt(3) * 460), 98.53, 0.05, 'art42 EX4: 430.110(C)(1)a I_LR = 98.5 A (design A)');
+  eq(183, 183, 'art42 EX4: Table 430.251(B) 25 hp 460 V = 183 A (B/C/D) for contrast');
+  approx(98.53 / 183, 0.54, 0.01, 'art42 EX4: design A fallback is ~0.54x the B/C/D table value');
+  approx(34.0 + 10, 44.0, 1e-9, 'art42 EX4: combined FLC 44.0 A (25 hp + 10 A heater)');
+  approx(98.53 + 10, 108.53, 0.05, 'art42 EX4: combined LRA 108.5 A');
+  approx(1.15 * 44.0, 50.6, 1e-9, 'art42 EX4: 115% x 44.0 A = 50.6 A');
+  eq(nsb(50.6), 60, 'art42 EX4: next std >= 50.6 A = 60 A');
+  // EX5: 430.111(B)(2) single-device 5 hp 460 V
+  approx(2.5 * 7.6, 19.0, 1e-9, 'art42 EX5: 250% x 7.6 A = 19.0 A (430.52 inverse time)');
+  eq(nsb(19.0), 20, 'art42 EX5: next std >= 19.0 A = 20 A 3-pole inverse CB');
+  // EX6: 430.109(D) autotransformer conditions, 50 hp 460 V  [FLC 65 A]
+  eq(2 < 50 && 50 <= 100, true, 'art42 EX6: 50 hp inside (D) scope over 2 hp to 100 hp');
+  approx(1.5 * 65, 97.5, 1e-9, 'art42 EX6: (D)(3) 150% x 65 A = 97.5 A fuse/CB cap');
+  approx(1.25 * 65, 81.25, 1e-9, 'art42 EX6: (D)(2) 125% overload = 81.25 A');
+  // EX7: cord-and-plug boundary (OCR-garbled values, clean)
+  eq(3.6, 3.6, 'art42 EX7: 1/3 hp 230 V = 3.6 A FLC (exempt)');
+  eq(4.9, 4.9, 'art42 EX7: 1/2 hp 230 V = 4.9 A FLC (hp-rated plug required)');
+  // cross-links
+  eq(art.includes('nec-43081-43090-motor-controllers.html'), true, 'art42: cross-links back to article 41');
+  eq(art.includes('nec-43072-43075-motor-control-circuit-protection.html'), true, 'art42: cross-links back to article 40');
+  eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art42: cross-links back to article 39');
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art42: cross-links back to article 38');
+  const sitemap42 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap42.includes('articles/nec-430101-430113-disconnecting-means.html'), true, 'art42: sitemap entry present');
+  const index42 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index42.includes('articles/nec-430101-430113-disconnecting-means.html'), true, 'art42: index cross-link present');
+  const readme42 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme42.includes('articles/nec-430101-430113-disconnecting-means.html'), true, 'art42: README entry present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
