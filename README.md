@@ -1394,6 +1394,64 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   row-for-row) + sitemap 44 URLs + index cross-link. Written by Radloff Bot
   (AI, disclosed on the page).
 
+- **[NEC 430.120–430.131 — Adjustable-Speed Drive Systems (Part X) (when the motor is fed from a VFD), explained](articles/nec-430120-430131-adjustable-speed-drive-systems.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-430120-430131-adjustable-speed-drive-systems.html`) —
+  the seventh in the motor series (after 430.22/430.52 branch circuit,
+  430.32/430.36 overload, 430.72/430.75 control circuit, 430.81–430.90
+  controllers, 430.101–430.113 disconnecting means, and 430.92–430.99 motor
+  control centers): the explainer for **power conversion equipment (VFDs)
+  feeding motors** — Parts I–IX apply unless Part X modifies them
+  (430.120). **430.122** (conductors: (A) 125% of the DRIVE's rated input
+  current — the drive nameplate, not the motor FLC; 2023 (B) the NEW
+  output-conductor rule at 125% of motor FLC with the "Suitable for Output
+  Motor Conductor Protection" (SOOCP) exception + two informational notes on
+  output-waveform breakdown; (C) the 2017 (B) bypass larger-of rule relocated
+  and trimmed; (D) several motors/other loads via 430.24 using the drive's
+  input current), **430.124** (overload: included-in-drive mark / Part III in
+  the bypass circuit / individual per motor — word-identical), **430.126**
+  (motor overtemperature: the trigger sentence, the four means, the
+  thermal-memory Exception to (2), the 430.43/430.44 import), **430.128**
+  (disconnect permitted in the incoming line at 115% of the drive's rated
+  input current — word-identical), **430.130** (branch OCPD: Table
+  430.52(C)(1) percentages on the motor FLC per 430.6(A) or (B) (2023), the
+  manufacturer-maximum trump card (A)(2), self-protected combination motor
+  controllers per instructions (A)(3), instantaneous/semiconductor only
+  integral to a listed assembly (A)(4); 2023 adds the SOOCP Exception to (1)
+  — size the OCPD from the drive's rated INPUT current — + two informational
+  notes; (B) bypass protection word-identical), **430.131** (the drive = a
+  motor controller for 430.53 — the smallest-motor branch cap; word-
+  identical). **The 430.129 gap: the section does not exist** in either
+  2017 or 2023 (verified; 430.121/123/125/127 also absent). **The 2017→2023
+  deltas** (all verified): 430.120 reword + the NEW 1000 V / Part XI scope
+  sentence (NFPA SR-7544, 2021 cycle — the only Part X section the 2021-cycle
+  SRs touch); 430.122 restructured (bypass (B)→(C) trimmed, NEW (B) output
+  rule + SOOCP, NEW (D) via 430.24); 430.130(A) restructured ("all of the
+  following", 430.6(A) or (B), NEW SOOCP Exception + 2 notes, "motor
+  controller"); 430.126(A)(3) drops "or (B)(2)" and 430.126(C) drops "The
+  provisions of". **All numbers unchanged** (125%, 115%, Table 430.52(C)(1)
+  percentages). The SOOCP provisions predate the 2023 cycle (edition of
+  origin not pinnable from on-disk sources — disclosed); the "when"→"where"
+  style change in 430.122(B)(2) is NFPA SR-8024 (2024 cycle = the 2026
+  edition), out of scope. 2017-scan OCR artifacts (disclosed, not corrected
+  in the quotes above): 430.124(C) "Part IIL" → III; 430.130(A)(1) "(C)(S)"
+  → (C)(5); 430.130(A)(2) "430,130(A) (1)"; 430.130(A)(3) "selfprotected";
+  430.130(A)(4) "instantaneous trip"; 430.131 "mecting" → meeting; 430.124
+  lead-in printed out of order.
+  Seven core-computed worked examples (`compute_art44.js` → node, the 5 hp /
+  460 V / 20 A-drive-input scenario): EX1 125% × 20 A = 25.0 A → 12 AWG Cu
+  (vs the wrong 9.5 A → 14 AWG motor-FLC path); EX2 output 125% × 7.6 A =
+  9.5 A → 14 AWG Cu + the SOOCP larger-of test; EX3 bypass larger(25.0, 9.5)
+  = 25.0 A → 12 AWG Cu + Part III bypass overload 175% × 7.6 = 13.3 A → 15 A;
+  EX4 115% × 20 A = 23.0 A → 25 A disconnect; EX5 Table 430.52(C)(1) on 7.6 A
+  = 25/15/20 A (300/175/250%); EX6 SOOCP on 20 A = 60/35/50 A (~2.4× EX5);
+  EX7 430.131 + 430.53(B) cap 250% × 2.1 A (1 hp) = 5.25 A → 6 A inverse-time
+  CB per the 240.6 list (the shipped breaker core starts at 15 A — disclosed
+  on the page). 87-standalone edition-delta verifier (`verify_art44.py`, 87
+  checks: every claimed delta isolated, every word-identical section
+  confirmed, 430.129 absent in both editions, SR-7544 corroboration) +
+  sitemap 45 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
+  on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

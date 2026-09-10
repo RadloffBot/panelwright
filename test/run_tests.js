@@ -4419,5 +4419,123 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(readme43.includes('articles/nec-430092-430099-motor-control-centers.html'), true, 'art43: README entry present');
 }
 
+// ===== Article 44: NEC 430.120-430.131 — Part X ADJUSTABLE-SPEED DRIVE SYSTEMS =====
+// The seventh in the motor series: what changes when the motor is fed from power
+// conversion equipment (a VFD). 430.120 (Parts I-IX apply unless modified; 2023
+// adds the 1000 V / Part XI scope sentence, SR-7544 2021 cycle), 430.122 (conductors:
+// (A) 125% of the DRIVE's rated input current, (B) 2017=bypass rule -> 2023=NEW
+// output-conductor rule 125% motor FLC + SOOCP exception + 2 informational notes,
+// (C) 2023=relocated trimmed bypass rule, (D) 2023=several-motors via 430.24),
+// 430.124 (overload: drive-marked-included / bypass Part III / multiple individual;
+// word-identical), 430.126 (overtemperature: 4 means + Exception to (2) + 430.43/
+// 430.44; 2023: (A)(3) drops "or (B)(2)", (C) drops "The provisions of"), 430.128
+// (disconnect in incoming line, 115% of drive rated input current; word-identical),
+// 430.130 (branch OCPD: 430.52(C)(1) on motor FLC; 2023: "all of the following",
+// 430.6(A) or (B), NEW SOOCP Exception to (1) + 2 notes, "motor controller"; (B)
+// bypass word-identical), 430.131 (430.53 multi-motor: drive = motor controller;
+// word-identical). 430.129 does NOT exist (verified both editions; also 121/123/125/127).
+// Verbatim 2017 on disk (nec2017_full.txt lines 56249-56468; OCR corrections
+// disclosed: 430.124(C) "Part IIL"->"Part III", 430.130(A)(1) "(C)(S)"->"(C)(5)",
+// 430.130(A)(2) "430,130(A) (1)" comma, 430.130(A)(3) "selfprotected", 430.130(A)(4)
+// "instantaneous trip", 430.131 "mecting"->"meeting", 430.124 lead-in reordered)
+// + 2023 on disk (art35_nec_csv.csv).
+// Verified 2017->2023 deltas (verify_art44.py, 87 checks): 430.120 reword + NEW
+// 1000V/Part XI sentence (SR-7544, the only Part X section the 2021-cycle SRs
+// touch); 430.122 restructured (bypass (B)->(C) trimmed, NEW (B) output + SOOCP,
+// NEW (D) via 430.24); 430.130(A) restructured (SOOCP exception + 2 notes +
+// "motor controller"); 430.126(A)(3)/(C) trimmed; word-identical: 430.124, 430.128,
+// 430.130(B), 430.131. All numbers unchanged. SOOCP provisions predate the 2023
+// cycle (edition of origin not pinnable from on-disk sources — disclosed; 2020 scan
+// ends at Article 230); SR-8024 (2024 cycle = 2026) "when"->"where" is out of scope.
+// Worked examples computed by the shipped core under node (compute_art44.js ->
+// art44_numbers.json): EX1 125% x 20 A input = 25 A -> 12 AWG Cu (not 14 AWG from
+// motor FLC); EX2 output 125% x 7.6 A = 9.5 A -> 14 AWG Cu + SOOCP larger-of;
+// EX3 bypass larger(25, 9.5) = 25 A -> 12 AWG Cu + 175% overload 13.3 -> 15 A;
+// EX4 115% x 20 A = 23 A -> 25 A disconnect; EX5 250% x 7.6 = 19 A -> 20 A inverse;
+// EX6 SOOCP 250% x 20 A = 50 A (2.0x EX5); EX7 430.53(B) cap 250% x 2.1 A (1 hp)
+// = 5.25 A -> 6 A per 240.6 (the shipped breaker core starts at 15 A — disclosed).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-430120-430131-adjustable-speed-drive-systems.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, nsb = core.nextStdBreaker;
+  // meta
+  eq(art.includes('nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art44: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art44: Article + FAQPage JSON-LD present');
+  // verbatim 2017 (OCR-corrected; on-disk scan lines disclosed)
+  eq(has('The installation provisions of Part I through Part IX are applicable unless modified or supplemented by Part X'), true, 'art44: verbatim 2017 430.120');
+  eq(has('Circuit conductors supplying power conversion equipment included as part of an adjustable-speed drive system shall have an ampacity not less than 125 percent of the rated input current to the power conversion equipment'), true, 'art44: verbatim 2017 430.122(A) 125% rated input current');
+  eq(has('Overload protection of the motor shall be provided'), true, 'art44: verbatim 2017 430.124 lead-in');
+  eq(has('Where the power conversion equipment is marked to indicate that motor overload protection is included, additional overload protection shall not be required'), true, 'art44: verbatim 2017 430.124(A)');
+  eq(has('For adjustable-speed drive systems that utilize a bypass device to allow motor operation at rated full-load speed, motor overload protection as described in Article 430, Part III, shall be provided in the bypass circuit'), true, 'art44: verbatim 2017 430.124(B) (OCR-corrected Part III)');
+  eq(has('Adjustable-speed drive systems shall protect against motor overtemperature conditions where the motor is not rated to operate at the nameplate rated current over the speed range required by the application'), true, 'art44: verbatim 2017 430.126(A) trigger');
+  eq(has('meeting the requirements of 430.126(A)(2) or (B)(2)'), true, 'art44: verbatim 2017 430.126(A)(3) "or (B)(2)" (dropped in 2023)');
+  eq(has('The disconnecting means shall be permitted to be in the incoming line to the conversion equipment and shall have a rating not less than 115 percent of the rated input current of the conversion unit'), true, 'art44: verbatim 2017 430.128 115% rated input');
+  eq(has('The rating and type of protection shall be determined by 430.52(C)(1), (C)(3), (C)(5), or (C)(6), using the full-load current rating of the motor load as determined by 430.6'), true, 'art44: verbatim 2017 430.130(A)(1) (OCR-corrected (C)(5))');
+  eq(has('For the purposes of 430.53 and 430.131, power conversion equipment shall be considered to be a motor controller'), true, 'art44: verbatim 2017 430.131 drive = motor controller');
+  // 2023 deltas (on-disk CSV)
+  eq(has('Power conversion equipment used in adjustable-speed drive systems shall comply with Part X for an input or output rated 1000 volts or lower and with Part XI for an input or output rated over 1000 volts'), true, 'art44: 2023 430.120 NEW 1000 V / Part XI sentence (SR-7544)');
+  eq(has('The conductors between the power conversion equipment and the motor shall have an ampacity equal to or larger than 125 percent of the motor full-load current as determined by 430.6(A) or (B)'), true, 'art44: 2023 430.122(B) NEW output-conductor rule');
+  eq(has('Suitable for Output Motor Conductor Protection'), true, 'art44: SOOCP mark present');
+  eq(has('Conductors supplying several motors or a motor and other loads, including power conversion equipment, shall have ampacity in accordance with 430.24'), true, 'art44: 2023 430.122(D) NEW several-motors via 430.24');
+  eq(has('Exception to (1): The rating and type of protection shall be permitted to be determined by Table 430.52(C)(1) using the power conversion equipment'), true, 'art44: 2023 430.130(A) NEW SOOCP Exception to (1)');
+  eq(has('self-protected combination motor controller'), true, 'art44: 2023 430.130(A)(3) "motor controller"');
+  // edition claims
+  eq(has('430.129'), true, 'art44: flags the 430.129 gap');
+  eq(has('does not exist'), true, 'art44: "does not exist" stated');
+  eq(has('OCR'), true, 'art44: OCR corrections disclosed');
+  eq(has('verify_art44.py'), true, 'art44: references the 87-check delta verifier');
+  eq(has('87'), true, 'art44: 87 checks count stated');
+  eq(has('SR-7544'), true, 'art44: cites NFPA SR-7544 (2021 cycle) for 430.120');
+  eq(has('SR-8024'), true, 'art44: cites NFPA SR-8024 (2024 cycle = 2026) as out of scope');
+  eq(has('2020 scan ends at Article 230'), true, 'art44: 2020 gap disclosed');
+  eq(has('edition-of-origin gap'), true, 'art44: SOOCP edition-of-origin gap disclosed');
+  // worked examples (core-computed; art44_numbers.json)
+  // EX1: 430.122(A) 125% x 20 A drive input = 25 A
+  eq(1.25 * 20, 25, 'art44 EX1: 125% x 20 A = 25.0 A required');
+  eq(pick(25, 'cu', 75).label, '12 AWG Cu', 'art44 EX1: 25.0 A -> 12 AWG Cu @75C');
+  eq(pick(1.25 * 7.6, 'cu', 75).label, '14 AWG Cu', 'art44 EX1: wrong path 125% x 7.6 A = 9.5 A -> 14 AWG Cu (too small)');
+  // EX2: 430.122(B) output 125% x 7.6 A = 9.5 A
+  eq(1.25 * 7.6, 9.5, 'art44 EX2: 125% x 7.6 A = 9.5 A');
+  eq(pick(9.5, 'cu', 75).label, '14 AWG Cu', 'art44 EX2: 9.5 A -> 14 AWG Cu @75C');
+  // EX3: bypass larger-of + Part III overload
+  eq(Math.max(1.25 * 20, 1.25 * 7.6), 25, 'art44 EX3: larger(25.0 A, 9.5 A) = 25.0 A');
+  eq(nsb(1.75 * 7.6), 15, 'art44 EX3: bypass overload 175% x 7.6 = 13.3 A -> 15 A');
+  // EX4: 430.128 disconnect 115% x 20 A = 23 A
+  eq(nsb(1.15 * 20), 25, 'art44 EX4: 115% x 20 A = 23.0 A -> 25 A disconnect');
+  // EX5: 430.130(A)(1) Table 430.52(C)(1) on motor FLC 7.6 A
+  eq(nsb(3.0 * 7.6), 25, 'art44 EX5: 300% x 7.6 = 22.8 A -> 25 A nontime');
+  eq(nsb(1.75 * 7.6), 15, 'art44 EX5: 175% x 7.6 = 13.3 A -> 15 A dual-element');
+  eq(nsb(2.5 * 7.6), 20, 'art44 EX5: 250% x 7.6 = 19.0 A -> 20 A inverse-time');
+  // EX6: SOOCP exception on rated input current 20 A (~2.4x EX5 at every step)
+  eq(nsb(3.0 * 20), 60, 'art44 EX6: SOOCP 300% x 20 A = 60 A');
+  eq(nsb(1.75 * 20), 35, 'art44 EX6: SOOCP 175% x 20 A = 35 A');
+  eq(nsb(2.5 * 20), 50, 'art44 EX6: SOOCP 250% x 20 A = 50 A');
+  eq(60 / 25 === 2.4 && 35 / 15 === 2.3333333333333335 && 50 / 20 === 2.5, true, 'art44 EX6: SOOCP device ratios vs EX5 = 2.4x / 2.33x / 2.5x (article states ~2.4x)');
+  eq(has('2.4× larger at every step'), true, 'art44 EX6: ~2.4x comparison stated in article');
+  // EX7: 430.131 + 430.53(B) smallest-motor cap (1 hp 460 V = 2.1 A)
+  eq(2.5 * 2.1, 5.25, 'art44 EX7: 430.53(B) cap 250% x 2.1 A = 5.25 A');
+  eq(nsb(5.25), 15, 'art44 EX7: shipped breaker core starts at 15 A (returns 15 for 5.25 A)');
+  eq(has('6 A inverse-time circuit breaker'), true, 'art44 EX7: 240.6 next standard above 5.25 A = 6 A stated');
+  eq(has('starts at 15 A'), true, 'art44 EX7: sub-15 A core limitation disclosed');
+  // cross-links
+  eq(art.includes('nec-430092-430099-motor-control-centers.html'), true, 'art44: cross-links to article 43 (Part VIII)');
+  eq(art.includes('nec-430101-430113-disconnecting-means.html'), true, 'art44: cross-links to article 42 (Part IX)');
+  eq(art.includes('nec-43081-43090-motor-controllers.html'), true, 'art44: cross-links to article 41 (Part VII)');
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art44: cross-links to article 38 (branch circuit)');
+  eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
+  const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
+  eq((sitemap44.match(/<loc>/g) || []).length, 45, 'art44: sitemap has 45 URLs (was 44)');
+  const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
+  const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: README entry present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
