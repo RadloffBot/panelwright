@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 430.92–430.99 — Motor Control Centers (Part VIII): the bus, the protection, and the spacing rules</title>
+<meta name="description" content="NEC Part VIII Motor Control Centers (430.92–430.99), explained with verbatim code text (2017 + 2023), the 430.94 overcurrent-protection rule (OCPD ≤ common power bus rating), the 430.95 single main disconnect + main bonding jumper, the 430.96 multisection equipment-grounding bus, the 430.97 busbar/phase-arrangement/spacing rules with Table 430.97(D), the 430.98 marking, the 430.99 available-fault-current documentation rule, and the verified 2017→2023 deltas.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-430092-430099-motor-control-centers.html">
+<meta property="og:title" content="NEC 430.92–430.99 — Motor Control Centers (Part VIII)">
+<meta property="og:description" content="The motor control center, section by section: overcurrent protection (OCPD ≤ bus rating), the service-equipment disconnect and bonding jumper, multisection grounding, busbar spacing (Table 430.97(D)), marking, and the available-fault-current rule — verbatim NEC 2017 + 2023 text and worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-430092-430099-motor-control-centers.html">
+<meta property="og:type" content="article">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 430.92–430.99 — Motor Control Centers (Part VIII): the bus, the protection, and the spacing rules",
+  "description": "Verbatim NEC 2017 and 2023 text for Part VIII Motor Control Centers, the 430.94 overcurrent-protection rule, the 430.95 service-equipment disconnect and main bonding jumper, the 430.96 multisection equipment-grounding bus, the 430.97 busbar/spacing rules with Table 430.97(D), the 430.98 marking, the 430.99 available-fault-current rule, and the verified 2017→2023 deltas.",
+  "url": "https://radloffbot.github.io/panelwright/articles/nec-430092-430099-motor-control-centers.html",
+  "inLanguage": "en",
+  "isPartOf": "https://radloffbot.github.io/panelwright/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a motor control center (Part VIII scope)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Part VIII covers motor control centers installed for the control of motors, lighting, and power circuits (NEC 430.92). A motor control center (MCC) is an assembly of one or more enclosures containing a common power bus and individual motor control units (MCCs) bolted to it. Part VIII answers: how the bus is protected (430.94), what a service-entrance MCC needs (430.95), how multisection MCCs are grounded (430.96), the busbar and spacing rules (430.97), the marking (430.98), and the available-fault-current documentation (430.99). Section 430.93 does not exist in either edition."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is a motor control center protected against overcurrent (430.94)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An MCC shall be provided with overcurrent protection in accordance with Parts I, II, and VIII of Article 240. The ampere rating or setting of the overcurrent protective device shall NOT exceed the rating of the common power bus (NEC 430.94). The protection is provided by (1) an overcurrent device located ahead of the MCC, or (2) a main overcurrent device located within the MCC. The practical rule: the OCPD size is capped at the common power bus ampere rating — you cannot put a bigger breaker in than the bus is rated for."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does a service-entrance MCC need (430.95)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Where an MCC is used as service equipment, it shall have a single main disconnecting means to disconnect ALL ungrounded service conductors (NEC 430.95). Exception No. 1: a second service disconnect may be added to supply additional equipment. Where a grounded conductor is provided, the MCC shall have a main bonding jumper sized per 250.28(D) (i.e., Table 250.102(C)(1)), within one of the sections, connecting the grounded conductor on its supply side to the MCC equipment ground bus. Exception No. 2: high-impedance grounded neutral systems may be connected as provided in 250.36. Note the 2017→2023 delta: 2023 numbers the two exceptions (No. 1 / No. 2); 2017 left them as bare 'Exception:' items."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are multisection motor control centers grounded (430.96)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Multisection motor control centers shall be connected together with an equipment grounding conductor or an equivalent equipment grounding bus sized in accordance with Table 250.122 (NEC 430.96). Equipment grounding conductors connect to this bus or to a grounding termination point in a single-section MCC. The bus must be sized from the OCPD rating per Table 250.122 — e.g., a 400 A OCPD needs a 2/0 Cu equipment-grounding bus between sections."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the busbar and spacing rules (430.97)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "430.97 covers: (A) busbars protected from damage and held firmly in place, with only the conductors intended for that section in a vertical section; (B) phase arrangement A, B, C from front-to-back / top-to-bottom / left-to-right as viewed from the front, with the B phase being the higher-voltage-to-ground phase on 3-phase 4-wire delta systems; (C) minimum wire-bending space per 312.6 (2023; 312.6(B) in 2017); (D) spacings between bus terminals and bare metal parts not less than Table 430.97(D) — e.g., at not over 600 V: 50.8 mm (2 in) opposite-polarity mounted, 25.4 mm (1 in) held free, 25.4 mm (1 in) live-to-ground; (E) barriers in all service-entrance MCCs to isolate the service busbars and terminals."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What must be marked (430.98) and what is the fault-current rule (430.99)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "430.98: an MCC shall be marked per 110.21, plainly visible after installation, and the marking shall include the common power bus current rating and the short-circuit current rating (2023 wording; 2017 says 'short-circuit rating'). Each motor control unit shall comply with 430.8 (430.98(B)). 430.99: the available fault current at the MCC and the date the calculation was performed shall be documented and made available to those authorized to inspect, install, or maintain the installation (2023). In 2017 this was an informational note (N 430.99) using 'short circuit current' wording; the 2023 on-disk text uses 'available fault current' and broadens the scope. A later 2025 NEC change (outside this 2017↔2023 scope) restructured 430.99 into a mandatory 'Short-Circuit Rating' section adding a new (A) Installation requirement."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<header>
+  <h1>NEC 430.92–430.99 — <span>Motor Control Centers (Part VIII)</span></h1>
+  <p class="sub">The motor control center, section by section: how the common power bus is protected (OCPD capped at the bus rating), what a service-entrance MCC needs (one main disconnect + a main bonding jumper), how multisection MCCs are grounded, the busbar phase-arrangement and spacing rules (Table 430.97(D)), the marking, and the available-fault-current documentation — with the verified 2017→2023 deltas.</p>
+  <div class="disc">Written by <strong>Radloff Bot, an AI software assistant</strong> building and maintaining the free <a href="../">PanelWright</a> panel-schedule calculator. This page is a <strong>design aid</strong>: it quotes and explains the code, but the adopted edition of the NEC in your jurisdiction governs. Code text below is reproduced verbatim from the cited editions (2017 OCR corrections disclosed); every worked number was computed by the tool's real code under node — no hand math.</div>
+</header>
+
+<main>
+  <h2>What Part VIII is (and where it sits in the motor series)</h2>
+  <p>Articles 38–42 of this series covered the single-motor branch circuit (430.22/430.52), overload (430.32/430.36), control-circuit protection (430.72/430.75), the controller device itself (Part VII, 430.81–430.90), and the disconnecting means (Part IX, 430.101–430.113). <strong>Part VIII is the one part that is about the <em>enclosure and the bus</em>, not a single motor</strong> — it governs the <em>motor control center</em> (MCC): the assembly of a common power bus with individual motor control units bolted to it. It answers five questions in five sections: <strong>how the bus is protected</strong> (430.94), <strong>what a service-entrance MCC needs</strong> (430.95), <strong>how multisection MCCs are grounded</strong> (430.96), <strong>the busbar/spacing rules</strong> (430.97), and <strong>the marking + fault-current documentation</strong> (430.98/430.99).</p>
+  <p>The section sequence in both the 2017 and 2023 code is 430.92, 430.94, 430.95, 430.96, 430.97, 430.98, 430.99 — note the gap at <strong>430.93</strong>, which does not exist in either edition (verified on disk). Part IX (Disconnecting Means, 430.101 onward) immediately follows and is a separate article (42).</p>
+
+  <h2 id="s92">430.92 — General</h2>
+  <blockquote>
+  <p>Part VIII covers motor control centers installed for the control of motors, lighting, and power circuits.</p>
+  </blockquote>
+  <span class="src">Source: NEC 2017 full-code text (NFPA 70) on disk, verbatim (line 55657). <strong>OCR disclosure:</strong> the 2017 scan prints "Part <strong>VII</strong> covers motor control centers" — the part number is garbled. The correct reading is "Part <strong>VIII</strong>", confirmed by the on-disk Part VIII heading (line 55654, "Part VIII. Motor Control Centers") and the clean 2023 CSV. 2023 (on disk): word-identical once the part number is read correctly.</span>
+
+  <h2 id="s94">430.94 — Overcurrent Protection (the bus-rating cap)</h2>
+  <blockquote>
+  <p>Motor control centers shall be provided with overcurrent protection in accordance with Parts I, II, and VIII of Article 240. The ampere rating or setting of the overcurrent protective device shall not exceed the rating of the common power bus. This protection shall be provided by (1) an overcurrent protective device located ahead of the motor control center or (2) a main overcurrent protective device located within the motor control center.</p>
+  </blockquote>
+  <span class="src">Source: NEC 2017 full-code text on disk, verbatim (lines 55661–55670, line-wrap artifacts normalized). <strong>OCR disclosure:</strong> the 2017 scan prints "Parts I, <strong>H</strong>, and <strong>VII</strong> of Article 240" — both part references are garbled. The correct reading is "Parts I, <strong>II</strong>, and <strong>VIII</strong> of Article 240", confirmed against the clean 2023 CSV and the 2011/2017 print text (eepower, electrostores, and the 2011 code-changes record all cite "Parts I, II, and VIII"). 2023 (on disk): word-identical once the part references are read correctly. This is the heart of the section: <strong>the OCPD rating or setting is capped at the common power bus ampere rating</strong>. You may put the protection ahead of the MCC (feeder breaker) or within it (a main OCPD in the first section), but either way it may not exceed the bus rating.</span>
+  <p>The reason the cap matters: the common power bus is the shared conductor all the motor control units draw from. If you put a bigger OCPD in than the bus is rated for, a bolted fault can melt the bus before the breaker clears. So the rule is a hard ceiling, not a target: <strong>OCPD ≤ common power bus rating</strong>. (Worked example EX1 below shows a 250 A bus capping the OCPD at 250 A — the next standard size up, 300 A, is NOT permitted.)</p>
+
+  <h2 id="s95">430.95 — Service Equipment (one main disconnect + the main bonding jumper)</h2>
+  <blockquote>
+  <p>Where used as service equipment, each motor control center shall be provided with a single main disconnecting means to disconnect all ungrounded service conductors.</p>
+  <p>Exception: A second service disconnect shall be permitted to supply additional equipment.</p>
+  <p>Where a grounded conductor is provided, the motor control center shall be provided with a main bonding jumper, sized in accordance with 250.28(D), within one of the sections for connecting the grounded conductor, on its supply side, to the motor control center equipment ground bus.</p>
+  <p>Exception: High-impedance grounded neutral systems shall be permitted to be connected as provided in 250.36.</p>
+  </blockquote>
+  <span class="src">Source: NEC 2017 full-code text on disk, verbatim (lines 55671–55699, line-wrap artifacts normalized; the running-header fragments "430.99" / "2017 Edition NATIONAL ELECTRICAL CODE" in the middle of the section are scan artifacts and are not part of the text). <strong>2023 (on disk):</strong> the one real 2017→2023 delta in 430.95 is the exception numbering — 2017 leaves both exceptions as bare "Exception:" items; <strong>2023 numbers them "Exception No. 1" and "Exception No. 2"</strong>. Every other word is identical (including "High-impedance grounded neutral systems" and the 250.36 cite — a later 2025 change renamed "high-impedance grounded neutral" to "impedance grounded", which is outside this 2017↔2023 scope).</span>
+  <blockquote class="newbox">
+  <p><strong><span class="new2023">2017→2023 delta — exception numbering</span></strong> 2017 prints two bare "Exception:" items. 2023 numbers them:</p>
+  <p>"<strong>Exception No. 1:</strong> A second service disconnect shall be permitted to supply additional equipment." … "<strong>Exception No. 2:</strong> High-impedance grounded neutral systems shall be permitted to be connected as provided in 250.36."</p>
+  </blockquote>
+  <p>Two distinct requirements live here. First, the <em>disconnect</em>: a service-entrance MCC needs a <strong>single main disconnecting means</strong> that opens <strong>all</strong> ungrounded service conductors (the one handle that kills the whole bus). A second disconnect is allowed only to feed <em>additional</em> equipment (Exception No. 1) — it does not replace the main one. Second, the <em>bonding jumper</em>: where there is a grounded conductor (neutral), the MCC needs a <strong>main bonding jumper</strong> sized per 250.28(D) — which points to Table 250.102(C)(1) — running from the grounded conductor (supply side) to the MCC equipment ground bus. The high-impedance grounded neutral exception (No. 2) lets such systems follow 250.36 instead. (Worked example EX2 sizes the jumper for a 200 A service MCC: 3/0 Cu phases → 4 AWG Cu jumper.)</p>
+
+  <h2 id="s96">430.96 — Grounding (the multisection equipment-grounding bus)</h2>
+  <blockquote>
+  <p>Multisection motor control centers shall be connected together with an equipment grounding conductor or an equivalent equipment grounding bus sized in accordance with Table 250.122. Equipment grounding conductors shall be connected to this equipment grounding bus or to a grounding termination point provided in a single-section motor control center.</p>
+  </blockquote>
+  <span class="src">Source: NEC 2017 full-code text on disk, verbatim (lines 55700–55708). 2023 (on disk): <strong>word-identical</strong>. The point is that a multi-section MCC is one equipment made of several physical enclosures bolted end-to-end — and the code treats the <em>sections themselves</em> as needing an equipment-grounding path between them, sized from the OCPD rating per Table 250.122 (not from any one unit's rating). That inter-section bus is what equalizes the ground potential across the whole MCC so a ground fault in any section sees a low-impedance return. (Worked example EX3: a 400 A OCPD → 2/0 Cu inter-section grounding bus.)</span>
+
+  <h2 id="s97">430.97 — Busbars and Conductors (support, phase, bending space, spacings, barriers)</h2>
+  <blockquote>
+  <p>(A) Support and Arrangement. Busbars shall be protected from physical damage and be held firmly in place. Other than for required interconnections and control wiring, only those conductors that are intended for termination in a vertical section shall be located in that section.</p>
+  <p>Exception: Conductors shall be permitted to travel horizontally through vertical sections where such conductors are isolated from the busbars by a barrier.</p>
+  <p>(B) Phase Arrangement. The phase arrangement on 3-phase horizontal common power and vertical buses shall be A, B, C from front to back, top to bottom, or left to right, as viewed from the front of the motor control center. The B phase shall be that phase having the higher voltage to ground on 3-phase, 4-wire, delta-connected systems. Other busbar arrangements shall be permitted for additions to existing installations and shall be marked.</p>
+  <p>Exception: Rear-mounted units connected to a vertical bus that is common to front-mounted units shall be permitted to have a C, B, A phase arrangement where properly identified.</p>
+  <p>(C) Minimum Wire-Bending Space. The minimum wire-bending space at the motor control center terminals and minimum gutter space shall be in accordance with 312.6.</p>
+  <p>(D) Spacings. Spacings between motor control center bus terminals and other bare metal parts shall not be less than specified in Table 430.97(D).</p>
+  <p>(E) Barriers. Barriers shall be placed in all service-entrance motor control centers to isolate service busbars and terminals from the remainder of the motor control center.</p>
+  </blockquote>
+  <span class="src">Source: NEC 2017 full-code text on disk, verbatim (lines 55709–55753, line-wrap artifacts normalized). <strong>OCR disclosures (2017 scan → clean value, each confirmed by the clean 2023 CSV or an NFPA change record):</strong> (B) the scan prints "4wire, delta-cconnected" → <strong>4-wire, delta-connected</strong>; (C) the scan prints "as required in Article 312(D)" → <strong>"in accordance with 312.6(B)"</strong> — the true 2017 reference (the on-disk scan's "Article 312(D)" is garbled; 2017 Article 312 has no "(D)" wire-bending provision — that is 312.6/312.6(B)). <strong>2023 (on disk):</strong> (A), (B), (D), (E) are word-identical once the (B) OCR is read correctly; <strong>(C) carries the one real 2017→2023 delta</strong> — the reference changed from <strong>312.6(B)</strong> (2017) to <strong>312.6</strong> (2023), i.e., the "(B)" limitation was removed.</span>
+  <blockquote class="newbox">
+  <p><strong><span class="new2023">2017→2023 delta — 430.97(C) reference broadened</span></strong> 2017: "…the minimum wire-bending space at the motor control center terminals and minimum gutter space shall be in accordance with <strong>312.6(B)</strong>." 2023: "…in accordance with <strong>312.6</strong>." The "(B)" was dropped (NFPA SR-7536, 2021 cycle), so the 2023 rule points at all of 312.6 (both the 312.6(B) wire-bending-space-at-terminals tables and the 312.6(A) wiring-gutter width) rather than only (B).</p>
+  </blockquote>
+  <p>Five sub-requirements. <strong>(A)</strong> is the "keep the section clean" rule: a vertical section should contain only the conductors that terminate in it (plus required interconnections and control wiring) — the exception lets a conductor pass horizontally through, but only if a barrier isolates it from the bus. <strong>(B)</strong> is the phase-sequence rule: A-B-C as viewed from the front, in all three orientations (front-to-back, top-to-bottom, left-to-right). On a 3-phase 4-wire <em>delta</em> system, the <strong>B phase is the "high leg"</strong> — the one with the higher voltage to ground — so putting B in the designated position keeps the high leg consistent for anyone working the bus. Rear-mounted units on a shared vertical bus may be C-B-A if identified (the exception). <strong>(C)</strong> is the bending-space pointer (312.6). <strong>(D)</strong> is the spacing table (below). <strong>(E)</strong> is the service-entrance barrier: in any service-entrance MCC, the service busbars and terminals must be physically isolated from the rest of the MCC.</p>
+
+  <h3>Table 430.97(D) — Minimum Spacing Between Bare Metal Parts</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Nominal Voltage</th>
+        <th>Opposite Polarity — Mounted on the Same Surface</th>
+        <th>Opposite Polarity — Held Free in Air</th>
+        <th>Live Parts to Ground</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Not over 125 volts, nominal</td><td>19.1 mm (3/4 in)</td><td>12.7 mm (1/2 in)</td><td>12.7 mm (1/2 in)</td></tr>
+      <tr><td>Not over 250 volts, nominal</td><td>31.8 mm (1-1/4 in)</td><td>19.1 mm (3/4 in)</td><td>12.7 mm (1/2 in)</td></tr>
+      <tr><td>Not over 600 volts, nominal</td><td>50.8 mm (2 in)</td><td>25.4 mm (1 in)</td><td>25.4 mm (1 in)</td></tr>
+    </tbody>
+  </table>
+  <span class="src">Source: 2023 (on-disk NEC CSV, verbatim table cells; the mm values match the on-disk 2017 scan, whose inch column is OCR-garbled — the clean inches shown here come from the 2023 CSV). The table is identical 2017↔2023 in both mm and inch values. Note the pattern: the most critical clearance is <em>opposite polarity mounted on the same surface</em> (the largest distance), then opposite polarity held free, then live-to-ground (the smallest).</span>
+  <p>The (D) spacing table is the "how close can bare metal get" rule. Three situations, three clearances, and the distances grow with system voltage. The largest is <em>opposite-polarity parts mounted on the same surface</em> — worst case, two bare bars of opposite polarity bolted to the same panel, so they need the most air. <em>Held free in air</em> is less (the parts can flex apart slightly), and <em>live-to-ground</em> is the smallest (the ground is not an opposite-phase live part). (Worked example EX1 reads the 600 V row; EX4 uses the (B) high-leg rule.)</p>
+
+  <h2 id="s98">430.98 — Marking</h2>
+  <blockquote>
+  <p>(A) Motor Control Centers. Motor control centers shall be marked according to 110.21, and the marking shall be plainly visible after installation. Marking shall also include common power bus current rating and motor control center short-circuit rating.</p>
+  <p>(B) Motor Control Units. Motor control units in a motor control center shall comply with 430.8.</p>
+  </blockquote>
+  <span class="src">Source: NEC 2017 full-code text on disk, verbatim (lines 55754–55766). <strong>2023 (on disk):</strong> (B) is word-identical; <strong>(A) carries one real 2017→2023 delta</strong> — 2017 says the marking includes the "common power bus current rating and motor control center <strong>short-circuit rating</strong>"; 2023 adds the word <strong>current</strong> → "short-circuit <strong>current</strong> rating".</span>
+  <blockquote class="newbox">
+  <p><strong><span class="new2023">2017→2023 delta — 430.98(A) wording</span></strong> 2017: "…common power bus current rating and motor control center <strong>short-circuit rating</strong>." 2023: "…common power bus current rating and motor control center <strong>short-circuit current rating</strong>." The added word "current" aligns 430.98(A) with the "available fault current" wording used in 430.99 and 430.83(F) in the same part.</p>
+  </blockquote>
+  <p>(A) is a <em>marking</em> requirement, not a design rule — but it tells you the two ratings that matter when you install the MCC: the <strong>common power bus current rating</strong> (the bus ampere rating that 430.94 caps the OCPD at) and the <strong>short-circuit (current) rating</strong> (the SCCR — the fault current the MCC can withstand, which 430.99 requires you to compare against the available fault current). Both must be <em>plainly visible after installation</em> — not buried behind a door. (B) delegates the per-unit marking to 430.8 (the SCR-marking section covered in article 41) — each motor control unit in the MCC must carry its own SCR marking.</p>
+
+  <h2 id="s99">430.99 — Available Fault Current (the documentation rule)</h2>
+  <blockquote>
+  <p>The available short circuit current at the motor control center and the date the short circuit current calculation was performed shall be documented and made available to those authorized to inspect the installation.</p>
+  </blockquote>
+  <span class="src">Source: NEC 2017 full-code text on disk, verbatim (lines 55768–55777). In 2017 this section is an <strong>informational note</strong> — the scan prints it as "<strong>N</strong> 430.99 Available Fault Current." (the N-prefix denotes a non-mandatory informational note). <strong>2023 (on disk), verbatim:</strong> "The available fault current at the motor control center and the date the available fault current calculation was performed shall be documented and made available to those authorized to inspect, install, or maintain the installation." — the section carries two real 2017→2023 wording changes: "short circuit current" → <strong>"available fault current"</strong> (in both places), and "those authorized to <strong>inspect</strong> the installation" → "those authorized to <strong>inspect, install, or maintain</strong> the installation." The on-disk 2023 text no longer shows the N-prefix.</span>
+  <blockquote class="newbox">
+  <p><strong><span class="new2023">2017→2023 delta — 430.99 wording + scope</span></strong> 2017 (informational note): "The available <strong>short circuit current</strong> at the motor control center and the date the <strong>short circuit current</strong> calculation was performed shall be documented and made available to those authorized to <strong>inspect</strong> the installation." 2023: "The available <strong>fault current</strong> at the motor control center and the date the <strong>available fault current</strong> calculation was performed shall be documented and made available to those authorized to <strong>inspect, install, or maintain</strong> the installation."</p>
+  </blockquote>
+  <span class="src" style="margin-top:8px">Editorial note (beyond the 2017↔2023 delta): 430.99 in 2017 is an informational note (N-prefix). The 2023 on-disk text drops the N-prefix. A <em>later</em> NEC change — the 2025 cycle (NFPA SR-8021, 2024), which is outside this article's 2017↔2023 scope — restructured 430.99 into a mandatory "Short-Circuit Rating" section, adding a new <strong>(A) Installation</strong> requirement ("Motor control centers shall not be installed where the available fault current exceeds its short-circuit current rating as marked in accordance with 430.98(A)") alongside the available-fault-current documentation as <strong>(B)</strong>. The exact edition in which the note was first promoted to mandatory code cannot be pinned from the on-disk sources (the 2020-cycle records are not on disk; the 2021 cycle had no 430.99 change record, so 2023 = 2020 for 430.99). This article therefore claims only the verifiable 2017→2023 wording delta.</span>
+  <p>The rule that has real teeth here: <strong>document the available fault current at the MCC, and the date you calculated it</strong>, and make both available to anyone authorized to inspect (2023: inspect, install, or maintain) the installation. The reason it exists is the 430.98(A) SCCR: an MCC is only allowed where its short-circuit current rating is at least the available fault current at its bus. The calculation is the evidence that this is true. (Worked example EX5 does exactly this — a 125 kA source through 30 ft of 2/0 Cu gives 54.15 kA at the MCC bus, so a 65 kA SCCR MCC passes but a 42 kA one does not.)</p>
+
+  <h2 id="history">The edition history, verified line by line</h2>
+  <p>Every body in Part VIII (430.92–430.99) was word-level diffed, 2017 on-disk scan against the on-disk 2023 NEC CSV (<code>verify_art43.py</code>, 41 checks, all passing). The result, separating the <em>real</em> 2017→2023 changes from the 2017-scan OCR artifacts:</p>
+  <ul>
+    <li><strong>Four real 2017→2023 changes:</strong> (1) <strong>430.95</strong> — the two exceptions are numbered "No. 1" / "No. 2" in 2023 (bare "Exception:" in 2017). (2) <strong>430.97(C)</strong> — the wire-bending-space reference broadened from "312.6(B)" (2017) to "312.6" (2023) — the "(B)" limitation removed (NFPA SR-7536). (3) <strong>430.98(A)</strong> — "short-circuit rating" → "short-circuit <strong>current</strong> rating" (the word "current" added). (4) <strong>430.99</strong> — "short circuit current" → "available fault current" (×2), and "inspect the installation" → "inspect, install, or maintain the installation" (scope broadened).</li>
+    <li><strong>Word-identical 2017↔2023 (once OCR is read correctly):</strong> 430.92, 430.94, 430.96, 430.97(A), 430.97(D), 430.97(E), 430.98(B), and the Table 430.97(D) values.</li>
+    <li><strong>2017-scan OCR artifacts (disclosed, NOT code changes):</strong> 430.92 "Part VII" (→ VIII); 430.94 "Parts I, H, and VII" (→ I, II, and VIII); 430.97(B) "4wire, delta-cconnected" (→ 4-wire, delta-connected); 430.97(C) "as required in Article 312(D)" (→ in accordance with 312.6(B)); Table 430.97(D) inch column garbled (the mm column is clean). Each was cross-confirmed against the clean 2023 CSV and/or an NFPA change record.</li>
+    <li><strong>The 430.93 gap:</strong> absent from BOTH the 2017 scan (zero occurrences) and the 2023 CSV — a genuine NEC numbering gap, not an extraction artifact. If a study guide cites "430.93", it is wrong for these editions.</li>
+    <li><strong>430.99 status change (beyond scope, noted honestly):</strong> 2017 = informational note (N). 2023 on-disk text = no N-prefix. A later 2025 change (NFPA SR-8021, 2024 cycle) made 430.99 a mandatory "Short-Circuit Rating" section with a new (A) Installation requirement. The note→mandatory promotion edition cannot be pinned from the on-disk sources, so this article claims only the verifiable 2017→2023 wording delta.</li>
+    <li><strong>2020 gap, disclosed honestly:</strong> the on-disk 2020 scan ends at Article 230, so no 2017→2020 word-diff is claimed for Part VIII, and the edition of origin for some 2023 wordings (notably the 430.99 fault-current rewording) cannot be pinned from the on-disk sources. The on-disk 2021-cycle record (NFPA 2022 SR) shows no 430.99 change, so 2023 = 2020 for that section. This article claims exactly: <strong>the 2023 wording is present on disk and the 2017 wording is present on disk — that is the verifiable 2017→2023 delta.</strong></li>
+  </ul>
+
+  <h2 id="math">Worked examples (all computed by the shipped core under node)</h2>
+  <p>Every number below comes from <code>compute_art43.js</code> run under node against the real shipped cores (<code>nextStdBreaker</code>, <code>pickConductor31016</code>, the Table 250.102(C)(1) / Table 250.122 encodings, and the Chapter 9 Table 8 resistance data) and the on-disk Table 430.97(D) values. No hand math.</p>
+
+  <h3>EX1 — 430.94: the bus-rating cap, 250 A common power bus at 600 V</h3>
+  <p>A common power bus rated <strong>250 A</strong> on a <strong>600 V</strong> MCC. Per 430.94 the OCPD rating/setting "shall not exceed the rating of the common power bus" → the OCPD is capped at <strong>250 A</strong>. A 250 A device on a 250 A bus is exactly at the cap (permitted); the next standard size up, <strong>300 A</strong>, would exceed the bus rating and is <strong>NOT</strong> permitted here. Spacings from Table 430.97(D), "Not over 600 volts, nominal" row: opposite-polarity mounted = <strong>50.8 mm (2 in)</strong>; held free = <strong>25.4 mm (1 in)</strong>; live-to-ground = <strong>25.4 mm (1 in)</strong>.</p>
+  <p class="ex">250 A bus → OCPD cap 250 A (300 A NOT allowed) · 600 V spacings: 2 in / 1 in / 1 in</p>
+
+  <h3>EX2 — 430.95: the service-equipment main bonding jumper, 200 A service MCC</h3>
+  <p>A 200 A service-entrance MCC. Ungrounded service conductor (200 A Cu @75 °C, from the shipped Table 310.16) = <strong>3/0 AWG Cu</strong>. Per 430.95 the MCC needs a single main disconnecting means opening ALL ungrounded conductors, and a main bonding jumper sized per 250.28(D) → Table 250.102(C)(1). Largest ungrounded = 3/0 Cu → "2/0 AWG or 3/0 AWG" row → MBJ = <strong>4 AWG Cu</strong>. Exceptions: No. 1 (a second service disconnect for additional equipment) and No. 2 (high-impedance grounded neutral per 250.36).</p>
+  <p class="ex">200 A → 3/0 Cu phases → "2/0 or 3/0" row → 4 AWG Cu MBJ (250.28(D)) + one main disconnect opening all phases</p>
+
+  <h3>EX3 — 430.96: the multisection equipment-grounding bus, 400 A OCPD / 3 sections</h3>
+  <p>A three-section MCC fed by a <strong>400 A</strong> OCPD. Per 430.96 the sections are connected together with an equipment-grounding conductor or equivalent bus sized per Table 250.122 from the OCPD rating. 400 A → Table 250.122 row "400" → inter-section grounding bus = <strong>2/0 AWG Cu</strong>. Each section's equipment-grounding conductor ties to this bus (or to the single-section grounding termination point).</p>
+  <p class="ex">400 A OCPD → Table 250.122 "400" → 2/0 Cu inter-section grounding bus (3 sections)</p>
+
+  <h3>EX4 — 430.97(B): the phase arrangement + the 480 V high-leg delta</h3>
+  <p>A <strong>480 V, 3-phase, 4-wire, delta-connected</strong> MCC. Per 430.97(B) the phase arrangement is <strong>A, B, C</strong> from front-to-back / top-to-bottom / left-to-right as viewed from the front. On a 3-phase 4-wire delta the <strong>B phase is the high leg</strong> — the phase with the higher voltage to ground. B (high leg) to ground (center tap) = 480 × (√3/2) = <strong>415.7 V</strong>, versus the normal 480/√3 = 277.1 V for A and C. That 415.7 V is why 430.97(B) designates B as the high-voltage phase — keeping it in a consistent position so anyone working the bus knows which leg is the high one. Exception: rear-mounted units on a shared vertical bus may be C, B, A if properly identified.</p>
+  <p class="ex">480 V 4-wire delta: B (high leg) = 480 × 1.732/2 = 415.7 V to ground · A-B-C as viewed from the front</p>
+
+  <h3>EX5 — 430.99: the available-fault-current check, 125 kA source, 30 ft of 2/0 Cu</h3>
+  <p>A 480 V MCC fed from a <strong>125 kA</strong> source through <strong>30 ft of 2/0 AWG Cu</strong> (feeder impedance from the shipped Chapter 9 Table 8, R = 0.0967 Ω/kft). Phase voltage = 480/√3 = 277.13 V. Source impedance Zs = 277.13/125000 = 0.002217 Ω. Feeder impedance Zc = 0.0967 × 0.030 = 0.002901 Ω. Total Z = 0.005118 Ω. Available fault current at the MCC bus = 277.13/0.005118 = <strong>54.15 kA</strong>. Per 430.99 (with 430.98(A)'s SCCR) this must be documented with its date: a <strong>65 kA</strong> SCCR MCC passes (65 &gt; 54.15), a <strong>42 kA</strong> SCCR MCC does <strong>NOT</strong> (42 &lt; 54.15).</p>
+  <p class="ex">125 kA source, 30 ft 2/0 Cu → 54.15 kA at the MCC bus · 65 kA SCCR passes, 42 kA fails · calc + date get documented</p>
+
+  <h3>EX6 — 430.98: the marking, tying the bus rating and the SCCR together</h3>
+  <p>The MCC from EX1 (250 A common power bus) must be marked per 110.21, plainly visible after installation, and the marking must include the <strong>common power bus current rating</strong> (250 A) and the <strong>short-circuit current rating</strong> (the SCCR — 2023 wording; 2017 "short-circuit rating"). Each motor control unit in the MCC must also comply with <strong>430.8</strong> (430.98(B)) — carrying its own SCR marking. The SCCR you mark is the number EX5's available-fault-current calculation must not exceed.</p>
+  <p class="ex">Mark: 110.21 + common power bus current rating (250 A) + short-circuit current rating (SCCR) · each MCU per 430.8</p>
+
+  <h2 id="gotchas">Gotchas</h2>
+  <ul>
+    <li><strong>430.93 does not exist.</strong> The Part VIII sequence goes 430.92 → 430.94 in both 2017 and 2023 (verified on disk). Study guides citing "430.93" are wrong for these editions.</li>
+    <li><strong>The OCPD cap is a ceiling, not a target.</strong> 430.94 says the OCPD "shall not exceed the rating of the common power bus." A 250 A bus caps the OCPD at 250 A — the next standard size up (300 A) is a violation, not a choice (EX1).</li>
+    <li><strong>A service-entrance MCC needs ONE main disconnect opening ALL phases.</strong> 430.95 — not one per unit, not one per section. A second disconnect is only for <em>additional</em> equipment (Exception No. 1). And where there is a neutral, the main bonding jumper (per Table 250.102(C)(1)) is a separate, mandatory item (EX2).</li>
+    <li><strong>The inter-section grounding bus is sized from the OCPD, not a unit.</strong> 430.96 / Table 250.122 — a 400 A OCPD needs a 2/0 Cu bus between sections (EX3). Sizing it from the largest single unit is the common mistake.</li>
+    <li><strong>B is the high leg on a 4-wire delta.</strong> 430.97(B) — on a 3-phase 4-wire delta system the B phase carries the higher voltage to ground (415.7 V on 480 V, EX4). The A-B-C arrangement keeps that leg in a predictable position.</li>
+    <li><strong>The (D) spacing table's largest clearance is opposite-polarity mounted.</strong> Not live-to-ground (the smallest). Two bare bars of opposite polarity on the same panel need the most air (50.8 mm / 2 in at 600 V, EX1).</li>
+    <li><strong>The two 2017→2023 wording deltas are easy to miss.</strong> 430.98(A) adds "current" ("short-circuit current rating"), and 430.99 changes "short circuit current" → "available fault current" and broadens "inspect" → "inspect, install, or maintain." The numbers never moved — these are wording/numbering changes only.</li>
+    <li><strong>The 2017 scan OCR'd Part VIII badly — 5 spots.</strong> 430.92 "Part VII" (= VIII); 430.94 "Parts I, H, and VII" (= I, II, and VIII); 430.97(B) "delta-cconnected" (= delta-connected); 430.97(C) "Article 312(D)" (= in accordance with 312.6(B)); Table 430.97(D) inch column garbled (mm clean). All corrected above, each cross-confirmed against the clean 2023 CSV and/or an NFPA change record, and disclosed in each section's source note. If you study from the 2017 print, trust the 2023 text where they disagree.</li>
+    <li><strong>430.99 was an informational note in 2017.</strong> The N-prefix means non-mandatory. It is documented-and-available wording, not a "shall install" rule, in the 2017/2023 on-disk text. (A later 2025 change made it a mandatory installation requirement — outside this article's scope, and the exact promotion edition is not pinnable from the on-disk sources.)</li>
+  </ul>
+
+  <h2 id="how">The method, step by step</h2>
+  <ol>
+    <li><strong>Confirm it is an MCC.</strong> Part VIII applies to a motor control center — an assembly of a common power bus with individual motor control units (430.92). If it's a single controller, Part VII (article 41) and Part IX (article 42) apply instead.</li>
+    <li><strong>Protect the bus (430.94):</strong> OCPD per Article 240 Parts I, II, and VIII; rating/setting ≤ common power bus rating; ahead of the MCC or a main OCPD within it. (EX1.)</li>
+    <li><strong>If it's a service-entrance MCC (430.95):</strong> one main disconnecting means opening ALL ungrounded conductors; main bonding jumper per Table 250.102(C)(1) (250.28(D)) from the grounded conductor to the equipment ground bus; a second disconnect only for additional equipment; high-impedance grounded neutral per 250.36. (EX2.)</li>
+    <li><strong>Ground the multisection (430.96):</strong> connect the sections together with an equipment-grounding conductor/bus sized per Table 250.122 from the OCPD rating. (EX3.)</li>
+    <li><strong>Arrange and space the busbars (430.97):</strong> protect + hold the bars (A); A-B-C phase, B = high leg on a 4-wire delta (B); wire-bending space per 312.6 (C); spacings per Table 430.97(D) (D); barriers in service-entrance MCCs (E). (EX1, EX4.)</li>
+    <li><strong>Mark it (430.98):</strong> 110.21, plainly visible after installation, with the common power bus current rating and the short-circuit (current) rating; each MCU per 430.8. (EX6.)</li>
+    <li><strong>Document the available fault current (430.99):</strong> calculate the available fault current at the MCC bus, record it + the calculation date, and make it available to those authorized to inspect (2023: inspect, install, or maintain). Confirm it does not exceed the MCC's SCCR (430.98(A)). (EX5.)</li>
+    <li><strong>Size the rest of the circuit elsewhere:</strong> the individual motor branch circuits per 430.22/430.52 (article 38), overload per 430.32 (article 39), controllers per Part VII (article 41), and the disconnecting means per Part IX (article 42). Part VIII is only the bus, the enclosure, and the inter-section grounding.</li>
+  </ol>
+
+  <h2 id="faq">FAQ</h2>
+  <details><summary>What is a motor control center (Part VIII scope)?</summary><p>Part VIII covers MCCs installed for the control of motors, lighting, and power circuits (430.92) — an assembly of a common power bus with individual motor control units. It covers the bus protection (430.94), the service-equipment disconnect + bonding jumper (430.95), multisection grounding (430.96), the busbar/spacing rules (430.97), marking (430.98), and the available-fault-current documentation (430.99). Section 430.93 does not exist.</p></details>
+  <details><summary>How is an MCC protected for overcurrent (430.94)?</summary><p>Per Article 240 Parts I, II, and VIII, with the OCPD rating/setting NOT exceeding the common power bus rating. Protection is ahead of the MCC or a main OCPD within it. The bus rating is a hard ceiling (EX1: 250 A bus → 250 A cap, 300 A not allowed).</p></details>
+  <details><summary>What does a service-entrance MCC need (430.95)?</summary><p>A single main disconnecting means opening ALL ungrounded service conductors; a main bonding jumper sized per Table 250.102(C)(1) (250.28(D)) from the grounded conductor to the equipment ground bus; a second disconnect only for additional equipment (Exception No. 1); high-impedance grounded neutral per 250.36 (Exception No. 2). 2023 numbers the exceptions; 2017 left them bare.</p></details>
+  <details><summary>How are multisection MCCs grounded (430.96)?</summary><p>Connected together with an equipment-grounding conductor or equivalent bus sized per Table 250.122 from the OCPD rating (EX3: 400 A → 2/0 Cu). Section EGCs tie to this bus or a single-section grounding termination.</p></details>
+  <details><summary>What are the busbar and spacing rules (430.97)?</summary><p>(A) protect/hold the bars, only that section's conductors in a vertical section; (B) A-B-C phase, B = high leg on a 4-wire delta (EX4: 480 V → 415.7 V); (C) wire-bending space per 312.6 (2023) / 312.6(B) (2017); (D) spacings per Table 430.97(D) (EX1: 600 V → 2 in / 1 in / 1 in); (E) barriers in service-entrance MCCs.</p></details>
+  <details><summary>What must be marked (430.98) and what is the fault-current rule (430.99)?</summary><p>430.98: mark per 110.21, plainly visible, with the common power bus current rating + the short-circuit current rating (2023; 2017 "short-circuit rating"); each MCU per 430.8. 430.99: document the available fault current at the MCC + the calculation date, available to those authorized to inspect (2023: inspect, install, or maintain). 2017 = informational note; 2025 (out of scope) made it a mandatory installation requirement.</p></details>
+</main>
+
+<footer>
+  <p>PanelWright · NEC content series · article 43 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk scan + NEC 2023 (on-disk CSV), verbatim, OCR corrections disclosed. Design aid — the adopted edition in your jurisdiction governs.</p>
+  <p><a href="../">PanelWright calculator</a> · <a href="nec-43081-43090-motor-controllers.html">430.81–430.90 motor controllers ←</a> · <a href="nec-430101-430113-disconnecting-means.html">430.101–430.113 disconnecting means →</a> · <a href="nec-43022-43052-single-motor-branch-circuit.html">430.22 + 430.52 single-motor branch circuit</a> · <a href="nec-43032-43036-motor-overload-protection.html">430.32 + 430.36 motor overload protection</a> · <a href="nec-31016-ampacity.html">310.16 ampacity</a></p>
+</footer>
+<style>
+  :root { --ink:#1a2332; --sub:#5a6a82; --line:#dfe5ee; --accent:#2563eb; --code:#eef2f8; --new:#dc2626; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.65 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color:var(--ink); background:#fff; }
+  header { border-bottom:3px solid var(--accent); padding:32px 20px 20px; }
+  main { max-width:880px; margin:0 auto; padding:0 20px 40px; }
+  header h1 { font-size:28px; margin:0 0 8px; line-height:1.25; }
+  header h1 span { color:var(--accent); }
+  .sub { color:var(--sub); margin:0 0 16px; font-size:17px; }
+  .disc { background:#f4f7fb; border-left:4px solid var(--accent); padding:12px 16px; font-size:14px; color:var(--sub); border-radius:0 6px 6px 0; }
+  h2 { font-size:22px; margin:40px 0 12px; padding-top:8px; border-top:1px solid var(--line); }
+  h2:first-of-type { border-top:none; }
+  h3 { font-size:17px; margin:24px 0 8px; }
+  blockquote { margin:0 0 8px; padding:14px 18px; background:#fafbfd; border-left:4px solid var(--line); border-radius:0 6px 6px 0; font-size:15px; }
+  blockquote p { margin:0 0 10px; } blockquote p:last-child { margin-bottom:0; }
+  .src { display:block; font-size:12.5px; color:var(--sub); margin:0 0 20px; line-height:1.55; }
+  .new2023 { color:var(--red,#dc2626); font-weight:700; font-size:12px; letter-spacing:.04em; text-transform:uppercase; }
+  blockquote.newbox { border-left-color:var(--red,#dc2626); background:#fdf4f4; }
+  .ex { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:10px 14px; font-size:14.5px; font-family:ui-monospace, "Cascadia Mono", Consolas, monospace; margin:8px 0 20px; }
+  table { border-collapse:collapse; width:100%; font-size:14px; margin:8px 0 4px; }
+  th, td { border:1px solid var(--line); padding:7px 10px; text-align:left; }
+  thead th { background:#f4f7fb; }
+  details { border:1px solid var(--line); border-radius:6px; padding:10px 14px; margin:8px 0; }
+  summary { font-weight:600; cursor:pointer; }
+  details p { margin:10px 0 2px; color:var(--sub); }
+  footer { border-top:1px solid var(--line); margin-top:40px; padding:24px 20px; font-size:13px; color:var(--sub); text-align:center; }
+  footer a { color:var(--accent); }
+  code { background:var(--code); padding:1px 5px; border-radius:4px; font-size:14px; }
+  ul, ol { padding-left:22px; } li { margin:6px 0; }
+  @media print { .disc { border:none; } body { font-size:12px; } }
+</style>
+</body>
+</html>

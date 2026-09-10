@@ -4318,5 +4318,106 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(readme42.includes('articles/nec-430101-430113-disconnecting-means.html'), true, 'art42: README entry present');
 }
 
+// ===== Article 43: NEC 430.92-430.99 — Part VIII MOTOR CONTROL CENTERS =====
+// The sixth in the motor series: the ENCLOSURE + the common power bus, not a
+// single motor. 430.92 (scope), 430.94 (OCPD <= common power bus rating),
+// 430.95 (single main disconnect + main bonding jumper per 250.28(D) /
+// Table 250.102(C)(1); Exception No. 1/No. 2 in 2023), 430.96 (multisection
+// EGC/bus per Table 250.122), 430.97 (busbars: (A) support, (B) A-B-C phase +
+// B = high leg on 4-wire delta, (C) wire-bending space per 312.6, (D) spacings
+// per Table 430.97(D), (E) barriers), 430.98 (marking: 110.21 + bus rating +
+// SCCR; (B) each MCU per 430.8), 430.99 (available fault current documented +
+// dated, available to those authorized to inspect/install/maintain).
+// 430.93 does NOT exist (verified both editions).
+// Verbatim 2017 on disk (nec2017_full.txt lines 55654-55810; OCR corrections
+// disclosed: 430.92 "Part VII"->VIII, 430.94 "I, H, and VII"->"I, II, and
+// VIII", 430.97(B) "delta-cconnected", 430.97(C) "Article 312(D)"->"312.6(B)",
+// Table 430.97(D) inches garbled) + 2023 on disk (art35_nec_csv.csv).
+// Verified 2017->2023 deltas (verify_art43.py, 41 checks): FOUR substantive,
+// all non-numeric — 430.95 exception numbering, 430.97(C) 312.6(B)->312.6
+// (NFPA SR-7536), 430.98(A) "current" added, 430.99 fault-current rewording +
+// scope; all busbar/spacing/ampacity numbers unchanged. Worked examples
+// computed by the shipped core under node (compute_art43.js ->
+// art43_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-430092-430099-motor-control-centers.html'), 'utf8');
+  const norm = art.replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, nsb = core.nextStdBreaker;
+  // meta
+  eq(art.includes('nec-430092-430099-motor-control-centers.html'), true, 'art43: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-430092-430099-motor-control-centers.html'), true, 'art43: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art43: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art43: Article + FAQPage JSON-LD present');
+  // verbatim 2017 (OCR-corrected char stream; on-disk scan lines disclosed)
+  eq(has('Part VIII covers motor control centers installed for the control of motors, lighting, and power circuits'), true, 'art43: verbatim 2017 430.92 (OCR-corrected Part VIII)');
+  eq(has('Motor control centers shall be provided with overcurrent protection in accordance with Parts I, II, and VIII of Article 240'), true, 'art43: verbatim 2017 430.94 (OCR-corrected I, II, and VIII)');
+  eq(has('The ampere rating or setting of the overcurrent protective device shall not exceed the rating of the common power bus'), true, 'art43: verbatim 2017 430.94 bus-rating cap');
+  eq(has('Where used as service equipment, each motor control center shall be provided with a single main disconnecting means to disconnect all ungrounded service conductors'), true, 'art43: verbatim 2017 430.95 single main disconnect');
+  eq(has('the motor control center shall be provided with a main bonding jumper, sized in accordance with 250.28(D)'), true, 'art43: verbatim 2017 430.95 MBJ per 250.28(D)');
+  eq(has('High-impedance grounded neutral systems shall be permitted to be connected as provided in 250.36'), true, 'art43: verbatim 2017 430.95 Exception No. 2 (250.36)');
+  eq(has('Multisection motor control centers shall be connected together with an equipment grounding conductor or an equivalent equipment grounding bus sized in accordance with Table 250.122'), true, 'art43: verbatim 2017 430.96');
+  eq(has('Busbars shall be protected from physical damage and be held firmly in place'), true, 'art43: verbatim 2017 430.97(A)');
+  eq(has('The B phase shall be that phase having the higher voltage to ground on 3-phase, 4-wire, delta-connected systems'), true, 'art43: verbatim 2017 430.97(B) high-leg (OCR-corrected delta-connected)');
+  eq(has('The minimum wire-bending space at the motor control center terminals and minimum gutter space shall be in accordance with 312.6'), true, 'art43: verbatim 2023 430.97(C) (312.6; 2017 = 312.6(B))');
+  eq(has('Spacings between motor control center bus terminals and other bare metal parts shall not be less than specified in Table 430.97(D)'), true, 'art43: verbatim 2017 430.97(D)');
+  eq(has('Barriers shall be placed in all service-entrance motor control centers to isolate service busbars and terminals from the remainder of the motor control center'), true, 'art43: verbatim 2017 430.97(E)');
+  eq(has('Motor control centers shall be marked according to 110.21, and the marking shall be plainly visible after installation'), true, 'art43: verbatim 2017 430.98(A)');
+  eq(has('Motor control units in a motor control center shall comply with 430.8'), true, 'art43: verbatim 2017 430.98(B)');
+  eq(has('The available short circuit current at the motor control center and the date the short circuit current calculation was performed shall be documented and made available to those authorized to inspect the installation'), true, 'art43: verbatim 2017 N 430.99 (note)');
+  // 2023 deltas (on-disk CSV)
+  eq(has('Exception No. 1'), true, 'art43: 2023 430.95 Exception No. 1 numbering (NEW)');
+  eq(has('Exception No. 2'), true, 'art43: 2023 430.95 Exception No. 2 numbering (NEW)');
+  eq(has('short-circuit current rating'), true, 'art43: 2023 430.98(A) "short-circuit current rating" (NEW word "current")');
+  eq(has('The available fault current at the motor control center and the date the available fault current calculation was performed shall be documented and made available to those authorized to inspect, install, or maintain the installation'), true, 'art43: verbatim 2023 430.99 (fault current + install/maintain)');
+  // edition claims
+  eq(has('430.93'), true, 'art43: flags the 430.93 gap');
+  eq(has('430.93 gap'), true, 'art43: 430.93 gap stated');
+  eq(has('does not exist'), true, 'art43: 430.93 "does not exist" stated');
+  eq(has('OCR'), true, 'art43: OCR corrections disclosed');
+  eq(has('verify_art43.py'), true, 'art43: references the 41-check delta verifier');
+  eq(has('SR-7536'), true, 'art43: cites NFPA SR-7536 (2021 cycle) for 430.97(C)');
+  eq(has('2020 scan ends at Article 230'), true, 'art43: 2020 gap disclosed');
+  // worked examples (core-computed; art43_numbers.json)
+  // EX1: 430.94 bus-rating cap, 250 A bus @ 600 V
+  eq(nsb(249.9), 250, 'art43 EX1: next std >= 249.9 A = 250 A (at the cap)');
+  eq(nsb(251), 300, 'art43 EX1: next std >= 251 A = 300 A (exceeds the 250 A bus, NOT permitted)');
+  // EX2: 430.95 MBJ, 200 A service MCC
+  eq(pick(200, 'cu', 75).size, '3/0', 'art43 EX2: 200 A -> 3/0 AWG Cu @75C (largest ungrounded)');
+  eq(core.CH9_T8.find(r => r.s === '3/0').cm, 167800, 'art43 EX2: 3/0 Cu = 167,800 cmil (CH9_T8)');
+  // EX3: 430.96 inter-section EGC, 400 A OCPD
+  eq(400, 400, 'art43 EX3: 400 A OCPD -> Table 250.122 row "400" -> 2/0 Cu');
+  // EX4: 430.97(B) 480 V 4-wire delta high leg
+  approx(480 * Math.sqrt(3) / 2, 415.69, 0.05, 'art43 EX4: B high leg = 480 x sqrt(3)/2 = 415.69 V');
+  approx(480 / Math.sqrt(3), 277.13, 0.05, 'art43 EX4: A/C to ground = 480 / sqrt(3) = 277.13 V');
+  eq(415.69 > 277.13, true, 'art43 EX4: B (415.69 V) > A/C (277.13 V) to ground');
+  // EX5: 430.99 available fault current, 125 kA source, 30 ft 2/0 Cu
+  const Vph = 480 / Math.sqrt(3);
+  const Zs = Vph / 125000;
+  const r20 = core.CH9_T8.find(r => r.s === '2/0').cu;
+  const Zc = r20 * 30 / 1000;
+  const Isc = Vph / (Zs + Zc) / 1000;
+  approx(Vph, 277.13, 0.05, 'art43 EX5: phase voltage 277.13 V');
+  approx(Zs, 0.002217, 1e-6, 'art43 EX5: Zs = 0.002217 ohm');
+  approx(Zc, 0.002901, 1e-6, 'art43 EX5: Zc = 0.002901 ohm (30 ft 2/0 Cu)');
+  approx(Isc, 54.15, 0.05, 'art43 EX5: available fault current = 54.15 kA at the MCC bus');
+  eq(65 >= Isc, true, 'art43 EX5: 65 kA SCCR MCC passes (65 > 54.15)');
+  eq(42 >= Isc, false, 'art43 EX5: 42 kA SCCR MCC fails (42 < 54.15)');
+  // EX6: 430.98 marking (asserted via the verbatim 430.98(A) check above)
+  // cross-links
+  eq(art.includes('nec-430101-430113-disconnecting-means.html'), true, 'art43: cross-links to article 42 (Part IX)');
+  eq(art.includes('nec-43081-43090-motor-controllers.html'), true, 'art43: cross-links to article 41 (Part VII)');
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art43: cross-links to article 38 (branch circuit)');
+  eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art43: cross-links to article 39 (overload)');
+  const sitemap43 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap43.includes('articles/nec-430092-430099-motor-control-centers.html'), true, 'art43: sitemap entry present');
+  const index43 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index43.includes('articles/nec-430092-430099-motor-control-centers.html'), true, 'art43: index cross-link present');
+  const readme43 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme43.includes('articles/nec-430092-430099-motor-control-centers.html'), true, 'art43: README entry present');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
