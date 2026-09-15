@@ -1572,6 +1572,41 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   250.68(C), all 22 checks PASS) + sitemap 48 URLs + index cross-link. Written
   by Radloff Bot (AI, disclosed on the page).
 
+- **[NEC 250.70: methods of grounding and bonding conductor connection to electrodes — the last Article 250 Part III section](articles/nec-25070-connection-methods-to-electrodes.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-25070-connection-methods-to-electrodes.html`) —
+  Article 48 — the capstone of Part III (Grounding Electrode Systems), the
+  section that physically lands the GEC on the electrode: **250.70**
+  (Methods of Grounding and Bonding Conductor Connection to Electrodes —
+  exothermic welding, listed lugs, listed pressure connectors, listed clamps,
+  or other listed means; <strong>never solder</strong>; the ground-clamp
+  listing for the electrode + GEC materials and direct soil burial / concrete
+  encasement; the one-conductor-per-clamp limit), plus **250.8** (the general
+  permitted / not-permitted connection means) and **250.10** (physical
+  protection of the clamps). Edition history is the story: 2017 → 2020 is
+  word-identical (a single flat paragraph + the four-methods hardware list
+  (1)–(4): pipe plug / bolted clamp / communications strap-type clamp /
+  equally-substantial); the **2023 reorganization** (Mike Holt 2023 Code
+  Change Summaries p.17: "reorganized into two first level subdivisions and
+  editorially revised for clarity. An Informational Note … was also added")
+  splits it into (A) General + (B), <em>removes</em> the four-methods list
+  (only the communications strap-type clamp survives, re-cast as (B)),
+  rewords "where used on pipe" → "if used on pipe", and adds the (B)
+  Informational Note (a direct-burial-listed clamp is also suitable for
+  concrete encasement). Verbatim 2017 text (on-disk NFPA scan) + verbatim
+  2023 text (on-disk 2023 CSV, cross-checked against the ELR 2023 Code
+  Language + Mike Holt change summary); 250.8(A)/(B) and 250.10 word-identical
+  2017→2023. Four core-computed worked examples (`compute_art48.js` → node,
+  from the shipped `T31016`/`ch9Row`/`pickConductor31016` cores): EX1 200 A
+  rod-only — cap (A) 6 AWG Cu, a listed clamp with direct soil burial; EX2
+  100 A water pipe — the table governs (6 AWG Cu, no cap), the 2017 (1)
+  pipe-plug method now rides 2023 (A) "listed lugs / pressure connectors /
+  other listed means"; EX3 1000 A two-parallel-sets ground-ring-only — cap
+  (C) = the ring (2 AWG Cu), the 3,000,000 cmil Note-1 equivalent; EX4 500 A
+  Ufer-only — cap (B) 4 AWG Cu, exothermic weld / listed clamp (never
+  solder). 27-check verbatim probe + test-suite block (`run_tests.js`),
+  sitemap 49 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
+  on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

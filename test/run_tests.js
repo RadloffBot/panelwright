@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 48, 'art44: sitemap has 48 URLs (was 47, +article 47)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 49, 'art44: sitemap has 49 URLs (was 48, +article 48)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4811,6 +4811,90 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index47.includes('articles/nec-25054-25068-auxiliary-gec-caps-connections.html'), true, 'art47: index cross-link present');
   const readme47 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme47.includes('articles/nec-25054-25068-auxiliary-gec-caps-connections.html'), true, 'art47: README entry present');
+}
+
+// Article 48 — NEC 250.70 Methods of Grounding and Bonding Conductor
+// Connection to Electrodes (the LAST Article 250 Part III section; completes
+// the on-disk Part III build): the physical GEC-to-electrode connection —
+// exothermic welding, listed lugs, listed pressure connectors, listed clamps,
+// or other listed means (never solder), the ground-clamp listing rules
+// (electrode + GEC materials, direct soil burial / concrete encasement), the
+// one-conductor-per-clamp limit, and the 2017 four-methods hardware list
+// (pipe plug / bolted clamp / communications strap-type clamp /
+// equally-substantial). Plus 250.8 (general permitted / not-permitted means)
+// and 250.10 (clamp protection). EDITION STORY: 2017 == 2020 (word-identical,
+// ELR 1005.0); 2023 reorganized into (A) General + (B), REMOVED the
+// four-methods list, reworded "where used on pipe" -> "if used on pipe", and
+// added the (B) Informational Note (Mike Holt 2023 Code Change Summaries p.17).
+// Verbatim 2017 NFPA on disk (nec2017_full.txt); verbatim 2023 on-disk CSV
+// (art35_nec_csv.csv) cross-checked against ELR 2023 + Mike Holt 23CC.
+// Worked examples core-computed (compute_art48.js -> art48_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-25070-connection-methods-to-electrodes.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art48_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-25070-connection-methods-to-electrodes.html'), true, 'art48: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art48: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art48: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 48'), true, 'art48: footer marks article 48');
+  // verbatim 2017 — 250.70 lead (methods + no-solder + clamp listing + one-conductor limit)
+  eq(has('250.70 methods of grounding and bonding conductor connection to electrodes. the grounding or bonding conductor shall be connected to the grounding electrode by exothermic welding, listed lugs, listed pressure connectors, listed clamps, or other listed means.'), true, 'art48: verbatim 250.70 lead (methods)');
+  eq(has('connections depending on solder shall not be used.'), true, 'art48: verbatim 250.70 no-solder rule');
+  eq(has('ground clamps shall be listed for the materials of the grounding electrode and the grounding electrode conductor and, where used on pipe, rod, or other buried electrodes, shall also be listed for direct soil burial or concrete encasement.'), true, 'art48: verbatim 250.70 clamp listing (2017 "where" form)');
+  eq(has('not more than one conductor shall be connected to the grounding electrode by a single clamp or fitting unless the clamp or fitting is listed for multiple conductors.'), true, 'art48: verbatim 250.70 one-conductor-per-clamp limit');
+  // verbatim 2017 — the four-methods list (1)-(4)
+  eq(has('one of the following methods shall be used:'), true, 'art48: verbatim 2017 four-methods lead');
+  eq(has('(1) a pipe fitting, pipe plug, or other approved device screwed into a pipe or pipe fitting'), true, 'art48: verbatim 2017 method (1) pipe plug/fitting');
+  eq(has('(2) a listed bolted clamp of cast bronze or brass, or plain or malleable iron'), true, 'art48: verbatim 2017 method (2) bolted clamp');
+  eq(has('(3) for indoor communications purposes only, a listed sheet metal strap-type ground clamp'), true, 'art48: verbatim 2017 method (3) communications strap-type clamp');
+  eq(has('(4) an equally substantial approved means'), true, 'art48: verbatim 2017 method (4) equally substantial');
+  // verbatim 2017 — 250.8 (general permitted / not-permitted)
+  eq(has('250.8 connection of grounding and bonding equipment.'), true, 'art48: verbatim 250.8 lead');
+  eq(has('(a) permitted methods. equipment grounding conductors, grounding electrode conductors, and bonding jumpers shall be connected by one or more of the following means:'), true, 'art48: verbatim 250.8(A) lead');
+  eq(has('(b) methods not permitted. connection devices or fittings that depend solely on solder shall not be used.'), true, 'art48: verbatim 250.8(B) no-solder');
+  // verbatim 2017 — 250.10 (clamp protection)
+  eq(has('250.10 protection of ground clamps and fittings. ground clamps or other fittings exposed to physical damage shall be enclosed in metal, wood, or equivalent protective covering.'), true, 'art48: verbatim 250.10 clamp protection');
+  // 2023 reorganization — (A) General
+  eq(has('(a) general. the grounding or bonding conductor shall be connected to the grounding electrode by exothermic welding, listed lugs, listed pressure connectors, listed clamps, or other listed means.'), true, 'art48: 2023 (A) General lead (identical method set)');
+  eq(has('if used on pipe, rod, or other buried electrodes, shall also be listed for direct soil burial or concrete encasement.'), true, 'art48: 2023 (A) "if used on pipe" editorial delta (was "where" in 2017/2020)');
+  // 2023 reorganization — (B) + Informational Note
+  eq(has('during or after installation shall be permitted.'), true, 'art48: 2023 (B) strap-type clamp survives (re-cast as stand-alone "shall be permitted")');
+  eq(has('informational note: listed ground clamps that are identified for direct burial are also suitable for concrete encasement.'), true, 'art48: 2023 NEW (B) Informational Note (direct burial -> concrete encasement)');
+  // edition history — 2017 == 2020 word-identical; 2023 reorg (Mike Holt 23CC p.17)
+  eq(has('reorganized into two first level subdivisions and editorially revised for clarity'), true, 'art48: 2023 reorg pinned (Mike Holt 2023 Code Change Summaries p.17)');
+  eq(has('word-identical to 2017'), true, 'art48: 2017 -> 2020 word-identity stated (ELR 1005.0)');
+  eq(has('the four-methods list (1)–(4) was removed'), true, 'art48: 2023 removal of the 2017 four-methods list stated');
+  eq(has('pipe plug'), true, 'art48: 2017 method (1) "pipe plug" cited (still a permitted listed means under 2023 (A))');
+  eq(has('bolted clamp'), true, 'art48: 2017 method (2) "bolted clamp" cited (still a permitted listed means under 2023 (A))');
+  eq(has('exothermic welding is a common way to tie the gec to the ring'), true, 'art48: EX3 exothermic weld to ring noted');
+  // worked examples — core-computed numbers (art48_numbers.json)
+  eq(has('pickConductor31016(250, cu, 75) → 250 kcmil cu'), true, 'art48: EX1 pick 250 kcmil Cu @ 75 C (250 A)');
+  eq(has(String(nums.EX1.gecCu) + ' awg cu'), true, 'art48: EX1 GEC = ' + nums.EX1.gecCu + ' AWG Cu (cap A, rod-only)');
+  eq(has('pickConductor31016(125, cu, 60) → 1/0 cu'), true, 'art48: EX2 pick 1/0 Cu @ 60 C (125 A)');
+  eq(has(String(nums.EX2.gecCu) + ' awg cu'), true, 'art48: EX2 GEC = ' + nums.EX2.gecCu + ' AWG Cu (table governs, water pipe no cap)');
+  eq(has(String(nums.EX3.gecCu) + ' awg cu'), true, 'art48: EX3 GEC = ' + nums.EX3.gecCu + ' AWG Cu (cap C = ring size)');
+  eq(has('3,000,000 cmil'), true, 'art48: EX3 Note-1 equivalent area 3,000,000 cmil (two 1500 kcmil sets)');
+  eq(has(String(nums.EX4.gecCu) + ' awg cu'), true, 'art48: EX4 GEC = ' + nums.EX4.gecCu + ' AWG Cu (cap B, Ufer-only)');
+  eq(has('pickConductor31016(625, cu, 75) → 1500 kcmil cu'), true, 'art48: EX3/EX4 pick 1500 kcmil Cu @ 75 C (625 A)');
+  // non-overlap cross-links
+  eq(art.includes('nec-25054-25068-auxiliary-gec-caps-connections.html'), true, 'art48: cross-links to 250.54/58/60/62/66/68 article');
+  eq(art.includes('nec-25050-25052-25053-grounding-electrode-system.html'), true, 'art48: cross-links to 250.50+250.52+250.53 article');
+  eq(art.includes('nec-25064-250104-gec-installation-bonding.html'), true, 'art48: cross-links to 250.64+250.104 article');
+  eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art48: cross-links to 250.102 article');
+  eq(art.includes('nec-250122-egc-sizing.html'), true, 'art48: cross-links to 250.122 article');
+  // sitemap + index + README
+  const sitemap48 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: sitemap entry present');
+  eq((sitemap48.match(/<loc>/g) || []).length, 49, 'art48: sitemap has 49 URLs (was 48, +article 48)');
+  const index48 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: index cross-link present');
+  const readme48 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
