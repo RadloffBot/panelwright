@@ -1603,7 +1603,7 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   other listed means"; EX3 1000 A two-parallel-sets ground-ring-only — cap
   (C) = the ring (2 AWG Cu), the 3,000,000 cmil Note-1 equivalent; EX4 500 A
   Ufer-only — cap (B) 4 AWG Cu, exothermic weld / listed clamp (never
-  solder). 27-check verbatim probe + test-suite block (`run_tests.js`),
+  solder). 45-assertion test block (`run_tests.js`),
   sitemap 49 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
   on the page).
 
