@@ -1452,6 +1452,46 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   sitemap 45 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
   on the page).
 
+- **[NEC Part XI — Over 1000 Volts, Nominal (430.221–430.227 in 2017, renumbered 430.201–430.208 in 2023) — the MV motor-circuit code, explained](articles/nec-430201-430208-part-xi-over-1000v.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-430201-430208-part-xi-over-1000v.html`) —
+  the eighth in the motor series: the code for **motors rated over 1000 V,
+  nominal** — a delta that adds to / amends Parts I–IX (430.201, word-
+  identical in both editions). **The centerpiece is the 2023 renumber:** the
+  2017 430.221–430.227 (7 sections) became 430.201–430.208 (8 sections) —
+  first three −20, a NEW 430.204 inserted, last four −19. **Edition of origin
+  pinned to the 2023 cycle:** the 2020 NEC still carried 430.221–430.227
+  (EC&M Oct 2022 corroboration; the on-disk 2020 scan is TOC-level with no
+  Part XI body — gap disclosed), while the NFPA 2021-cycle SR Second
+  Revisions (7555/7565/7569) already target 430.205/430.208; the SR-7802
+  committee-statement "430.221" artifact is disclosed as a mid-renumber
+  remnant. **Content deltas** (all verified against on-disk text): **NEW
+  430.204** (wire-bending space per 305.5 — no 2017 counterpart); **430.205**
+  restructured (NEW "315.60 or (A) and (B)" lead-in; (A) the 2017
+  430.224 rephrased to "sized not less than the current trip setting"; NEW
+  (B) adjustable-speed drives at 125% of the drive's rated input current);
+  **430.206(A)** gains two NEW sentences routing over-1000-V drives to
+  430.124/430.126 and other motors to (B)–(C); (B)(1)–(4) and (C)(1)–(3)
+  word-identical (2017 OCR: "shali", "(1) (a) or (1) (b)" self-reference);
+  **430.207** = 2017 430.226 (115% cap, "motor controller's" rename);
+  **430.208** expanded from the 2017 lockable-only 430.227 to switch/CB +
+  voltage rating ≥ circuit + current rating ≥ 100% of the motor FLC (or 100%
+  of the drive's rated input current). **All numbers unchanged** (1.8 m/6 ft,
+  115%, 100% — a NEW rule, 125% — a NEW rule). The 2024-cycle SR-8030
+  (430.205 scope → "over 1000 V ac, 1500 V dc") and SR-8031 (430.208 (A)–(E)
+  restructure) affect the 2026 edition — noted out of scope. Six
+  core-computed worked examples (`compute_art45.js` → node): EX1
+  430.205(A) trip setting 20 A → 14 AWG Cu (NOT 125% × 14 A FLC); EX2
+  430.207 115% × 25 A = 28.75 A cap (EX1 = 69.6% of cap); EX3 430.208 100% ×
+  14 A FLC = 14 A floor (25 A controller OK; 2017 had no floor); EX4
+  430.205(B) 125% × 25 A drive input = 31.25 A → 10 AWG Cu; EX5 430.208 drive
+  clause 100% × 25 A = 25 A → 25 A standard; EX6 5 hp 2300 V (FLC 6.1 A) trip
+  8 A → 14 AWG Cu (the FLC is irrelevant to sizing). 51-standalone
+  edition-delta verifier (`verify_art45.py`, 51 checks: every renumber pair
+  proven verbatim-identical after disclosed OCR normalization, every NEW/
+  expanded 2023 clause isolated, 2020-gap + SR edition-of-origin + 2026-
+  cycle notes) + sitemap 46 URLs + index cross-link. Written by Radloff Bot
+  (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

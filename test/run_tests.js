@@ -4530,11 +4530,104 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 45, 'art44: sitemap has 45 URLs (was 44)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 46, 'art44: sitemap has 46 URLs (was 45, +article 45)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: README entry present');
+}
+
+// ===== Article 45: NEC Part XI "Over 1000 Volts, Nominal" — 430.221-430.227 (2017) = 430.201-430.208 (2023) =====
+// The eighth in the motor series: the MV (over 1000 V, nominal) motor-circuit code.
+// Headline 2017->2023 change is the RENUMBER: 430.221-430.227 (7 sections) ->
+// 430.201-430.208 (8 sections); first three -20, NEW 430.204 (wire-bending space
+// per 305.5) inserted, last four -19. Content deltas: 430.205 restructured
+// (315.60 lead-in + (A) rephrase + NEW (B) 125% of drive rated input current);
+// 430.206(A) gains two AS-drive scope sentences (430.124 + 430.126 routing);
+// 430.208 expanded from lockable-only to switch/CB + voltage rating + 100% of
+// FLC (or 100% of drive rated input current). Renumber edition-of-origin = 2023
+// cycle (2020 NEC still 430.221-430.227, corroborated by EC&M Oct 2022; NFPA
+// 2021-cycle SR Second Revisions 7555/7565/7569 already target 430.205/430.208;
+// SR-7802 committee-statement 430.221 artifact documented). 2024-cycle SR-8030/
+// 8031 (2026 edition: 430.205 "ac, 1500 V dc" scope, 430.208 (A)-(E) restructure)
+// out of scope, noted. Verbatim 2017 on disk (nec2017_full.txt lines 56471-56594;
+// OCR disclosed: "shail"/"shali", "Acircuit", "motorcircuit", "motorprotective",
+// "(1) (a) or (1) (b)" self-reference, page-footer intrude) + 2023 on disk
+// (art35_nec_csv.csv). Verified by verify_art45.py (51 checks, all PASS).
+// Worked examples computed by the shipped core under node (compute_art45.js ->
+// art45_numbers.json): EX1 430.205(A) trip setting 20 A -> 14 AWG Cu @75C
+// (NOT 125% x 14 A FLC = 17.5 A); EX2 430.207 115% x 25 A ctrl = 28.75 A cap,
+// EX1 20 A = 69.57% of cap; EX3 430.208 100% x 14 A FLC = 14 A disconnect
+// (25 A controller satisfies; 2017 had no floor); EX4 430.205(B) 125% x 25 A
+// drive input = 31.25 A -> 10 AWG Cu @75C; EX5 430.208 drive clause 100% x 25 A
+// = 25 A -> 25 A standard; EX6 2300 V motor (FLC 6.1 A) trip 8 A -> 14 AWG Cu
+// @75C (the FLC is irrelevant to sizing under 430.205(A)).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-430201-430208-part-xi-over-1000v.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, nsb = core.nextStdBreaker;
+  // meta
+  eq(art.includes('nec-430201-430208-part-xi-over-1000v.html'), true, 'art45: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-430201-430208-part-xi-over-1000v.html'), true, 'art45: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art45: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art45: Article + FAQPage JSON-LD present');
+  // verbatim 2017 (OCR-corrected where the scan mis-read; corrections disclosed on the page)
+  eq(has('Part XI recognizes the additional hazard due to the use of higher voltages. It adds to or amends the other provisions of this article'), true, 'art45: verbatim 430.201 (2017 430.221) governing sentence');
+  eq(has('In addition to the marking required by 430.8, a motor controller shall be marked with the control voltage'), true, 'art45: verbatim 2023 430.202 (2017: "controller")');
+  eq(has('Flexible metal conduit or liquidtight flexible metal conduit not exceeding 1.8 m (6 ft) in length shall be permitted to be employed for raceway connection to a motor terminal enclosure'), true, 'art45: verbatim 430.203 (2017 430.223) 6-ft flex rule');
+  eq(has('Conductors supplying motors shall have an ampacity not less than the current at which the motor overload protective device(s) is selected to trip'), true, 'art45: verbatim 2017 430.224 (trip-setting rule)');
+  eq(has('coordinated protection to automatically interrupt overload and fault currents in the motor, the motor-circuit conductors, and the motor control apparatus'), true, 'art45: verbatim 430.206(A) coordinated protection (2023 hyphen form)');
+  eq(has('Overload sensing devices shall not automatically reset after trip unless resetting of the overload sensing device does not cause automatic restarting of the motor or there is no hazard to persons created by automatic restarting of the motor and its connected machinery'), true, 'art45: verbatim 430.206(B)(4) auto-reset rule');
+  eq(has('Fault-current interrupting devices shall not automatically reclose the circuit'), true, 'art45: verbatim 430.206(C)(2) no-reclose rule');
+  eq(has('Overload protection and fault-current protection shall be permitted to be provided by the same device'), true, 'art45: verbatim 430.206(C)(3) combination protection');
+  eq(has("The ultimate trip current of overcurrent (overload) relays or other motor-protective devices used shall not exceed 115 percent of the motor controller's continuous current rating"), true, 'art45: verbatim 2023 430.207 115% cap');
+  eq(has('The controller disconnecting means shall be lockable in accordance with 110.25'), true, 'art45: verbatim 2017 430.227 (OCR-corrected "shall")');
+  // 2023-only text (NEW / expanded)
+  eq(has('Motor controllers rated over 1000 volts shall provide wire-bending space within the enclosure for conductors installed in accordance with 305.5'), true, 'art45: NEW 2023 430.204 wire-bending space');
+  eq(has('The ampacities of conductors supplying equipment rated over 1000 volts, nominal, shall be determined in accordance with 315.60 or 430.205(A) and (B)'), true, 'art45: NEW 2023 430.205 lead-in (315.60)');
+  eq(has('Conductors supplying motors shall be sized not less than the current trip setting of the motor overload protective device(s)'), true, 'art45: 2023 430.205(A) rephrase');
+  eq(has('For an adjustable-speed drive system, the conductors supplying the power conversion equipment shall have an ampacity not less than 125 percent of the rated input current to the power conversion equipment'), true, 'art45: NEW 2023 430.205(B) 125% rated input current');
+  eq(has('Adjustable-speed drive systems with input or output voltages over 1000 volts, nominal, shall comply with 430.124 and 430.126'), true, 'art45: NEW 2023 430.206(A) AS-drive scope');
+  eq(has('All other motors shall comply with 430.206(B) through (C)'), true, 'art45: NEW 2023 430.206(A) routing sentence');
+  eq(has('The motor controller disconnecting means shall be a switch or circuit breaker having a voltage rating not less than that of the circuit involved') && has('and shall be lockable in accordance with 110.25'), true, 'art45: 2023 430.208 switch/CB + voltage rating');
+  eq(has('The disconnecting means shall have a current rating of not less than 100 percent of the full-load current rating of the motor'), true, 'art45: 2023 430.208 100% of FLC');
+  eq(has('For adjustable-speed drive systems, the disconnecting means shall have a current rating not less than 100 percent of the rated input current of the power conversion equipment'), true, 'art45: 2023 430.208 drive clause');
+  // renumber map claims
+  eq(has('430.221') && has('430.201') && has('430.227') && has('430.208'), true, 'art45: renumber map cites both numbering schemes');
+  eq(has('the 2020 nec still used 430.221–430.227') || has('the 2020 nec still carried 430.221–430.227'), true, 'art45: 2020-still-old-numbering claim (renumber is 2023)');
+  eq(has('SR-7555') && has('SR-7565') && has('SR-7569'), true, 'art45: 2021-cycle SR corroboration cited (7555/7565/7569)');
+  eq(has('SR-7802'), true, 'art45: SR-7802 430.221 committee-statement artifact disclosed');
+  eq(has('SR-8030') && has('SR-8031'), true, 'art45: 2026-cycle SR-8030/8031 noted out of scope');
+  // gotcha + worked-example content
+  eq(has('125% of flc'), true, 'art45: Part-I 125% FLC contrast stated');
+  eq(has('14 awg cu'), true, 'art45: EX1/EX6 14 AWG Cu pick stated');
+  eq(has('10 awg cu'), true, 'art45: EX4 10 AWG Cu pick stated');
+  eq(has('28.75 a'), true, 'art45: EX2 28.75 A cap stated');
+  eq(has('31.25 a'), true, 'art45: EX4 31.25 A requirement stated');
+  eq(has('6.1 a'), true, 'art45: EX6 6.1 A 2300 V FLC stated');
+  // core recomputation (shipped cores must agree with the page)
+  eq(pick(20, 'cu', 75).label, '14 AWG Cu', 'art45 EX1: pick(20 A, Cu, 75C) = 14 AWG Cu');
+  eq(+(1.15 * 25).toFixed(2), 28.75, 'art45 EX2: 115% x 25 A = 28.75 A');
+  eq(25 >= 28.75 * 0 + 14, true, 'art45 EX3: 25 A controller >= 14 A (100% x 14 A FLC) disconnect floor');
+  eq(pick(1.25 * 25, 'cu', 75).label, '10 AWG Cu', 'art45 EX4: pick(31.25 A, Cu, 75C) = 10 AWG Cu');
+  eq(nsb(25), 25, 'art45 EX5: nextStdBreaker(25) = 25 A');
+  eq(pick(8, 'cu', 75).label, '14 AWG Cu', 'art45 EX6: pick(8 A, Cu, 75C) = 14 AWG Cu');
+  // cross-links
+  eq(art.includes('nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art45: cross-links to article 44 (Part X)');
+  eq(art.includes('nec-430101-430113-disconnecting-means.html'), true, 'art45: cross-links to article 42 (Part IX)');
+  eq(art.includes('nec-43081-43090-motor-controllers.html'), true, 'art45: cross-links to article 41 (Part VII)');
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art45: cross-links to article 38 (branch circuit)');
+  eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art45: cross-links to article 39 (overload)');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art45: cross-links to 310.16 ampacity article');
+  const sitemap45 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap45.includes('articles/nec-430201-430208-part-xi-over-1000v.html'), true, 'art45: sitemap entry present');
+  const index45 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index45.includes('articles/nec-430201-430208-part-xi-over-1000v.html'), true, 'art45: index cross-link present');
+  const readme45 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme45.includes('articles/nec-430201-430208-part-xi-over-1000v.html'), true, 'art45: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
