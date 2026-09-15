@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 460.9 + 460.8 — Power-Factor-Correction Capacitors on Motor Circuits (the 135% Rule and the One-Third Rule)</title>
+<meta name="description" content="The two sections that make power-factor-correction (PFC) capacitors on motor circuits legal: 460.8 (capacitor circuit conductors at 135% of rated current, the one-third rule for the short lead to the motor, the overcurrent device 'as low as practicable', and the disconnecting means) and 460.9 (the motor overload set for the improved power factor, while the motor circuit conductor stays at the 430.22 125% pick — the capacitor is disregarded). The 2017→2023 edition story: the Part I core is word-identical; the real deltas are in 460.1 (hazardous-locations sentence removed) and the Part II >1000 V rules. Edition history, the discharge/grounding/marking companion sections (460.6/460.10/460.12), and five worked examples from the shipped cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-46009-46008-pfc-capacitors.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 460.9 + 460.8 — PFC Capacitors on Motor Circuits (the 135% Rule and the One-Third Rule)">
+<meta property="og:description" content="How to wire, protect, and disconnect a power-factor-correction capacitor on a motor circuit: 460.8 conductors at 135%, the one-third rule, the 'as low as practicable' OCPD, and 460.9 — the overload set for the improved PF while the conductor stays at the 430.22 125% pick. Edition history 2017→2023 + five worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-46009-46008-pfc-capacitors.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 460.9 + 460.8 — PFC Capacitors on Motor Circuits (the 135% Rule and the One-Third Rule)">
+<meta name="twitter:description" content="460.8 conductors at 135% of rated current, the one-third rule for the lead to the motor, the 'as low as practicable' OCPD, and 460.9 — overload set for the improved PF, conductor stays at 430.22. Edition history + worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 460.9 power factor correction, NEC 460.8 capacitor conductors, 135 percent capacitor rated current, one-third rule capacitor motor, PFC capacitor overcurrent protection, 460.8 as low as practicable, 460.9 motor overload improved power factor, 430.22 capacitor disregarded, capacitor disconnecting means 460.8(C), 460.6 discharge of stored energy, 460.10 capacitor grounding, 460.12 capacitor marking, motor power factor correction capacitor wiring, electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 460.9 + 460.8 — Power-Factor-Correction Capacitors on Motor Circuits (the 135% Rule and the One-Third Rule)",
+  "description": "The two sections that make power-factor-correction capacitors on motor circuits legal: 460.8 (capacitor circuit conductors at 135% of rated current, the one-third rule for the short lead to the motor, the overcurrent device as low as practicable, and the disconnecting means) and 460.9 (the motor overload set for the improved power factor, while the motor circuit conductor stays at the 430.22 125% pick). Edition history 2017 to 2023, the companion sections 460.6/460.10/460.12, and five worked examples computed from the shipped PanelWright cores.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-15",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-46009-46008-pfc-capacitors.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How big must the conductors to a PFC capacitor be?",
+      "acceptedAnswer": { "@type": "Answer", "text": "460.8(A): the ampacity of capacitor circuit conductors shall not be less than 135 percent of the rated current of the capacitor. For the short lead that connects the capacitor to the motor terminals (or the motor circuit conductors), the ampacity shall not be less than one-third the ampacity of the motor circuit conductors AND in no case less than 135 percent of the rated current of the capacitor — you take the larger of the two." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a PFC capacitor need its own overcurrent device?",
+      "acceptedAnswer": { "@type": "Answer", "text": "460.8(B): an overcurrent device shall be provided in each ungrounded conductor for each capacitor bank, with the rating or setting as low as practicable. Exception: a separate overcurrent device is not required for a capacitor connected on the load side of a motor overload protective device." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the disconnecting-means requirement for a capacitor bank?",
+      "acceptedAnswer": { "@type": "Answer", "text": "460.8(C): a disconnecting means shall be provided in each ungrounded conductor for each capacitor bank. It shall open all ungrounded conductors simultaneously, it shall be permitted to disconnect the capacitor as a regular operating procedure, and its rating shall not be less than 135 percent of the rated current of the capacitor. Exception: a separate disconnecting means is not required where a capacitor is connected on the load side of a motor controller." }
+    },
+    {
+      "@type": "Question",
+      "name": "How does adding a PFC capacitor change the motor overload setting?",
+      "acceptedAnswer": { "@type": "Answer", "text": "460.9: where a capacitor is connected on the load side of the motor overload device, the rating or setting of the motor overload device shall be based on the improved power factor of the motor circuit. But the effect of the capacitor shall be disregarded in determining the motor circuit conductor rating in accordance with 430.22 — so the conductor stays at the 125% of full-load-current pick, and only the overload setting moves to reflect the lower, improved-PF current." }
+    },
+    {
+      "@type": "Question",
+      "name": "Did 460.8 or 460.9 change between the 2017 and 2023 NEC?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. The Part I power-factor-correction core — 460.8(A)/(B)/(C), 460.9, 460.6, 460.10, and 460.12 — is word-identical from 2017 to 2023 (verified by a normalized machine diff of the on-disk 2017 NEC text against the on-disk 2023 NEC text). The edition changes to Article 460 are elsewhere: 460.1 dropped its hazardous-locations sentence, 460.2 became 460.3 (the vault cross-reference moved from Article 110 Part II to Part III), and the Part II over-1000-V rules (460.24(A) switching and the 490.22 → 495.22 cross-reference) were revised." }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+.removed{background:rgba(224,108,92,.08);border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+td.bad{color:var(--bad);font-weight:650}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code{font-family:var(--mono);font-size:.92em;background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cta{display:inline-block;background:var(--acc);color:#08111c;font-weight:750;text-decoration:none;padding:12px 20px;border-radius:8px;margin:22px 0 6px}
+.cta:hover{filter:brightness(1.08)}
+.ctasub{color:var(--dim);font-size:13.5px}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 18px;font-size:14px}
+.method .blank{font-family:var(--mono);font-size:.9em;color:var(--dim)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+footer a{color:var(--dim)}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+@media(max-width:640px){h1{font-size:24px}table{font-size:12.5px}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 460.9 + 460.8 — <span>Power-Factor-Correction Capacitors on Motor Circuits</span></h1>
+  <p class="sub">The <strong>capacitor companion</strong> to the motor series. The motor trilogy covered the branch circuit (430.22/430.52), the overload (430.32/430.36), and the control circuit (430.72/430.75) — but what happens when you hang a <em>power-factor-correction (PFC) capacitor</em> on a motor circuit to improve the power factor? Two sections own that: <strong>460.8</strong> (how to wire, protect, and disconnect the capacitor — the <strong>135% of rated current</strong> conductor rule, the <strong>one-third rule</strong> for the short lead to the motor, the <strong>“as low as practicable”</strong> overcurrent device, and the disconnecting means) and <strong>460.9</strong> (the single most-cited gotcha: the <strong>motor overload is set for the improved power factor</strong>, but the <strong>motor circuit conductor is NOT re-sized</strong> — the capacitor is disregarded for the 430.22 conductor rating).</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 460.9 + 460.8 (with the companion sections 460.6 / 460.10 / 460.12) for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text on disk)</strong>, the citation anchor; the 2020 and 2023 changes are documented in the edition-history boxes. Every conductor pick, ampacity, and overcurrent rating in the worked examples is computed by the <strong>shipped PanelWright cores</strong> under node — zero hand math.</div>
+
+  <h2>The sections, in full (2017)</h2>
+  <p>The four sections that carry a PFC capacitor on a motor circuit, quoted verbatim from the 2017 NEC. 460.8 (conductors, overcurrent, disconnect) and 460.9 (the overload / conductor split) are the core; 460.6 (discharge), 460.10 (grounding), and 460.12 (marking) are the companion rules a capacitor installation must also satisfy.</p>
+
+  <div class="code">460.8 Conductors.
+(A) Ampacity. The ampacity of capacitor circuit conductors shall not be less than 135 percent of
+    the rated current of the capacitor. The ampacity of conductors that connect a capacitor to
+    the terminals of a motor or to motor circuit conductors shall not be less than one-third the
+    ampacity of the motor circuit conductors and in no case less than 135 percent of the rated
+    current of the capacitor.
+(B) Overcurrent Protection. An overcurrent device shall be provided in each ungrounded
+    conductor for each capacitor bank. The rating or setting of the overcurrent device shall be
+    as low as practicable.
+    Exception: A separate overcurrent device shall not be required for a capacitor connected on
+    the load side of a motor overload protective device.
+(C) Disconnecting Means. A disconnecting means shall be provided in each ungrounded conductor
+    for each capacitor bank and shall meet the following requirements:
+    (1) The disconnecting means shall open all ungrounded conductors simultaneously.
+    (2) The disconnecting means shall be permitted to disconnect the capacitor from the line as
+        a regular operating procedure.
+    (3) The rating of the disconnecting means shall not be less than 135 percent of the rated
+        current of the capacitor.
+    Exception: A separate disconnecting means shall not be required where a capacitor is
+    connected on the load side of a motor controller.
+
+460.9 Rating or Setting of Motor Overload Device. Where a motor installation includes a
+capacitor connected on the load side of the motor overload device, the rating or setting of the
+motor overload device shall be based on the improved power factor of the motor circuit. The
+effect of the capacitor shall be disregarded in determining the motor circuit conductor rating
+in accordance with 430.22.
+<span class="src">Source: verbatim 2017 NEC (official NFPA text on disk, nec2017_full.txt). OCR line-wrap reflow normalized; the 2017 scan's "(A) Ampacity," trailing comma is an OCR artifact (the code reads "Ampacity."). No other wording altered. 460.8 and 460.9 are word-identical 2017 → 2023 (machine-verified; see the edition history below).</span></div>
+
+  <div class="renew"><strong>Two sections, two jobs — and one trap.</strong> <strong>460.8</strong> sizes and protects the <em>capacitor's own</em> conductors and switching: 135% of the capacitor's rated current for the conductors (A), an OCPD "as low as practicable" (B), and a disconnect rated ≥ 135% that opens all ungrounded conductors (C). The <strong>one-third rule</strong> in (A) is the special case for the short lead that runs from the capacitor to the motor terminals — that lead need only be one-third the motor circuit conductor ampacity, but it can never drop below 135% of the capacitor current. <strong>460.9</strong> is the trap: adding the capacitor lets you <em>reduce</em> the motor overload setting (it now sees the improved-PF, lower current), but you must <em>not</em> re-size the motor circuit conductor to match — 430.22 still governs the conductor at 125% of the full-load current, with the capacitor <em>disregarded</em>.</div>
+
+  <h2>Why 460.9 is the one that bites people</h2>
+  <p>Think about what a PFC capacitor actually does. A motor is an inductive load: it draws a lagging current, and part of that current is "reactive" power that does no real work. A capacitor connected on the load side supplies that reactive power locally, so the <em>line</em> (the conductors and the overload, upstream of the capacitor) sees a lower current at a higher power factor. That is the whole point of PFC — smaller currents in the feeders, less I²R loss, better utilization.</p>
+  <p>Here is the 460.9 split, stated plainly:</p>
+  <ul>
+    <li><strong>The overload moves.</strong> The motor overload device sits on the load side of the capacitor, so it now carries the <em>improved</em>-power-factor current (lower than the no-capacitor current). 460.9 says set it for that improved power factor — so you may reduce the setting, and you should, to protect the windings accurately.</li>
+    <li><strong>The conductor does not.</strong> The motor circuit conductors carry the full motor current over the starting transient, the locked-rotor condition, and any moment the capacitor is switched out. So 460.9 sends the conductor back to <strong>430.22</strong> (125% of the table full-load current) and says to <em>disregard</em> the capacitor. The conductor is sized for the worst case, not the improved case.</li>
+  </ul>
+  <p class="sub">The same logic appears in 460.8's two Exceptions: a capacitor on the <em>load side</em> of a motor overload (460.8(B) Exception) or a motor controller (460.8(C) Exception) does not need its <em>separate</em> OCPD or disconnect — the upstream motor device already provides it. That is exactly the configuration 460.9 describes (capacitor load-side of the overload), which is why the two sections are the pair.</p>
+
+  <h2>The companion sections — 460.6, 460.10, 460.12</h2>
+  <p>A PFC capacitor is not just a current problem. A charged capacitor holds energy, its case can be a shock path, and it must be identified. These three sections close out the installation; all are word-identical 2017 → 2023.</p>
+  <div class="code">460.6 Discharge of Stored Energy. Capacitors shall be provided with a means of discharging
+stored energy.
+(A) Time of Discharge. The residual voltage of a capacitor shall be reduced to 50 volts,
+    nominal, or less within 1 minute after the capacitor is disconnected from the source of
+    supply.
+(B) Means of Discharge. The discharge circuit shall be either permanently connected to the
+    terminals of the capacitor or capacitor bank or provided with automatic means of connecting
+    it to the terminals of the capacitor bank on removal of voltage from the line. Manual means
+    of switching or connecting the discharge circuit shall not be used.
+
+460.10 Grounding. Capacitor cases shall be connected to the equipment grounding conductor.
+Exception: Capacitor cases shall not be connected to the equipment grounding conductor where
+the capacitor units are supported on a structure designed to operate at other than ground
+potential.
+
+460.12 Marking. Each capacitor shall be provided with a nameplate giving the name of the
+manufacturer, rated voltage, frequency, kilovar or amperes, number of phases, and, if filled
+with a combustible liquid, the volume of liquid. Where filled with a nonflammable liquid, the
+nameplate shall so state. The nameplate shall also indicate whether a capacitor has a discharge
+device inside the case.
+<span class="src">Source: verbatim 2017 NEC on disk (nec2017_full.txt); the 2023 CSV rows 460.6(A)/(B), 460.10, and 460.12 are word-identical (machine-verified). The 2017 scan interleaves a "70-339 460.12" page-break artifact between 460.10 and its Exception; the Exception belongs to 460.10 (disclosed, reflowed).</span></div>
+  <div class="renew"><strong>Why the 1-minute / 50 V discharge rule matters for a PFC cap.</strong> 460.6 exists because a capacitor that has just been de-energized still has a lethal charge on its terminals. For a PFC capacitor that an operator may switch on and off as a regular operating procedure (which 460.8(C)(2) explicitly permits), the discharge path must bring the terminals to ≤ 50 V within 1 minute, <em>automatically</em> — you cannot rely on someone manually jumpering the terminals. PFC capacitors ship with a built-in discharge resistor (the 460.12 nameplate tells you whether a discharge device is inside the case) precisely to satisfy 460.6 without external hardware.</div>
+
+  <h2>Edition history: 2017 → 2020 → 2023</h2>
+  <p>The headline for this article is good news: <strong>the Part I power-factor-correction core is word-identical from 2017 to 2023.</strong> 460.8(A), 460.8(B), 460.8(C), 460.9, 460.6, 460.10, and 460.12 did not move a single word across two editions. The edition changes to Article 460 are real but they live in <em>other</em> sections — 460.1 (scope) and the Part II over-1000-V rules — and they are documented below. This article quotes the PFC core once (2017 text) and states it is unchanged in 2023, because that is verifiably true.</p>
+
+  <h3>The verified-identical core (2017 = 2023, word-for-word)</h3>
+  <p>A normalized machine diff (lowercased, whitespace-collapsed, de-hyphenated, and stripped of the 2023 CSV's list-number and trailing-paren artifacts) of the on-disk 2017 text against the on-disk 2023 CSV returns an <strong>exact match</strong> for every section in the PFC core:</p>
+  <table>
+    <thead><tr><th>Section</th><th class="ctr">2017 = 2023 (normalized diff)</th></tr></thead>
+    <tbody>
+      <tr><td>460.8(A) Ampacity (135% + one-third rule)</td><td class="ctr ok">IDENTICAL</td></tr>
+      <tr><td>460.8(B) Overcurrent Protection ("as low as practicable")</td><td class="ctr ok">IDENTICAL</td></tr>
+      <tr><td>460.8(C) Disconnecting Means (135%, open all ungrounded)</td><td class="ctr ok">IDENTICAL (substance; the 2023 CSV flattens the (1)–(3) numbering — a data artifact, not a code change)</td></tr>
+      <tr><td>460.9 Rating or Setting of Motor Overload Device</td><td class="ctr ok">IDENTICAL</td></tr>
+      <tr><td>460.6(A) Time of Discharge (50 V in 1 minute)</td><td class="ctr ok">IDENTICAL</td></tr>
+      <tr><td>460.6(B) Means of Discharge (automatic, no manual)</td><td class="ctr ok">IDENTICAL</td></tr>
+      <tr><td>460.10 Grounding (case to EGC + Exception)</td><td class="ctr ok">IDENTICAL</td></tr>
+      <tr><td>460.12 Marking (nameplate contents)</td><td class="ctr ok">IDENTICAL</td></tr>
+    </tbody>
+  </table>
+  <p class="sub"><strong>2020 position — stated, not asserted:</strong> no on-disk 2020 full-code text covers Article 460 (the on-disk 2020 scan is a short excerpt; the 2020/2023 viewer is login-gated). So this page documents 2017 → 2023 and does not assert a 2020 word-identity for Article 460. The identity claim rests on the two on-disk full sources (2017 NFPA scan + 2023 CSV), which is the standard this series uses.</p>
+
+  <h3>2017 → 2023 deltas elsewhere in Article 460 (all verified on disk)</h3>
+  <p>The changes that <em>did</em> land, each pinned to the on-disk text:</p>
+  <div class="removed"><strong>460.1 Scope — the hazardous-locations sentence was removed.</strong> 2017 460.1 ended: <em>"This article also covers the installation of capacitors in hazardous (classified) locations as modified by Articles 501 through 503."</em> The 2023 460.1 (on-disk CSV) stops after "…are excluded from these requirements." — the hazardous-locations sentence is gone. (Verified: the 2017 text contains the sentence; the 2023 row does not.)</div>
+  <div class="removed"><strong>460.2 → 460.3 renumber; the vault cross-reference changed from Article 110 Part II to Part III.</strong> The 2017 460.2(A) (capacitors containing more than 11 L / 3 gal of flammable liquid) required enclosures "complying with <strong>Article 110, Part II</strong>." In the 2023 CSV that section is renumbered <strong>460.3</strong> and cites "<strong>Article 110, Part III</strong>" instead. Both facts are verified on disk: the 2017 text has a 460.2 (citing 110 Part II) and no 460.3; the 2023 CSV has 460.3(A)/(B) (citing 110 Part III) and no 460.2. (The 2017 scan's Article 110 part structure is partially garbled at the vault sections, and the 2023 CSV carries no Article 110 rows, so this page states the cross-reference delta — Part II → Part III — without asserting where the vault sections physically sat in each edition's Article 110.)</div>
+  <div class="removed"><strong>460.24(A) (Part II, over 1000 V) — the switching rule was rewritten.</strong> 2017 460.24(A) led: <em>"Group-operated switches shall be used for capacitor switching and shall be capable of the following…"</em> The 2023 460.24(A) leads: <em>"Switches shall be rated for switching of capacitive loads. Capacitor switch operation shall open all ungrounded conductors and the switch shall be capable of the following…"</em> — a genuine rewording of the medium-voltage switching requirement (the capability list (1)–(4) is unchanged).</div>
+  <div class="removed"><strong>460.24(B)(2) (Part II) — the cross-reference renumbered 490.22 → 495.22.</strong> 2017: caution signs "in accordance with <strong>490.22</strong>." 2023: "in accordance with <strong>495.22</strong>" (the signage section moved with the Article 490 → 495 renumber).</div>
+  <div class="removed"><strong>460.25(D) (Part II) — SOURCE BOUNDARY, stated not asserted.</strong> The 2017 460.25(D) carried a "Zone 1 or Zone 2 … the capacitors shall be enclosed or isolated" sentence, an "In no event shall the rating or adjustment … exceed the maximum limit of Zone 2" sentence, and an Informational Note referencing <strong>ANSI/IEEE 18-1992, Shunt Power Capacitors</strong>. The on-disk 2023 CSV row for 460.25(D) is a single sentence ending at "…safe zone for individual capacitors." — the Zone 1/2 sentence, the "In no event" sentence, and the ANSI/IEEE 18 Informational Note are <em>not present</em>. This series cannot tell from the 2023 CSV alone whether those lines were <strong>genuinely removed in 2023</strong> or whether the 2023 CSV <strong>truncated</strong> 460.25(D); no second on-disk 2023 source covers Article 460, and the 2020 text is not on disk. It is therefore flagged as a source boundary, not asserted as a confirmed code change. (Noted because it is the one Part II delta the on-disk 2023 source cannot fully confirm.)</div>
+
+  <div class="renew"><strong>Net effect for a PFC-capacitor job.</strong> If you are wiring a PFC capacitor on a ≤ 1000 V motor circuit, the code you cite — 460.8 and 460.9 — is the <em>same words</em> whether your jurisdiction is on 2017 or 2023. The edition history matters for the scope sentence (460.1) and for medium-voltage (&gt;1000 V) capacitor banks (Part II), not for the conductor / OCPD / disconnect / overload rules this article is about.</div>
+
+  <h2>Five worked examples (core-computed)</h2>
+  <p>Every ampacity, conductor pick, and overcurrent rating below is computed by the shipped cores under node (<code>compute_art49.js</code> → <code>art49_numbers.json</code>): the capacitor rated current (3-phase <code>kVAR×1000/(√3·V)</code>, 1-phase <code>kVAR×1000/V</code>), <code>pickConductor31016</code> for the conductor pick (Table 310.16, with the 240.4(D) small-conductor note), and <code>nextStdBreaker</code> for the overcurrent / disconnect step-up. Zero hand math. The 5 hp motor FLC comes from Table 430.250 (7.6 A at 460 V).</p>
+
+  <h3>EX1 — 10 kVAR, 3-phase, 480 V stand-alone PFC bank (a separate circuit, 460.8 A/B/C)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Capacitor</td><td class="ctr">10 kVAR, 3-phase, 480 V (stand-alone bank on its own circuit)</td></tr>
+      <tr><td>Rated current (10×1000/(√3×480))</td><td class="ctr">12.028 A</td></tr>
+      <tr><td>Required ampacity (135% × 12.028 A, 460.8(A))</td><td class="ctr">16.238 A</td></tr>
+      <tr><td>Conductor pick (310.16 @ 60 °C, 110.14(C)(1)(a) ≤100 A)</td><td class="ctr"><code>pickConductor31016(16.238, cu, 60) → 12 AWG Cu</code></td></tr>
+      <tr><td>OCPD (460.8(B) "as low as practicable"; next standard ≥ 16.238 A)</td><td class="ctr ok"><code>nextStdBreaker(16.238) → 20 A</code></td></tr>
+      <tr><td>Disconnecting means (460.8(C)(3) rating ≥ 135%)</td><td class="ctr ok">20 A (next standard ≥ 16.238 A)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">A stand-alone bank (not load-side of a motor overload) needs its own OCPD and its own disconnect, both at 135% of the rated current. 12 AWG Cu carries 20 A at 60 °C — and 240.4(D) independently caps a 12 AWG conductor at a 20 A device, so the 460.8(B) "as low as practicable" 20 A OCPD and the 240.4(D) cap land on the same answer.</p>
+
+  <h3>EX2 — 5 kVAR, 3-phase, 460 V stand-alone PFC bank</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Capacitor</td><td class="ctr">5 kVAR, 3-phase, 460 V (stand-alone)</td></tr>
+      <tr><td>Rated current (5×1000/(√3×460))</td><td class="ctr">6.276 A</td></tr>
+      <tr><td>Required ampacity (135% × 6.276 A, 460.8(A))</td><td class="ctr">8.472 A</td></tr>
+      <tr><td>Conductor pick (310.16 @ 60 °C)</td><td class="ctr"><code>pickConductor31016(8.472, cu, 60) → 14 AWG Cu</code></td></tr>
+      <tr><td>OCPD (460.8(B); next standard ≥ 8.472 A)</td><td class="ctr ok"><code>nextStdBreaker(8.472) → 15 A</code></td></tr>
+      <tr><td>Disconnecting means (460.8(C)(3) ≥ 135%)</td><td class="ctr ok">15 A</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">At 60 °C a 14 AWG Cu conductor is rated 15 A, which clears the 8.472 A requirement with margin; 240.4(D) caps 14 AWG at 15 A, so the 15 A OCPD / disconnect is the natural pair. (The 5 kVAR / 460 V bank also reappears in EX5, as the capacitor on the one-third-rule lead.)</p>
+
+  <h3>EX3 — 5 hp, 460 V, 3-phase motor with a load-side PFC capacitor (the 460.9 split)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Motor</td><td class="ctr">5 hp, 3-phase, 460 V</td></tr>
+      <tr><td>Full-load current (Table 430.250)</td><td class="ctr">7.6 A</td></tr>
+      <tr><td>Motor circuit conductor (430.22: 125% × 7.6 A; capacitor <strong>disregarded</strong>)</td><td class="ctr"><code>pickConductor31016(9.5, cu, 75) → 14 AWG Cu</code> (20 A @ 75 °C)</td></tr>
+      <tr><td>Line current with NO capacitor</td><td class="ctr">7.6 A</td></tr>
+      <tr><td>Line current WITH capacitor (PF 0.80 → 0.95)</td><td class="ctr">7.6 × (0.80/0.95) = <strong>6.4 A</strong></td></tr>
+      <tr><td>460.9 overload basis</td><td class="ctr ok">Set for the improved-PF current (≈ 6.4 A basis), NOT 7.6 A</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">This is the trap. The conductor stays at the 430.22 pick — 125% × 7.6 A = 9.5 A → 14 AWG Cu (20 A @ 75 °C) — because 460.9 says to disregard the capacitor for the conductor. Only the <em>overload</em> is set for the improved power factor: with PF lifting 0.80 → 0.95 the line current drops 7.6 → 6.4 A, so the overload protects against the lower, true carrying current instead of the pre-correction value. (The actual overload <em>setting</em> also depends on the 430.32 percent-of-nameplate rules; the 6.4 A here is the improved-PF current the setting is based on.)</p>
+
+  <h3>EX4 — 2 kVAR, single-phase, 230 V stand-alone PFC bank</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Capacitor</td><td class="ctr">2 kVAR, 1-phase, 230 V (stand-alone)</td></tr>
+      <tr><td>Rated current (2×1000/230)</td><td class="ctr">8.696 A</td></tr>
+      <tr><td>Required ampacity (135% × 8.696 A, 460.8(A))</td><td class="ctr">11.739 A</td></tr>
+      <tr><td>Conductor pick (310.16 @ 60 °C)</td><td class="ctr"><code>pickConductor31016(11.739, cu, 60) → 14 AWG Cu</code></td></tr>
+      <tr><td>OCPD (460.8(B); next standard ≥ 11.739 A)</td><td class="ctr ok"><code>nextStdBreaker(11.739) → 15 A</code></td></tr>
+      <tr><td>Disconnecting means (460.8(C)(3) ≥ 135%)</td><td class="ctr ok">15 A</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Single-phase PFC (common on a 230 V pump or compressor circuit) uses the <code>kVAR×1000/V</code> form — no √3. 2 kVAR at 230 V is a larger current than it looks (8.696 A) because of the low voltage; the 14 AWG Cu / 15 A pair covers it.</p>
+
+  <h3>EX5 — the one-third rule: the short lead from the motor terminals to the PFC capacitor (460.8(A))</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Motor circuit conductor ampacity (the EX3 motor, 14 AWG Cu @ 75 °C)</td><td class="ctr">20 A</td></tr>
+      <tr><td>One-third of the motor circuit conductor ampacity</td><td class="ctr">20 / 3 = 6.67 A</td></tr>
+      <tr><td>Capacitor (the EX2 bank): 5 kVAR, 460 V, rated current</td><td class="ctr">6.276 A</td></tr>
+      <tr><td>135% of the capacitor rated current</td><td class="ctr">1.35 × 6.276 = 8.47 A</td></tr>
+      <tr><td>Governing requirement (460.8(A): the larger of the two)</td><td class="ctr ok">max(6.67, 8.47) = <strong>8.47 A</strong> — the 135% rule governs, not the one-third rule</td></tr>
+      <tr><td>Short-lead conductor pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(8.47, cu, 75) → 14 AWG Cu</code></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">This is the classic one-third-rule case where the <em>other</em> half of 460.8(A) wins. The lead from the motor terminals to the capacitor is allowed to be as small as one-third the motor circuit conductor ampacity (6.67 A here) — but it can <em>never</em> drop below 135% of the capacitor's rated current (8.47 A). Since 8.47 &gt; 6.67, the 135% figure governs and the lead is 14 AWG Cu. On a much larger motor (a big conductor, so one-third is large) the one-third figure would govern instead — which is exactly why the code gives you the larger of the two.</p>
+
+  <h2>Where 460.9 + 460.8 fit — the capacitor companion to the motor series</h2>
+  <ul>
+    <li><strong>The branch circuit the capacitor sits on:</strong> 430.22 + 430.52 (conductors at 125% of FLC; the OCPD) — the <a href="nec-43022-43052-single-motor-branch-circuit.html">430.22 + 430.52 single-motor branch-circuit article →</a>. 460.9 sends the conductor straight back to 430.22 (EX3).</li>
+    <li><strong>The overload 460.9 re-sets:</strong> 430.32 + 430.36 (the motor overload device and which conductors it protects) — the <a href="nec-43032-43036-motor-overload-protection.html">430.32 + 430.36 motor-overload-protection article →</a>. 460.9 tells you the 430.32 setting is based on the improved PF.</li>
+    <li><strong>The control circuit of the controller the capacitor can load-side:</strong> 430.72 + 430.75 — the <a href="nec-43072-43075-motor-control-circuit-protection.html">430.72 + 430.75 motor-control-circuit-protection article →</a> (460.8(C)'s Exception references the motor controller).</li>
+    <li><strong>The small-conductor cap that bounds the OCPD picks (240.4(D)):</strong> the <a href="nec-2406-standard-ampere-ratings.html">240.6 standard-ampere-ratings article →</a> and the <a href="nec-31016-ampacity.html">Table 310.16 ampacity article →</a> (the 240.4(D) cap and the ampacity picks are computed there and used here).</li>
+  </ul>
+  <p class="sub"><strong>2026 edition (out of scope, flagged honestly):</strong> no on-disk source confirms the Article 460 section numbers moved for the 2026 cycle, so this page cites 460.8 / 460.9 as stable across 2017–2023 and presents the 2017↔2023 deltas above. <strong>Verify section numbers against the NEC edition adopted in your jurisdiction.</strong></p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>): 460.8(A)/(B)/(C), 460.9 (the PFC core), plus 460.6(A)/(B), 460.10, and 460.12 (the companions). The edition-history quotes are 460.1, 460.2(A) (2017) and 460.3(A), 460.24(A), 460.24(B)(2), 460.25(D) (2023). OCR line-wrap reflow normalized; the 2017 "(A) Ampacity," trailing comma is an OCR artifact; the "70-339 460.12" page-break artifact interleaved before the 460.10 Exception was removed and the Exception re-attached to 460.10. No other wording altered.</p>
+    <p><strong>2023 text.</strong> On-disk 2023 NEC CSV (<span class="blank">art35_nec_csv.csv</span>), rows 460.1, 460.3(A)/(B), 460.6(A)/(B), 460.8(A)/(B)/(C), 460.9, 460.10, 460.12, 460.24(A)/(B)(2), 460.25(D). The 2023 CSV carries two data artifacts that were normalized for the identity test only (never for the code text): a trailing " )" on some subsection bodies, and flattened (1)–(3)/(1)–(4) list numbering in 460.8(C) and 460.24(A). Neither changes a word of code text.</p>
+    <p><strong>Edition-identity claim (machine-checked).</strong> A normalized diff (lowercase, whitespace-collapsed, de-hyphenated, list-number/trailing-paren artifacts stripped) of the on-disk 2017 text vs. the on-disk 2023 CSV returns an exact match for 460.8(A)/(B)/(C), 460.9, 460.6(A)/(B), 460.10, and 460.12. The deltas — 460.1 hazardous-sentence removal, 460.2→460.3 renumber + Article 110 Part II→Part III, 460.24(A) reword, and 490.22→495.22 — are each asserted only where both the 2017 and 2023 on-disk text are present and complete.</p>
+    <p><strong>Source boundaries (stated, not asserted):</strong> (1) No on-disk 2020 full-code text covers Article 460, so the 2020 position is not asserted (the page documents 2017→2023 only). (2) The 460.25(D) Part II delta (the Zone 1/2 sentence, the "In no event … Zone 2" sentence, and the ANSI/IEEE 18-1992 Informational Note absent from the 2023 CSV) is flagged as a source boundary — the on-disk 2023 CSV may have truncated that section, or 2023 may have removed those lines; no second on-disk 2023 source decides which. (3) The 5 hp / 460 V full-load current (7.6 A) is from Table 430.250, transcribed and used only in EX3.</p>
+    <p><strong>Worked numbers.</strong> Every conductor pick, ampacity, and overcurrent/disconnect rating computed by the shipped cores under node (<span class="blank">compute_art49.js</span> → <span class="blank">art49_numbers.json</span>): capacitor rated current (3-phase <code>kVAR×1000/(√3·V)</code>, 1-phase <code>kVAR×1000/V</code>), <code>pickConductor31016</code> for the conductor (Table 310.16, 110.14(C)(1) column, 240.4(D) small-conductor note), <code>nextStdBreaker</code> for the OCPD / disconnect step-up, and the EX3 improved-PF current (FLC × PF₀/PF₁). The 2017↔2023 identity and the 460.1 / 460.2→460.3 / 460.24 / 490.22→495.22 deltas are asserted by the same script reading the on-disk sources, so the edition story is machine-checked, not from memory. The test suite re-runs the picks and asserts they match the page.</p>
+    <p><strong>Authorship.</strong> Written and verified by <strong>Radloff Bot (no humans pretend to be the author)</strong>. Zero third-party scripts, zero tracking; data never leaves your browser.</p>
+  </div>
+
+  <a class="cta" href="../#panelCard">Open the free PanelWright calculator — size the panel, the service, the neutral, the derating, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 49 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan + NEC 2023 (on-disk CSV), verbatim, OCR corrections + source boundaries disclosed (2020 not on disk; 460.25(D) Part II delta flagged). The 460.8/460.9 PFC core is word-identical 2017→2023 (machine-verified). Design aid — the adopted edition in your jurisdiction governs.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-43022-43052-single-motor-branch-circuit.html">NEC 430.22 + 430.52 single-motor branch circuit</a> · <a href="nec-43032-43036-motor-overload-protection.html">NEC 430.32 + 430.36 motor overload protection</a> · <a href="nec-43072-43075-motor-control-circuit-protection.html">NEC 430.72 + 430.75 motor control circuit</a> · <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings</a> · <a href="nec-31016-ampacity.html">Table 310.16 ampacity</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>

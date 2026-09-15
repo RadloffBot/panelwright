@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 49, 'art44: sitemap has 49 URLs (was 48, +article 48)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 50, 'art44: sitemap now has 50 URLs (article 49 added; was 49)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4890,11 +4890,105 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap48 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: sitemap entry present');
-  eq((sitemap48.match(/<loc>/g) || []).length, 49, 'art48: sitemap has 49 URLs (was 48, +article 48)');
+  eq((sitemap48.match(/<loc>/g) || []).length, 50, 'art48: sitemap now has 50 URLs (article 49 added; was 49)');
   const index48 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: index cross-link present');
   const readme48 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: README entry present');
+}
+
+// Article 49 — NEC 460.9 + 460.8: power-factor-correction capacitors on motor
+// circuits (the "PFC-capacitor companion" to the motor series). 460.8 =
+// capacitor circuit conductors at 135% of rated current, the one-third rule
+// for the lead to the motor, the "as low as practicable" OCPD, and the
+// disconnecting means (>=135%, opens all ungrounded). 460.9 = the trap: the
+// motor overload is set for the IMPROVED power factor, but the motor circuit
+// conductor stays at the 430.22 125% pick (capacitor disregarded). Companions
+// 460.6 (discharge: 50 V in 1 min, automatic), 460.10 (case to EGC), 460.12
+// (marking). EDITION STORY: the Part I PFC core (460.8 A/B/C, 460.9, 460.6,
+// 460.10, 460.12) is WORD-IDENTICAL 2017->2023 (normalized machine diff of the
+// on-disk 2017 scan vs on-disk 2023 CSV). Real deltas, all verified on disk:
+// 460.1 hazardous-locations sentence removed; 460.2 -> 460.3 renumber with the
+// vault cross-ref Article 110 Part II -> Part III; 460.24(A) MV switching
+// reword; 490.22 -> 495.22 cross-ref. 460.25(D) Part II delta flagged as a
+// SOURCE BOUNDARY (Zone 1/2 sentence + ANSI/IEEE 18 IN absent from 2023 CSV;
+// no second on-disk 2023 source; 2020 text not on disk). Worked examples
+// core-computed (compute_art49.js -> art49_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-46009-46008-pfc-capacitors.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art49_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-46009-46008-pfc-capacitors.html'), true, 'art49: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art49: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art49: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 49'), true, 'art49: footer marks article 49');
+  // verbatim 2017 — 460.8(A) ampacity + one-third rule
+  eq(has('460.8 conductors. (a) ampacity. the ampacity of capacitor circuit conductors shall not be less than 135 percent of the rated current of the capacitor.'), true, 'art49: verbatim 460.8(A) 135% rule');
+  eq(has('the ampacity of conductors that connect a capacitor to the terminals of a motor or to motor circuit conductors shall not be less than one-third the ampacity of the motor circuit conductors and in no case less than 135 percent of the rated current of the capacitor.'), true, 'art49: verbatim 460.8(A) one-third rule (floor 135%)');
+  // verbatim 2017 — 460.8(B) overcurrent
+  eq(has('an overcurrent device shall be provided in each ungrounded conductor for each capacitor bank. the rating or setting of the overcurrent device shall be as low as practicable.'), true, 'art49: verbatim 460.8(B) as-low-as-practicable');
+  eq(has('a separate overcurrent device shall not be required for a capacitor connected on the load side of a motor overload protective device.'), true, 'art49: verbatim 460.8(B) Exception (load side of overload)');
+  // verbatim 2017 — 460.8(C) disconnecting means
+  eq(has('(1) the disconnecting means shall open all ungrounded conductors simultaneously.'), true, 'art49: verbatim 460.8(C)(1) open all ungrounded');
+  eq(has('(2) the disconnecting means shall be permitted to disconnect the capacitor from the line as a regular operating procedure.'), true, 'art49: verbatim 460.8(C)(2) regular operating procedure');
+  eq(has('(3) the rating of the disconnecting means shall not be less than 135 percent of the rated current of the capacitor.'), true, 'art49: verbatim 460.8(C)(3) 135% rating');
+  eq(has('a separate disconnecting means shall not be required where a capacitor is connected on the load side of a motor controller.'), true, 'art49: verbatim 460.8(C) Exception (load side of controller)');
+  // verbatim 2017 — 460.9 (the trap)
+  eq(has('where a motor installation includes a capacitor connected on the load side of the motor overload device, the rating or setting of the motor overload device shall be based on the improved power factor of the motor circuit.'), true, 'art49: verbatim 460.9 overload on improved PF');
+  eq(has('the effect of the capacitor shall be disregarded in determining the motor circuit conductor rating in accordance with 430.22.'), true, 'art49: verbatim 460.9 conductor disregarded -> 430.22');
+  // verbatim 2017 — companions 460.6 / 460.10 / 460.12
+  eq(has('capacitors shall be provided with a means of discharging stored energy.'), true, 'art49: verbatim 460.6 lead');
+  eq(has('the residual voltage of a capacitor shall be reduced to 50 volts, nominal, or less within 1 minute after the capacitor is disconnected from the source of supply.'), true, 'art49: verbatim 460.6(A) 50 V in 1 min');
+  eq(has('manual means of switching or connecting the discharge circuit shall not be used.'), true, 'art49: verbatim 460.6(B) no manual switching');
+  eq(has('capacitor cases shall be connected to the equipment grounding conductor.'), true, 'art49: verbatim 460.10 case to EGC');
+  eq(has('capacitor cases shall not be connected to the equipment grounding conductor where the capacitor units are supported on a structure designed to operate at other than ground potential.'), true, 'art49: verbatim 460.10 Exception');
+  eq(has('each capacitor shall be provided with a nameplate giving the name of the manufacturer, rated voltage, frequency, kilovar or amperes, number of phases'), true, 'art49: verbatim 460.12 nameplate contents');
+  // edition story — 2017 -> 2023 core identity + the verified deltas
+  eq(has('this article also covers the installation of capacitors in hazardous (classified) locations as modified by articles 501 through 503.'), true, 'art49: 2017 460.1 hazardous-locations sentence quoted');
+  eq(has('complying with article 110, part ii'), true, 'art49: 2017 460.2(A) cites Article 110 Part II');
+  eq(has('article 110, part iii'), true, 'art49: 2023 460.3(A) cites Article 110 Part III');
+  eq(has('group-operated switches shall be used for capacitor switching'), true, 'art49: 2017 460.24(A) group-operated wording quoted');
+  eq(has('switches shall be rated for switching of capacitive loads.'), true, 'art49: 2023 460.24(A) reworded MV switching quoted');
+  eq(has('in accordance with 490.22'), true, 'art49: 2017 460.24(B)(2) cites 490.22');
+  eq(has('in accordance with 495.22'), true, 'art49: 2023 460.24(B)(2) cites 495.22 (renumber)');
+  eq(has('ansi/ieee 18-1992'), true, 'art49: 460.25(D) ANSI/IEEE 18 IN referenced (source-boundary disclosure)');
+  eq(has('word-identical'), true, 'art49: 2017->2023 word-identity claim stated');
+  eq(has('source boundary'), true, 'art49: 460.25(D) delta flagged as source boundary, not asserted');
+  // worked examples — core-computed numbers (art49_numbers.json)
+  eq(has('12.028'), true, 'art49: EX1 rated current 12.028 A (10 kVAR 480 V 3-ph)');
+  eq(has('16.238'), true, 'art49: EX1 required ampacity 16.238 A (135%)');
+  eq(has('pickconductor31016(16.238, cu, 60) → 12 awg cu'), true, 'art49: EX1 pick 12 AWG Cu @ 60 C');
+  eq(has('nextstdbreaker(16.238) → 20 a'), true, 'art49: EX1 OCPD/disconnect 20 A');
+  eq(has(String(nums.EX2.Icap)), true, 'art49: EX2 rated current ' + nums.EX2.Icap + ' A (5 kVAR 460 V 3-ph)');
+  eq(has('pickconductor31016(8.472, cu, 60) → 14 awg cu'), true, 'art49: EX2 pick 14 AWG Cu @ 60 C');
+  eq(has('nextstdbreaker(8.472) → 15 a'), true, 'art49: EX2 OCPD/disconnect 15 A');
+  eq(has('7.6 a'), true, 'art49: EX3 5 hp 460 V FLC 7.6 A (Table 430.250)');
+  eq(has('pickconductor31016(9.5, cu, 75) → 14 awg cu'), true, 'art49: EX3 motor conductor 14 AWG Cu @ 75 C (430.22 125%, cap disregarded)');
+  eq(has('7.6 × (0.80/0.95) = 6.4 a'), true, 'art49: EX3 improved-PF line current 6.4 A (PF 0.80 -> 0.95)');
+  eq(has('set for the improved-pf current'), true, 'art49: EX3 overload basis = improved-PF current');
+  eq(has('8.696'), true, 'art49: EX4 rated current 8.696 A (2 kVAR 230 V 1-ph)');
+  eq(has('11.739'), true, 'art49: EX4 required ampacity 11.739 A (135%)');
+  eq(has('20 / 3 = 6.67 a'), true, 'art49: EX5 one-third of motor conductor ampacity 6.67 A');
+  eq(has('max(6.67, 8.47) = 8.47 a'), true, 'art49: EX5 135% governs over one-third (8.47 A)');
+  // cross-links into the motor series
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art49: cross-links to 430.22+430.52 article');
+  eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art49: cross-links to 430.32+430.36 article');
+  eq(art.includes('nec-43072-43075-motor-control-circuit-protection.html'), true, 'art49: cross-links to 430.72+430.75 article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art49: cross-links to 240.6 article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art49: cross-links to 310.16 article');
+  // sitemap + index + README
+  const sitemap49 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: sitemap entry present');
+  eq((sitemap49.match(/<loc>/g) || []).length, 50, 'art49: sitemap has 50 URLs (was 49, +article 49)');
+  const index49 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: index cross-link present');
+  const readme49 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

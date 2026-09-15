@@ -1604,7 +1604,48 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   (C) = the ring (2 AWG Cu), the 3,000,000 cmil Note-1 equivalent; EX4 500 A
   Ufer-only — cap (B) 4 AWG Cu, exothermic weld / listed clamp (never
   solder). 45-assertion test block (`run_tests.js`),
-  sitemap 49 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
+  sitemap 50 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
+  on the page).
+
+- **[NEC 460.9 + 460.8: power-factor-correction capacitors on motor circuits — the capacitor companion to the motor series](articles/nec-46009-46008-pfc-capacitors.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-46009-46008-pfc-capacitors.html`) —
+  Article 49 — what happens when you hang a power-factor-correction (PFC)
+  capacitor on a motor circuit: **460.9** (the trap — the motor overload is set
+  for the <em>improved</em> power factor, but the motor circuit conductor is
+  <em>not</em> re-sized; the capacitor is disregarded and 430.22 still governs
+  at 125% of the table FLC) and **460.8** (the capacitor's own circuit: conductors
+  at **135% of rated current**, the **one-third rule** for the short lead to the
+  motor terminals — never below 135%, the OCPD "**as low as practicable**," and
+  the disconnecting means rated ≥ 135% that opens all ungrounded conductors and
+  may be a regular operating procedure), plus the companion sections **460.6**
+  (discharge of stored energy — 50 V in 1 minute, automatic, never manual),
+  **460.10** (capacitor case to the EGC + Exception), and **460.12** (nameplate
+  marking). Edition story (the headline): the Part I PFC core — 460.8(A)/(B)/(C),
+  460.9, 460.6(A)/(B), 460.10, 460.12 — is <strong>word-identical 2017 → 2023</strong>
+  (normalized machine diff of the on-disk 2017 NFPA scan vs the on-disk 2023
+  CSV). The real 2017→2023 deltas, all verified on disk: **460.1** removed its
+  hazardous-locations sentence ("…as modified by Articles 501 through 503");
+  **460.2 → 460.3** renumber with the vault cross-reference changed from
+  Article 110 <em>Part II</em> to <em>Part III</em>; **460.24(A)** (Part II,
+  over 1000 V) MV switching reworded ("Group-operated switches…" →
+  "Switches shall be rated for switching of capacitive loads…"); and the
+  **490.22 → 495.22** cross-reference renumber in 460.24(B)(2). The 460.25(D)
+  Part II delta (Zone 1/Zone 2 sentence + ANSI/IEEE 18-1992 Informational Note
+  absent from the 2023 CSV) is flagged as a <em>source boundary</em> — the 2023
+  CSV may have truncated the section, and no second on-disk 2023 source covers
+  Article 460; 2020 text is not on disk, so the 2020 position is not asserted.
+  Verbatim 2017 text (on-disk NFPA scan) + verbatim 2023 text (on-disk 2023
+  CSV). Five core-computed worked examples (`compute_art49.js` → node, from the
+  shipped `pickConductor31016`/`nextStdBreaker` cores): EX1 10 kVAR/480 V
+  3-phase stand-alone bank — 12.028 A rated, 16.238 A @ 135%, 12 AWG Cu, 20 A
+  OCPD/disconnect; EX2 5 kVAR/460 V stand-alone — 6.276 A, 8.472 A @ 135%, 14
+  AWG Cu, 15 A; EX3 5 hp 460 V motor with load-side PFC — conductor stays 14
+  AWG Cu (430.22, 125% × 7.6 A FLC), overload set for the improved-PF current
+  (7.6 → 6.4 A at PF 0.80 → 0.95); EX4 2 kVAR/230 V 1-phase stand-alone — 8.696
+  A, 11.739 A @ 135%, 14 AWG Cu, 15 A; EX5 the one-third rule — 20 A motor
+  conductor → 6.67 A one-third vs 8.47 A @ 135% → the 135% floor governs, 14
+  AWG Cu. 45-assertion test block (`run_tests.js`),
+  sitemap 50 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
   on the page).
 
 ## About the author
