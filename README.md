@@ -1492,6 +1492,42 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   cycle notes) + sitemap 46 URLs + index cross-link. Written by Radloff Bot
   (AI, disclosed on the page).
 
+- **[NEC 215.2(B) → 235.202: the over-600-V feeder rules that moved to over-1000 V — and where every Article 215 section went 2017→2023](articles/nec-2152b-235202-feeder-relocation.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-2152b-235202-feeder-relocation.html`) —
+  the Article 215 (Feeders) edition-migration article: **the centerpiece is the
+  relocation of the over-600-V feeder block.** In 2017 it was **215.2(B) "Feeders
+  over 600 Volts"** (ampacity per 310.15/310.60, three subsections: transformers
+  only / transformers + 125% of simultaneously-operated utilization / supervised
+  installations with no ampacity reference). **2020** absorbed the 600→1000 V
+  migration (heading "over 1000 Volts", tables 310.15/310.60 → 310.14/315.60) and
+  added the ampacity reference to the supervised route; **2023** relocated the
+  whole block out of Article 215 into the new **Article 235 Part III**:
+  **215.2(B)(1)/(2)/(3) → 235.202(A)/(B)/(C)** ((A) and (B) word-identical to
+  2017; (C) carries the 2020-added 310.14(B)/315.60(B) anchor). Full relocation
+  map (incl. 235.201 scope, NEW 235.203, 215.5→235.205 diagrams, 215.6→235.206
+  feeder EGC) + the ≤1000 V restructure (215.1 scope cap + Art. 235 Info Note;
+  215.2(A)(2)→(B) grounded-conductor reword; 215.2(A)(3)→(C) 55-A rule;
+  215.3 Exception 2 deleted in 2020; 215.9 de-limited 2020 + "listed" 2023;
+  **215.10 GFPE 600→1000 V ceiling in 2023** — the delta that makes a 1000/577 V
+  wye feeder disconnect require ground-fault protection only under 2023 — plus
+  NEW 215.15 (barriers) and 215.18 (SPD, In ≥ 10 kA). Every delta pinned to the
+  edition it landed in, with a disclosed 2020-scan cutoff (215.15/215.18 origin
+  not pinnable), the 2020 "311.60" (=315.60) + "(l)"-for-"(1)" OCR artifacts,
+  and the AJB 2020 "Parts I through VIII" mis-quote (real 2017 text: "Parts I
+  through VII … Part IX", proven by the 2017 Art. 240 part headings on disk).
+  Non-overlap: the 215.2(A) ampacity math is the [215.2 feeder ampacity
+  article](articles/nec-2152-feeder-ampacity.html); 215.1 scope + 215.3 OCPD is
+  the [215.1 + 215.3 overcurrent article](articles/nec-2151-2153-feeder-overcurrent.html).
+  Six core-computed worked examples (`compute_art46.js` → node): EX1 235.202(A)
+  two 500 kVA @ 4160 V (2 × 69.40 A = 138.80 A) → 1/0 AWG Cu; EX2 235.202(B)
+  69.40 + 125% × 20 A = 94.40 A → 3 AWG Cu; EX3 235.202(C) supervised-route
+  edition history; EX4 215.2(C) 55-A rule (50 A service governs a 35 A load) →
+  8 AWG Cu; EX5 215.2(B) 250.122 row 800 A → 1/0 Cu; EX6 215.10 1200 A on
+  1000/577 V wye — no GFPE in 2017/2020, GFPE required in 2023. 97-check
+  three-edition verifier (`verify_art46.py`, 2017 scan + 2020 scan full Article
+  215 body + 2023 CSV, all PASS) + sitemap 47 URLs + index cross-link. Written
+  by Radloff Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

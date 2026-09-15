@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 46, 'art44: sitemap has 46 URLs (was 45, +article 45)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 47, 'art44: sitemap has 47 URLs (was 46, +article 46)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4628,6 +4628,96 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index45.includes('articles/nec-430201-430208-part-xi-over-1000v.html'), true, 'art45: index cross-link present');
   const readme45 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme45.includes('articles/nec-430201-430208-part-xi-over-1000v.html'), true, 'art45: README entry present');
+}
+
+// ===== Article 46: NEC 215.2(B) "Feeders over 600 Volts" -> 235.202 (the 600->1000 V
+// migration + the 2023 relocation into Article 235 Part III) =====
+// Three on-disk editions: 2017 full scan (nec2017_full.txt), 2020 scan (full Article 215
+// body, slideshare_nec2020.txt), 2023 CSV (art35_nec_csv.csv). Edition-of-origin pinned:
+// 600->1000 V sizing heading + 310.15/310.60->310.14/315.60 + 215.3 Exception 2 deleted +
+// 215.10 Exception 3 (90 days) + 215.9 de-limited + 215.6 reword = 2020; the relocation to
+// 235.202 + 215.1 scope cap + 215.2 relettering ((A)(2)->(B),(A)(3)->(C)) + 215.10 GFPE
+// 600->1000 V ceiling + 215.9 "listed" + NEW 215.15/215.18 = 2023. Verified by
+// verify_art46.py (97 checks, all PASS). OCR disclosed: 2020 "311.60" (=315.60), "(l)"
+// for "(1)", "cunductors/grmerator/slwll"; 2017 "tts" (=its), spaced "215.2(B) (1)".
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-2152b-235202-feeder-relocation.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const pick = core.pickConductor31016, nsb = core.nextStdBreaker;
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art46_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-2152b-235202-feeder-relocation.html'), true, 'art46: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-2152b-235202-feeder-relocation.html'), true, 'art46: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art46: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art46: Article + FAQPage JSON-LD present');
+  eq(has('article 46'), true, 'art46: footer marks article 46');
+  // verbatim 2017 215.2(B) over-600 V block
+  eq(has('(B) Feeders over 600 Volts. The ampacity of conductors shall be in accordance with 310.15 and 310.60 as applicable'), true, 'art46: verbatim 2017 215.2(B) lead (310.15/310.60)');
+  eq(has('Feeder conductors over 600 volts shall be sized in accordance with 215.2(B)(1), (B)(2), or (B)(3)'), true, 'art46: verbatim 2017 215.2(B) routing');
+  eq(has('The ampacity of feeder conductors shall not be less than the sum of the nameplate ratings of the transformers supplied when only transformers are supplied'), true, 'art46: verbatim 215.2(B)(1)/235.202(A) transformer rule');
+  eq(has('the sum of the nameplate ratings of the transformers and 125 percent of the designed potential load of the utilization equipment that will be operated simultaneously'), true, 'art46: verbatim 215.2(B)(2)/235.202(B) 125% rule');
+  eq(has('feeder conductor sizing shall be permitted to be determined by qualified persons under engineering supervision. Supervised installations are defined as those portions of a facility where all of the following conditions are met'), true, 'art46: verbatim 2017 215.2(B)(3) supervised (no ampacity ref)');
+  eq(has('documented training and experience in over 600-volt systems provide maintenance, monitoring, and servicing'), true, 'art46: verbatim 2017 (B)(3) "over 600-volt systems"');
+  // verbatim 2020 215.2(B) over-1000 V (migration edition)
+  eq(has('(B) Feeders over 1000 Volts. The ampacity of conductors shall be in accordance with 310.14 and 315.60 as applicable'), true, 'art46: verbatim 2020 215.2(B) lead (310.14/315.60)');
+  eq(has('For supervised installations, feeder conductor sizing shall be permitted to be determined by qualified persons under engineering supervision in accordance with 310.14(B) or 315.60(B)'), true, 'art46: verbatim 2020 (B)(3) ampacity ref added (315.60)');
+  eq(has('documented training and experience in over 1000-volt systems provide maintenance, monitoring, and servicing'), true, 'art46: verbatim 2020 (B)(3) "over 1000-volt systems"');
+  // verbatim 2023 235.202 destination
+  eq(has('Feeder conductors over 1000 volts shall be sized in accordance with 235.202(A), (B), or (C)'), true, 'art46: verbatim 2023 235.202 routing');
+  eq(has('Part III covers the installation requirements, overcurrent protection requirements, minimum size, and ampacity of conductors for feeders over 1000 volts ac or 1500 volts dc, nominal'), true, 'art46: verbatim 2023 235.201 Part III scope');
+  eq(has('Feeders shall be protected against overcurrent'), true, 'art46: verbatim 2023 235.203 OCPD');
+  // 2023 Article 215 restructure + scope
+  eq(has('for feeders not over 1000 volts ac or 1500 volts dc, nominal'), true, 'art46: 2023 215.1 scope cap');
+  eq(has('See Part III of Article 235 for feeders over 1000 volts ac or 1500 volts dc'), true, 'art46: 2023 215.1 Info Note to Art. 235');
+  eq(has('The feeder conductor ampacity shall not be less than that of the service conductors where the feeder conductors carry the total load supplied by service conductors with an ampacity of 55 amperes or less'), true, 'art46: verbatim 215.2(C) 55-A rule (word-identical)');
+  eq(has('the equipment grounding conductor size required by 250.122'), true, 'art46: 2023 215.2(B) grounded-conductor reword (EGC size)');
+  eq(has('protected against overcurrent in accordance with Part I of Article 240'), true, 'art46: 2023 215.3 drops "the provisions of"');
+  eq(has('protected by a listed ground-fault circuit interrupter installed in a readily accessible location'), true, 'art46: 2023 215.9 "listed" GFCI');
+  eq(has('but not exceeding 1000 volts phase-to-phase'), true, 'art46: 2023 215.10 GFPE 1000 V ceiling');
+  eq(has('shall not exceed 90 days'), true, 'art46: 215.10 Exception 3 temporary feeder 90 days');
+  eq(has('Barriers shall be placed such that no energized, uninsulated, ungrounded busbar or terminal is exposed to inadvertent contact'), true, 'art46: NEW 215.15 barrier rule');
+  eq(has('nominal discharge current rating (In) of not less than 10kA'), true, 'art46: NEW 215.18(E) SPD 10 kA');
+  // edition-of-origin pinning claims
+  eq(has('600→1000 V in 2020'), true, 'art46: sizing-heading voltage pinned to 2020');
+  eq(has('moved in 2020') && has('moved in 2023'), true, 'art46: the two 600->1000 V moves pinned to different editions');
+  eq(has('310.15/310.60 (2017) → 310.14/315.60 (2020 and 2023)'), true, 'art46: ampacity-table renumber pinned to 2020');
+  eq(has('added in 2020') || has('ADDED in 2020') || has('gained its ampacity reference in 2020'), true, 'art46: (C) ampacity ref added in 2020');
+  // OCR + source-gap disclosures
+  eq(has('311.60'), true, 'art46: 2020 "311.60" OCR artifact disclosed');
+  eq(has('"(l)"-for-"(1)"') || has('"(l)" for "(1)"'), true, 'art46: 2020 "(l)"-for-"(1)" OCR disclosed');
+  eq(has('tts'), true, 'art46: 2017 "tts" OCR disclosed');
+  eq(has('Parts I through VIII'), true, 'art46: AJB 2020 "Parts I through VIII" mis-quote disclosed');
+  eq(has('Parts I through VII of Article 240'), true, 'art46: real 2017 text "Parts I through VII" stated');
+  eq(has('cut off at 215.12') || has('cuts off at 215.12'), true, 'art46: 2020 scan cutoff (215.15/215.18 origin not pinnable) disclosed');
+  // worked examples (recomputed from shipped cores; must match art46_numbers.json)
+  approx(500*1000/(4160*1.732), nums.EX1.eachFLA, 0.01, 'art46 EX1: 500 kVA @4160 V = 69.40 A');
+  approx(2*500*1000/(4160*1.732), nums.EX1.reqA, 0.01, 'art46 EX1: 2x = 138.80 A');
+  eq(pick(2*500*1000/(4160*1.732), 'cu', 75).label, '1/0 AWG Cu', 'art46 EX1: pick(138.80 A, Cu, 75C) = 1/0 AWG Cu');
+  approx(500*1000/(4160*1.732) + 1.25*20, nums.EX2.reqA, 0.01, 'art46 EX2: 69.40 + 25 = 94.40 A');
+  eq(pick(500*1000/(4160*1.732) + 1.25*20, 'cu', 75).label, '3 AWG Cu', 'art46 EX2: pick(94.40 A, Cu, 75C) = 3 AWG Cu');
+  eq(pick(50, 'cu', 75).label, '8 AWG Cu', 'art46 EX4: pick(50 A, Cu, 75C) = 8 AWG Cu (55-A rule)');
+  eq(has('1/0 Cu'), true, 'art46 EX5: 250.122 row 800 = 1/0 Cu stated');
+  eq(nsb(1200), 1200, 'art46 EX6: nextStdBreaker(1200) = 1200 A');
+  eq(has('138.80 A'), true, 'art46 EX1: 138.80 A stated on page');
+  eq(has('94.40 A'), true, 'art46 EX2: 94.40 A stated on page');
+  eq(has('1/0 awg cu'), true, 'art46 EX1: 1/0 AWG Cu pick stated on page');
+  eq(has('3 awg cu'), true, 'art46 EX2: 3 AWG Cu pick stated on page');
+  eq(has('no ground-fault protection required'), true, 'art46 EX6: 2017/2020 = no GFPE stated');
+  eq(has('ground-fault protection of equipment required'), true, 'art46 EX6: 2023 = GFPE required stated');
+  // cross-links (non-overlap with the two existing 215 articles + series)
+  eq(art.includes('nec-2152-feeder-ampacity.html'), true, 'art46: cross-links to 215.2 ampacity article');
+  eq(art.includes('nec-2151-2153-feeder-overcurrent.html'), true, 'art46: cross-links to 215.1+215.3 overcurrent article');
+  eq(art.includes('nec-430201-430208-part-xi-over-1000v.html'), true, 'art46: cross-links to Part XI over-1000 V article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art46: cross-links to 310.16 ampacity article');
+  const sitemap46 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap46.includes('articles/nec-2152b-235202-feeder-relocation.html'), true, 'art46: sitemap entry present');
+  const index46 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index46.includes('articles/nec-2152b-235202-feeder-relocation.html'), true, 'art46: index cross-link present');
+  const readme46 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme46.includes('articles/nec-2152b-235202-feeder-relocation.html'), true, 'art46: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
