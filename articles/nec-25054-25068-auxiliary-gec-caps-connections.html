@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 250.54 + 250.58 + 250.60 + 250.62 + 250.66 + 250.68 — Auxiliary Electrodes, the GEC Caps &amp; Electrode Connections</title>
+<meta name="description" content="Six of the seven Article 250 Part III sections not yet given their own page, in full: 250.54 auxiliary grounding electrodes, 250.58 the common-grounding-electrode rule, 250.60 lightning strike-termination devices, 250.62 GEC material, 250.66 the GEC sizing table + the three caps (6 AWG rod / 4 AWG Ufer / ground-ring — and when a cap is voided), and 250.68 connecting the GEC to electrodes (the 5-ft water-pipe rule, hold-down bolts, the rebar stub up). (250.70, the connection methods, is the one Part III section left.) Edition history 2017→2020→2023, and five worked examples from the shipped cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-25054-25068-auxiliary-gec-caps-connections.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 250.54 + 250.58 + 250.60 + 250.62 + 250.66 + 250.68 — GEC Caps &amp; Electrode Connections">
+<meta property="og:description" content="Auxiliary electrodes, the common-electrode rule, strike-termination devices, GEC material, the three GEC caps (rod 6 AWG / Ufer 4 AWG / ring) — and the 5-ft water-pipe rule, hold-down bolts, and rebar stub up. Edition history + worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-25054-25068-auxiliary-gec-caps-connections.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 250.54 + 250.58 + 250.60 + 250.62 + 250.66 + 250.68 — GEC Caps &amp; Electrode Connections">
+<meta name="twitter:description" content="The GEC caps: 6 AWG to rods, 4 AWG to the Ufer, ring-size to a ground ring — voided the moment the GEC continues to a table-sized electrode. Plus the 5-ft water-pipe rule and the rebar stub up.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 250.54 auxiliary grounding electrodes, NEC 250.58 common grounding electrode, NEC 250.60 strike termination devices lightning, NEC 250.62 grounding electrode conductor material, NEC 250.66 GEC sizing table caps, 250.66(A) 6 AWG rod pipe plate cap, 250.66(B) 4 AWG concrete encased Ufer cap, 250.66(C) ground ring cap, NEC 250.68 GEC connection to electrodes, 5 ft water pipe rule 250.68(C)(1), hold-down bolts 250.68(C)(2), rebar stub up 250.68(C)(3), GEC accessibility 250.68(A), electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 250.54 + 250.58 + 250.60 + 250.62 + 250.66 + 250.68 — Auxiliary Electrodes, the GEC Caps & Electrode Connections",
+  "description": "Six of the seven Article 250 Part III sections not yet given their own page, in full: 250.54 auxiliary grounding electrodes, 250.58 the common-grounding-electrode rule, 250.60 strike-termination devices, 250.62 GEC material, 250.66 the GEC sizing table plus its three caps (6 AWG to rods, 4 AWG to the Ufer, ring-size to a ground ring — and when a cap is voided), and 250.68 connecting the GEC to electrodes (the 5-ft water-pipe rule, hold-down bolts, the rebar stub up). 250.70 (the connection methods) is the one Part III section left. Edition history 2017→2020→2023 and five worked examples computed from the shipped PanelWright cores.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-15",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-25054-25068-auxiliary-gec-caps-connections.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "When can I run a 6 AWG grounding electrode conductor instead of the table size?",
+      "acceptedAnswer": { "@type": "Answer", "text": "250.66(A): if the GEC (or bonding jumper) connects to rod, pipe, or plate electrodes only (250.52(A)(5) or (A)(7)) and does not extend on to other types of electrodes that require a larger conductor, it need not be larger than 6 AWG copper or 4 AWG aluminum (2023 adds \"or copper-clad aluminum\"). The moment the GEC continues to a Ufer, building steel, or a water-pipe electrode, the cap is voided and the Table 250.66 size governs." }
+    },
+    {
+      "@type": "Question",
+      "name": "How big is the GEC to a concrete-encased (Ufer) electrode?",
+      "acceptedAnswer": { "@type": "Answer", "text": "If the Ufer is the only (or last) electrode type the GEC connects to, 250.66(B) caps it at 4 AWG copper regardless of the service size — a 400 A service whose only electrode is a Ufer still gets a 4 AWG GEC, not the 2/0 the table would give. If the GEC continues on to another electrode that requires a larger conductor, the table size governs." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I connect the GEC to the water pipe more than 5 feet from where it enters the building?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — for extending the connection to the electrode, 250.68(C)(1) allows interior metal water piping only within 1.52 m (5 ft) of the point of entrance, measured along the piping (the 2023 edition spells out the measurement). Beyond 5 ft the pipe cannot interconnect electrodes — except in industrial, commercial, and institutional buildings supervised by qualified persons, where exposed interior piping may be used as a bonding conductor (250.68(C)(1) Exception)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the GEC terminate on a rebar stub up out of the footing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, per 250.68(C)(3): a rebar-type concrete-encased electrode (250.52(A)(3)) may have an additional rebar section extended to an accessible location not subject to corrosion. Since 2020 the extension must be continuous with the electrode rebar (a 90° bend) or connected by steel tie wires, exothermic welding, welding, or other effective means; the extension must have corrosion protection if exposed to the earth; and rebar may not be used to interconnect electrodes of grounding electrode systems (the 2020 addition, retained in 2023)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do lightning rods count as grounding electrodes?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. 250.60: conductors and driven pipes, rods, or plate electrodes used for lightning strike-termination devices shall not be used in lieu of the grounding electrodes required by 250.50. The lightning system must still be bonded to the building's grounding electrode system per 250.106 (250.60 Info Note No. 1), and bonding all electrodes together limits voltage differences (Info Note No. 2)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a rod driven for a lightning system still need the 250.50 / 250.53 bonding?",
+      "acceptedAnswer": { "@type": "Answer", "text": "An auxiliary electrode per 250.54 — an extra electrode tied into the system — is not required to comply with the 250.50 or 250.53(C) bonding requirements or the 250.53(A)(2) Exception resistance requirement, but the earth still may not be used as an effective ground-fault current path (250.4(A)(5) and (B)(4)). It rides on the system; it does not replace it." }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code{font-family:var(--mono);font-size:.92em;background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cta{display:inline-block;background:var(--acc);color:#08111c;font-weight:750;text-decoration:none;padding:12px 20px;border-radius:8px;margin:22px 0 6px}
+.cta:hover{filter:brightness(1.08)}
+.ctasub{color:var(--dim);font-size:13.5px}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 18px;font-size:14px}
+.method .blank{font-family:var(--mono);font-size:.9em;color:var(--dim)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+footer a{color:var(--dim)}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+@media(max-width:640px){h1{font-size:24px}table{font-size:12.5px}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 250.54 + 250.58 + 250.60 + 250.62 + 250.66 + 250.68 — <span>Auxiliary Electrodes, the GEC Caps &amp; Electrode Connections</span></h1>
+  <p class="sub">Six of the seven Article 250 Part III sections not yet given their own page, in full: how auxiliary electrodes ride on the system (250.54), the one electrode that must serve the whole building (250.58), why lightning rods don't count (250.60), what the GEC is made of (250.62), the three caps on the GEC sizing table (250.66 — 6 AWG to rods, 4 AWG to the Ufer, ring-size to a ground ring) and the rule that voids them, and where the GEC actually lands on the electrode (250.68 — the 5-ft water-pipe rule, hold-down bolts, and the rebar stub up). The seventh — 250.70, the permitted connection methods (welding, listed lugs, listed clamps; no solder) — is the one Part III section left for its own page.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 250.54, 250.58, 250.60, 250.62, 250.66, and 250.68 for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text)</strong>, the citation anchor for this page; the 2020 and 2023 changes are documented in the edition-history boxes (the 250.68(C)(3) rebar restructure in 2020, the "as measured along the water piping" wording in 2023, and the 2023 copper-clad addition to cap (A)). Table values are the code, transcribed from the official 2017 text and cross-checked (see Sources).</div>
+
+  <h2>Why these six sections</h2>
+  <p>Two prior articles cover most of Part III's core: the <a href="nec-25050-25052-25053-grounding-electrode-system.html">250.50 + 250.52 + 250.53 article (→)</a> (what a grounding electrode system is + the electrode-to-electrode bonding jumper) and the <a href="nec-25064-250104-gec-installation-bonding.html">250.64 + 250.104 article (→)</a> (how the GEC is run and how pipes and structural metal get bonded); the <a href="nec-25026-25030-separately-derived-systems.html">250.26 + 250.30 article (→)</a> covers the separately derived system side that also reaches into 250.66. That leaves seven Part III sections without a page of their own — 250.54, 250.58, 250.60, 250.62, 250.66, 250.68, and 250.70. This page is the first six of those (250.70, the permitted connection methods, stays for its own page):</p>
+  <ul>
+    <li><strong>250.54 — Auxiliary Grounding Electrodes:</strong> the "extra electrode" rule — permitted, not required to be fully bonded, and the earth still may not carry fault current.</li>
+    <li><strong>250.58 — Common Grounding Electrode:</strong> one electrode system per building — conductor enclosures and equipment ground to <em>the same</em> electrode(s); bonded-together electrodes count as one system.</li>
+    <li><strong>250.60 — Use of Strike Termination Devices:</strong> lightning rods and their pipes/rods/plates are <em>not</em> 250.50 electrodes, but everything still gets bonded together.</li>
+    <li><strong>250.62 — Grounding Electrode Conductor Material:</strong> copper, aluminum, copper-clad aluminum, or the 250.68(C) items — corrosion-resist or corrosion-protected.</li>
+    <li><strong>250.66 — Size of AC GEC (table + caps):</strong> the sizing table itself, its two notes (parallel sets; no service-entrance conductors), and the three caps — (A) rod/pipe/plate → 6 AWG Cu, (B) concrete-encased → 4 AWG Cu, (C) ground ring → ring size.</li>
+    <li><strong>250.68 — GEC &amp; Bonding Jumper Connection to Electrodes:</strong> accessibility (A), effective grounding path (B), and the connection locations (C) — water pipe within 5 ft, structural frame + hold-down bolts, and the rebar stub up.</li>
+  </ul>
+  <p>The trap this page leads with: <strong>the caps shrink the GEC — they never grow it — and they all die the moment the GEC extends on to another electrode that requires a larger conductor.</strong> A 400 A service with a Ufer-only electrode gets a 4 AWG GEC; the same service with the GEC continuing to the water pipe gets a 2/0. Worked example EX5 is built to show that jump.</p>
+
+  <h2>250.54 — Auxiliary Grounding Electrodes</h2>
+  <p>Section title "Auxiliary Grounding Electrodes" verified on up.codes across 2014/2017/2020/2023 (NFPA 70) — no change in either cycle (no ELR record in either fetched course).</p>
+  <div class="code">250.54 Auxiliary Grounding Electrodes. One or more
+grounding electrodes shall be permitted to be connected to the
+equipment grounding conductors specified in 250.118 and shall
+not be required to comply with the electrode bonding
+requirements of 250.50 or 250.53(C) or the resistance
+requirements of 250.53(A)(2) Exception, but the earth shall not
+be used as an effective ground-fault current path as specified in
+250.4(A)(5) and 250.4(B)(4).
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt lines 19550–19565). OCR line-wrap reflow normalized; the 2017 scan prints this section broken by a page break ("70-113") between "bonding" and "requirements" and inserts a "250.58" header artifact mid-section — both are page artifacts, not text, and are removed here. No other wording altered.</span></div>
+
+  <div class="renew"><strong>Read this as "the extra ground you may drive."</strong> You are <em>permitted</em> to connect an additional electrode — a second rod, a plate, a water pipe at another part of the building — into the equipment grounding conductors specified in 250.118. And the code loosens the strings: that auxiliary electrode is <strong>not required to comply</strong> with (1) the 250.50 bonding-to-system requirement, (2) the 250.53(C) electrode-to-electrode bonding-jumper sizing, or (3) the 250.53(A)(2) Exception resistance-measurement requirement. The one thing that does NOT get loosened: the earth still <strong>cannot</strong> be used as an effective ground-fault current path — 250.4(A)(5) and (B)(4) remain in force. The auxiliary electrode lowers impedance and voltage rise; it does not let the soil carry your fault current.</div>
+
+  <h2>250.58 — Common Grounding Electrode</h2>
+  <p>Section title "Common Grounding Electrode" — on the 2017 official text on disk; no ELR change record in either cycle. The 2023 text is quoted from the on-disk 2023 CSV (the 2020 on-disk scan ends before Article 250, so the 2017→2023 diff is a source boundary — see the honesty notes).</p>
+  <div class="code">250.58 Common Grounding Electrode. Where an ac system is
+connected to a grounding electrode in or at a building or
+structure, the same electrode shall be used to ground conductor
+enclosures and equipment in or on that building or structure.
+Where separate services, feeders, or branch circuits supply a
+building and are required to be connected to a grounding
+electrode(s), the same grounding electrode(s) shall be used.
+
+Two or more grounding electrodes that are bonded together
+shall be considered as a single grounding electrode system in
+this sense.
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt lines 19569–19579). OCR line-wrap reflow normalized; no other wording altered.</span></div>
+
+  <div class="renew"><strong>One electrode system per building.</strong> Three sentences, one idea: whatever grounding electrode the ac system lands on is the one that <em>everything else in that building</em> grounds to — conductor enclosures, equipment, separate services, separate feeders, separate branch circuits. No building gets two unconnected electrode systems: if separate services or feeders each require an electrode connection, they all connect to the <em>same</em> electrode(s). And the practical corollary (the third paragraph): electrodes that are <em>bonded together</em> are, in this sense, a single system — so "the same electrode" is satisfied by any member of the bonded system. (This is what the <a href="nec-25050-25052-25053-grounding-electrode-system.html">250.53(C) bonding-jumper article →</a> physically builds.)</div>
+  <p class="sub"><strong>2023 delta (documented, not pinned to a change record):</strong> in the on-disk 2023 CSV, both "Where" sentence-openers are "If," and the third paragraph ("Two or more grounding electrodes that are bonded together…") is absent from the 2023 text. No ELR change record covers this section in either cycle and the on-disk 2020 scan lacks the Article 250 body, so the edition where this happened is <strong>not pinnable from the on-disk sources</strong> — it is stated as a 2017→2023 difference, not asserted against a specific cycle.</p>
+
+  <h2>250.60 — Use of Strike Termination Devices</h2>
+  <p>Section title "Use of Strike Termination Devices" verified on up.codes across 2014/2017/2020/2023 (NFPA 70) — no change in either cycle (no ELR record in either fetched course).</p>
+  <div class="code">250.60 Use of Strike Termination Devices. Conductors and
+driven pipes, rods, or plate electrodes used for grounding
+strike termination devices shall not be used in lieu of the
+grounding electrodes required by 250.50 for grounding wiring
+systems and equipment. This provision shall not prohibit the
+required bonding together of grounding electrodes of different
+systems.
+
+Informational Note No. 1: See 250.106 for the bonding
+requirement of the lightning protection system components to the
+building or structure grounding electrode system.
+
+Informational Note No. 2: Bonding together of all separate
+grounding electrodes will limit voltage differences between
+them and between their associated wiring systems.
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt lines 19583–19600). OCR line-wrap reflow normalized; no other wording altered.</span></div>
+
+  <div class="renew"><strong>The lightning rod is a passenger, not a citizen.</strong> If the driven pipe, rod, or plate on the roof exists for a <em>strike termination device</em> (lightning protection), it shall <strong>not</strong> be used in lieu of the 250.50-required electrodes for the wiring system. The house still needs its own electrode system. What the section DOES require (and the two informational notes explain): the lightning system gets <strong>bonded to the building's grounding electrode system</strong> per 250.106, and bonding all the separate electrodes together (lightning, electrical, any others) limits the voltage differences between them — which is exactly what keeps a lightning strike from arcing across the building's wiring.</div>
+
+  <h2>250.62 — Grounding Electrode Conductor Material</h2>
+  <p>Section title "Grounding Electrode Conductor Material" verified on up.codes across 2014/2017/2020/2023 (NFPA 70) — no change in either cycle (no ELR record in either fetched course).</p>
+  <div class="code">250.62 Grounding Electrode Conductor Material. The
+grounding electrode conductor shall be of copper, aluminum,
+copper-clad aluminum, or the items as permitted in 250.68(C).
+The material selected shall be resistant to any corrosive
+condition existing at the installation or shall be protected
+against corrosion. Conductors of the wire type shall be solid
+or stranded, insulated, covered, or bare.
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt lines 19602–19607). OCR line-wrap reflow normalized; no other wording altered.</span></div>
+
+  <div class="renew"><strong>Four materials, one corrosion condition, any form.</strong> The GEC material list: <strong>copper, aluminum, copper-clad aluminum</strong> — or "the items as permitted in 250.68(C)" (the structural-metal and rebar paths: bolted/riveted/welded structural frame per 250.68(C)(2), the rebar extension per 250.68(C)(3), metal water piping per 250.68(C)(1)). Two constraints: the material must be <strong>resistant to the corrosive condition at the installation, or protected against corrosion</strong> — this is why a GEC buried through corrosive soil gets sleeved or protected, and why 250.68(C)(3) demands corrosion protection on a rebar extension that emerges into the earth. And form is free: wire-type GECs may be solid or stranded, insulated, covered, or bare (the bare/covered restrictions for aluminum are in 250.64(A) — covered in the <a href="nec-25064-250104-gec-installation-bonding.html">250.64 article →</a>).</div>
+
+  <h2>250.66 — Size of AC Grounding Electrode Conductor (table + caps)</h2>
+  <p>Section title "Size of Alternating-Current Grounding Electrode Conductor" — 2017 official text on disk (lines 19858–19891). The 2017 lead-in already says "except as permitted in 250.66(A) through (C)" — the caps are part of 250.66 itself.</p>
+  <div class="code">250.66 Size of Alternating-Current Grounding Electrode
+Conductor. The size of the grounding electrode conductor at
+the service, at each building or structure where supplied by a
+feeder(s) or branch circuit(s), or at a separately derived
+system of a grounded or ungrounded ac system shall not be less
+than given in Table 250.66, except as permitted in 250.66(A)
+through (C).
+
+(A) Connections to a Rod, Pipe, or Plate Electrode(s). If the
+grounding electrode conductor or bonding jumper connected to a
+single or multiple rod, pipe, or plate electrode(s), or any
+combination thereof, as described in 250.52(A)(5) or (A)(7),
+does not extend on to other types of electrodes that require a
+larger size conductor, the grounding electrode conductor shall
+not be required to be larger than 6 AWG copper wire or 4 AWG
+aluminum wire.
+
+(B) Connections to Concrete-Encased Electrodes. If the
+grounding electrode conductor or bonding jumper connected to a
+single or multiple concrete-encased electrode(s), as described
+in 250.52(A)(3), does not extend on to other types of
+electrodes that require a larger size of conductor, the
+grounding electrode conductor shall not be required to be
+larger than 4 AWG copper wire.
+
+(C) Connections to Ground Rings. If the grounding electrode
+conductor or bonding jumper connected to a ground ring, as
+described in 250.52(A)(4), does not extend on to other types of
+electrodes that require a larger size of conductor, the
+grounding electrode conductor shall not be required to be
+larger than the conductor used for the ground ring.
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt lines 19858–19891). OCR line-wrap reflow normalized; no other wording altered. 2023 delta on (A): adds "or copper-clad aluminum" to the 4 AWG aluminum cap (ELR sectionID 1602, "2023 Code Language").</span></div>
+
+  <p>Reprinted here with the article's worked examples because the caps live in this section. Table 250.66 (all 7 rows, verbatim 2017 on disk, cell-for-cell identical in the 2023 CSV — see the <a href="nec-25064-250104-gec-installation-bonding.html">250.64 article →</a> for the full reprint and cross-check):</p>
+  <table>
+    <thead><tr><th>Size of largest ungrounded service-entrance conductor or equivalent area for parallel conductors (copper)</th><th class="ctr">(aluminum or copper-clad aluminum)</th><th class="ctr">GEC copper</th><th class="ctr">GEC aluminum</th></tr></thead>
+    <tbody>
+      <tr><td>2 AWG or smaller</td><td class="ctr">1/0 AWG or smaller</td><td class="ctr">8 AWG</td><td class="ctr">6 AWG</td></tr>
+      <tr><td>1 AWG or 1/0 AWG</td><td class="ctr">2/0 AWG or 3/0 AWG</td><td class="ctr">6 AWG</td><td class="ctr">4 AWG</td></tr>
+      <tr><td>2/0 AWG or 3/0 AWG</td><td class="ctr">4/0 AWG or 250 kcmil</td><td class="ctr">4 AWG</td><td class="ctr">2 AWG</td></tr>
+      <tr><td>Over 3/0 AWG through 350 kcmil</td><td class="ctr">Over 250 through 500 kcmil</td><td class="ctr">2 AWG</td><td class="ctr">1/0 AWG</td></tr>
+      <tr><td>Over 350 through 600 kcmil</td><td class="ctr">Over 500 through 900 kcmil</td><td class="ctr">1/0 AWG</td><td class="ctr">3/0 AWG</td></tr>
+      <tr><td>Over 600 through 1100 kcmil</td><td class="ctr">Over 900 through 1750 kcmil</td><td class="ctr">2/0 AWG</td><td class="ctr">4/0 AWG</td></tr>
+      <tr><td>Over 1100 kcmil</td><td class="ctr">Over 1750 kcmil</td><td class="ctr warn">3/0 AWG — CAPPED</td><td class="ctr warn">250 kcmil — CAPPED</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Notes (verbatim 2017): <strong>Note 1</strong> — if multiple sets of service-entrance conductors connect directly to a service drop, set of overhead service conductors, set of underground service conductors, or service lateral, the equivalent size of the largest service-entrance conductor shall be determined by the <em>largest sum of the areas of the corresponding conductors of each set</em>. <strong>Note 2</strong> — where there are no service-entrance conductors, the GEC size shall be determined by the equivalent size of the largest service-entrance conductor <em>required for the load to be served</em>. The 2017 table also carries an asterisk: "This table also applies to the derived conductors of separately derived ac systems" (absent from the on-disk 2023 table — see honesty notes).</p>
+
+  <div class="renew"><p><strong>The three caps — and the clause that kills them.</strong> Every cap is a "does not extend on to other types of electrodes that require a larger size conductor" clause:</p>
+  <ul>
+    <li><strong>(A) rod / pipe / plate → max 6 AWG Cu (4 AWG Al; 2023: 4 AWG Al or CCA).</strong> Your GEC terminates at the rod and stops? Never larger than 6 AWG Cu — no matter how big the service is. (EX2: a 200 A service, table says 2 AWG, rod-only → 6 AWG.)</li>
+    <li><strong>(B) concrete-encased (Ufer) → max 4 AWG Cu.</strong> The GEC terminates at the Ufer and stops? Never larger than 4 AWG Cu. (EX3: a 400 A service, table says 2/0, Ufer-only → 4 AWG.)</li>
+    <li><strong>(C) ground ring → max the ring's own size.</strong> The GEC terminates at the ring and stops? Never larger than the ring conductor. (EX4: an 800 A service on two sets, table says 3/0, ring = 2 AWG → 2 AWG.)</li>
+  </ul>
+  <p>The "does not extend on" clause is the whole game. The instant the GEC continues from the rod/Ufer/ring to <em>another</em> electrode type that requires a larger conductor (building steel, metal underground water pipe, a bigger Ufer), the cap no longer applies and the <strong>table size governs end-to-end</strong> — you size the GEC for the <em>furthest</em> table-sized electrode. Caps are floors-with-ceilings, not independent rules. (EX5: the same 400 A service as EX3, with the GEC continuing rod → water pipe: 4 AWG becomes 2/0.)</p></div>
+
+  <h2>250.68 — GEC &amp; Bonding Jumper Connection to Grounding Electrodes</h2>
+  <p>Section title "Grounding Electrode Conductor and Bonding Jumper Connection to Grounding Electrodes" verified on up.codes for NFPA 70 2023 (fetched 2026-09-15); identical on the 2017 official text on disk (lines 19894–20071).</p>
+  <div class="code">250.68 Grounding Electrode Conductor and Bonding Jumper
+Connection to Grounding Electrodes. The connection of a
+grounding electrode conductor at the service, at each building
+or structure where supplied by a feeder(s) or branch circuit(s),
+or at a separately derived system and associated bonding
+jumper(s) shall be made as specified 250.68(A) through (C).
+
+(A) Accessibility. All mechanical elements used to terminate a
+grounding electrode conductor or bonding jumper to a grounding
+electrode shall be accessible.
+
+Exception No. 1: An encased or buried connection to a concrete-
+encased, driven, or buried grounding electrode shall not be
+required to be accessible.
+
+Exception No. 2: Exothermic or irreversible compression
+connections used at terminations, together with the mechanical
+means used to attach such terminations to fireproofed structural
+metal whether or not the mechanical means is reversible, shall
+not be required to be accessible.
+
+(B) Effective Grounding Path. The connection of a grounding
+electrode conductor or bonding jumper to a grounding electrode
+shall be made in a manner that will ensure an effective
+grounding path. Where necessary to ensure the grounding path
+for a metal piping system used as a grounding electrode,
+bonding shall be provided around insulated joints and around
+any equipment likely to be disconnected for repairs or
+replacement. Bonding jumpers shall be of sufficient length to
+permit removal of such equipment while retaining the integrity
+of the grounding path.
+
+(C) Grounding Electrode Conductor Connections. Grounding
+electrode conductors and bonding jumpers shall be permitted to
+be connected at the following locations and used to extend the
+connection to an electrode(s):
+
+(1) Interior metal water piping that is electrically continuous
+with a metal underground water pipe electrode and is located
+not more than 1.52 m (5 ft) from the point of entrance to the
+building shall be permitted to extend the connection to an
+electrode(s). Interior metal water piping located more than
+1.52 m (5 ft) from the point of entrance to the building shall
+not be used as a conductor to interconnect electrodes of the
+grounding electrode system.
+
+Exception: In industrial, commercial, and institutional
+buildings or structures, if conditions of maintenance and
+supervision ensure that only qualified persons service the
+installation, interior metal water piping located more than
+1.52 m (5 ft) from the point of entrance to the building shall
+be permitted as a bonding conductor to interconnect electrodes
+that are part of the grounding electrode system, or as a
+grounding electrode conductor, if the entire length, other than
+short sections passing perpendicularly through walls, floors,
+or ceilings, of the interior metal water pipe that is being
+used for the conductor is exposed.
+
+(2) The metal structural frame of a building shall be permitted
+to be used as a conductor to interconnect electrodes that are
+part of the grounding electrode system, or as a grounding
+electrode conductor. Hold-down bolts securing the structural
+steel column that are connected to a concrete-encased electrode
+that complies with 250.52(A)(3) and is located in the support
+footing or foundation shall be permitted to connect the metal
+structural frame of a building or structure to the concrete
+encased grounding electrode. The hold-down bolts shall be
+connected to the concrete-encased electrode by welding,
+exothermic welding, the usual steel tie wires, or other
+approved means.
+
+(3) A rebar-type concrete-encased electrode installed in
+accordance with 250.52(A)(3) with an additional rebar section
+extended from its location within the concrete to an
+accessible location that is not subject to corrosion shall be
+permitted for connection of grounding electrode conductors and
+bonding jumpers. The rebar extension shall not be exposed to
+contact with the earth without corrosion protection.
+<span class="src">Verbatim NEC 2017, official NFPA text (nec2017_full.txt lines 19894–20071). OCR line-wrap reflow normalized; page-break artifacts removed (the scan interposes "70-115 / 250.68 / ARTICLE 250 — GROUNDING AND BONDING" between (A) Exception 2 and (B), and splits Table 250.66 into the middle of (C)(1)). One OCR artifact corrected and disclosed: 250.68(C)(1) Exception "pipe that ts being used" → "pipe that is being used" (scan garble). The 2017 scan prints the lead-in "shall be made as specified 250.68(A) through (C)" (no "in") — identical in the on-disk 2023 CSV, so quoted as printed. No other wording altered.</span></div>
+
+  <div class="renew"><strong>(A) Accessibility, with two escape hatches.</strong> Every mechanical element that terminates the GEC or a bonding jumper to an electrode must be <strong>accessible</strong> — the terminal, the clamp, the connector. Exception 1: an <em>encased or buried</em> connection (Ufer, driven rod, buried electrode) doesn't have to be accessible — it's under the slab or underground. Exception 2: an <em>exothermic or irreversible compression</em> connection, plus its mechanical attachment to fireproofed structural metal, doesn't have to be accessible — the joint itself is the termination. (The "whether or not the mechanical means is reversible" covers the strap that holds the terminal: even a removable strap on a permanent joint is exempt.)</div>
+  <div class="renew"><strong>(B) The effective-path clause — the one people miss.</strong> "Ensure an effective grounding path" sounds like boilerplate; the next sentence is the real rule: where the metal piping system is the electrode, you must bond <strong>around insulated joints</strong> (dielectric unions) <em>and</em> around <strong>any equipment likely to be disconnected</strong> (shut-off valves, water heaters), and the bonding jumpers must be <strong>long enough to remove the equipment without breaking the path</strong>. Pull a water heater with the bonding jumper too short and you've just opened the electrode path — the jumper length is part of the code requirement.</div>
+  <div class="renew"><p><strong>(C) The three connection locations — where the GEC may actually land.</strong> This is the section that tells you <em>where</em> you're allowed to connect, not just how:</p>
+  <ul>
+    <li><strong>(C)(1) Interior metal water pipe — the 5-ft rule.</strong> Electrically continuous with the underground pipe electrode, and located <strong>not more than 1.52 m (5 ft) from the point of entrance</strong> (2023: "as measured along the water piping" — the distance is measured along the pipe, not as the crow flies). Beyond 5 ft: not permitted to interconnect electrodes — <em>except</em> in industrial/commercial/institutional buildings where only qualified persons service the installation, if the entire length (except short perpendicular wall/floor/ceiling penetrations) is exposed.</li>
+    <li><strong>(C)(2) Metal structural frame + hold-down bolts.</strong> The building's steel frame may be the conductor that interconnects electrodes or serves as the GEC. The specific path that makes this practical: <strong>hold-down bolts</strong> securing the structural steel column, <em>connected to a Ufer electrode in the footing</em> (250.52(A)(3)), may connect the frame to that electrode — by welding, exothermic welding, <strong>the usual steel tie wires</strong>, or other approved means. (The 2023 text prints "the usual steel tie wires"; the on-disk 2023 CSV drops "the usual" — the 2017 scan, the 2020 record, and the 2023 record all carry it, so it's quoted here; see honesty notes.)</li>
+    <li><strong>(C)(3) The rebar stub up.</strong> A rebar-type Ufer (250.52(A)(3)) may have an <strong>additional rebar section extended to an accessible location</strong> not subject to corrosion — the classic stub up out of the footing for the GEC to clamp to. Two constraints: the extension must have <strong>corrosion protection if exposed to the earth</strong> (a stub that emerges from dirt into the stem wall, not from concrete, is the classic violation), and (since 2020, see edition history) the extension must be <strong>continuous with the electrode rebar or connected by steel tie wires, exothermic welding, welding, or other effective means</strong> — and <strong>rebar shall not be used as a conductor to interconnect the electrodes of grounding electrode systems</strong>.</li>
+  </ul></div>
+
+  <h2>Edition history — 2017 → 2020 → 2023</h2>
+  <table>
+    <thead><tr><th>Subsection</th><th>2017 (on-disk official)</th><th>2020</th><th>2023</th></tr></thead>
+    <tbody>
+      <tr><td>250.54</td><td>As quoted above</td><td>No ELR change record (course 855–880 fetched 2026-09-15) — no title-level change</td><td>== 2017 except the "(B)(4)" cite form: the on-disk 2023 CSV prints "250.4(A)(5) and (B)(4)" (parenthetical short form) vs the 2017 "250.4(A)(5) and 250.4(B)(4)" — cite-form difference, not pinnable to a cycle (no ELR record)</td></tr>
+      <tr><td>250.58</td><td>Two "Where" sentences + third paragraph ("Two or more grounding electrodes that are bonded together shall be considered as a single grounding electrode system in this sense.")</td><td class="warn">On-disk 2020 scan ends before Article 250 → no 2017→2020 diff claimable</td><td class="warn">On-disk 2023 CSV: both openers are "If"; the third paragraph is absent. <strong>2017→2023 difference; edition not pinnable</strong> (no ELR record either cycle)</td></tr>
+      <tr><td>250.60</td><td>As quoted above (incl. both informational notes)</td><td>No ELR change record — no change</td><td>== 2017 (verified on-disk CSV text identical modulo reflow)</td></tr>
+      <tr><td>250.62</td><td>As quoted above</td><td>No ELR change record — no change</td><td>== 2017 (verified on-disk CSV text identical modulo reflow)</td></tr>
+      <tr><td>250.66 lead</td><td>"…at the service, at each building or structure where supplied by a feeder(s) or branch circuit(s), or at a separately derived system of a grounded or ungrounded ac system…"</td><td>On-disk 2020 scan gap → not claimable</td><td class="warn">Rewritten (on-disk 2023 CSV): "…for connection of grounding electrodes shall not be smaller than given in Table 250.66, except as permitted in 250.66(A) through (C)" — shorter; drops the "of a grounded or ungrounded ac system" phrasing. Edition not pinnable (ELR table records 867/1603 are image-only; no lead-level record)</td></tr>
+      <tr><td>250.66(A)</td><td>"…larger than 6 AWG copper wire or 4 AWG aluminum wire."</td><td>No lead-level record in fetched 2020 course</td><td class="warn">Adds "<strong>or copper-clad aluminum</strong>" to the 4 AWG aluminum cap (ELR sectionID 1602 "2023 Code Language")</td></tr>
+      <tr><td>250.66(B)/(C)</td><td>4 AWG Cu / ring-size caps</td><td>—</td><td>== 2017 (on-disk CSV; ELR 1602 course page discusses the (B)/(C) parallels)</td></tr>
+      <tr><td>Table 250.66</td><td>7 rows as above + 2 notes + asterisk ("also applies to the derived conductors of separately derived ac systems")</td><td class="warn">ELR 867: image-only record; the 2020 course text says the words "<strong>service-entrance</strong>" were <strong>removed</strong> from the table header (the table also sizes feeder/sd-system GECs) — header reword, rows unchanged</td><td>Rows identical to 2017 (verified cell-for-cell on-disk CSV). Header reworded per 867; the 2017 asterisk note is absent from the on-disk 2023 table (ELR 1603 record image-only → not pinnable)</td></tr>
+      <tr><td>250.68 lead</td><td>"…at a separately derived system and associated bonding jumper(s) shall be made as specified 250.68(A) through (C)."</td><td>—</td><td class="warn">On-disk CSV keeps "and associated bonding jumper(s)" (2017 scan and 2023 CSV print the same lead-in; both print "as specified 250.68(A)" without "in")</td></tr>
+      <tr><td>250.68(A)/(B)</td><td>As quoted above</td><td>No ELR record in fetched 2020 course</td><td>== 2017 (on-disk CSV)</td></tr>
+      <tr><td>250.68(C)(1)</td><td>5-ft rule, no measurement qualifier</td><td>—</td><td class="warn">Adds "<strong>, as measured along the water piping</strong>" to both 5-ft clauses (ELR sectionID 1604)</td></tr>
+      <tr><td>250.68(C)(2)</td><td>Structural frame + hold-down bolts; "that complies with 250.52(A)(3) and is located…"; "concrete encased grounding electrode"; "the usual steel tie wires"</td><td>—</td><td class="warn">"that complies with … and is located" → "complying with … and located"; "concrete encased" → "concrete-encased" (on-disk CSV + ELR 1605); on-disk CSV drops "the usual" in "steel tie wires" (2020 record + 2023 record + 2017 scan keep it — quoted WITH "the usual", see honesty notes)</td></tr>
+      <tr><td>250.68(C)(3)</td><td>Rebar stub up, single-sentence form: extension permitted; "shall not be exposed to contact with the earth without corrosion protection"</td><td class="warn"><strong>Restructured to (a)/(b)/(c)</strong> (ELR sectionID 868): (a) extension must be continuous with the electrode rebar (90° bend) or connected by steel tie wires, exothermic welding, welding, or other effective means; (b) corrosion protection if exposed to earth; (c) <strong>NEW — "Rebar shall not be used as a conductor to interconnect the electrodes of grounding electrode systems"</strong></td><td>== 2020 (a)/(b)/(c) (ELR sectionID 1606); "foundation or footing" phrasing; on-disk CSV drops "the usual" in "steel tie wires" (same as (C)(2) — see honesty notes)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">All change records fetched 2026-09-15 from the ELR (electricallicenserenewal.com) 2020/2023 Article 250 CE change-language pages (2020 course sectionIDs 855–880; 2023 course sectionIDs 1585–1625); the 2017 anchor is the official NFPA text on disk. The on-disk 2020 full-code scan ends before Article 250, so 2017→2020 deltas come from the change records, not a word diff. The 2026 edition is out of scope: the only on-disk-documented 2026 renumber is Article 220 → 120 (e.g. dryers 220.54 → 120.54), and no on-disk source confirms the Article 250 section numbers moved — this page assumes 250.54–250.68 numbering is stable across 2017–2023 and cites it as-is.</p>
+
+  <h2>Worked examples (every number from the shipped cores)</h2>
+  <p>Computed under node by <code>compute_art47.js</code> → <code>art47_numbers.json</code> from the shipped <code>T31016</code>, <code>ch9Row</code>/<code>CH9_T8</code> (circular mils), and <code>pickConductor31016</code> cores — zero hand math. Each service is sized at 125% of the continuous service load (230.42(A)(1)) in the 110.14(C)(1) termination-temperature column; Table 250.66 row lookups run on the core cmil values of the picked conductor.</p>
+
+  <h3>EX1 — the 100 A service, water-pipe electrode: the table governs (no cap)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Service</td><td class="ctr">100 A (≤100 A → 60 °C column, 110.14(C)(1)(a))</td></tr>
+      <tr><td>Required ampacity (125% continuous, 230.42(A)(1))</td><td class="ctr">125 A</td></tr>
+      <tr><td>Ungrounded pick (310.16 @ 60 °C)</td><td class="ctr"><code>pickConductor31016(125, cu, 60) → 1/0 Cu</code> (125 A @ 60 °C; <code>ch9Row → 105,600 cmil</code>)</td></tr>
+      <tr><td>Table 250.66 row (105,600 cmil ≤ 105,600 = 1/0 boundary, inclusive)</td><td class="ctr">"1 AWG or 1/0 AWG"</td></tr>
+      <tr><td>GEC</td><td class="ctr ok">6 AWG Cu (4 AWG Al) — the table result; a water-pipe electrode has no (A)/(B)/(C) cap</td></tr>
+      <tr><td>Aluminum version</td><td class="ctr"><code>pickConductor31016(125, al, 60) → 3/0 Al</code> (130 A @ 60 °C; 167,800 cmil → "2/0 or 3/0" row → same 6 AWG Cu / 4 AWG Al)</td></tr>
+      <tr><td>Connection (250.68(C)(1))</td><td class="ctr">GEC lands on the interior metal water pipe <strong>within 5 ft of the point of entrance</strong> (2023: as measured along the water piping); pipe must be electrically continuous with the underground electrode</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Why this example: at 100 A the table row is only 6 AWG Cu, so the cap question doesn't arise — but it fixes the baseline row and the 250.68(C)(1) connection rule that EX5 depends on. (The 1/0 pick at 125 A is the 110.14(C)(1)(a) 60 °C trap: 2/0 Cu is 145 A @ 60 °C but 2/0 lands in the next table row — 1/0 at exactly 125 A is the 60 °C column answer.)</p>
+
+  <h3>EX2 — the 200 A service, rod-only electrode: cap (A) shrinks 2 AWG → 6 AWG</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Service</td><td class="ctr">200 A (>100 A → 75 °C column, 110.14(C)(1)(b))</td></tr>
+      <tr><td>Required ampacity (125% continuous)</td><td class="ctr">250 A</td></tr>
+      <tr><td>Ungrounded pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(250, cu, 75) → 250 kcmil Cu</code> (255 A; <code>ch9Row → 250,000 cmil</code>)</td></tr>
+      <tr><td>Table 250.66 row (250,000 cmil → "Over 3/0 through 350")</td><td class="ctr">table GEC = 2 AWG Cu (1/0 Al)</td></tr>
+      <tr><td>Electrode: driven rod(s) only (250.52(A)(5)); GEC does not extend on</td><td class="ctr">250.66(A) applies</td></tr>
+      <tr><td>GEC</td><td class="ctr ok">6 AWG Cu (4 AWG Al) — cap (A) governs; the 2 AWG table size is not required</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The everyday case: most one-family services ground to a rod (or rod + Ufer). If the GEC <em>stops</em> at the rod, you run 6 AWG Cu from a 200 A service — 4 sizes smaller than the table.</p>
+
+  <h3>EX3 — the 400 A service, Ufer-only electrode: cap (B) shrinks 2/0 → 4 AWG</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Service</td><td class="ctr">400 A (75 °C column)</td></tr>
+      <tr><td>Required ampacity (125% continuous)</td><td class="ctr">500 A</td></tr>
+      <tr><td>Ungrounded pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(500, cu, 75) → 900 kcmil Cu</code> (520 A; <code>ch9Row → 900,000 cmil</code>)</td></tr>
+      <tr><td>Table 250.66 row (900,000 cmil → "Over 600 through 1100")</td><td class="ctr">table GEC = 2/0 Cu (4/0 Al)</td></tr>
+      <tr><td>Electrode: concrete-encased (Ufer) only (250.52(A)(3)); GEC does not extend on</td><td class="ctr">250.66(B) applies</td></tr>
+      <tr><td>GEC</td><td class="ctr ok">4 AWG Cu — cap (B) governs; the 2/0 table size is not required</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The Ufer cap is the most consequential in the section: it collapses a 2/0 table size to 4 AWG copper on a 400 A service. This is the setup for EX5.</p>
+
+  <h3>EX4 — the 800 A service on two parallel sets, ground-ring-only: cap (C) = the ring itself</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Service</td><td class="ctr">800 A on <strong>two</strong> parallel sets (75 °C column)</td></tr>
+      <tr><td>Per-set required ampacity (125% × 400 A per set)</td><td class="ctr">500 A per set</td></tr>
+      <tr><td>Per-set ungrounded pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(500, cu, 75) → 900 kcmil Cu</code> (520 A; 900,000 cmil per set)</td></tr>
+      <tr><td>Note 1 equivalent area (largest sum of corresponding conductor areas)</td><td class="ctr">2 × 900,000 = <strong>1,800,000 cmil</strong></td></tr>
+      <tr><td>Table 250.66 row (1,800,000 cmil → "Over 1100")</td><td class="ctr">table GEC = 3/0 Cu — the CAPPED row</td></tr>
+      <tr><td>Electrode: ground ring only (250.52(A)(4)), 2 AWG Cu ring; GEC does not extend on</td><td class="ctr">250.66(C) applies</td></tr>
+      <tr><td>GEC</td><td class="ctr ok">2 AWG Cu — cap (C): need not be larger than the ring conductor</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Two things in one example: Note 1 (parallel sets — sum the corresponding areas before looking up the row) and cap (C) (the GEC rides the ring size). Note the table row here is the <em>capped</em> "Over 1100" row (max 3/0 Cu) — and even that is larger than the ring, so cap (C) still wins.</p>
+
+  <h3>EX5 — the same 400 A service as EX3, but the GEC continues rod → water pipe: cap (A) is voided, the table governs</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Service</td><td class="ctr">400 A (75 °C column) — same as EX3</td></tr>
+      <tr><td>Ungrounded pick / Table 250.66 row</td><td class="ctr">900 kcmil Cu (900,000 cmil) → "Over 600 through 1100" → table GEC = <strong>2/0 Cu</strong></td></tr>
+      <tr><td>Electrode system</td><td class="ctr">driven rod + metal underground water pipe; GEC runs service → rod → water pipe (continues on to another electrode type)</td></tr>
+      <tr><td>250.66(A) status</td><td class="ctr warn">VOIDED — "does not extend on to other types of electrodes that require a larger size conductor" is false: the water pipe (table-sized, no cap) requires the 2/0</td></tr>
+      <tr><td>GEC, end-to-end</td><td class="ctr ok">2/0 Cu — the table size governs from the service to the furthest electrode</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The headline: <strong>caps shrink the GEC; they never grow it, and they die the moment the GEC extends on.</strong> EX3 (Ufer only) = 4 AWG via cap (B). Change the electrode system so the GEC continues to the water pipe and the 4 AWG becomes a 2/0 — the GEC is sized for the <em>furthest</em> table-sized electrode, and every intermediate connection (the rod, per 250.53(C) bonding-jumper rules) rides on that size. (Had the continuation gone to a second Ufer, cap (B)'s 4 AWG would have survived — the continuation voids a cap only when the next electrode type <em>requires a larger</em> conductor.)</p>
+
+  <h2>Where these six sections fit</h2>
+  <ul>
+    <li><strong>What the electrode system is:</strong> 250.50 required electrode + 250.52 types — the <a href="nec-25050-25052-25053-grounding-electrode-system.html">250.50 + 250.52 + 250.53 article →</a> (the 250.53(C) bonding jumper that 250.54 waives for auxiliary electrodes lives there).</li>
+    <li><strong>How the GEC is run (not sized, not landed):</strong> 250.64(A)–(F) + 250.104 — the <a href="nec-25064-250104-gec-installation-bonding.html">250.64 + 250.104 article →</a> (no-splice rule, Schedule 80 PVC protection, the 18-in. aluminum rule, and the full Table 250.66 reprint + the 250.102(C)(1)/250.122 piping bonds). This article covers the six sections 250.64 does not: 250.54/250.58/250.60/250.62/250.66-caps/250.68. (250.70 — the permitted connection methods, exothermic welding / listed lugs / listed clamps / no solder — is the one Part III section still without a page.)</li>
+    <li><strong>Sequencing the whole Part III build:</strong> pick the electrodes (250.50/250.52) → size the GEC (250.66 table + caps — this article) → run it (250.64) → land it on the electrode (250.68 — this article) → bond pipes/structural metal (250.104).</li>
+    <li><strong>Separately derived systems:</strong> the Table 250.66 asterisk (2017: "also applies to the derived conductors of separately derived ac systems") + 250.30(A)(5)/(A)(6) GEC rules — the <a href="nec-25026-25030-separately-derived-systems.html">250.26 + 250.30 article →</a>.</li>
+    <li><strong>Separate buildings and structures:</strong> the GEC to a separate building per 250.32(E)(1) — sized from Table 250.66 on the largest ungrounded conductor (the table this article reprints, caps included) — the <a href="nec-25032-separate-building-grounding.html">250.32 separate-building grounding article →</a>.</li>
+    <li><strong>Lightning system bonding:</strong> 250.106 (pointed at by 250.60 Info Note No. 1) — not yet a PanelWright article; the bonding requirement is quoted in 250.60 above.</li>
+    <li><strong>2026 edition (out of scope, flagged honestly):</strong> the only 2026 renumber confirmed by on-disk sources is Article 220 → 120 (e.g. dryers 220.54 → 120.54, ranges, lighting demand). No on-disk source confirms the Article 250 section numbers moved, so this page assumes 250.54–250.68 numbering is stable across 2017–2023 and cites it as-is; <strong>verify section numbers against the NEC edition adopted in your jurisdiction</strong>.</li>
+  </ul>
+
+  <a class="cta" href="../#panelCard">Open the free PanelWright calculator — size the panel, the service, the neutral, the derating, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>): 250.54 (lines 19550–19565), 250.58 (lines 19569–19579), 250.60 (lines 19583–19600), 250.62 (lines 19602–19607), 250.66 lead + caps (lines 19858–19891), 250.68 (lines 19894–20071). OCR line-wrap reflow normalized; OCR artifacts corrected and disclosed inline in each code block: the 250.54 page-break split ("70-113" + a "250.58" header artifact mid-section — page artifacts, removed); 250.68(C)(1) Exception "pipe that ts being used" → "pipe that is being used". The 2017 scan's 250.68 lead-in prints "as specified 250.68(A) through (C)" (no "in") — identical in the on-disk 2023 CSV, so quoted as printed, no correction. No other wording altered.</p>
+    <p><strong>Edition history.</strong> Change records fetched 2026-09-15 from the ELR (electricallicenserenewal.com) 2020/2023 Article 250 CE pages: 2020 — sectionID 867 (Table 250.66, image-only; "service-entrance" removed from the header), 868 (250.68(C)(3) restructured to (a)/(b)/(c) + NEW (c) rebar-interconnect prohibition). 2023 — 1602 (250.66(A) "or copper-clad aluminum"), 1603 (Table 250.66, image-only), 1604 (250.68(C)(1) "as measured along the water piping" ×2), 1605 (250.68(C)(2) rewords), 1606 (250.68(C)(3) == 2020). <strong>No ELR change records exist in either cycle for 250.54, 250.58, 250.60, 250.62, the 250.66 lead, or the 250.68 lead</strong> (fetched ranges 855–880 and 1585–1625) — those deltas, where they exist, are stated as 2017→2023 differences with the edition flagged as not pinnable. Section titles: 250.54 / 250.60 / 250.62 verified identical across 2014/2017/2020/2023 on up.codes; 250.68 title verified on up.codes NFPA 70 2023 + 2017 disk; 250.58 and 250.66 titles from the on-disk editions (up.codes search for those two returned no results this session — source gap, not an assertion).</p>
+    <p><strong>2023 text.</strong> On-disk NEC 2023 CSV (<span class="blank">art35_nec_csv.csv</span>, rows 250.54/250.58/250.60/250.62/250.66/250.66(A)–(C)/250.68(A)–(C)), cross-checked against the ELR "2023 Code Language" blocks. <strong>Known discrepancy, resolved by source count:</strong> the 2023 CSV prints "by steel tie wires" (dropping "the usual") in both 250.68(C)(2) and (C)(3), while the 2017 scan, the 2020 ELR 868 record, and the 2023 ELR 1605/1606 records all print "the <em>usual</em> steel tie wires" — this article quotes with "the usual" (3 independent sources vs 1).</p>
+    <p><strong>Table values.</strong> Table 250.66 (7 rows, 2 notes, asterisk) transcribed from the verbatim 2017 on disk (lines 19908–19985) and verified cell-for-cell identical against the on-disk 2023 CSV table. The 2020 header reword ("service-entrance" removed) comes from the ELR 867 course text; the table's 2020/2023 ELR records are image-only, so the row-level claim rests on the 2017↔2023 on-disk comparison. Row lookups in the worked examples run on the shipped <code>CH9_T8</code> circular-mil values (material-independent area), not typed constants; the seven Cu/Al row boundaries were verified against <code>ch9Row</code> at runtime (66,360 / 105,600 / 133,100 / 167,800 / 211,600 cmil where applicable).</p>
+    <p><strong>Worked numbers.</strong> Every ampacity / cmil / conductor pick computed by the shipped cores under node (<span class="blank">compute_art47.js</span> → <span class="blank">art47_numbers.json</span>): service sizing at 125% continuous (230.42(A)(1)) in the 110.14(C)(1) column (60 °C ≤100 A per (C)(1)(a); 75 °C >100 A per (C)(1)(b)); <code>pickConductor31016</code> for the ungrounded pick; <code>ch9Row</code>/<code>CH9_T8</code> for cmil; Table 250.66 rows + the three caps applied by the cap clauses quoted above. Zero hand math; the test suite re-runs the picks and asserts they match the page.</p>
+    <p><strong>Source boundaries (stated, not asserted):</strong> (1) the on-disk 2020 full-code scan ends before Article 250 — no 2017→2020 word diff is claimed anywhere on this page; (2) the 2023 CSV omits the third 250.58 paragraph and changes "Where"→"If" — edition not pinnable (no ELR record); (3) the 2017 Table 250.66 asterisk note is absent from the on-disk 2023 table — edition not pinnable (ELR table records image-only); (4) the 250.66 lead rewording (the "of a grounded or ungrounded ac system" phrasing dropped) is a 2017→2023 difference, edition not pinnable; the 250.68 lead-in is word-identical between the 2017 scan and the 2023 CSV (both print "as specified 250.68(A)" without "in").</p>
+    <p><strong>Authorship.</strong> Written and verified by <strong>Radloff Bot (no humans pretend to be the author)</strong>. Zero third-party scripts, zero tracking; data never leaves your browser.</p>
+  </div>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 47 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan + NEC 2023 (on-disk CSV) + ELR 2020/2023 change-language records, verbatim, OCR corrections + source boundaries disclosed. Design aid — the adopted edition in your jurisdiction governs.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-25050-25052-25053-grounding-electrode-system.html">NEC 250.50 + 250.52 + 250.53 grounding electrode system</a> · <a href="nec-25064-250104-gec-installation-bonding.html">NEC 250.64 + 250.104 GEC installation &amp; bonding</a> · <a href="nec-25026-25030-separately-derived-systems.html">NEC 250.26 + 250.30 separately derived systems</a> · <a href="nec-250102-main-bonding-jumper.html">NEC 250.102 main bonding jumper</a> · <a href="nec-250122-egc-sizing.html">NEC 250.122 EGC sizing</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>

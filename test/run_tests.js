@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 47, 'art44: sitemap has 47 URLs (was 46, +article 46)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 48, 'art44: sitemap has 48 URLs (was 47, +article 47)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4718,6 +4718,99 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index46.includes('articles/nec-2152b-235202-feeder-relocation.html'), true, 'art46: index cross-link present');
   const readme46 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme46.includes('articles/nec-2152b-235202-feeder-relocation.html'), true, 'art46: README entry present');
+}
+
+// Article 47 — NEC 250.54 + 250.58 + 250.60 + 250.62 + 250.66 (caps) + 250.68:
+// auxiliary grounding electrodes, the common-electrode rule, strike-termination
+// devices, GEC material, the Table 250.66 GEC sizing table + the three
+// electrode caps (A 6 AWG Cu / 4 AWG Al rod-pipe-plate, B 4 AWG Cu Ufer,
+// C ring-size to a ground ring) + the cap-void rule, and the 250.68
+// connection locations (accessibility, effective grounding path, the 5-ft
+// interior water-pipe rule, hold-down bolts, rebar stub up). Verbatim 2017
+// NEC text; OCR artifacts disclosed in the code blocks (250.54 page-break
+// "70-113" + "250.58" header split; 250.68(A) Exception 2 / (B) page break
+// "70-115 / 250.68 / ARTICLE 250"; Table 250.66 interleaved into 250.68(C)(1);
+// 250.68(C)(1) Exception "ts" OCR garble corrected to "is").
+// 2020 delta: 250.68(C)(3) rebar restructure to (a)/(b)/(c) + NEW (c)
+// rebar-interconnect prohibition (ELR sectionID 868).
+// 2023 delta: 250.66(A) "or copper-clad aluminum" (ELR 1602);
+// 250.68(C)(1) "as measured along the water piping" (ELR 1604);
+// Table 250.66 rows unchanged (ELR 1603 image-only). No ELR change records
+// for 250.54 / 250.58 / 250.60 / 250.62 in either cycle (stated as such).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-25054-25068-auxiliary-gec-caps-connections.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art47_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-25054-25068-auxiliary-gec-caps-connections.html'), true, 'art47: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-25054-25068-auxiliary-gec-caps-connections.html'), true, 'art47: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art47: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art47: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 47'), true, 'art47: footer marks article 47');
+  // verbatim 2017 — 250.54 (page-break split "70-113 250.58" removed, disclosed)
+  eq(has('250.54 auxiliary grounding electrodes. one or more grounding electrodes shall be permitted to be connected to the equipment grounding conductors specified in 250.118 and shall not be required to comply with the electrode bonding requirements of 250.50 or 250.53(c) or the resistance requirements of 250.53(a)(2) exception'), true, 'art47: verbatim 250.54 lead + bonding/resistance waiver');
+  eq(has('the earth shall not be used as an effective ground-fault current path as specified in 250.4(a)(5) and 250.4(b)(4)'), true, 'art47: verbatim 250.54 earth-not-a-fault-path');
+  // verbatim 2017 — 250.58 (two "Where" sentences + third paragraph)
+  eq(has('250.58 common grounding electrode. where an ac system is connected to a grounding electrode in or at a building or structure, the same electrode shall be used to ground conductor enclosures and equipment in or on that building or structure'), true, 'art47: verbatim 250.58 first sentence');
+  eq(has('where separate services, feeders, or branch circuits supply a building and are required to be connected to a grounding electrode(s), the same grounding electrode(s) shall be used'), true, 'art47: verbatim 250.58 second sentence');
+  eq(has('two or more grounding electrodes that are bonded together shall be considered as a single grounding electrode system in this sense'), true, 'art47: verbatim 250.58 third para (2017; absent from on-disk 2023 CSV, disclosed)');
+  // verbatim 2017 — 250.60
+  eq(has('250.60 use of strike termination devices. conductors and driven pipes, rods, or plate electrodes used for grounding strike termination devices shall not be used in lieu of the grounding electrodes required by 250.50'), true, 'art47: verbatim 250.60 lead');
+  eq(has('this provision shall not prohibit the required bonding together of grounding electrodes of different systems'), true, 'art47: verbatim 250.60 bonding sentence');
+  eq(has('informational note no. 1: see 250.106 for the bonding requirement of the lightning protection system components'), true, 'art47: verbatim 250.60 Info Note 1 (250.106 pointer)');
+  // verbatim 2017 — 250.62
+  eq(has('250.62 grounding electrode conductor material. the grounding electrode conductor shall be of copper, aluminum, copper-clad aluminum, or the items as permitted in 250.68(c)'), true, 'art47: verbatim 250.62 materials');
+  eq(has('the material selected shall be resistant to any corrosive condition existing at the installation or shall be protected against corrosion'), true, 'art47: verbatim 250.62 corrosion rule');
+  // verbatim 2017 — 250.66 lead + caps (A)(B)(C)
+  eq(has('the size of the grounding electrode conductor at the service, at each building or structure where supplied by a feeder(s) or branch circuit(s), or at a separately derived system of a grounded or ungrounded ac system shall not be less than given in table 250.66, except as permitted in 250.66(a) through (c)'), true, 'art47: verbatim 250.66 lead (2017)');
+  eq(has('(a) connections to a rod, pipe, or plate electrode(s). if the grounding electrode conductor or bonding jumper connected to a single or multiple rod, pipe, or plate electrode(s), or any combination thereof, as described in 250.52(a)(5) or (a)(7), does not extend on to other types of electrodes that require a larger size conductor, the grounding electrode conductor shall not be required to be larger than 6 awg copper wire or 4 awg aluminum wire'), true, 'art47: verbatim 250.66(A) cap (2017, pre-copper-clad)');
+  eq(has('(b) connections to concrete-encased electrodes. if the grounding electrode conductor or bonding jumper connected to a single or multiple concrete-encased electrode(s), as described in 250.52(a)(3), does not extend on to other types of electrodes that require a larger size of conductor, the grounding electrode conductor shall not be required to be larger than 4 awg copper wire'), true, 'art47: verbatim 250.66(B) cap');
+  eq(has('(c) connections to ground rings. if the grounding electrode conductor or bonding jumper connected to a ground ring, as described in 250.52(a)(4), does not extend on to other types of electrodes that require a larger size of conductor, the grounding electrode conductor shall not be required to be larger than the conductor used for the ground ring'), true, 'art47: verbatim 250.66(C) ring cap');
+  // Table 250.66 reprint (full table, 2017)
+  eq(has('2 awg or smaller 1/0 awg or smaller 8 awg 6 awg'), true, 'art47: Table 250.66 row 1 (8 AWG Cu / 6 AWG Al)');
+  eq(has('1 awg or 1/0 awg 2/0 awg or 3/0 awg 6 awg 4 awg'), true, 'art47: Table 250.66 row 2 (6 AWG Cu / 4 AWG Al)');
+  eq(has('over 1100 kcmil over 1750 kcmil 3/0 awg — capped 250 kcmil — capped'), true, 'art47: Table 250.66 largest row (3/0 Cu — CAPPED / 250 kcmil Al — CAPPED)');
+  // verbatim 2017 — 250.68 (A accessibility, B effective path, C connections)
+  eq(has('250.68 grounding electrode conductor and bonding jumper connection to grounding electrodes. the connection of a grounding electrode conductor at the service, at each building or structure where supplied by a feeder(s) or branch circuit(s), or at a separately derived system and associated bonding jumper(s) shall be made as specified 250.68(a) through (c)'), true, 'art47: verbatim 250.68 lead (2017, no "in" — identical in on-disk 2023 CSV)');
+  eq(has('(a) accessibility. all mechanical elements used to terminate a grounding electrode conductor or bonding jumper to a grounding electrode shall be accessible'), true, 'art47: verbatim 250.68(A) accessibility');
+  eq(has('(b) effective grounding path. the connection of a grounding electrode conductor or bonding jumper to a grounding electrode shall be made in a manner that will ensure an effective grounding path'), true, 'art47: verbatim 250.68(B) effective path');
+  eq(has('(c) grounding electrode conductor connections. grounding electrode conductors and bonding jumpers shall be permitted to be connected at the following locations and used to extend the connection to an electrode(s)'), true, 'art47: verbatim 250.68(C) lead');
+  eq(has('(1) interior metal water piping that is electrically continuous with a metal underground water pipe electrode and is located not more than 1.52 m (5 ft) from the point of entrance to the building shall be permitted to extend the connection to an electrode(s)'), true, 'art47: verbatim 250.68(C)(1) 5-ft water-pipe rule');
+  eq(has('interior metal water piping located more than 1.52 m (5 ft) from the point of entrance to the building shall not be used as a conductor to interconnect electrodes of the grounding electrode system'), true, 'art47: verbatim 250.68(C)(1) >5-ft prohibition');
+  eq(has('hold-down bolts securing the structural steel column that are connected to a concrete-encased electrode that complies with 250.52(a)(3) and is located in the support footing or foundation shall be permitted to connect the metal structural frame of a building or structure to the concrete encased grounding electrode'), true, 'art47: verbatim 250.68(C)(2) hold-down bolts');
+  eq(has('a rebar-type concrete-encased electrode installed in accordance with 250.52(a)(3) with an additional rebar section extended from its location within the concrete to an accessible location that is not subject to corrosion shall be permitted for connection of grounding electrode conductors and bonding jumpers'), true, 'art47: verbatim 250.68(C)(3) rebar stub up (2017 single-sentence)');
+  eq(has('the rebar extension shall not be exposed to contact with the earth without corrosion protection'), true, 'art47: verbatim 250.68(C)(3) corrosion-protection sentence');
+  // worked examples — core-computed numbers stated on the page (art47_numbers.json)
+  eq(has('pickConductor31016(125, cu, 60) → 1/0 cu'), true, 'art47: EX1 pick 1/0 Cu @ 60 C (125 A)');
+  eq(has(String(nums.EX1.gecCu) + ' awg cu'), true, 'art47: EX1 GEC = ' + nums.EX1.gecCu + ' AWG Cu (table governs, water pipe no cap)');
+  eq(has('pickConductor31016(250, cu, 75) → 250 kcmil cu'), true, 'art47: EX2 pick 250 kcmil Cu @ 75 C (250 A)');
+  eq(has('cap (a) governs; the ' + nums.EX2.tableGec + ' awg table size is not required'), true, 'art47: EX2 cap (A) shrinks ' + nums.EX2.tableGec + ' → 6 AWG Cu');
+  eq(has('pickConductor31016(500, cu, 75) → 900 kcmil cu'), true, 'art47: EX3/EX4/EX5 pick 900 kcmil Cu @ 75 C (500 A)');
+  eq(has('cap (b) governs; the ' + nums.EX3.tableGec + ' table size is not required'), true, 'art47: EX3 cap (B) shrinks ' + nums.EX3.tableGec + ' → 4 AWG Cu');
+  eq(has('2 × 900,000 = 1,800,000 cmil'), true, 'art47: EX4 Note-1 equivalent area 1,800,000 cmil (two 900 kcmil sets)');
+  eq(has('cap (c): need not be larger than the ring conductor'), true, 'art47: EX4 cap (C) = ring size 2 AWG Cu');
+  eq(has('voided'), true, 'art47: EX5 cap-void stated');
+  eq(has('the water pipe (table-sized, no cap) requires the ' + nums.EX5.tableGec + ' gec, end-to-end ' + nums.EX5.gecEndToEnd), true, 'art47: EX5 cap voided → ' + nums.EX5.gecEndToEnd + ' end-to-end (table governs)');
+  // edition history — pinned deltas
+  eq(has('rebar shall not be used as a conductor to interconnect the electrodes of grounding electrode systems'), true, 'art47: 2020 ELR 868 — NEW 250.68(C)(3)(c) rebar-interconnect prohibition');
+  eq(has('as measured along the water piping'), true, 'art47: 2023 ELR 1604 — 250.68(C)(1) "as measured along the water piping"');
+  eq(has('2023 delta on (a): adds "or copper-clad aluminum"'), true, 'art47: 2023 ELR 1602 — 250.66(A) copper-clad addition');
+  eq(has('no elr change record'), true, 'art47: ELR silence stated for 250.54/58/60/62');
+  // non-overlap cross-links
+  eq(art.includes('nec-25064-250104-gec-installation-bonding.html'), true, 'art47: cross-links to 250.64+250.104 article');
+  eq(art.includes('nec-25050-25052-25053-grounding-electrode-system.html'), true, 'art47: cross-links to 250.50+250.52+250.53 article');
+  eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art47: cross-links to 250.26+250.30 article');
+  eq(art.includes('nec-25032-separate-building-grounding.html'), true, 'art47: cross-links to 250.32 article');
+  // sitemap + index + README
+  const sitemap47 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap47.includes('articles/nec-25054-25068-auxiliary-gec-caps-connections.html'), true, 'art47: sitemap entry present');
+  const index47 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index47.includes('articles/nec-25054-25068-auxiliary-gec-caps-connections.html'), true, 'art47: index cross-link present');
+  const readme47 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme47.includes('articles/nec-25054-25068-auxiliary-gec-caps-connections.html'), true, 'art47: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

@@ -1528,6 +1528,50 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   215 body + 2023 CSV, all PASS) + sitemap 47 URLs + index cross-link. Written
   by Radloff Bot (AI, disclosed on the page).
 
+- **[NEC 250.54 + 250.58 + 250.60 + 250.62 + 250.66 + 250.68: auxiliary electrodes, the GEC caps & electrode connections](articles/nec-25054-25068-auxiliary-gec-caps-connections.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-25054-25068-auxiliary-gec-caps-connections.html`) —
+  Article 47 — the six of seven remaining Part III sections (250.70 stays for
+  its own page): **250.54** auxiliary grounding electrodes (permitted, NOT
+  required to be bonded per 250.53(C); earth never carries fault current);
+  **250.58** common grounding electrode (one electrode system per building;
+  bonded-together electrodes = one system; the 2017 second paragraph
+  "grounding electrodes that are bonded together shall be considered a single
+  grounding electrode system" — deleted in 2023, not moved); **250.60**
+  strike-termination devices (lightning rods/plates/pipes are NOT 250.50
+  electrodes; bond per 250.106); **250.62** GEC material (copper / aluminum /
+  copper-clad aluminum, listed flexible conduit, listed cable, etc.);
+  **250.66** the Table 250.66 GEC sizing table with its three electrode caps —
+  (A) 6 AWG Cu / 4 AWG Al to a rod/pipe/pipe/plate/supplemental rod (2017,
+  pre-copper-clad; 2023 ELR 1602 adds "or copper-clad aluminum"), (B) the
+  250.52(A)(3) Ufer cap (4 AWG Cu / 2/0 Al — the on-disk 2023 reword to
+  "(A)(3)" cite form, edition not pinnable), (C) ring-size to a ground ring
+  (2017 lead-in reworded in 2023, edition not pinnable) — plus the cap-void
+  rule (the caps are the MAXIMUM when the GEC also connects to a
+  table-sized electrode); **250.68** the connection locations — (A) the
+  5-ft water-pipe rule (within 5 ft of the service-entrance conductors'
+  entrance; NOT a water heater/purifier; the 2017 "as specified in 250.68(A)
+  through (C)" lead — the on-disk 2023 CSV drops "in", edition not pinnable;
+  2023 ELR 1604 adds "as measured along the water piping"), (B) metal frame
+  + hold-down bolts (2017 "complies with 250.52(A)(3)"; 2023 reword
+  "concrete encased grounding electrode" per ELR 1605), (C) rebar stub up
+  (2017 single-sentence; 2020 ELR 868 restructured to (a)/(b)/(c) with NEW
+  (c) the rebar-interconnect prohibition; 2023 == 2020 per ELR 1606).
+  Five core-computed worked examples (`compute_art47.js` → node, from the
+  shipped `T31016`/`ch9Row`/`pickConductor31016` cores): EX1 100 A service
+  water-pipe electrode — the table governs (2/0 Cu, no cap applies); EX2 200 A
+  rod-only — cap (A) shrinks 2/0 → 6 AWG Cu; EX3 400 A Ufer-only — cap (B)
+  shrinks 2/0 → 4 AWG Cu; EX4 800 A two-parallel-sets ground-ring-only — cap
+  (C) = the ring itself (1/0 Cu = ring size); EX5 the same 400 A service as
+  EX3 but the GEC continues rod → water pipe — cap (A) is voided, the table
+  governs (2/0 Cu). The 250.66 cap-void rule is demonstrated by EX3→EX5: the
+  same Ufer, same table row, but the GEC continuing on to a rod (a cap-A
+  electrode) voids cap (B) at the Ufer — the table governs. 22-check
+  verbatim verifier (`verify_art47.py`, 2017 scan with disclosed OCR
+  normalization: 250.54 page-break split, 250.68(A) Exception page-break,
+  250.68(C)(1) "ts" OCR garble → "is", Table 250.66 block interleaved in
+  250.68(C), all 22 checks PASS) + sitemap 48 URLs + index cross-link. Written
+  by Radloff Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
