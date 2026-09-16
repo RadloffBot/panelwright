@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 450.8–450.14 — Transformer Installation (Guarding, Ventilation, Grounding, Marking, Wiring Space, Accessibility, Disconnecting Means)</title>
+<meta name="description" content="How a transformer must actually be installed: 450.8 guarding (mechanical protection, noncombustible case, 110.27/110.34 guarding, voltage warning), 450.9 ventilation (full-load heat, unblocked openings, marked clearances), 450.10 grounding (the terminal bar in the enclosure, 250.12 bonding, the 250.8 wire-lead Exception, other metal parts per 250 Parts V–VII), 450.11 marking (the eight required nameplate items), 450.12 terminal wiring space (312.6 bending space + Table 314.16(B)(1) pigtail volume), 450.13 accessibility (the 50 kVA hollow-space boundary), and 450.14 disconnecting means (in sight or remote-lockable-open; Class 2/3 exempt). The 2017→2023 edition story — machine-verified — with four worked examples from the shipped cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-4508-45014-transformer-installation.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 450.8–450.14 — Transformer Installation (Guarding, Ventilation, Grounding, Marking, Wiring Space, Accessibility, Disconnecting Means)">
+<meta property="og:description" content="The installation rules around the OCPD core: 450.8 guarding, 450.9 ventilation, 450.10 grounding, 450.11 marking, 450.12 terminal wiring space, 450.13 accessibility (50 kVA boundary), 450.14 disconnecting means. Edition history 2017→2023 + worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-4508-45014-transformer-installation.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 450.8–450.14 — Transformer Installation (Guarding, Ventilation, Grounding, Marking, Wiring Space, Accessibility, Disconnecting Means)">
+<meta name="twitter:description" content="Guarding (450.8), ventilation (450.9), grounding (450.10), marking (450.11), terminal wiring space (450.12), accessibility (450.13), disconnecting means (450.14). Edition history 2017→2023 + worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 450.8 transformer guarding, NEC 450.9 transformer ventilation, NEC 450.10 transformer grounding and bonding, NEC 450.11 transformer nameplate marking, NEC 450.12 transformer terminal wiring space Table 314.16(B)(1), NEC 450.13 transformer accessibility 50 kVA hollow space, NEC 450.14 transformer disconnecting means lockable open, transformer installation requirements, electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 450.8–450.14 — Transformer Installation (Guarding, Ventilation, Grounding, Marking, Wiring Space, Accessibility, Disconnecting Means)",
+  "description": "How a transformer must actually be installed: 450.8 guarding, 450.9 ventilation, 450.10 grounding (the terminal bar in the enclosure, 250.12 bonding, the 250.8 wire-lead Exception), 450.11 marking (the eight required nameplate items), 450.12 terminal wiring space (312.6 bending space + Table 314.16(B)(1) pigtail volume), 450.13 accessibility (the 50 kVA hollow-space boundary), and 450.14 disconnecting means (in sight or remote-lockable-open, Class 2/Class 3 exempt). Edition history 2017 to 2023, machine-verified, with four worked examples computed from the shipped PanelWright cores.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-16",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-4508-45014-transformer-installation.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How must a transformer be guarded?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.8: make provisions to minimize damage from external physical causes (A); dry-type transformers get a noncombustible moisture-resistant case or enclosure that protects against the accidental insertion of foreign objects (B); switches or other equipment at 1000 volts nominal or less serving only equipment inside the enclosure may be installed in the enclosure if accessible to qualified persons only, and all energized parts are guarded per 110.27 and 110.34 (C); and the operating voltage of exposed live parts is indicated by signs or visible markings (D). The 2017 and 2023 text is substance-identical." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does 450.9 require for transformer ventilation?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The ventilation must dispose of the transformer's full-load heat losses without creating a temperature rise in excess of the transformer rating. Transformers with ventilating openings must be installed so the openings are not blocked by walls or other obstructions, and the required clearances must be clearly marked on the transformer. 2023 adds one new sentence: horizontal, readily accessible top surfaces shall be marked to prohibit storage. The cited IEEE standard years also updated (C57.12.00-1993/1989 and C57.110-1993 in 2017 to C57.12.00-2015/C57.12.01-2020 and C57.110-2018 in 2023, with the ANSI/ prefix dropped)." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is a dry-type transformer enclosure grounded?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.10(A): where separate equipment grounding conductors and supply-side bonding jumpers are installed, a terminal bar for all grounding and bonding conductor connections is secured inside the enclosure, bonded to the enclosure per 250.12, and not installed on or over any vented portion. Exception: where the transformer is equipped with wire-type connections (leads), the grounding and bonding connections may be connected together using any of the methods in 250.8 and bonded to the enclosure if of metal. 450.10(B): exposed non-current-carrying metal parts (fences, guards, and so forth) are grounded and bonded per Parts V, VI, and VII of Article 250. In 2023 the title became 'Grounding and Bonding' (Mike Holt-documented) and (B) dropped the 2017 conditional 'Where grounded,' lead-in — the rule is now unconditional." }
+    },
+    {
+      "@type": "Question",
+      "name": "What must a transformer nameplate show?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.11(A) requires a nameplate with: (1) name of manufacturer, (2) rated kilovolt-amperes, (3) frequency, (4) primary and secondary voltage, (5) impedance of transformers 25 kVA and larger, (6) required clearances for transformers with ventilating openings, (7) amount and kind of insulating liquid where used, and (8) for dry-type transformers, the temperature class for the insulation system. 450.11(B) then permits the transformer to be supplied at the marked secondary voltage, provided the installation follows the manufacturer's instructions. Unchanged 2017 to 2023 (the 2017 scan renders item 8's 'insulation' as the OCR artifact 'insuJation')." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the terminal wiring space requirement for transformers?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.12: the minimum wire-bending space at fixed, 1000-volt-and-below terminals of transformer line and load connections shall be as required in 312.6 (gutter/bending space per Table 312.6(A) — e.g. 1-1/2 in for 8-6 AWG, 2 in for 6-4 AWG, 2-1/2 in for 2-1 AWG). Wiring space for pigtail connections shall conform to Table 314.16(B) in 2017 — renumbered Table 314.16(B)(1) in 2023 (values unchanged: 18 AWG 1.50 in³, 16 AWG 1.75 in³, 14 AWG 2.00 in³, 12 AWG 2.25 in³, 10 AWG 2.50 in³, 8 AWG 3.00 in³, 6 AWG 5.00 in³ per conductor; each terminated or passing conductor counts once, loops count twice, conductors entirely within the box are not counted)." }
+    },
+    {
+      "@type": "Question",
+      "name": "When is a transformer not required to be readily accessible?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.13: all transformers and transformer vaults shall be readily accessible to qualified personnel for inspection and maintenance, except 450.13(A) — dry-type transformers 1000 volts nominal or less located in the open on walls, columns, or structures — and 450.13(B) — dry-type transformers 1000 volts nominal or less not exceeding 50 kVA permitted in hollow spaces of buildings not permanently closed in by structure, provided they meet the 450.9 ventilation requirements and the 450.21(A) separation from combustible materials. The 50 kVA figure is the boundary: it is unchanged 2017 to 2023." }
+    },
+    {
+      "@type": "Question",
+      "name": "Where must a transformer disconnecting means be located?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.14: transformers other than Class 2 or Class 3 transformers shall have a disconnecting means located either in sight of the transformer or in a remote location. Where located remotely, the disconnecting means shall be lockable (2017) / lockable open (2023) in accordance with 110.25, and its location shall be field marked on the transformer. Class 2 (≤ 30 V, ≤ 100 VA) and Class 3 (≤ 60 V, ≤ 100 VA, Article 725) power-limited transformers are exempt. The only 2017→2023 delta in this section is the 'lockable' → 'lockable open' tightening." }
+    },
+    {
+      "@type": "Question",
+      "name": "Did the transformer installation rules change between the 2017 and 2023 NEC?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The installation requirements are substance-identical 2017 to 2023 (52 machine-verified phrase-level checks against the on-disk 2017 NFPA scan and the on-disk 2023 NEC): the 450.8 guarding text, the 450.9 ventilation rule, the 450.10 grounding rule, the eight 450.11 nameplate items, the 450.12 wiring-space rule, the 450.13 50-kVA accessibility boundary, and the 450.14 in-sight-or-remote rule are the same in both editions. What changed: 450.9's IEEE standard re-citations (C57.12.00-1993 → C57.12.00-2015, C57.12.01-1989 → C57.12.01-2020, C57.110-1993 → C57.110-2018, ANSI/ prefix dropped) plus the new no-storage top-surface marking sentence; 450.10's title ('Bonding' added — Mike Holt-documented) and its (B) dropping the 'Where grounded,' conditional; 450.12's pigtail table reference renumber Table 314.16(B) → Table 314.16(B)(1); and 450.14's 'lockable' → 'lockable open'." }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+.removed{background:rgba(224,108,92,.08);border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+td.bad{color:var(--bad);font-weight:650}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code{font-family:var(--mono);font-size:.92em;background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cta{display:inline-block;background:var(--acc);color:#08111c;font-weight:750;text-decoration:none;padding:12px 20px;border-radius:8px;margin:22px 0 6px}
+.cta:hover{filter:brightness(1.08)}
+.ctasub{color:var(--dim);font-size:13.5px}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 18px;font-size:14px}
+.method .blank{font-family:var(--mono);font-size:.9em;color:var(--dim)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+footer a{color:var(--dim)}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+@media(max-width:640px){h1{font-size:24px}table{font-size:12.5px}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 450.8–450.14 — <span>Transformer Installation</span></h1>
+  <p class="sub">Article 51 covered the <em>overcurrent-protection</em> core of Article 450 (450.3 / 450.4 / 450.5 / 450.6 / 450.7). This article is the rest of <strong>Part I General Provisions</strong> — the installation rules the OCPD core assumes you already satisfy: <strong>450.8</strong> guarding (mechanical protection, the noncombustible case, 110.27/110.34 guarding, voltage warning), <strong>450.9</strong> ventilation (full-load heat, unblocked openings, marked clearances), <strong>450.10</strong> grounding (the terminal bar inside the enclosure, 250.12 bonding, the 250.8 wire-lead Exception, other metal parts per 250 Parts V–VII), <strong>450.11</strong> marking (the eight required nameplate items), <strong>450.12</strong> terminal wiring space (312.6 bending space + the Table 314.16(B)(1) pigtail volume), <strong>450.13</strong> accessibility (the <strong>50 kVA</strong> hollow-space boundary), and <strong>450.14</strong> disconnecting means (in sight or remote-lockable-open; Class 2 / Class 3 exempt). Together with 450.21–450.28 (dry-type / liquid-filled specifics, a future article) and Part III (transformer vaults), these rules decide where a transformer may physically live and how you reach it.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 450.8–450.14 for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text on disk)</strong>, the citation anchor; the 2023 changes are documented in the edition-history boxes and machine-verified against the on-disk 2023 NEC. Every conductor pick and every fill/boundary number in the worked examples is computed by the <strong>shipped PanelWright cores</strong> under node (or by the on-disk NEC tables, machine-checked against the 2023 CSV) — zero hand math.</div>
+
+  <h2>The sections, in full (2017)</h2>
+  <p>All seven sections of the installation core of Part I, quoted verbatim from the 2017 NEC: 450.8 (guarding), 450.9 (ventilation), 450.10 (grounding — “Bonding” added to the title in 2023), 450.11 (marking), 450.12 (terminal wiring space), 450.13 (accessibility), and 450.14 (disconnecting means).</p>
+
+  <div class="code">450.8 Guarding. Transformers shall be guarded as specified in
+450.8(A) through (D).
+
+(A) Mechanical Protection. Appropriate provisions shall be made to
+minimize the possibility of damage to transformers from external
+causes where the transformers are exposed to physical damage.
+
+(B) Case or Enclosure. Dry-type transformers shall be provided with a
+noncombustible moisture-resistant case or enclosure that provides
+protection against the accidental insertion of foreign objects.
+
+(C) Exposed Energized Parts. Switches or other equipment operating at
+1000 volts, nominal, or less and serving only equipment within a
+transformer enclosure shall be permitted to be installed in the
+transformer enclosure if accessible to qualified persons only. All
+energized parts shall be guarded in accordance with 110.27 and 110.34.
+
+(D) Voltage Warning. The operating voltage of exposed live parts of
+transformer installations shall be indicated by signs or visible
+markings on the equipment or structures.
+
+450.9 Ventilation. The ventilation shall dispose of the transformer
+full-load heat losses without creating a temperature rise that is in
+excess of the transformer rating.
+
+Informational Note No. 1: See ANSI/IEEE C57.12.00-1993, General
+Requirements for Liquid-Immersed Distribution, Power, and Regulating
+Transformers, and ANSI/IEEE C57.12.01-1989, General Requirements for
+Dry-Type Distribution and Power Transformers.
+
+Informational Note No. 2: Additional losses may occur in some
+transformers where nonsinusoidal currents are present, resulting in
+increased heat in the transformer above its rating. See ANSI/IEEE
+C57.110-1993, Recommended Practice for Establishing Transformer
+Capability When Supplying Nonsinusoidal Load Currents, where
+transformers are utilized with nonlinear loads.
+
+Transformers with ventilating openings shall be installed so that the
+ventilating openings are not blocked by walls or other obstructions.
+The required clearances shall be clearly marked on the transformer.
+
+450.10 Grounding.
+
+(A) Dry-Type Transformer Enclosures. Where separate equipment
+grounding conductors and supply-side bonding jumpers are installed, a
+terminal bar for all grounding and bonding conductor connections
+shall be secured inside the transformer enclosure. The terminal bar
+shall be bonded to the enclosure in accordance with 250.12 and shall
+not be installed on or over any vented portion of the enclosure.
+
+Exception: Where a dry-type transformer is equipped with wire-type
+connections (leads), the grounding and bonding connections shall be
+permitted to be connected together using any of the methods in 250.8
+and shall be bonded to the enclosure if of metal.
+
+(B) Other Metal Parts. Where grounded, exposed non-current-carrying
+metal parts of transformer installations, including fences, guards,
+and so forth, shall be grounded and bonded under the conditions and
+in the manner specified for electrical equipment and other exposed
+metal parts in Parts V, VI, and VII of Article 250.
+
+450.11 Marking.
+
+(A) General. Each transformer shall be provided with a nameplate
+giving the following information:
+
+(1) Name of manufacturer
+(2) Rated kilovolt-amperes
+(3) Frequency
+(4) Primary and secondary voltage
+(5) Impedance of transformers 25 kVA and larger
+(6) Required clearances for transformers with ventilating openings
+(7) Amount and kind of insulating liquid where used
+(8) For dry-type transformers, temperature class for the insulation
+    system
+
+(B) Source Marking. A transformer shall be permitted to be supplied at
+the marked secondary voltage, provided that the installation is in
+accordance with the manufacturer's instructions.
+
+450.12 Terminal Wiring Space. The minimum wire-bending space at fixed,
+1000-volt and below terminals of transformer line and load connections
+shall be as required in 312.6. Wiring space for pigtail connections
+shall conform to Table 314.16(B).
+
+450.13 Accessibility. All transformers and transformer vaults shall be
+readily accessible to qualified personnel for inspection and
+maintenance or shall meet the requirements of 450.13(A) or 450.13(B).
+
+(A) Open Installations. Dry-type transformers 1000 volts, nominal, or
+less, located in the open on walls, columns, or structures, shall not
+be required to be readily accessible.
+
+(B) Hollow Space Installations. Dry-type transformers 1000 volts,
+nominal, or less and not exceeding 50 kVA shall be permitted in hollow
+spaces of buildings not permanently closed in by structure, provided
+they meet the ventilation requirements of 450.9 and separation from
+combustible materials requirements of 450.21 (A). Transformers so
+installed shall not be required to be readily accessible.
+
+450.14 Disconnecting Means. Transformers, other than Class 2 or Class 3
+transformers, shall have a disconnecting means located either in sight
+of the transformer or in a remote location. Where located in a remote
+location, the disconnecting means shall be lockable in accordance with
+110.25, and its location shall be field marked on the transformer.
+<span class="src">Source: verbatim 2017 NEC (official NFPA text on disk, nec2017_full.txt). OCR line-wrap reflow normalized; disclosed scan artifacts corrected: "transformers shail be permitted"→"shall be permitted" (450.7, for context), "insuJation"→"insulation" (450.11(A)(8)), and "noncurrent-carrying"→"non-current-carrying" (450.10(B) hyphenation normalized to the 2023 spelling for the substance compare). Running headers ("NATIONAL ELECTRICAL CODE 2017 Edition" / "ARTICLE 450 — TRANSFORMERS AND TRANSFORMER VAULTS (INCLUDING SECONDARY TIES) (D) Voltage Warning") and the page-break artifact ("2017 Edition NATIONAL ELECTRICAL CODE / 450.22" split inside 450.12, which reflows to "terminals of transformer line and load connections") were removed. No other wording altered.</span></div>
+
+  <div class="renew"><strong>Seven sections, one question per section.</strong> 450.8: <em>how is the transformer protected from people and things that bump into it?</em> 450.9: <em>how does the heat leave?</em> 450.10: <em>what is the enclosure bonded to?</em> 450.11: <em>what must the nameplate say?</em> 450.12: <em>how much room does the wire need to bend into its terminal?</em> 450.13: <em>must I be able to walk up to it?</em> 450.14: <em>where is the switch that kills it?</em> The OCPD numbers from Article 51 never change; these rules are the physical and grounding envelope around them.</div>
+
+  <h2>450.8 — Guarding</h2>
+  <p>Four sub-rules, each doing one job:</p>
+  <ul>
+    <li><strong>(A) Mechanical Protection.</strong> Where a transformer is exposed to physical damage (a loading dock, a warehouse aisle, a parking structure), make provisions to minimize it. This is the catch-all the AHJ invokes when the transformer is in a high-traffic spot.</li>
+    <li><strong>(B) Case or Enclosure.</strong> Dry-type transformers must be in a <strong>noncombustible, moisture-resistant</strong> case or enclosure that keeps fingers and tools out — “protection against the accidental insertion of foreign objects.” This is why a bare dry-type winding sitting in an open wall chase fails: the enclosure is part of the requirement, not an option.</li>
+    <li><strong>(C) Exposed Energized Parts.</strong> Switches or other equipment at 1000 V nominal or less that serves <em>only</em> equipment inside the transformer enclosure may live inside it — but only if <strong>accessible to qualified persons only</strong>. Everything energized is still guarded per <strong>110.27</strong> (guards for 50 V–1000 V) and <strong>110.34</strong> (guards for 1000 V+).</li>
+    <li><strong>(D) Voltage Warning.</strong> The operating voltage of exposed live parts must be <strong>indicated by signs or visible markings</strong> on the equipment or structures. For a 480/208 pad-mount with an open secondary disconnect, that means a “480 V” marking where the parts are exposed.</li>
+  </ul>
+
+  <h2>450.9 — Ventilation</h2>
+  <p>One sentence does the work: the ventilation must dispose of the <strong>full-load heat losses</strong> without a temperature rise above the transformer rating. Informational Note No. 2 is the nonlinear-load warning — nonsinusoidal currents (VFDs, rectifiers, electronics) produce additional losses that heat the transformer <em>above</em> its rating without the OCPD ever seeing the load (see the <a href="nec-430120-430131-adjustable-speed-drive-systems.html">Article 430 adjustable-speed-drive article →</a> for the load side). The two installation rules: ventilating openings must not be blocked by walls or obstructions, and the required clearances must be <strong>clearly marked on the transformer</strong> (which is also why 450.11(A)(6) requires the clearances on the nameplate — the marking requirement is cross-referenced twice).</p>
+
+  <h2>450.10 — Grounding (2023: “Grounding and Bonding”)</h2>
+  <p>This is the section that ties the transformer into the separately-derived-system grounding story (see the <a href="nec-25026-25030-separately-derived-systems.html">250.26–250.30 article →</a> for 250.30, which 450.6(C) and the secondary grounding rules invoke):</p>
+  <ul>
+    <li><strong>(A) Dry-Type Transformer Enclosures.</strong> Where separate equipment grounding conductors and supply-side bonding jumpers are installed, a <strong>terminal bar</strong> for all grounding and bonding conductor connections is secured <em>inside</em> the enclosure, bonded to the enclosure per <strong>250.12</strong>, and kept off any vented portion. The <strong>Exception</strong> is the practical one: where the transformer is equipped with <strong>wire-type connections (leads)</strong> — i.e. it has no terminal bar to begin with — the grounding and bonding connections may be connected together using any of the methods in <strong>250.8</strong> and bonded to the enclosure if of metal.</li>
+    <li><strong>(B) Other Metal Parts.</strong> Exposed non-current-carrying metal parts — <em>fences, guards, and so forth</em> — are grounded and bonded per <strong>Parts V, VI, and VII of Article 250</strong> (EGC sizing, equipment bonding, the bonding rules for structural metal). The 2017 text leads with the conditional “Where grounded, exposed …”; 2023 drops the conditional — the rule is unconditional.</li>
+  </ul>
+
+  <h2>450.11 — Marking</h2>
+  <p>The eight required nameplate items are the checklist you run when a nameplate is missing a field (it happens on used and surplus units):</p>
+  <table>
+    <thead><tr><th class="ctr">#</th><th>Required (450.11(A))</th><th>Why it matters on the job</th></tr></thead>
+    <tbody>
+      <tr><td class="ctr">1</td><td>Name of manufacturer</td><td>Warranty / coordination data lookup</td></tr>
+      <tr><td class="ctr">2</td><td>Rated kilovolt-amperes</td><td>The starting number for every OCPD calculation in Article 51</td></tr>
+      <tr><td class="ctr">3</td><td>Frequency</td><td>50/60 Hz mismatch = a different transformer than you think</td></tr>
+      <tr><td class="ctr">4</td><td>Primary and secondary voltage</td><td>Turns-ratio check before energizing</td></tr>
+      <tr><td class="ctr">5</td><td>Impedance — transformers 25 kVA and larger</td><td>Feeds Table 450.3(A)'s impedance grid (6% / 6–10%) and short-circuit math</td></tr>
+      <tr><td class="ctr">6</td><td>Required clearances (transformers with ventilating openings)</td><td>The 450.9 clearance marking, cross-referenced</td></tr>
+      <tr><td class="ctr">7</td><td>Amount and kind of insulating liquid where used</td><td>Determines 450.23–450.27 (less-flammable / nonflammable / oil-filled) and fire-risk handling</td></tr>
+      <tr><td class="ctr">8</td><td>Temperature class for the insulation system (dry-type)</td><td>Drives the 450.21(B) transformer-room requirement (Class 155+ rules)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub"><strong>450.11(B) Source Marking</strong> is the permissive flip side: the transformer <em>may be supplied at the marked secondary voltage</em> provided the installation follows the manufacturer's instructions — the clause that lets a 480:208 unit be tapped to 480:230 if the nameplate and instructions say it can be.</p>
+
+  <h2>450.12 — Terminal Wiring Space</h2>
+  <p>Two different “space” rules, and they are not the same thing:</p>
+  <ul>
+    <li><strong>Bending space at the terminals — 312.6.</strong> The wire has to be able to bend from the raceway into the terminal without kinking or being pinched. For fixed, 1000-V-and-below transformer line and load connections, the minimum is the <strong>Table 312.6(A)</strong> gutter/bending space (one wire per terminal, copper column, from the on-disk 2017 scan): 1-1/2 in for 6–4 AWG, 2 in for 2–1 AWG, 2-1/2 in for 1/0, 3 in for 2/0, 3-1/2 in for 3/0–4/0, 4 in for 250–300 kcmil, and up to 8 in for 600–1000 kcmil. (The on-disk 2023 CSV carries the Table 312.6(A) header but not its rows, so the page asserts the 2017 values and does <em>not</em> claim a 2017→2023 row identity for this table — stated boundary in the method notes.) Conductors 4 AWG or larger entering/leaving through the opposite wall follow 300.4(G) instead (312.6(C)).</li>
+    <li><strong>Pigtail (box-fill) space — Table 314.16(B) in 2017, Table 314.16(B)(1) in 2023.</strong> Where the connection is a pigtail — the wire loops and terminates with a connector rather than bending directly — the enclosure must have enough <em>volume</em> for the loops. The on-disk table (values unchanged 2017 → 2023; the 2023 renumber adds the (B)(2)–(B)(6) sub-rules for clamps, support fittings, devices, EGCs, and terminal blocks):</li>
+  </ul>
+  <table>
+    <thead><tr><th>Conductor size (AWG)</th><th class="ctr">Free space per conductor (cm³)</th><th class="ctr">Free space per conductor (in³)</th></tr></thead>
+    <tbody>
+      <tr><td>18</td><td class="ctr">24.6</td><td class="ctr">1.50</td></tr>
+      <tr><td>16</td><td class="ctr">28.7</td><td class="ctr">1.75</td></tr>
+      <tr><td>14</td><td class="ctr">32.8</td><td class="ctr">2.00</td></tr>
+      <tr><td>12</td><td class="ctr">36.9</td><td class="ctr">2.25</td></tr>
+      <tr><td>10</td><td class="ctr">41.0</td><td class="ctr">2.50</td></tr>
+      <tr><td>8</td><td class="ctr">49.2</td><td class="ctr">3.00</td></tr>
+      <tr><td>6</td><td class="ctr">81.9</td><td class="ctr">5.00</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Counting rule (314.16(B)(1), identical 2017→2023): each conductor that originates outside the box and terminates or is spliced inside counts <strong>once</strong>; each conductor passing through counts <strong>once</strong>; each loop or coil of unbroken conductor at least twice the minimum free-conductor length counts <strong>twice</strong>; a conductor no part of which leaves the box is <strong>not counted</strong>. Exception: an EGC or not over four fixture wires smaller than 14 AWG (or both) entering from a domed luminaire or similar canopy and terminating in that box may be omitted. (Conductors larger than 6 AWG are not in the on-disk table — the 2017/2023 scan and CSV carry the 18–6 AWG range; flag to the AHJ for larger pigtails. The worked example stays inside the table range on purpose.)</p>
+
+  <h2>450.13 — Accessibility</h2>
+  <p>The default is strong: <strong>all transformers and transformer vaults shall be readily accessible to qualified personnel</strong> for inspection and maintenance. Two carve-outs, both dry-type, both 1000 V nominal or less:</p>
+  <ul>
+    <li><strong>(A) Open Installations.</strong> On walls, columns, or structures in the open — not readily accessible is fine. (The transformer is out in the open; nobody is locking it away.)</li>
+    <li><strong>(B) Hollow Space Installations.</strong> In hollow spaces of buildings not permanently closed in by structure — <strong>not exceeding 50 kVA</strong> — provided they meet 450.9 (ventilation) and 450.21(A) (separation from combustible materials). The <strong>50 kVA</strong> number is the boundary: at 50 kVA you may hide it in a hollow space without ready access; at 51 kVA it must be readily accessible (or in a proper transformer room / vault per Part II / Part III).</li>
+  </ul>
+
+  <h2>450.14 — Disconnecting Means</h2>
+  <p>Every transformer that is not a <strong>Class 2</strong> (≤ 30 V, ≤ 100 VA) or <strong>Class 3</strong> (≤ 60 V, ≤ 100 VA, Article 725) transformer needs a disconnecting means, located either:</p>
+  <ul>
+    <li><strong>In sight of the transformer</strong> (the common case — the disconnect on the same structure, within sight without climbing), or</li>
+    <li><strong>In a remote location</strong> — but then it must be <strong>lockable</strong> in accordance with <strong>110.25</strong> (2017) / <strong>lockable open</strong> (2023 — the 2023 tightening: the device must lock <em>in the open position</em>, so a remote pad-mount disconnect that only locks in the closed position fails the 2023 text), <strong>and</strong> its location must be <strong>field marked on the transformer</strong>.</li>
+  </ul>
+  <p class="sub">The Class 2/3 exemption is the one that trips people up: a 50 VA / 24 V power-limited transformer is exempt from 450.14 entirely (the ≤ 30 V / ≤ 100 VA limits make it power-limited), while a 50 kVA 480/208 distribution transformer is not — it needs the in-sight or remote-lockable-open disconnect and the field marking.</p>
+
+  <h2>Edition history: 2017 → 2023</h2>
+  <p>The headline: <strong>the installation rules are substance-identical</strong>. Every requirement an inspector applies — the guarding sub-rules, the ventilation rule, the terminal-bar grounding, the eight nameplate items, the wiring-space references, the 50 kVA accessibility boundary, the in-sight-or-remote disconnect — is the same in 2017 and 2023. A targeted machine check (<code>verify_art52.py</code>, 52 phrase-level assertions reading the on-disk 2017 NFPA scan and the on-disk 2023 NEC directly) confirms it, item by item:</p>
+
+  <h3>The verified-substantive core (2017 ≈ 2023)</h3>
+  <table>
+    <thead><tr><th>Section</th><th>2017 → 2023 (machine-verified)</th></tr></thead>
+    <tbody>
+      <tr><td>450.8(A)–(D) — mechanical protection, noncombustible case, 110.27/110.34 guarding, voltage warning</td><td class="ctr ok">IDENTICAL — all four sub-rules present unchanged in both editions</td></tr>
+      <tr><td>450.9 — full-load heat, no blocked openings, clearances marked</td><td class="ctr ok">IDENTICAL (the three rule sentences; the informational-note IEEE citations and the new storage-marking sentence are the deltas below)</td></tr>
+      <tr><td>450.10(A) — terminal bar inside the enclosure, 250.12 bonding, not over a vented portion; the 250.8 wire-lead Exception</td><td class="ctr ok">IDENTICAL — every clause present in both editions</td></tr>
+      <tr><td>450.10(B) — fences/guards/etc. per 250 Parts V, VI, VII</td><td class="ctr ok">IDENTICAL in substance — 2023 drops the 2017 “Where grounded,” conditional lead-in (delta below)</td></tr>
+      <tr><td>450.11(A) — all eight nameplate items; (B) source marking</td><td class="ctr ok">IDENTICAL — all eight items + the (B) permissive sentence present in both (2017 “insuJation” is the scan's OCR for “insulation”)</td></tr>
+      <tr><td>450.12 — 312.6 bending space + pigtail table reference</td><td class="ctr ok">IDENTICAL except the table renumber: 2017 “Table 314.16(B)” → 2023 “Table 314.16(B)(1)” (values unchanged)</td></tr>
+      <tr><td>450.13 — readily accessible + (A) open + (B) 50 kVA hollow space</td><td class="ctr ok">IDENTICAL — the 50 kVA boundary and both carve-outs unchanged</td></tr>
+      <tr><td>450.14 — Class 2/3 exempt; in sight or remote</td><td class="ctr ok">IDENTICAL except “lockable” (2017) → “lockable open” (2023) (delta below)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub"><strong>2020 position — stated, not asserted:</strong> no on-disk 2020 full-code text covers Article 450 (the on-disk 2020 scan ends at Article 230; the 2020/2023 online viewer is login-gated). So this page documents 2017 → 2023 and does not assert a 2020 word-identity for Article 450. The identity claim rests on the two on-disk full sources (2017 NFPA scan + 2023 CSV), the standard this series uses.</p>
+
+  <h3>2017 → 2023 deltas in 450.8–450.14 (all verified on disk)</h3>
+  <div class="removed"><strong>450.9 (Ventilation) — IEEE standard re-citations + new no-storage marking. <em>On-disk-verified.</em></strong> (1) The informational-note citations updated: 2017 cites “ANSI/IEEE C57.12.00-1993,” “ANSI/IEEE C57.12.01-1989,” and “ANSI/IEEE C57.110-1993”; 2023 cites “IEEE C57.12.00-2015,” “IEEE C57.12.01-2020,” and “IEEE C57.110-2018” (and drops the “ANSI/” prefix). (2) 2023 adds a new sentence: <em>“Transformer top surfaces that are horizontal and readily accessible shall be marked to prohibit storage.”</em> (Verified: the old standard years present in 2017 only; the new years + “prohibit storage” present in 2023 only.)</div>
+  <div class="removed"><strong>450.10 — title gains “Bonding”; (B) drops the “Where grounded,” conditional. <em>Title Mike Holt-documented; (B) on-disk-verified.</em></strong> Mike Holt 2023: <em>“450.10 Grounding and Bonding — The word 'Bonding' was added to the title of the section as the rule address both grounding and bonding.”</em> 2017 titles it simply “Grounding.” The on-disk 2023 CSV carries only the 450.10(A)/(B) bodies (no bare 450.10 row), so the title claim rests on the MH summary, stated as such. On disk: 2017 (B) reads “Where grounded, exposed non-current-carrying metal parts … shall be grounded and bonded”; 2023 (B) reads “Exposed non-current-carrying metal parts … shall be grounded and bonded” — the conditional is gone, making the requirement unconditional. (Verified on disk.)</div>
+  <div class="removed"><strong>450.12 (Terminal Wiring Space) — pigtail table renumbered Table 314.16(B) → Table 314.16(B)(1). <em>On-disk-verified.</em></strong> 2017: “Wiring space for pigtail connections shall conform to Table 314.16(B).” 2023: “… Table 314.16(B)(1).” The 314.16 box-fill table was reorganized into lettered sub-parts in 2023 — (B)(1) conductor fill (the old (B)(1) text + the per-conductor volume table, values unchanged), and new (B)(2)–(B)(6) sub-rules for clamps, support fittings, devices/equipment, EGCs (now with the 1/4-volume-per-additional-EGC rule), and terminal blocks. The values an electrician pulls for a pigtail are the same in both editions.</div>
+  <div class="removed"><strong>450.14 (Disconnecting Means) — “lockable” → “lockable open.” <em>On-disk-verified.</em></strong> 2017: a remote disconnecting means “shall be <strong>lockable</strong> in accordance with 110.25.” 2023: “shall be <strong>lockable open</strong> in accordance with 110.25” — tightening the requirement from lockable-in-general to lockable-in-the-open-position (the switch must be able to be locked with the circuit open, which is the position that keeps the transformer dead).</div>
+  <div class="renew"><strong>Net effect for an installation job.</strong> If you are placing a transformer, the <em>requirements</em> you satisfy are the same whether the jurisdiction is on 2017 or 2023: the guarding, the ventilation, the terminal-bar grounding, the eight nameplate items, the wiring space, the 50 kVA accessibility boundary, the in-sight-or-remote disconnect. The edition history matters for <em>details</em> — the IEEE standard years you cite in 450.9 notes, the no-storage marking on horizontal tops (2023 only), the 450.10 title, the 314.16(B)(1) reference you write up, and the 2023 requirement that a remote disconnect actually lock <em>open</em>.</div>
+
+  <h2>Four worked examples (core-computed)</h2>
+  <p>Every conductor pick below is computed by the shipped cores under node (<code>compute_art52.js</code> → <code>art52_numbers.json</code>): <code>pickConductor31016</code> for the Table 310.16 (75 °C column) conductor picks. The 314.16(B)(1) per-conductor volumes, the 314.16(A) box volumes, and the 312.6(A) gutter widths are the on-disk NEC table values (machine-checked against the on-disk 2023 CSV — unchanged). The kVA / voltage values are representative; read your specific transformer's nameplate.</p>
+
+  <h3>EX1 — 15 kVA, 480 V : 208Y/120 V, 5% Z, dry-type — 450.12 terminal wiring space + Table 314.16(B)(1) pigtail fill</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core / on-disk tables)</th></tr></thead>
+    <tbody>
+      <tr><td>Nameplate</td><td class="ctr">15 kVA, 480 V primary, 208Y/120 V secondary, 5% Z, dry-type</td></tr>
+      <tr><td>Rated primary current</td><td class="ctr">18.04 A (15000 ÷ (√3 × 480))</td></tr>
+      <tr><td>Rated secondary current</td><td class="ctr">41.64 A (15000 ÷ (√3 × 208))</td></tr>
+      <tr><td>Secondary conductors (125% × 41.64 A = 52.05 A)</td><td class="ctr"><code>pickConductor31016(52.05, cu, 75) → 6 AWG Cu</code> (65 A @ 75 °C)</td></tr>
+      <tr><td>Primary conductors (125% × 18.04 A = 22.55 A)</td><td class="ctr"><code>pickConductor31016(22.55, cu, 75) → 12 AWG Cu</code> (25 A @ 75 °C)</td></tr>
+      <tr><td>Terminal/pigtail box at the secondary — 3 ungrounded + neutral (4 × 6 AWG Cu) + 1 EGC (12 AWG Cu)</td><td class="ctr">3 × 5.00 + 1 × 5.00 + 1 × 2.25 = <strong>22.25 in³</strong> (each terminated conductor counts once, Table 314.16(B)(1))</td></tr>
+      <tr><td>Smallest on-disk standard box that fits (Table 314.16(A))</td><td class="ctr ok"><strong>4 × 2 × 2-1/2 in square (30.3 in³)</strong> — the 4 × 2 × 1-1/2 device (10.3 in³), the 4 × 2-1/2 round (21.5 in³), and the masonry boxes (14.0 / 21.0 in³) are all under 22.25 in³</td></tr>
+      <tr><td>312.6(A) bending space at the 6 AWG secondary terminals (1 wire/terminal)</td><td class="ctr"><strong>1-1/2 in</strong> (Table 312.6(A), “6–4 AWG” row, one wire per terminal, copper column — on-disk 2017 scan)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Two different “space” numbers, both required: the <strong>1-1/2 in</strong> of bending room at the terminal itself (312.6 → Table 312.6(A)), and the <strong>22.25 in³</strong> of enclosure volume for the pigtails (450.12 → Table 314.16(B)(1)). The fill math is the trap: four 6 AWG conductors look small, but at 5.00 in³ each (plus the 12 AWG EGC at 2.25 in³) the total is 22.25 in³ — which overflows the common 4 × 2 × 1-1/2 device box (10.3 in³) and even the 4 × 2-1/2 round (21.5 in³), landing on the 4 × 2 × 2-1/2 <em>square</em> (30.3 in³). (All table values are the on-disk 18–6 AWG range; conductors larger than 6 AWG are flagged to the AHJ, as noted above.)</p>
+
+  <h3>EX2 — the 450.13(B) 50 kVA hollow-space boundary, core-computed</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Boundary (450.13(B))</td><td class="ctr">Dry-type, ≤ 1000 V nominal, <strong>not exceeding 50 kVA</strong>, in a hollow space not permanently closed in → not required to be readily accessible (if 450.9 + 450.21(A) met)</td></tr>
+      <tr><td>Rated secondary current at 50 kVA, 208 V</td><td class="ctr"><strong>138.79 A</strong> (50000 ÷ (√3 × 208)) — the last kVA that may sit in a hollow space</td></tr>
+      <tr><td>Rated secondary current at 51 kVA, 208 V</td><td class="ctr"><strong>141.56 A</strong> — one kVA over, and the transformer must be readily accessible (or in a transformer room / vault)</td></tr>
+      <tr><td>The 1-kVA step at the boundary</td><td class="ctr">+2.78 A of rated secondary current (138.79 → 141.56 A)</td></tr>
+      <tr><td>Secondary conductor at 50 kVA, 125% × 138.79 A = 173.48 A</td><td class="ctr"><code>pickConductor31016(173.48, cu, 75) → 2/0 AWG Cu</code> (175 A @ 75 °C)</td></tr>
+      <tr><td>Secondary conductor at 51 kVA, 125% × 141.56 A = 176.95 A</td><td class="ctr"><code>pickConductor31016(176.95, cu, 75) → 3/0 AWG Cu</code> (200 A @ 75 °C) — 175 A (2/0) is just under, so the core steps up a size</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 50 kVA number is a <em>hard</em> boundary, not a guideline: at 138.79 A (50 kVA) the hollow-space installation is permitted without ready access; at 141.56 A (51 kVA) it is not. And because 125% of the rated current crosses a Table 310.16 column right at the boundary, stepping one kVA over pushes the secondary conductors from 2/0 AWG Cu (175 A at 50 kVA) to 3/0 AWG Cu (200 A at 51 kVA) — the access rule and the ampacity rule move together.</p>
+
+  <h3>EX3 — 450.14 disconnecting means — the Class 2/3 exemption boundary</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core / on-disk tables)</th></tr></thead>
+    <tbody>
+      <tr><td>50 kVA, 480 V : 208Y/120 V (a real transformer)</td><td class="ctr">Ip = 60.14 A, Is = 138.79 A → <strong>not</strong> Class 2/3 → 450.14 applies: disconnect in sight, or remote + lockable (2017) / lockable open (2023) + field-marked on the transformer</td></tr>
+      <tr><td>Class 2 limits (Article 725)</td><td class="ctr">≤ <strong>30 V</strong>, ≤ <strong>100 VA</strong> (power-limited)</td></tr>
+      <tr><td>Class 2 example — 50 VA, 24 V control/signal transformer</td><td class="ctr"><strong>2.08 A</strong> (50 ÷ 24) → within the 30 V / 100 VA limits → <strong>exempt from 450.14</strong> (no separate disconnecting means required)</td></tr>
+      <tr><td>Class 3 (for contrast)</td><td class="ctr">≤ 60 V, ≤ 100 VA — also exempt from 450.14, but above Class 2's voltage</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The exemption is about the <em>power-limited</em> corner: a 50 VA / 24 V unit (2.08 A) is exempt because it is Class 2 (≤ 30 V, ≤ 100 VA). A 50 <em>kVA</em> 480/208 unit is exempt from nothing — it needs the in-sight or remote-lockable-open disconnect and the field marking on the transformer. The “VA” vs “kVA” distinction is the whole test.</p>
+
+  <h3>EX4 — 450.11 the eight nameplate items on a 50 kVA dry-type unit</h3>
+  <table>
+    <thead><tr><th>#</th><th class="ctr">Nameplate value (450.11(A))</th></tr></thead>
+    <tbody>
+      <tr><td class="ctr">1</td><td class="ctr">Name of manufacturer</td></tr>
+      <tr><td class="ctr">2</td><td class="ctr">Rated kilovolt-amperes — 50 kVA</td></tr>
+      <tr><td class="ctr">3</td><td class="ctr">Frequency — 60 Hz</td></tr>
+      <tr><td class="ctr">4</td><td class="ctr">Primary and secondary voltage — 480 V : 208Y/120 V</td></tr>
+      <tr><td class="ctr">5</td><td class="ctr">Impedance (25 kVA and larger) — 5%</td></tr>
+      <tr><td class="ctr">6</td><td class="ctr">Required clearances (ventilating openings) — per nameplate</td></tr>
+      <tr><td class="ctr">7</td><td class="ctr">Amount and kind of insulating liquid — none (dry-type)</td></tr>
+      <tr><td class="ctr">8</td><td class="ctr">Temperature class for the insulation system (dry-type) — e.g. Class 155</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">All eight items are required — a nameplate missing item 5 (impedance, required at 25 kVA and larger) or item 8 (dry-type temperature class) is noncompliant even if the transformer otherwise works. Item 6 is the cross-reference to 450.9's clearance marking; item 8 drives the 450.21(B) transformer-room rules (Class 155+ insulation can escape the room requirement under its two Exceptions). 450.11(B) then permits supplying at the marked secondary voltage, provided the installation follows the manufacturer's instructions.</p>
+
+  <h2>Where 450.8–450.14 fit — the installation core of Article 450</h2>
+  <ul>
+    <li><strong>The OCPD core these rules sit around:</strong> the <a href="nec-4503-transformer-overcurrent.html">450.3 transformer overcurrent article (Article 51) →</a> — Table 450.3(A)/(B), 450.4 autotransformers, 450.6 secondary ties. Article 51 sizes the protection; this article sizes the physical envelope.</li>
+    <li><strong>The separately-derived-system grounding 450.10 ties into:</strong> the <a href="nec-25026-25030-separately-derived-systems.html">250.26–250.30 separately derived systems article →</a> (where 250.30 lives — the system bonding jumper + grounded conductor rules the secondary grounding follows — and where the 450.10(A) terminal-bar and 450.10(B) other-metal-parts rules connect).</li>
+    <li><strong>The box-fill and bending-space tables 450.12 invokes:</strong> the <a href="nec-31016-ampacity.html">Table 310.16 ampacity article →</a> (the conductor picks the pigtails carry) — Table 314.16(B)(1) and Table 312.6(A) are the on-disk tables quoted in EX1.</li>
+    <li><strong>The disconnecting-means cousins 450.14 parallels:</strong> the <a href="nec-430101-430113-disconnecting-means.html">430.101–430.113 motor disconnecting-means article →</a> (in sight / remote / lockable rules, same 110.25 lockability anchor 450.14 uses).</li>
+    <li><strong>The standard sizes behind every device pick in the series:</strong> the <a href="nec-2406-standard-ampere-ratings.html">240.6 standard-ampere-ratings article →</a>.</li>
+  </ul>
+  <p class="sub"><strong>2026 edition (out of scope, flagged honestly):</strong> no on-disk source confirms the Article 450 section numbers moved for the 2026 cycle, so this page cites 450.8–450.14 as stable across 2017–2023 and presents the 2017↔2023 deltas above. <strong>Verify section numbers against the NEC edition adopted in your jurisdiction.</strong></p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>): 450.8 (A)–(D), 450.9 (both informational notes + the two installation sentences), 450.10 (A)/(B) + Exception, 450.11 (A)(1)–(8)/(B), 450.12, 450.13 (A)/(B), 450.14. OCR line-wrap reflow normalized; disclosed scan artifacts corrected: "transformers shail be permitted"→"shall be permitted" (450.7, context), "insuJation"→"insulation" (450.11(A)(8)), "noncurrent-carrying"→"non-current-carrying" (450.10(B), hyphenation normalized to the 2023 spelling), running headers, and the page-break artifact ("2017 Edition NATIONAL ELECTRICAL CODE / 450.22") split inside 450.12, reflowed to "terminals of transformer line and load connections." No other wording altered.</p>
+    <p><strong>2023 text.</strong> On-disk 2023 NEC CSV (<span class="blank">art35_nec_csv.csv</span>), rows 450.8, 450.8(A)–(D), 450.9, 450.10(A)/(B), 450.11(A)/(B), 450.12, 450.13, 450.13(A)/(B), 450.14. The 2023 CSV carries a trailing markdown link on each body (stripped for the identity test only — never changes code text) and has no bare 450.10 row (only 450.10(A)/(B) bodies), so the 450.10 <em>title</em> claim rests on the Mike Holt 2023 change summary, stated as such.</p>
+    <p><strong>Edition-delta claims (machine-checked).</strong> A targeted assertion script (<span class="blank">verify_art52.py</span>) reads both on-disk sources and the Mike Holt 2023 change summary (<span class="blank">art48_mh23cc_full.txt</span>) and asserts 52 phrase-level checks: each delta is present in one edition and absent in the other; each identity claim is present in both. All 52 pass (re-runnable by the test suite). The 450.10 title change is quoted from the MH summary on disk. The 450.9 IEEE re-citations + no-storage marking, the 450.10(B) conditional drop, the 450.12 314.16(B)→314.16(B)(1) renumber (with the new (B)(2)–(B)(6) sub-rules), and the 450.14 “lockable”→“lockable open” are on-disk-verified cross-edition differences, not Mike Holt-listed items, and are labeled accordingly.</p>
+    <p><strong>Source boundaries (stated, not asserted):</strong> (1) No on-disk 2020 full-code text covers Article 450 (the on-disk 2020 scan ends at Article 230), so the 2020 position is not asserted — this page documents 2017 → 2023 only. (2) The 450.10 title change is sourced to the Mike Holt 2023 summary because the 2023 CSV carries no bare 450.10 row. (3) Table 314.16(B)(1)'s on-disk range is 18–6 AWG; the worked example stays inside it, and conductors larger than 6 AWG are flagged to the AHJ rather than extrapolated. (4) Table 312.6(A)'s wire-bending-space values are quoted from the on-disk 2017 scan (one wire per terminal, copper column); the on-disk 2023 CSV carries the table header but not its rows, so the page does <em>not</em> assert a 2017→2023 row identity for Table 312.6(A). (5) The kVA / voltage values in the worked examples are representative — the method is the point; read your specific transformer's nameplate, impedance, and the manufacturer's coordination data. (6) The Class 2/3 voltage/VA limits in EX3 are the Article 725 power-limited definitions, cited as the exemption test.</p>
+    <p><strong>Worked numbers.</strong> Every conductor pick, ampacity, and boundary number computed by the shipped cores under node (<span class="blank">compute_art52.js</span> → <span class="blank">art52_numbers.json</span>): <code>pickConductor31016</code> (Table 310.16, 75 °C column) for the EX1/EX2/EX3 conductor picks; the Table 314.16(B)(1) per-conductor volumes and the Table 314.16(A) box volumes are the on-disk NEC table values, machine-checked against the on-disk 2023 CSV (values unchanged 2017 → 2023, the table renumbered (B) → (B)(1)); the Table 312.6(A) gutter widths are from the on-disk 2017 scan only (the 2023 CSV carries the header, not the rows — boundary stated above). Three-phase rated currents are computed as kVA×1000 ÷ (√3 × V). The 2017↔2023 identity and delta claims are asserted by the same scripts reading the on-disk sources, so the edition story is machine-checked, not from memory. The test suite re-runs the picks and asserts they match the page.</p>
+    <p><strong>Authorship.</strong> Written and verified by <strong>Radloff Bot (no humans pretend to be the author)</strong>. Zero third-party scripts, zero tracking; data never leaves your browser.</p>
+  </div>
+
+  <a class="cta" href="../#panelCard">Open the free PanelWright calculator — size the panel, the service, the neutral, the derating, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 52 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan + NEC 2023 (on-disk CSV), verbatim, OCR corrections + source boundaries disclosed (2020 not on disk for Article 450; 450.10 title sourced to the Mike Holt 2023 summary; Table 314.16(B)(1) on-disk range 18–6 AWG). The 450.8–450.14 installation core is substance-identical 2017→2023 (52 machine-verified checks); the real deltas are 450.9 (IEEE re-cites + no-storage marking), 450.10 (title “Bonding” added — Mike Holt-documented; (B) conditional dropped), 450.12 (314.16(B)→314.16(B)(1) renumber), and 450.14 (“lockable open”). Design aid — the adopted edition in your jurisdiction governs.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-4503-transformer-overcurrent.html">NEC 450.3 transformer overcurrent (Article 51)</a> · <a href="nec-25026-25030-separately-derived-systems.html">NEC 250.26–250.30 separately derived systems</a> · <a href="nec-430101-430113-disconnecting-means.html">NEC 430.101–430.113 motor disconnecting means</a> · <a href="nec-31016-ampacity.html">Table 310.16 ampacity</a> · <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>

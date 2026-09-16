@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 52, 'art44: sitemap now has 52 URLs (articles 49 + 50 + 51 added; was 49)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 53, 'art44: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4890,7 +4890,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap48 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: sitemap entry present');
-  eq((sitemap48.match(/<loc>/g) || []).length, 52, 'art48: sitemap now has 52 URLs (articles 49 + 50 + 51 added; was 49)');
+  eq((sitemap48.match(/<loc>/g) || []).length, 53, 'art48: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index48 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: index cross-link present');
   const readme48 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4984,7 +4984,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap49 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: sitemap entry present');
-  eq((sitemap49.match(/<loc>/g) || []).length, 52, 'art49: sitemap has 52 URLs (art50 appended the 51st; art51 appended the 52nd)');
+  eq((sitemap49.match(/<loc>/g) || []).length, 53, 'art49: sitemap has 53 URLs (art50 appended the 51st; art51 the 52nd; art52 the 53rd)');
   const index49 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: index cross-link present');
   const readme49 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5150,11 +5150,118 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap51 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: sitemap entry present');
-  eq((sitemap51.match(/<loc>/g) || []).length, 52, 'art51: sitemap has 52 URLs (art51 appended the 52nd)');
+  eq((sitemap51.match(/<loc>/g) || []).length, 53, 'art51: sitemap has 53 URLs (art52 appended the 53rd)');
   const index51 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: index cross-link present');
   const readme51 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: README entry present');
+}
+
+
+// Article 52 — NEC 450.8-450.14: the INSTALLATION core of Article 450 Part I
+// (the physical envelope around the OCPD rules in Article 51). 450.8 guarding
+// ((A) mechanical protection / (B) noncombustible moisture-resistant case /
+// (C) 110.27 + 110.34 guarding + qualified-persons-only / (D) voltage warning
+// signs); 450.9 ventilation (full-load heat, unblocked openings, marked
+// clearances; 2023 adds the no-storage top-surface marking + IEEE re-cites);
+// 450.10 grounding ("Grounding and Bonding" in 2023 — Mike Holt-documented
+// title; the terminal bar in the enclosure per 250.12, the 250.8 wire-lead
+// Exception, other metal parts per 250 Parts V-VII; 2023 (B) drops the
+// "Where grounded," conditional); 450.11 marking (the eight nameplate items +
+// source marking); 450.12 terminal wiring space (312.6 bending space + pigtail
+// volume Table 314.16(B) [2017] -> 314.16(B)(1) [2023]); 450.13 accessibility
+// (the 50 kVA hollow-space boundary); 450.14 disconnecting means (in sight or
+// remote-lockable [2017] / lockable-open [2023] + field marking; Class 2/3
+// exempt). EDITION STORY: the installation rules are substance-identical
+// 2017->2023 (52 phrase-level machine checks, verify_art52.py, all pass). Real
+// deltas: 450.9 IEEE re-cites + no-storage marking; 450.10 title + (B)
+// conditional drop; 450.12 314.16(B)->314.16(B)(1) renumber; 450.14 "lockable
+// open". Worked examples core-computed (compute_art52.js -> art52_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-4508-45014-transformer-installation.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art52_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-4508-45014-transformer-installation.html'), true, 'art52: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-4508-45014-transformer-installation.html'), true, 'art52: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art52: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art52: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 52'), true, 'art52: footer marks article 52');
+  // 450.8 guarding (verbatim 2017)
+  eq(has('transformers shall be guarded as specified in 450.8(a) through (d)'), true, 'art52: 450.8 lead-in (A)-(D) quoted');
+  eq(has('minimize the possibility of damage to transformers from external causes'), true, 'art52: 450.8(A) mechanical protection quoted');
+  eq(has('noncombustible moisture-resistant case or enclosure'), true, 'art52: 450.8(B) case/enclosure quoted');
+  eq(has('protection against the accidental insertion of foreign objects'), true, 'art52: 450.8(B) foreign-object protection quoted');
+  eq(has('all energized parts shall be guarded in accordance with 110.27 and 110.34'), true, 'art52: 450.8(C) 110.27/110.34 guarding quoted');
+  eq(has('the operating voltage of exposed live parts of transformer installations shall be indicated by signs or visible markings'), true, 'art52: 450.8(D) voltage warning quoted');
+  // 450.9 ventilation (verbatim 2017)
+  eq(has('the ventilation shall dispose of the transformer full-load heat losses'), true, 'art52: 450.9 full-load heat quoted');
+  eq(has('the ventilating openings are not blocked by walls or other obstructions'), true, 'art52: 450.9 no-blocked-openings quoted');
+  eq(has('the required clearances shall be clearly marked on the transformer'), true, 'art52: 450.9 clearances marked quoted');
+  // 450.10 grounding (verbatim 2017)
+  eq(has('the terminal bar shall be bonded to the enclosure in accordance with 250.12'), true, 'art52: 450.10(A) terminal bar 250.12 quoted');
+  eq(has('shall not be installed on or over any vented portion of the enclosure'), true, 'art52: 450.10(A) vented-portion prohibition quoted');
+  eq(has('shall be permitted to be connected together using any of the methods in 250.8'), true, 'art52: 450.10(A) Exception 250.8 wire-lead quoted');
+  eq(has('fences, guards, and so forth'), true, 'art52: 450.10(B) fences/guards quoted');
+  eq(has('parts v, vi, and vii of article 250'), true, 'art52: 450.10(B) 250 Parts V-VII quoted');
+  // 450.11 marking (verbatim 2017)
+  eq(has('rated kilovolt-amperes'), true, 'art52: 450.11(A)(2) rated kVA quoted');
+  eq(has('impedance of transformers 25 kva and larger'), true, 'art52: 450.11(A)(5) impedance 25 kVA quoted');
+  eq(has('temperature class for the insulation system'), true, 'art52: 450.11(A)(8) temperature class quoted (OCR insuJation corrected)');
+  eq(has('provided that the installation is in accordance with the manufacturer'), true, 'art52: 450.11(B) source marking quoted');
+  // 450.12 terminal wiring space (verbatim 2017)
+  eq(has('shall be as required in 312.6'), true, 'art52: 450.12 312.6 bending space quoted');
+  eq(has('conform to table 314.16(b).'), true, 'art52: 450.12 2017 "Table 314.16(B)." quoted');
+  // 450.13 accessibility (verbatim 2017)
+  eq(has('shall be readily accessible to qualified personnel for inspection and maintenance'), true, 'art52: 450.13 ready-access default quoted');
+  eq(has('not exceeding 50 kva shall be permitted in hollow spaces'), true, 'art52: 450.13(B) 50 kVA hollow-space boundary quoted');
+  // 450.14 disconnecting means (verbatim 2017)
+  eq(has('other than class 2 or class 3 transformers'), true, 'art52: 450.14 Class 2/3 exemption quoted');
+  eq(has('located either in sight of the transformer or in a remote location'), true, 'art52: 450.14 in-sight-or-remote quoted');
+  eq(has('its location shall be field marked on the transformer'), true, 'art52: 450.14 field marking quoted');
+  eq(has('shall be lockable in accordance with 110.25'), true, 'art52: 450.14 2017 "lockable" quoted');
+  // 2017 -> 2023 deltas
+  eq(has('c57.12.00-1993'), true, 'art52: 2017 IEEE C57.12.00-1993 quoted');
+  eq(has('ieee c57.12.00-2015'), true, 'art52: 2023 IEEE C57.12.00-2015 cited');
+  eq(has('c57.12.01-2020'), true, 'art52: 2023 IEEE C57.12.01-2020 cited');
+  eq(has('c57.110-2018'), true, 'art52: 2023 IEEE C57.110-2018 cited');
+  eq(has('shall be marked to prohibit storage'), true, 'art52: 2023 450.9 no-storage marking quoted');
+  eq(has('grounding and bonding'), true, 'art52: 2023 450.10 "Grounding and Bonding" title');
+  eq(has('where grounded, exposed non-current-carrying'), true, 'art52: 2017 450.10(B) "where grounded," conditional quoted');
+  eq(has('table 314.16(b)(1).'), true, 'art52: 2023 450.12 cites Table 314.16(B)(1) (ellipsis quote)');
+  eq(has('lockable open'), true, 'art52: 2023 450.14 "lockable open"');
+  // worked examples — core-computed numbers (art52_numbers.json)
+  eq(has(String(nums.EX1.Ip)), true, 'art52: EX1 rated primary ' + nums.EX1.Ip + ' A');
+  eq(has(String(nums.EX1.Is)), true, 'art52: EX1 rated secondary ' + nums.EX1.Is + ' A');
+  eq(has('6 awg cu'), true, 'art52: EX1 secondary conductor 6 AWG Cu');
+  eq(has('12 awg cu'), true, 'art52: EX1 primary conductor 12 AWG Cu');
+  eq(has(String(nums.EX1.fill.total)), true, 'art52: EX1 pigtail fill ' + nums.EX1.fill.total + ' in^3');
+  eq(has('4 × 2 × 2-1/2 in square'), true, 'art52: EX1 smallest fitting box 4x2x2-1/2 square');
+  eq(has('1-1/2 in'), true, 'art52: EX1 312.6(A) bending space 1-1/2 in');
+  eq(has(String(nums.EX2.ratedSec_50kVA)), true, 'art52: EX2 50 kVA rated secondary ' + nums.EX2.ratedSec_50kVA + ' A');
+  eq(has(String(nums.EX2.ratedSec_51kVA)), true, 'art52: EX2 51 kVA rated secondary ' + nums.EX2.ratedSec_51kVA + ' A');
+  eq(has(String(nums.EX2.deltaKVA)), true, 'art52: EX2 1-kVA step ' + nums.EX2.deltaKVA + ' A');
+  eq(has('2/0 awg cu'), true, 'art52: EX2 50 kVA conductor 2/0 AWG Cu');
+  eq(has('3/0 awg cu'), true, 'art52: EX2 51 kVA conductor 3/0 AWG Cu');
+  eq(has(String(nums.EX3.Ip)), true, 'art52: EX3 50 kVA primary ' + nums.EX3.Ip + ' A');
+  eq(has(String(nums.EX3.class2_example.currentA)), true, 'art52: EX3 Class 2 example ' + nums.EX3.class2_example.currentA + ' A');
+  // cross-links
+  eq(art.includes('nec-4503-transformer-overcurrent.html'), true, 'art52: cross-links to 450.3 OCPD article (Article 51)');
+  eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art52: cross-links to 250.26-250.30 article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art52: cross-links to 310.16 article');
+  eq(art.includes('nec-430101-430113-disconnecting-means.html'), true, 'art52: cross-links to 430.101-430.113 article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art52: cross-links to 240.6 article');
+  // sitemap + index + README
+  const sitemap52 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: sitemap entry present');
+  eq((sitemap52.match(/<loc>/g) || []).length, 53, 'art52: sitemap has 53 URLs (art52 appended the 53rd)');
+  const index52 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: index cross-link present');
+  const readme52 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

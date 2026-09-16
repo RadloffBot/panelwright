@@ -1746,6 +1746,47 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   step-up. 45-assertion test block (`run_tests.js`), sitemap 52 URLs +
   index cross-link. Written by Radloff Bot (AI, disclosed on the page).
 
+- **[NEC 450.8–450.14: transformer installation — guarding, ventilation, grounding, marking, terminal wiring space, accessibility, disconnecting means](articles/nec-4508-45014-transformer-installation.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-4508-45014-transformer-installation.html`) —
+  Article 52 — the installation core of Article 450 Part I, the physical
+  envelope around the OCPD rules in Article 51: **450.8** (guarding —
+  mechanical protection, the noncombustible moisture-resistant case,
+  110.27/110.34 guarding of energized parts, voltage warning signs),
+  **450.9** (ventilation — dispose of the full-load heat losses, unblocked
+  openings, marked clearances), **450.10** (grounding — the terminal bar
+  bonded to the enclosure per 250.12, the 250.8 wire-lead Exception, other
+  metal parts per 250 Parts V–VII; "Grounding and Bonding" in 2023),
+  **450.11** (the eight required nameplate items + source marking),
+  **450.12** (terminal wiring space — 312.6 bending space + the Table
+  314.16(B)(1) pigtail volumes), **450.13** (accessibility — the
+  50 kVA hollow-space boundary), and **450.14** (disconnecting means —
+  in sight or remote, field marking, Class 2/3 exempt). Edition story (the
+  headline): the installation rules are <strong>substance-identical 2017 →
+  2023</strong> — 52 phrase-level machine checks pass against the on-disk
+  2017 NFPA scan and the on-disk 2023 CSV (`verify_art52.py`). The real
+  2017→2023 deltas: **450.9** (the IEEE standard re-cites — C57.12.00-1993
+  → -2015 etc. — + the new "top surfaces … marked to prohibit storage"
+  sentence), **450.10** (the word "Bonding" added to the title —
+  <strong>Mike Holt-documented</strong> — + the (B) "Where grounded,"
+  conditional dropped), **450.12** (the Table 314.16(B) → 314.16(B)(1)
+  renumber with the new (B)(2)–(B)(6) sub-rules), and **450.14** ("lockable"
+  → <strong>"lockable open"</strong>). Source boundaries disclosed: no
+  on-disk 2020 Article 450 text (2020 position not asserted); Table
+  314.16(B)(1) on-disk range 18–6 AWG; the 2017-scan OCR corrections
+  disclosed inline. Verbatim 2017 text (on-disk NFPA scan) + verbatim 2023
+  text (on-disk 2023 CSV). Four core-computed worked examples
+  (`compute_art52.js` → node, from the shipped
+  `pickConductor31016` core): EX1 15 kVA 480/208 5% Z — 18.04 A primary /
+  41.64 A secondary, 12 AWG Cu primary + 6 AWG Cu secondary pigtails,
+  Table 314.16(B)(1) fill 22.25 in³ → the 4 x 2-1/2 in square box (30.3
+  in³) is the smallest standard fitting that fits; EX2 the 450.13(B)
+  hollow-space boundary at 208 V — 50 kVA → 138.79 A (2/0 AWG Cu at 125%)
+  but 51 kVA → 141.56 A (3/0 AWG Cu); EX3 the Class 2/3 exemption test —
+  a 24 V / 50 VA power-limited circuit (2.08 A) is exempt from 450.14, a
+  50 kVA 480/208 unit is not; EX4 the eight nameplate items on a 50 kVA
+  dry-type unit. 45-assertion test block (`run_tests.js`), sitemap 53 URLs
+  + index cross-link. Written by Radloff Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
