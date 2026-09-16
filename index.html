@@ -136,6 +136,28 @@
   #printReport .pr-panel { break-inside: avoid; page-break-inside: avoid; }
   #printReport .pr-foot { border-top: 1px solid #999; margin-top: 16px; padding-top: 8px; font-size: 10.5px; color: #555; }
   #printReport .pr-foot p { margin: 4px 0; }
+
+  /* PanelWright Pro upsell (placeholder links until Stripe product live — 2026-09-16) */
+  .pro-section { margin-top: 26px; border: 1px solid var(--line); border-top: 2px solid var(--accent); border-radius: 10px; padding: 22px 24px; background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%); }
+  .pro-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent); font-weight: 700; margin: 0 0 6px; }
+  .pro-section h2 { font-size: 19px; color: var(--text); text-transform: none; letter-spacing: 0; margin: 0 0 6px; }
+  .pro-lede { color: var(--dim); font-size: 13.5px; margin: 0 0 14px; }
+  .pro-draft { font-size: 11px; color: var(--dim); border: 1px dashed var(--line); border-radius: 6px; padding: 5px 10px; margin: 0 0 16px; display: inline-block; }
+  .pro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+  .pro-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 20px; display: flex; flex-direction: column; }
+  .pro-card.featured { border-color: var(--accent); }
+  .pro-badge { display: inline-block; align-self: flex-start; background: var(--accent); color: #1a1205; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; padding: 2px 8px; border-radius: 999px; margin-bottom: 10px; }
+  .pro-card h3 { margin: 0 0 4px; font-size: 15px; color: var(--text); }
+  .pro-price { font-size: 26px; font-weight: 700; color: var(--text); margin: 6px 0 2px; }
+  .pro-price span { font-size: 13px; font-weight: 400; color: var(--dim); }
+  .pro-card ul { list-style: none; margin: 12px 0 16px; padding: 0; flex: 1; }
+  .pro-card li { font-size: 13px; color: var(--dim); padding: 4px 0 4px 20px; position: relative; line-height: 1.4; }
+  .pro-card li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 700; }
+  .pro-buy { display: block; text-align: center; background: var(--accent); color: #1a1205; border: 1px solid var(--accent); border-radius: 8px; padding: 10px 14px; font-weight: 700; font-size: 14px; text-decoration: none; margin-top: auto; }
+  .pro-buy.ghost { background: transparent; color: var(--accent); font-weight: 600; }
+  .pro-buy:hover { filter: brightness(1.08); }
+  .pro-note { font-size: 12px; color: var(--dim); margin: 16px 0 0; line-height: 1.5; }
+  @media print { .pro-section { display: none; } }
 </style>
 </head>
 <body>
@@ -452,6 +474,46 @@
     </div>
     <div class="badges no-print" id="badges"></div>
     <p class="dwnote" style="margin:10px 0 0"><strong>The 5% neutral badge is a screening guideline — not a NEC limit.</strong> No NEC edition sets a percent-unbalance requirement on panelboards: the badge compares the panel’s neutral estimate (worst-phase deviation) against 5% of the panel rating as a quick proportionality screen. The real neutral-sizing authority is <a href="articles/nec-22061-neutral-load.html">NEC 220.61</a> (maximum unbalance + 70% reductions + 310.12(D) 83% one-dwelling floor). Phase arrangement and the high-leg “Caution” marking are <a href="articles/nec-4083-busbars-phase-identification.html">NEC 408.3(E)/(F)</a> (2014–2023: “Support and Arrangement of Busbars and Conductors”), with the orange high-leg marking at <a href="articles/nec-4083-busbars-phase-identification.html#code">110.15</a>. Full 408.3 explanation (the 408.3(C) edition trap, the 5%-screen truth, worked examples) → <a href="articles/nec-4083-busbars-phase-identification.html">nec-4083-busbars-phase-identification.html</a></p>
+  </section>
+
+  <!-- PRO-LINK-PLACEHOLDER: the two href values below are placeholders until the Stripe
+       product "PanelWright Pro" is created in Tanner's live account (2026-09-16).
+       Swap href values + remove the DRAFT badge when live. -->
+  <section class="pro-section" id="pro" aria-label="PanelWright Pro">
+    <p class="pro-eyebrow">PanelWright Pro</p>
+    <h2>Build the whole project — every panel, one file</h2>
+    <p class="pro-lede">The free tool above is unlimited for a single panel. Pro is for full
+      projects: every panel in one file, shared with the crew, and printed as a complete
+      inspection-ready package.</p>
+    <span class="pro-draft">DRAFT feature list — confirm before launch (Radloff Bot, 2026-09-16)</span>
+    <div class="pro-grid">
+      <div class="pro-card featured">
+        <span class="pro-badge">Most popular</span>
+        <h3>Pro · Annual</h3>
+        <div class="pro-price">$29.95<span> / year</span></div>
+        <ul>
+          <li>Multi-panel projects (all panels in one file)</li>
+          <li>Whole-project CSV + PDF export</li>
+          <li>Share a project link with your crew</li>
+          <li>Priority support from Tanner</li>
+        </ul>
+        <a class="pro-buy" href="PRO-LINK-PLACEHOLDER-yearly" target="_blank" rel="noopener">Get Pro — annual</a>
+      </div>
+      <div class="pro-card">
+        <h3>Pro · Lifetime</h3>
+        <div class="pro-price">$49<span> once</span></div>
+        <ul>
+          <li>Everything in Pro · Annual</li>
+          <li>Paid once — no renewal, ever</li>
+          <li>Free upgrades for the lifetime of the tool</li>
+        </ul>
+        <a class="pro-buy ghost" href="PRO-LINK-PLACEHOLDER-onetime" target="_blank" rel="noopener">Get Pro — lifetime</a>
+      </div>
+    </div>
+    <p class="pro-note"><strong>The free tool stays free, forever.</strong> No account or email
+      required to use the calculator above. Purchases are handled securely by Stripe;
+      PanelWright does not store card details. Checkouts and refunds are handled through
+      your Stripe receipt link.</p>
   </section>
 
   <footer>

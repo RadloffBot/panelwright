@@ -5264,5 +5264,37 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(readme52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: README entry present');
 }
 
+// PanelWright Pro upsell section (placeholder links until Stripe product is live — 2026-09-16).
+// Static HTML checks only: structure, pricing, placeholders, design-system usage, print-hidden.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const idx = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  const norm = idx.replace(/\s+/g, ' ');
+  const has = (s) => norm.includes(s);
+  // structure
+  eq(has('<section class="pro-section" id="pro"'), true, 'pro: section present with id=pro');
+  eq(idx.indexOf('class="pro-section"') < idx.indexOf('<footer'), true, 'pro: section sits between calculator and footer');
+  // copy + pricing
+  eq(has('$29.95'), true, 'pro: $29.95 annual price shown');
+  eq(has('$49'), true, 'pro: $49 lifetime price shown');
+  eq(has('Most popular'), true, 'pro: featured "Most popular" badge present');
+  eq(has('DRAFT feature list'), true, 'pro: DRAFT feature-list badge present (confirm before launch)');
+  eq(has('free, forever'), true, 'pro: "free tool stays free" note present');
+  // placeholder payment links (until Stripe product live)
+  eq(has('href="PRO-LINK-PLACEHOLDER-yearly"'), true, 'pro: yearly buy href is a marked placeholder');
+  eq(has('href="PRO-LINK-PLACEHOLDER-onetime"'), true, 'pro: lifetime buy href is a marked placeholder');
+  // buy buttons open external, no inline handlers
+  eq((idx.match(/class="pro-buy/g) || []).length, 2, 'pro: exactly two buy buttons');
+  eq(has('rel="noopener"'), true, 'pro: buy links use target=_blank + rel=noopener');
+  // design system: uses existing CSS vars, no new <style> deps / external scripts
+  eq(has('.pro-section { margin-top: 26px; border: 1px solid var(--line); border-top: 2px solid var(--accent);'), true, 'pro: section styled with existing vars (--line/--accent)');
+  const proSectionHtml = idx.slice(idx.indexOf('class="pro-section"'), idx.indexOf('<footer'));
+  eq(proSectionHtml.includes('<script') === false, true, 'pro: section adds no scripts');
+  eq(proSectionHtml.includes('http') === false, true, 'pro: section references no external URLs (placeholder hrefs are bare tokens)');
+  // print: hidden
+  eq(has('@media print { .pro-section { display: none; } }'), true, 'pro: hidden from print/PDF report');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
