@@ -1648,6 +1648,55 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   sitemap 50 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
   on the page).
 
+- **[NEC 440.22 + 440.32: air-conditioning branch circuits — the branch-circuit core of Article 440](articles/nec-44022-44032-air-cooling-branch-circuit.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-44022-44032-air-cooling-branch-circuit.html`) —
+  Article 50 — how to size the breaker and the wires for a hermetic
+  refrigerant motor-compressor: **440.22(A)** (the branch-circuit
+  short-circuit and ground-fault protective device capped at **175% of the
+  greater of the rated-load current (RLC) or the branch-circuit selection
+  current (BCS)**, the **225%** starting-current allowance, the **15-ampere**
+  floor, and the 440.22(C) nameplate marked-maximum trump card) and
+  **440.32** (conductors at **125%** of that same greater current, with the
+  **72%** wye-start/delta-run rule for the controller-to-motor conductors),
+  plus the companions **440.33** (multi-motor: sum of all compressor RLC/BCS
+  + all other-motor FLC + **25% of the highest** in the group), **440.52**
+  (the four overload means — **140%** separate relay, integral thermal
+  protector, **125%** fuse/breaker, approved protective system — and the
+  **156%** thermal-protector continuous current in (B)(2)), and **440.12(A)(1)**
+  (the disconnect at **115%**). Edition story (the headline): the
+  branch-circuit <strong>numbers never moved 2017 → 2023</strong> — 440.22(A) was
+  reorganized from a long sentence + single Exception into a rule + <strong>three</strong>
+  numbered Exceptions (No. 1 next-higher-standard, No. 2 225% starting, No. 3
+  15 A floor) with substance unchanged, and 440.32 from "125% of either …
+  whichever is greater" to "the greater of the following" — all
+  machine-verified by an alpha-normalized diff of the on-disk 2017 NFPA scan
+  vs the on-disk 2023 CSV. The real 2017→2023 deltas, all verified on disk and
+  cross-checked against the Mike Holt 2023 change summary: **440.8** added the
+  <strong>bathtub/shower zone</strong> prohibition (no AC/refrigeration equipment
+  within 900 mm / 2.5 m of a tub rim or shower threshold); **440.9** (rooftop
+  EGC) reworded <strong>non-threaded → compression-type</strong> fittings;
+  **440.11** added the <strong>lockable / tool-to-open door</strong> requirement
+  for disconnects exposing live parts; **440.14** added the <strong>110.26(A)</strong>
+  working-space reference; and the 440.52(B) Exception cross-reference
+  renumbered <strong>440.59 → 440.55</strong>. Source boundaries disclosed: no
+  on-disk 2020 Article 440 text (2020 position not asserted), and the 2017
+  scan's 440.9 "Grounding and Bonding" heading is captured out of sequence
+  by the OCR (flagged). Verbatim 2017 text (on-disk NFPA scan) + verbatim 2023
+  text (on-disk 2023 CSV). Five core-computed worked examples
+  (`compute_art50.js` → node, from the shipped `pickConductor31016` /
+  `nextStdBreaker` cores): EX1 RLC 15 A / BCS 18 A / marked-max 30 A — BCS
+  governs, 175% = 31.5 A (30 A permitted), conductor 22.5 A → 12 AWG Cu,
+  disconnect 25 A; EX2 RLC 25 A / BCS 28 A / marked-max 45 A — 175% = 49 A
+  (45 A permitted), 125% = 35 A → 10 AWG Cu, disconnect 35 A; EX3 RLC 40 A /
+  BCS 45 A / marked-max 90 A — the <strong>225% rung</strong>: 175% = 78.75 A
+  is exceeded, 225% = 101.25 A permits the 90 A device, conductor stays at
+  125% = 56.25 A → 6 AWG Cu, disconnect 60 A; EX4 the 440.33 multi-motor sum —
+  20 (compressor) + 10 (blower) + 5 (25% of 20) = 35 A → 10 AWG Cu; EX5 the
+  wye-delta 72% split — line conductors 125% × 30 = 37.5 A → 8 AWG Cu,
+  controller-to-motor 72% × 30 = 21.6 A → 12 AWG Cu. 45-assertion test block
+  (`run_tests.js`), sitemap 51 URLs + index cross-link. Written by Radloff
+  Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

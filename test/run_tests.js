@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 50, 'art44: sitemap now has 50 URLs (article 49 added; was 49)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 51, 'art44: sitemap now has 51 URLs (articles 49 + 50 added; was 49)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4890,7 +4890,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap48 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: sitemap entry present');
-  eq((sitemap48.match(/<loc>/g) || []).length, 50, 'art48: sitemap now has 50 URLs (article 49 added; was 49)');
+  eq((sitemap48.match(/<loc>/g) || []).length, 51, 'art48: sitemap now has 51 URLs (articles 49 + 50 added; was 49)');
   const index48 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: index cross-link present');
   const readme48 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4984,11 +4984,92 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap49 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: sitemap entry present');
-  eq((sitemap49.match(/<loc>/g) || []).length, 50, 'art49: sitemap has 50 URLs (was 49, +article 49)');
+  eq((sitemap49.match(/<loc>/g) || []).length, 51, 'art49: sitemap has 51 URLs (was 50 at art49 time; art50 appended the 51st)');
   const index49 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: index cross-link present');
   const readme49 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: README entry present');
+}
+
+// Article 50 — NEC 440.22 + 440.32: air-conditioning branch circuits (the
+// branch-circuit core of Article 440). 440.22(A) = the branch-circuit SC/GF
+// device capped at 175% of the GREATER of rated-load current (RLC) or
+// branch-circuit selection current (BCS), the 225% starting-current allowance,
+// the 15 A floor, and the 440.22(C) nameplate marked-maximum trump card.
+// 440.32 = conductors at 125% of that greater current, with the 72%
+// wye-start/delta-run rule for the controller-to-motor conductors. Companions
+// 440.33 (multi-motor: sum + 25% of the largest), 440.52 (140% relay / 125%
+// fuse / 156% thermal), 440.12(A)(1) (disconnect at 115%). EDITION STORY: the
+// branch-circuit NUMBERS never moved 2017->2023 (440.22(A) reorganized from a
+// long sentence + single Exception into a rule + three Exceptions; 440.32 from
+// "125% of either ... whichever is greater" to "the greater of the following"
+// — substance identical, alpha-normalized machine diff). Real 2017->2023
+// deltas, all verified on disk + Mike Holt 2023 change summary: 440.8 added
+// the bathtub/shower zone; 440.9 non-threaded -> compression-type fittings;
+// 440.11 lockable door; 440.14 110.26(A) working space; 440.52(B) 440.59 ->
+// 440.55 renumber. Worked examples core-computed (compute_art50.js ->
+// art50_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-44022-44032-air-cooling-branch-circuit.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art50_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art50: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art50: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art50: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art50: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 50'), true, 'art50: footer marks article 50');
+  // core rules present (verbatim 2017)
+  eq(has('175 percent of the motor-compressor rated-load current'), true, 'art50: 440.22(A) 175% rule quoted');
+  eq(has('shall not exceed 225 percent of the motor rated-load current'), true, 'art50: 440.22(A) 225% starting allowance quoted');
+  eq(has('shall not be required to be less than 15 amperes'), true, 'art50: 440.22(A) 15 A floor quoted');
+  eq(has('125 percent of either the motor-compressor rated-load current or the branch-circuit selection current, whichever is greater'), true, 'art50: 440.32 125% rule quoted');
+  eq(has('72 percent of either the motor-compressor rated-load current'), true, 'art50: 440.32 wye-delta 72% rule quoted');
+  eq(has('25 percent of the highest motor-compressor or motor full load current'), true, 'art50: 440.33 25% of largest quoted');
+  eq(has('not more than 140 percent of the motor-compressor rated-load current'), true, 'art50: 440.52(A)(1) 140% relay quoted');
+  eq(has('rated at not more than 125 percent of the motor-compressor rated-load current'), true, 'art50: 440.52(A)(3) 125% fuse quoted');
+  eq(has('at least 115 percent of the nameplate rated-load current'), true, 'art50: 440.12(A)(1) 115% disconnect quoted');
+  // edition story
+  eq(has('substance identical'), true, 'art50: 440.22(A)/440.32 substance-identical claim stated');
+  eq(has('bathtub rim or shower stall threshold'), true, 'art50: 440.8 bathtub/shower zone quoted (2023 addition)');
+  eq(has('compression-type fittings'), true, 'art50: 440.9 compression-type fittings quoted (2023)');
+  eq(has('non-threaded fittings'), true, 'art50: 440.9 non-threaded fittings quoted (2017)');
+  eq(has('require a tool to open or be capable of being locked'), true, 'art50: 440.11 lockable door quoted (2023 addition)');
+  eq(has('working space requirements of 110.26(a)'), true, 'art50: 440.14 110.26(A) working space quoted (2023 addition)');
+  eq(has('440.59'), true, 'art50: 2017 440.52(B) cites 440.59');
+  eq(has('440.55'), true, 'art50: 2023 440.52(B) cites 440.55 (renumber)');
+  eq(has('2020 position is not asserted'), true, 'art50: 2020 source boundary disclosed');
+  eq(has('ocr'), true, 'art50: OCR artifacts disclosed');
+  // worked examples — core-computed numbers (art50_numbers.json)
+  eq(has(String(nums.EX1.gov)), true, 'art50: EX1 governing current ' + nums.EX1.gov + ' A (BCS governs)');
+  eq(has('pickconductor31016(22.5, cu, 75) → 12 awg cu'), true, 'art50: EX1 conductor 12 AWG Cu @ 75 C');
+  eq(has('nextstdbreaker(20.7) → 25 a'), true, 'art50: EX1 disconnect 25 A');
+  eq(has('31.5'), true, 'art50: EX1 175% ceiling 31.5 A');
+  eq(has('pickconductor31016(35, cu, 75) → 10 awg cu'), true, 'art50: EX2 conductor 10 AWG Cu @ 75 C (125% × 28)');
+  eq(has('nextstdbreaker(32.2) → 35 a'), true, 'art50: EX2 disconnect 35 A');
+  eq(has('78.75'), true, 'art50: EX3 175% ceiling 78.75 A (exceeded)');
+  eq(has('101.25'), true, 'art50: EX3 225% ceiling 101.25 A (225% rung)');
+  eq(has('pickconductor31016(56.25, cu, 75) → 6 awg cu'), true, 'art50: EX3 conductor 6 AWG Cu @ 75 C');
+  eq(has('nextstdbreaker(51.75) → 60 a'), true, 'art50: EX3 disconnect 60 A');
+  eq(has('total conductor ampacity (440.33) 35 a'), true, 'art50: EX4 440.33 multi-motor sum 35 A (20+10+5)');
+  eq(has('pickconductor31016(37.5, cu, 75) → 8 awg cu'), true, 'art50: EX5 line conductors 8 AWG Cu @ 75 C (125% × 30)');
+  eq(has('pickconductor31016(21.6, cu, 75) → 12 awg cu'), true, 'art50: EX5 controller-to-motor 12 AWG Cu @ 75 C (72% × 30)');
+  // cross-links into the motor series
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art50: cross-links to 430.22+430.52 article');
+  eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art50: cross-links to 430.32+430.36 article');
+  eq(art.includes('nec-46009-46008-pfc-capacitors.html'), true, 'art50: cross-links to 460.9+460.8 article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art50: cross-links to 240.6 article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art50: cross-links to 310.16 article');
+  // sitemap + index + README
+  const sitemap50 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap50.includes('articles/nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art50: sitemap entry present');
+  const index50 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index50.includes('articles/nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art50: index cross-link present');
+  const readme50 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme50.includes('articles/nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art50: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

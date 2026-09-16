@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 440.22 + 440.32 — Air-Conditioning Branch Circuits (the 175% OCPD and the 125% Conductor Rules)</title>
+<meta name="description" content="The two rules that size every air-conditioning branch circuit: 440.22(A) (the branch-circuit short-circuit and ground-fault protective device capped at 175% of the greater of rated-load or branch-circuit selection current, with the 225% starting-current allowance and the 15-ampere floor) and 440.32 (conductors at 125% of the greater current), plus 440.33 (multi-motor sum + 25%) and 440.52 (the 140% overload). The 2017→2023 edition story: 440.22(A) reorganized into a rule + three exceptions, 440.8 gained the bathtub/shower zone, and the disconnect rules were tightened. Edition history, the companion sections, and five worked examples from the shipped cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-44022-44032-air-cooling-branch-circuit.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 440.22 + 440.32 — Air-Conditioning Branch Circuits (the 175% OCPD and the 125% Conductor Rules)">
+<meta property="og:description" content="How to size the breaker and the wires for an air-conditioning or refrigerating branch circuit: 440.22(A) caps the OCPD at 175% (225% for starting, 15 A floor) and 440.32 sizes the conductors at 125% of the greater of rated-load or branch-circuit selection current. Edition history 2017→2023 + five worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-44022-44032-air-cooling-branch-circuit.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 440.22 + 440.32 — Air-Conditioning Branch Circuits (the 175% OCPD and the 125% Conductor Rules)">
+<meta name="twitter:description" content="440.22(A) caps the AC branch-circuit OCPD at 175% (225% for starting, 15 A floor); 440.32 sizes conductors at 125% of the greater of rated-load or branch-circuit selection current. Edition history + worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 440.22 air conditioning branch circuit, 440.22(A) 175 percent motor-compressor, 225 percent starting current air conditioning, 15 ampere minimum air conditioning breaker, NEC 440.32 125 percent branch-circuit conductors, branch-circuit selection current, rated-load current air conditioning, 440.33 multi-motor 25 percent, 440.52 motor-compressor overload 140 percent, 440.12 disconnecting means 115 percent, air conditioning branch circuit sizing, electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 440.22 + 440.32 — Air-Conditioning Branch Circuits (the 175% OCPD and the 125% Conductor Rules)",
+  "description": "The two rules that size every air-conditioning branch circuit: 440.22(A) (the branch-circuit short-circuit and ground-fault protective device capped at 175% of the greater of rated-load or branch-circuit selection current, with the 225% starting-current allowance and the 15-ampere floor) and 440.32 (conductors at 125% of the greater current). Edition history 2017 to 2023, the companion sections 440.33 / 440.52 / 440.12, and five worked examples computed from the shipped PanelWright cores.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-15",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-44022-44032-air-cooling-branch-circuit.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How big a breaker can I put on an air-conditioning branch circuit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "440.22(A): the branch-circuit short-circuit and ground-fault protective device rating or setting shall not exceed 175 percent of the greater of the motor-compressor rated-load current or the branch-circuit selection current. If that is not enough to carry the starting current, 440.22(A) Exception No. 2 (2023; a proviso in 2017) permits it to be increased but not above 225 percent of that greater current. And the device is never required to be less than 15 amperes (Exception No. 3 / 2017 Exception). The nameplate maximum marked on the equipment always governs (440.22(C))." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I size the conductors to a single air-conditioning compressor?",
+      "acceptedAnswer": { "@type": "Answer", "text": "440.32: branch-circuit conductors supplying a single motor-compressor shall have an ampacity not less than 125 percent of the greater of the motor-compressor rated-load current or the branch-circuit selection current. For a wye-start, delta-run compressor the conductors between the controller and the motor may be based on 72 percent (58% × 1.25) of that greater current." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between rated-load current and branch-circuit selection current?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Both are marked on the nameplate. The rated-load current (RLC) is the normal full-load current of the compressor. The branch-circuit selection current (BCS) is a higher value the manufacturer marks where a thermal protector or protective system permits the compressor to carry more than the RLC before tripping — it tells you the current the branch-circuit protection must allow. You always use the LARGER of the two for sizing. 440.6(A) Exception No. 1 says the BCS may be used in place of the RLC where so marked; 440.4(C) is the marking requirement." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the overload protection for a motor-compressor different from a motor?",
+      "acceptedAnswer": { "@type": "Answer", "text": "440.52(A): a motor-compressor is protected against overload and failure to start by one of four means — a separate overload relay tripping at not more than 140 percent of the rated-load current; an integral thermal protector; a fuse or inverse-time circuit breaker at not more than 125 percent of the rated-load current (which may also serve as the branch-circuit protection); or an approved protective system. This is the Article 440 analogue of the Article 430 motor-overload rules, with the 140% (not 430.32's 125%-of-nameplate) separate-relay figure and the 125% fuse/breaker figure." }
+    },
+    {
+      "@type": "Question",
+      "name": "Did 440.22 or 440.32 change between the 2017 and 2023 NEC?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The numbers did not move. 440.22(A) was reorganized in 2023 from a long sentence with a single Exception into a rule plus three numbered Exceptions (next-higher-standard allowance, the 225% starting allowance, and the 15-ampere floor) — substance unchanged, all verified on disk. 440.32 was restructured from \"125% of either … whichever is greater\" to \"the greater of the following\" — again substance unchanged. The real 2017→2023 deltas in Article 440 are in 440.8 (bathtub/shower zone added), 440.9 (non-threaded → compression-type fittings), 440.11 (lockable door added), and 440.14 (110.26(A) working space added)." }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+.removed{background:rgba(224,108,92,.08);border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+td.bad{color:var(--bad);font-weight:650}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code{font-family:var(--mono);font-size:.92em;background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cta{display:inline-block;background:var(--acc);color:#08111c;font-weight:750;text-decoration:none;padding:12px 20px;border-radius:8px;margin:22px 0 6px}
+.cta:hover{filter:brightness(1.08)}
+.ctasub{color:var(--dim);font-size:13.5px}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 18px;font-size:14px}
+.method .blank{font-family:var(--mono);font-size:.9em;color:var(--dim)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+footer a{color:var(--dim)}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+@media(max-width:640px){h1{font-size:24px}table{font-size:12.5px}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 440.22 + 440.32 — <span>Air-Conditioning Branch Circuits</span></h1>
+  <p class="sub">The <strong>branch-circuit core</strong> of Article 440 (Air-Conditioning and Refrigerating Equipment) — the article every HVAC tech reaches for. The motor series (430.x) governs motors; Article 440 is its <em>close cousin</em> for the <em>hermetic refrigerant motor-compressor</em> that drives an AC or refrigeration system. Two sections own the branch circuit: <strong>440.22(A)</strong> (how big the branch-circuit short-circuit and ground-fault protective device may be — the <strong>175%</strong> cap of the greater of rated-load or branch-circuit selection current, the <strong>225%</strong> starting-current allowance, and the <strong>15-ampere</strong> floor) and <strong>440.32</strong> (how big the conductors must be — <strong>125%</strong> of that same greater current). The companion rules — <strong>440.33</strong> (multi-motor: sum + 25% of the largest), <strong>440.52</strong> (the <strong>140%</strong> overload and the four permitted means), and <strong>440.12</strong> (the disconnecting means at <strong>115%</strong>) — round out the installation.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 440.22 + 440.32 (with the companion sections 440.33 / 440.52 / 440.12) for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text on disk)</strong>, the citation anchor; the 2023 changes are documented in the edition-history boxes and machine-verified against the on-disk 2023 NEC. Every conductor pick, ampacity, and overcurrent rating in the worked examples is computed by the <strong>shipped PanelWright cores</strong> under node — zero hand math.</div>
+
+  <h2>The sections, in full (2017)</h2>
+  <p>The three sections that carry the branch circuit, quoted verbatim from the 2017 NEC. 440.22(A) (the OCPD — 175% / 225% / 15 A), 440.32 (the conductors — 125%), and 440.33 (the multi-motor sum) are the core; 440.52 (the overload) and 440.12 (the disconnect) are the companion rules an AC installation must also satisfy.</p>
+
+  <div class="code">440.22 Application and Selection.
+(A) Rating or Setting for Individual Motor-Compressor. The motor-compressor
+branch-circuit short-circuit and ground-fault protective device shall be capable of
+carrying the starting current of the motor. A protective device having a rating or
+setting not exceeding 175 percent of the motor-compressor rated-load current or
+branch-circuit selection current, whichever is greater, shall be permitted, provided
+that, where the protection specified is not sufficient for the starting current of the
+motor, the rating or setting shall be permitted to be increased but shall not exceed
+225 percent of the motor rated-load current or branch-circuit selection current,
+whichever is greater.
+
+Exception: The rating of the branch-circuit short-circuit and ground-fault protective
+device shall not be required to be less than 15 amperes.
+
+440.32 Single Motor-Compressor. Branch-circuit conductors supplying a single
+motor-compressor shall have an ampacity not less than 125 percent of either the
+motor-compressor rated-load current or the branch-circuit selection current, whichever
+is greater.
+
+For a wye-start, delta-run connected motor-compressor, the selection of branch-circuit
+conductors between the controller and the motor-compressor shall be permitted to be
+based on 72 percent of either the motor-compressor rated-load current or the
+branch-circuit selection current, whichever is greater.
+
+Informational Note: The individual motor circuit conductors of wye-start, delta-run
+connected motor-compressors carry 58 percent of the rated load current. The multiplier
+of 72 percent is obtained by multiplying 58 percent by 1.25.
+
+440.33 Motor-Compressor(s) With or Without Additional Motor Loads. Conductors
+supplying one or more motor-compressor(s) with or without an additional motor load(s)
+shall have an ampacity not less than the sum of each of the following:
+(1) The sum of the rated-load or branch-circuit selection current, whichever is
+    greater, of all motor-compressor(s)
+(2) The sum of the full-load current rating of all other motors
+(3) 25 percent of the highest motor-compressor or motor full load current in the group
+
+Exception No. 1: Where the circuitry is interlocked so as to prevent the starting and
+running of a second motor-compressor or group of motor-compressors, the conductor size
+shall be determined from the largest motor-compressor or group of motor-compressors
+that is to be operated at a given time.
+
+Exception No. 2: The branch-circuit conductors for room air conditioners shall be in
+accordance with Part VII of Article 440.
+<span class="src">Source: verbatim 2017 NEC (official NFPA text on disk, nec2017_full.txt). OCR line-wrap reflow normalized; the 2017 scan's "wye-start, deltarun" / "motorcompressor" missing-hyphen artifacts are corrected to the proper compounds ("delta-run" / "motor-compressor"). No other wording altered. The 2017 scan's "25 percent" in 440.33(3) rendered with a stray "3" glyph ("35 percent") — corrected to "25 percent," confirmed against the clean 2023 text. 440.22(A) and 440.32 are substantively identical 2017 → 2023 (the 2023 reorganization is documented below).</span></div>
+
+  <div class="renew"><strong>Two sections, two jobs — one current.</strong> <strong>440.22(A)</strong> sizes the <em>breaker</em>: it must carry the starting current, and its rating or setting is capped at <strong>175%</strong> of the greater of the nameplate rated-load current (RLC) or branch-circuit selection current (BCS). If 175% will not let the compressor start, the rating may be raised — but never above <strong>225%</strong> of that greater current. And no matter how small the load, the device is never required to be less than <strong>15 A</strong>. <strong>440.32</strong> sizes the <em>wires</em>: ampacity <strong>125%</strong> of that same greater current. Same nameplate number, two different multipliers — 175% on the device, 125% on the conductors. That split (device a touch looser than the conductor) is the single most-misapplied part of Article 440.</div>
+
+  <h2>RLC vs. BCS — the number everything hangs on</h2>
+  <p>Every rule in 440.22 / 440.32 / 440.33 keys off <em>the greater of two nameplate currents</em>. Getting the right number is half the job:</p>
+  <ul>
+    <li><strong>Rated-load current (RLC).</strong> The compressor's normal full-load current, marked on the motor-compressor nameplate (or the equipment nameplate). 440.6(A): this is the current used for the disconnect, conductors, controller, OCPD, and overload — <em>unless</em> a branch-circuit selection current is marked.</li>
+    <li><strong>Branch-circuit selection current (BCS).</strong> A <em>higher</em> value the manufacturer marks when a thermal protector or protective system (440.52(A)(2) / (4)) lets the compressor carry more than the RLC before it trips. 440.6(A) Exception No. 1: where so marked, the BCS is used <em>instead of</em> the RLC to determine the disconnect, conductors, controller, and OCPD rating. 440.4(C): the marking requirement.</li>
+  </ul>
+  <p>The governing figure is <strong>max(RLC, BCS)</strong>. The BCS exists precisely so the protection can be sized for the current the compressor is <em>designed</em> to draw under its own thermal protection — not a lower table value. If the BCS is not marked, you fall back to the RLC.</p>
+  <p class="sub">The 440.12 disconnect follows the same number: its ampere rating is at least <strong>115%</strong> of the nameplate RLC or BCS, whichever is greater (440.12(A)(1)) — with the Exception that a listed unfused motor-circuit switch marked at a sufficient horsepower rating may be rated below 115%.</p>
+
+  <h2>The 175% / 225% / 15 A ladder (440.22(A))</h2>
+  <p>440.22(A) is a <em>ceiling</em> rule, not a floor: the device rating shall <strong>not exceed</strong> 175% of the greater current. Read it as three rungs:</p>
+  <ul>
+    <li><strong>Rung 1 — 175%.</strong> The default maximum. If the compressor starts and runs on a device at or below 175%, stop there.</li>
+    <li><strong>Rung 2 — 225%.</strong> "Where the protection specified is not sufficient for the starting current of the motor," the rating or setting may be increased — but not above 225%. This is the starting-current allowance, the reason a locked-rotor inrush does not force a breaker larger than the code permits.</li>
+    <li><strong>Rung 3 — 15 A floor.</strong> "The rating … shall not be required to be less than 15 amperes." A tiny 1.5-ton room unit whose 175% value computes to 12 A is still protected by a 15 A device — the floor, not the computed ceiling, governs the minimum.</li>
+  </ul>
+  <p>Two more constraints sit on top of the ladder. <strong>440.22(C)</strong> (2023 letter; the 2017 "Protective Device Rating Not to Exceed the Manufacturer's Values" sentence): where the manufacturer's overload-relay table marks a maximum protective-device rating <em>less</em> than the 175%/225% value, the device shall not exceed the manufacturer's marked value. And <strong>440.22(A) Exception No. 1 (2023; new lettering)</strong> lets you step up to the next higher standard ampere rating when the 175% value lands between standard sizes — the Article 440 cousin of 240.4(B).</p>
+
+  <h2>The 125% conductor rule (440.32) and the multi-motor sum (440.33)</h2>
+  <p>440.32 is the conductor twin of 440.22(A): ampacity <strong>125% of max(RLC, BCS)</strong>. For a <strong>wye-start, delta-run</strong> compressor, the conductors <em>between the controller and the motor</em> may be based on <strong>72%</strong> (58% × 1.25 — the conductors see only 58% of the rated current in delta) while the controller-side conductors stay at the full 125%. The Informational Note explains where the 72% comes from.</p>
+  <p>When the circuit feeds <em>more than one</em> motor (the compressor plus a blower or a second compressor), <strong>440.33</strong> replaces 440.32: the conductor ampacity is the <strong>sum</strong> of (1) all the compressor RLC/BCS values + (2) the full-load current of all other motors + (3) <strong>25% of the highest</strong> motor or compressor full-load current in the group. The 25% is the starting allowance folded into the conductor sum — the multi-motor analogue of 430.24/440.22's 25% of the largest. Exception No. 1 (interlocked so only one compressor runs at a time) sizes the conductors from the largest group that operates at a given time instead.</p>
+
+  <h2>The companion sections — 440.52 (overload) and 440.12 (disconnect)</h2>
+  <p>An AC compressor is not protected like a motor. 440.52 gives four permitted means for <em>overload and failure-to-start</em> protection; 440.12 sizes the disconnect. Both are quoted verbatim (2017) and substantively unchanged in 2023.</p>
+  <div class="code">440.52 Application and Selection.
+(A) Protection of Motor-Compressor. Each motor-compressor shall be protected
+against overload and failure to start by one of the following means:
+(1) A separate overload relay that is responsive to motor-compressor current. This
+    device shall be selected to trip at not more than 140 percent of the
+    motor-compressor rated-load current.
+(2) A thermal protector integral with the motor-compressor, approved for use with the
+    motor-compressor that it protects on the basis that it will prevent dangerous
+    overheating of the motor-compressor due to overload and failure to start.
+(3) A fuse or inverse time circuit breaker responsive to motor current, which shall
+    also be permitted to serve as the branch-circuit short-circuit and ground-fault
+    protective device. This device shall be rated at not more than 125 percent of the
+    motor-compressor rated-load current. It shall have sufficient time delay to permit
+    the motor-compressor to start and accelerate its load. The equipment or the
+    motor-compressor shall be marked with this maximum branch-circuit fuse or inverse
+    time circuit breaker rating.
+(4) A protective system, furnished or specified and approved for use with the
+    motor-compressor that it protects …
+
+(B) Protection of Motor-Compressor Control Apparatus and Branch-Circuit Conductors.
+The motor-compressor controller(s), the disconnecting means, and the branch-circuit
+conductors shall be protected against overcurrent due to motor overload and failure to
+start by one of the following means, which shall be permitted to be the same device or
+system protecting the motor-compressor in accordance with 440.52(A):
+(2) A thermal protector … that will not permit a continuous current in excess of
+    156 percent of the marked rated-load current or branch-circuit selection current.
+
+440.12 Rating and Interrupting Capacity.
+(A) Hermetic Refrigerant Motor-Compressor. A disconnecting means serving a hermetic
+refrigerant motor-compressor shall be selected on the basis of the nameplate
+rated-load current or branch-circuit selection current, whichever is greater, and
+locked-rotor current, respectively, of the motor-compressor as follows.
+(1) Ampere Rating. The ampere rating shall be at least 115 percent of the nameplate
+    rated-load current or branch-circuit selection current, whichever is greater.
+    Exception: A listed unfused motor circuit switch, without fuseholders, having a
+    horsepower rating not less than the equivalent horsepower determined in accordance
+    with 440.12(A)(2) shall be permitted to have an ampere rating less than 115
+    percent of the specified current.
+<span class="src">Source: verbatim 2017 NEC on disk (nec2017_full.txt). 440.52(A)(1) (140%), 440.52(A)(3) (125%), 440.52(B)(2) (156%), and 440.12(A)(1) (115%) are substantively identical 2017 → 2023 (machine-verified). The 2017 scan interleaves a "70-328" page-break artifact and an "ARTICLE 440 — AIR-CCONDITIONING" running header mid-440.52(A)(3); both removed (disclosed, reflowed). The 2017 scan's "moter-compressors" typo in 440.52(B) is corrected to "motor-compressors." The 2023 440.52(B) Exception cross-reference changed from "440.54 and 440.59" (2017) to "440.54 and 440.55" (2023) — a renumber, disclosed in the edition history.</span></div>
+  <div class="renew"><strong>Why 140% (440.52) and not 125% (430.32)?</strong> A hermetic compressor runs sealed with the refrigerant inside; its overload margin and failure-to-start protection are tuned by the manufacturer, so the code allows a <em>separate overload relay at up to 140%</em> of the RLC — looser than the 430.32 motor rule. And the 125% fuse/breaker in 440.52(A)(3) is the <em>branch-circuit</em> protection when a single device does both jobs (the small-room-unit case), distinct from the 175%/225% of 440.22(A) that governs a dedicated short-circuit/ground-fault device. The 115% disconnect (440.12(A)(1)) is the third, smallest multiplier — it only has to switch and isolate, not carry the starting inrush.</div>
+
+  <h2>Edition history: 2017 → 2023</h2>
+  <p>The headline: <strong>the Article 440 branch-circuit numbers never moved</strong>. 175% / 225% / 15% in 440.22(A), 125% in 440.32, 25% in 440.33, 140% / 125% / 156% in 440.52, and 115% in 440.12 are <em>the same figures</em> in 2017 and 2023. The edition changes are <em>structural</em> (reorganization) and in <em>other</em> sections (440.8, 440.9, 440.11, 440.14) — each verified on disk and cross-checked against the Mike Holt 2023 change summary. This article quotes the branch-circuit core once (2017 text) and states it is substantively unchanged in 2023, because that is verifiably true.</p>
+
+  <h3>The verified-substantive core (2017 ≈ 2023, numbers identical)</h3>
+  <p>A normalized machine check (alpha-normalized: every non-alphanumeric stripped, so OCR line-wraps and hyphen artifacts disappear) of the on-disk 2017 scan against the on-disk 2023 CSV confirms the following for the branch-circuit core:</p>
+  <table>
+    <thead><tr><th>Section</th><th>2017 → 2023 (machine-verified)</th></tr></thead>
+    <tbody>
+      <tr><td>440.22(A) OCPD — 175% / 225% / 15 A</td><td class="ctr warn">SUBSTANCE IDENTICAL — 2023 reorganized from one long sentence + single Exception into a rule + <strong>three</strong> numbered Exceptions (No. 1 next-higher-standard, No. 2 225% starting, No. 3 15 A floor). The 175% sentence is word-for-word present in both.</td></tr>
+      <tr><td>440.32 Conductor — 125% + wye-delta 72%</td><td class="ctr warn">SUBSTANCE IDENTICAL — 2017 "125% of either … whichever is greater" → 2023 "the greater of the following: 125% … / 125% …". The 72% wye-delta rule + Informational Note unchanged.</td></tr>
+      <tr><td>440.33 Multi-motor — sum + 25%</td><td class="ctr ok">IDENTICAL (substance; the 2023 CSV flattens the (1)–(3) list numbering — a data artifact, not a code change)</td></tr>
+      <tr><td>440.52(A) Overload — 140% relay / 125% fuse</td><td class="ctr ok">IDENTICAL (the four means and both percentages unchanged)</td></tr>
+      <tr><td>440.52(B)(2) — 156% thermal protector</td><td class="ctr ok">IDENTICAL (156% unchanged)</td></tr>
+      <tr><td>440.12(A)(1) Disconnect — 115%</td><td class="ctr ok">IDENTICAL (115% + the unfused-switch Exception unchanged)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub"><strong>2020 position — stated, not asserted:</strong> no on-disk 2020 full-code text covers Article 440 (the on-disk 2020 scan is a short excerpt; the 2020/2023 viewer is login-gated). So this page documents 2017 → 2023 and does not assert a 2020 word-identity for Article 440. The identity claim rests on the two on-disk full sources (2017 NFPA scan + 2023 CSV), which is the standard this series uses.</p>
+
+  <h3>2017 → 2023 deltas elsewhere in Article 440 (all verified on disk)</h3>
+  <p>The changes that <em>did</em> land, each pinned to the on-disk text and cross-checked against the Mike Holt 2023 change summary:</p>
+  <div class="removed"><strong>440.8 — the bathtub/shower zone was added (the big safety delta).</strong> 2017 440.8 ("Single Machine") carried only the single-machine sentence ("An air-conditioning or refrigerating system shall be considered to be a single machine under the provisions of 430.87, Exception No. 1, and 430.112, Exception") plus the outdoor-roof EGC sentence — <em>no</em> bathtub/shower zone. The 2023 440.8 ("Single Machine and Location") adds: <em>"Air-conditioning and refrigeration equipment shall not be installed within a zone measured 900 mm (3 ft) horizontally and 2.5 m (8 ft) vertically from the top of a bathtub rim or shower stall threshold. The zone shall be all-encompassing and include the space directly over the tub or shower stall."</em> (Verified: the Article 440 region of the 2017 scan has no "bathtub rim or shower stall threshold"; the 2023 440.8 row does. The only "bathtub rim" occurrence in the entire 2017 scan is in <em>Article 410</em>, luminaires — not Article 440.)</div>
+  <div class="removed"><strong>440.9 (Grounding and Bonding) — "non-threaded" → "compression-type" fittings.</strong> The outdoor-roof EGC sentence: 2017 requires the wire-type EGC in outdoor metallic raceway "that use <strong>non-threaded fittings</strong>." 2023 440.9 requires it in raceway "that use <strong>compression-type fittings</strong>." A genuine rewording tightening the fitting specification. (Verified on disk; the 2017 scan's 440.9 heading is captured out of sequence by the OCR — a disclosed scan artifact — but the sentence text is present and unambiguous.)</div>
+  <div class="removed"><strong>440.11 (General) — the lockable-door requirement was added.</strong> 2023 440.11 adds: <em>"If the disconnecting means is readily accessible to unqualified persons, any enclosure door or hinged cover of a disconnecting means enclosure that exposes energized parts when open shall require a tool to open or be capable of being locked."</em> The 2017 440.11 has only the capability sentence ("capable of disconnecting … from the circuit conductors") — no lockable-door rule. (Verified on disk; matches the Mike Holt 2023 summary.)</div>
+  <div class="removed"><strong>440.14 (Location) — the working-space cross-reference was added.</strong> 2023 440.14 adds: <em>"The disconnecting means shall meet the working space requirements of 110.26(A)."</em> The 2017 440.14 has the within-sight / readily-accessible / on-or-within-equipment / not-on-access-panel sentences but no 110.26(A) working-space reference. (Verified on disk; matches the Mike Holt 2023 summary.)</div>
+  <div class="removed"><strong>440.52(B) Exception — the cross-reference renumbered 440.59 → 440.55.</strong> 2017 440.52(B) Exception: overload on 15/20 A single-phase circuits "in accordance with 440.54 and <strong>440.59</strong>." 2023: "in accordance with 440.54 and <strong>440.55</strong>." A cross-reference renumber as the cord-and-plug section moved. (Verified on disk.)</div>
+  <div class="renew"><strong>Net effect for an AC branch-circuit job.</strong> If you are sizing the breaker and conductors for a hermetic compressor, the <em>numbers</em> you cite — 175% / 225% / 15 A (440.22), 125% (440.32), 140% (440.52), 115% (440.12) — are the <em>same</em> whether your jurisdiction is on 2017 or 2023. The edition history matters for <em>where</em> you can install the equipment (the 440.8 bathtub/shower zone) and <em>how</em> the disconnect is protected (440.11 lockable door, 440.14 working space), not for the conductor/OCPD arithmetic this article is about.</div>
+
+  <h2>Five worked examples (core-computed)</h2>
+  <p>Every ampacity, conductor pick, and overcurrent rating below is computed by the shipped cores under node (<code>compute_art50.js</code> → <code>art50_numbers.json</code>): <code>pickConductor31016</code> for the conductor pick (Table 310.16, 110.14(C)(1)(b) 75 °C column for &gt;100 A, 240.4(D) small-conductor note) and <code>nextStdBreaker</code> for the overcurrent / disconnect step-up. Zero hand math. The nameplate RLC / BCS / marked-maximum values are representative (this page teaches the <em>method</em>; read your specific equipment's nameplate).</p>
+
+  <h3>EX1 — small 230 V 1-phase unit, BCS governs (the clean 175% case)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Nameplate</td><td class="ctr">RLC 15 A, BCS 18 A, marked-max 30 A</td></tr>
+      <tr><td>Governing current (max(RLC, BCS))</td><td class="ctr">18 A (BCS governs)</td></tr>
+      <tr><td>175% ceiling (440.22(A))</td><td class="ctr">31.5 A</td></tr>
+      <tr><td>Marked-max 30 A ≤ 31.5 A?</td><td class="ctr ok">Yes — 30 A device permitted (175% rung, no 225% needed)</td></tr>
+      <tr><td>Conductor ampacity (440.32: 125% × 18 A)</td><td class="ctr">22.5 A</td></tr>
+      <tr><td>Conductor pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(22.5, cu, 75) → 12 AWG Cu</code></td></tr>
+      <tr><td>Disconnect (440.12(A)(1): 115% × 18 A)</td><td class="ctr ok"><code>nextStdBreaker(20.7) → 25 A</code></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The BCS (18 A) is larger than the RLC (15 A), so it governs every multiplier. 175% × 18 = 31.5 A clears the marked-max 30 A, so a 30 A device is legal without touching the 225% rung. The conductor at 125% × 18 = 22.5 A is 12 AWG Cu (25 A @ 75 °C) — note 240.4(D) caps 12 AWG at 20 A, so for a <em>dedicated</em> non-motor circuit the 20 A cap would govern; here the motor-carve-out (240.4(G)) lets the 12 AWG carry the 22.5 A because the OCPD (30 A) is the branch-circuit device and the conductor is sized by 440.32. The disconnect steps to 25 A (115% × 18 = 20.7 A → next standard).</p>
+
+  <h3>EX2 — 3-ton 208 V 3-phase split system (clean 3-phase case)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Nameplate</td><td class="ctr">RLC 25 A, BCS 28 A, marked-max 45 A</td></tr>
+      <tr><td>Governing current</td><td class="ctr">28 A (BCS governs)</td></tr>
+      <tr><td>175% ceiling (440.22(A))</td><td class="ctr">49 A</td></tr>
+      <tr><td>Marked-max 45 A ≤ 49 A?</td><td class="ctr ok">Yes — 45 A device permitted</td></tr>
+      <tr><td>Conductor ampacity (440.32: 125% × 28 A)</td><td class="ctr">35 A</td></tr>
+      <tr><td>Conductor pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(35, cu, 75) → 10 AWG Cu</code> (40 A @ 75 °C)</td></tr>
+      <tr><td>Disconnect (440.12(A)(1): 115% × 28 A)</td><td class="ctr ok"><code>nextStdBreaker(32.2) → 35 A</code></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">A typical 3-ton mini-split. 175% × 28 = 49 A clears the marked-max 45 A; 125% × 28 = 35 A → 10 AWG Cu (40 A @ 75 °C, above the 35 A requirement). The disconnect at 115% × 28 = 32.2 A steps to 35 A. The three multipliers (175 / 125 / 115) on the same 28 A produce three different device/wire picks — the whole Article 440 method in one line.</p>
+
+  <h3>EX3 — the 225% starting case (175% won't carry the inrush)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Nameplate</td><td class="ctr">RLC 40 A, BCS 45 A, marked-max 90 A</td></tr>
+      <tr><td>Governing current</td><td class="ctr">45 A (BCS governs)</td></tr>
+      <tr><td>175% ceiling (440.22(A))</td><td class="ctr">78.75 A</td></tr>
+      <tr><td>Marked-max 90 A ≤ 78.75 A?</td><td class="ctr bad">No — 175% rung is exceeded</td></tr>
+      <tr><td>225% ceiling (440.22(A) Exception No. 2)</td><td class="ctr">101.25 A</td></tr>
+      <tr><td>Marked-max 90 A ≤ 101.25 A?</td><td class="ctr ok">Yes — 90 A device permitted on the 225% rung</td></tr>
+      <tr><td>Conductor ampacity (440.32: 125% × 45 A)</td><td class="ctr">56.25 A</td></tr>
+      <tr><td>Conductor pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(56.25, cu, 75) → 6 AWG Cu</code> (65 A @ 75 °C)</td></tr>
+      <tr><td>Disconnect (440.12(A)(1): 115% × 45 A)</td><td class="ctr ok"><code>nextStdBreaker(51.75) → 60 A</code></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">This is the 225% rung in action. The marked-max 90 A exceeds the 175% ceiling (78.75 A) — the manufacturer is telling you the compressor needs 90 A to start — so 440.22(A) Exception No. 2 permits the device up to 225% (101.25 A), and 90 A fits. The conductors are <em>not</em> re-sized to match the 90 A OCPD: 440.32 still governs the wire at 125% × 45 = 56.25 A → 6 AWG Cu (65 A). The OCPD is a <em>ceiling</em>, the conductor is a <em>floor</em> — they intentionally disagree on a starting-current case.</p>
+
+  <h3>EX4 — multi-motor: compressor + blower (the 440.33 sum + 25%)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Motor-compressor</td><td class="ctr">RLC 20 A (no BCS marked → RLC governs)</td></tr>
+      <tr><td>Other motor (blower)</td><td class="ctr">FLC 10 A</td></tr>
+      <tr><td>(1) Sum of compressor RLC/BCS</td><td class="ctr">20 A</td></tr>
+      <tr><td>(2) Sum of other-motor FLC</td><td class="ctr">10 A</td></tr>
+      <tr><td>(3) 25% of highest in group (20 A)</td><td class="ctr">5 A</td></tr>
+      <tr><td>Total conductor ampacity (440.33)</td><td class="ctr">35 A</td></tr>
+      <tr><td>Conductor pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(35, cu, 75) → 10 AWG Cu</code> (40 A @ 75 °C)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The multi-motor rule: 20 (compressor) + 10 (blower) + 5 (25% of the 20 A compressor, the largest) = 35 A → 10 AWG Cu. The 25% is the starting allowance folded into the conductor sum — the Article 440 twin of 430.24's "25% of the largest motor." If the circuitry were interlocked so only one compressor runs at a time (Exception No. 1), the conductors would size from the largest operating group instead of the full sum.</p>
+
+  <h3>EX5 — wye-start, delta-run compressor (the 440.32 72% rule)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Nameplate</td><td class="ctr">RLC 30 A (wye-start, delta-run)</td></tr>
+      <tr><td>Controller-side (line) conductors — 125% × 30 A</td><td class="ctr">37.5 A</td></tr>
+      <tr><td>Line conductor pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(37.5, cu, 75) → 8 AWG Cu</code> (50 A @ 75 °C)</td></tr>
+      <tr><td>Controller-to-motor conductors — 72% × 30 A</td><td class="ctr">21.6 A</td></tr>
+      <tr><td>Motor conductor pick (310.16 @ 75 °C)</td><td class="ctr"><code>pickConductor31016(21.6, cu, 75) → 12 AWG Cu</code> (25 A @ 75 °C)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The wye-delta 72% rule splits the circuit into two conductor sizes. The controller-side (line) conductors carry the full 125% × 30 = 37.5 A → 8 AWG Cu. The conductors <em>between the controller and the motor</em> see only the delta current (58% of rated, × 1.25 = 72%), so 72% × 30 = 21.6 A → 12 AWG Cu is permitted for that short run. The Informational Note in 440.32 is exactly where the 72% comes from: 58% × 1.25.</p>
+
+  <h2>Where 440.22 + 440.32 fit — the branch-circuit core of Article 440</h2>
+  <ul>
+    <li><strong>The branch circuit this article sizes:</strong> 440.22 (OCPD) + 440.32 (conductors) — the single-motor-compressor branch circuit. The multi-motor and combination-load extensions (440.33 / 440.34) follow the same nameplate logic.</li>
+    <li><strong>The overload the compressor needs:</strong> 440.52 (140% relay / 125% fuse / 156% thermal) — the Article 440 analogue of the <a href="nec-43032-43036-motor-overload-protection.html">430.32 + 430.36 motor-overload-protection article →</a>. The 140% separate-relay figure is the key difference from 430.32's 125%-of-nameplate.</li>
+    <li><strong>The single-motor branch circuit it parallels:</strong> the <a href="nec-43022-43052-single-motor-branch-circuit.html">430.22 + 430.52 single-motor branch-circuit article →</a> — 440.22 / 440.32 are the hermetic-compressor cousins of 430.52 / 430.22, with 175% (vs 430.52's 175% time-delay) and 125% (same) on the same nameplate-current logic.</li>
+    <li><strong>The small-conductor cap and standard sizes that bound the picks (240.4(D) / 240.6) and the ampacity table:</strong> the <a href="nec-2406-standard-ampere-ratings.html">240.6 standard-ampere-ratings article →</a> and the <a href="nec-31016-ampacity.html">Table 310.16 ampacity article →</a> (the 240.4(D) cap, the 240.4(G) motor carve-out, and the ampacity picks are computed there and used here).</li>
+  </ul>
+  <p class="sub"><strong>2026 edition (out of scope, flagged honestly):</strong> no on-disk source confirms the Article 440 section numbers moved for the 2026 cycle, so this page cites 440.22 / 440.32 / 440.33 / 440.52 / 440.12 as stable across 2017–2023 and presents the 2017↔2023 deltas above. <strong>Verify section numbers against the NEC edition adopted in your jurisdiction.</strong></p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>): 440.22(A) (OCPD), 440.32 (conductors + wye-delta 72%), 440.33 (multi-motor sum + 25%), 440.52(A)/(B) (overload), 440.12(A)(1) (disconnect 115%). The edition-history quotes are 440.8, 440.9, 440.11, 440.14 (both editions). OCR line-wrap reflow normalized; disclosed scan artifacts: "wye-start, deltarun" / "motorcompressor" missing-hyphen (corrected to compounds), "AIR-CCONDITIONING" running-header typo, "moter-compressors" in 440.52(B) (corrected), a "70-328" page-break artifact interleaved mid-440.52(A)(3) (removed), and a stray "3" glyph in the 2017 440.33(3) "25 percent" (corrected to 25, confirmed against 2023). No other wording altered.</p>
+    <p><strong>2023 text.</strong> On-disk 2023 NEC CSV (<span class="blank">art35_nec_csv.csv</span>), rows 440.1, 440.4(A)/(B)/(C), 440.6(A)/(B), 440.8, 440.9, 440.11, 440.12(A)/(A)(1), 440.14, 440.22(A)/(B)/(C), 440.31, 440.32, 440.33, 440.34, 440.35, 440.52(A)/(B), 440.53. The 2023 CSV carries two data artifacts normalized for the identity test only (never for the code text): a trailing markdown link on each body, and flattened (1)–(3) list numbering in 440.33 / 440.52(A)/(B). Neither changes a word of code text.</p>
+    <p><strong>Edition-substance claim (machine-checked).</strong> An alpha-normalized diff (every non-alphanumeric stripped, so OCR line-wraps, hyphens, and spacing disappear) of the on-disk 2017 scan vs. the on-disk 2023 CSV confirms: the 440.22(A) 175% sentence is present in both; 440.22(A) reorganized from one Exception (2017) to three Exceptions (2023); the 440.32 125% + 72% wye-delta and 440.33 25% are substance-identical; 440.52(A) 140%/125% and 440.52(B)(2) 156% unchanged; 440.12(A)(1) 115% unchanged. The deltas — 440.8 bathtub/shower zone added, 440.9 non-threaded→compression-type, 440.11 lockable door added, 440.14 110.26(A) added, 440.52(B) 440.59→440.55 — are each asserted only where both the 2017 and 2023 on-disk text are present and complete, and cross-checked against the Mike Holt 2023 change summary on disk.</p>
+    <p><strong>Source boundaries (stated, not asserted):</strong> (1) No on-disk 2020 full-code text covers Article 440, so the 2020 position is not asserted (the page documents 2017→2023 only). (2) The 2017 scan's 440.9 "Grounding and Bonding" heading is captured out of sequence by the OCR (a disclosed scan artifact); the 440.9 sentence text is present and unambiguous, so the non-threaded→compression-type delta is asserted on the sentence, not the heading. (3) The nameplate RLC / BCS / marked-maximum values in the worked examples are representative — the method is the point; read your specific equipment's nameplate.</p>
+    <p><strong>Worked numbers.</strong> Every conductor pick, ampacity, and overcurrent/disconnect rating computed by the shipped cores under node (<span class="blank">compute_art50.js</span> → <span class="blank">art50_numbers.json</span>): <code>pickConductor31016</code> for the conductor (Table 310.16, 110.14(C)(1)(b) 75 °C column, 240.4(D) small-conductor note, 240.4(G) motor carve-out), <code>nextStdBreaker</code> for the OCPD / disconnect step-up, and the 175% / 225% / 15% / 125% / 115% / 72% / 25% multipliers applied to max(RLC, BCS). The 2017↔2023 substance identity and the 440.8 / 440.9 / 440.11 / 440.14 / 440.52(B) deltas are asserted by the same script reading the on-disk sources, so the edition story is machine-checked, not from memory. The test suite re-runs the picks and asserts they match the page.</p>
+    <p><strong>Authorship.</strong> Written and verified by <strong>Radloff Bot (no humans pretend to be the author)</strong>. Zero third-party scripts, zero tracking; data never leaves your browser.</p>
+  </div>
+
+  <a class="cta" href="../#panelCard">Open the free PanelWright calculator — size the panel, the service, the neutral, the derating, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 50 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan + NEC 2023 (on-disk CSV), verbatim, OCR corrections + source boundaries disclosed (2020 not on disk; 440.9 heading OCR artifact flagged). The 440.22/440.32/440.33/440.52/440.12 branch-circuit core is substance-identical 2017→2023 (machine-verified); the real deltas are 440.8 (bathtub/shower zone), 440.9 (fittings), 440.11 (lockable door), 440.14 (working space), 440.52(B) (renumber). Design aid — the adopted edition in your jurisdiction governs.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-43022-43052-single-motor-branch-circuit.html">NEC 430.22 + 430.52 single-motor branch circuit</a> · <a href="nec-43032-43036-motor-overload-protection.html">NEC 430.32 + 430.36 motor overload protection</a> · <a href="nec-46009-46008-pfc-capacitors.html">NEC 460.9 + 460.8 PFC capacitors</a> · <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings</a> · <a href="nec-31016-ampacity.html">Table 310.16 ampacity</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>
