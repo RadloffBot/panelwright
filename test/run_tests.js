@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 51, 'art44: sitemap now has 51 URLs (articles 49 + 50 added; was 49)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 52, 'art44: sitemap now has 52 URLs (articles 49 + 50 + 51 added; was 49)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4890,7 +4890,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap48 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: sitemap entry present');
-  eq((sitemap48.match(/<loc>/g) || []).length, 51, 'art48: sitemap now has 51 URLs (articles 49 + 50 added; was 49)');
+  eq((sitemap48.match(/<loc>/g) || []).length, 52, 'art48: sitemap now has 52 URLs (articles 49 + 50 + 51 added; was 49)');
   const index48 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: index cross-link present');
   const readme48 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4984,7 +4984,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap49 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: sitemap entry present');
-  eq((sitemap49.match(/<loc>/g) || []).length, 51, 'art49: sitemap has 51 URLs (was 50 at art49 time; art50 appended the 51st)');
+  eq((sitemap49.match(/<loc>/g) || []).length, 52, 'art49: sitemap has 52 URLs (art50 appended the 51st; art51 appended the 52nd)');
   const index49 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: index cross-link present');
   const readme49 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5070,6 +5070,91 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(index50.includes('articles/nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art50: index cross-link present');
   const readme50 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme50.includes('articles/nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art50: README entry present');
+}
+
+// Article 51 — NEC 450.3: transformer overcurrent protection. Table
+// 450.3(B) = the 1000 V-and-less grid (125% primary-only / 167% <9 A / 300%
+// <2 A; 250% primary + 125%/167% secondary; Note 1 next-higher-standard;
+// Note 3 six-times/four-times coordinated thermal overload). Table 450.3(A)
+// = the over-1000 V grid (600/400/300% primary keyed on impedance + location,
+// 300/250/225/125% secondary, supervised row, Note 1b commercially-available).
+// 450.4(A) autotransformers (125%/167% of rated full-load INPUT, never the
+// shunt winding). 450.6 secondary ties (67%/100%/133% ampacity, 250% +
+// reverse-current relay, 150 V-to-ground switch). EDITION STORY: the OCPD
+// numbers never moved 2017->2023 (39 phrase-level machine checks,
+// verify_art51_deltas.py, all pass). Real deltas: 450.1 exception->list
+// rework + article refs removed (Mike Holt-documented); 450.10 "Bonding"
+// title (Mike Holt-documented); cross-ref renumbers 240.100/240.101->
+// 245.26/245.27, 250.24(B)->250.24(C), 314.16(B)->314.16(B)(1); 450.9 IEEE
+// re-cites + no-storage marking; 450.14 "lockable open". Worked examples
+// core-computed (compute_art51.js -> art51_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-4503-transformer-overcurrent.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art51_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-4503-transformer-overcurrent.html'), true, 'art51: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-4503-transformer-overcurrent.html'), true, 'art51: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art51: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art51: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 51'), true, 'art51: footer marks article 51');
+  // core rules present (verbatim 2017)
+  eq(has('this article covers the installation of all transformers'), true, 'art51: 450.1 scope quoted');
+  eq(has('exception no. 8: transformers used for research, development, or testing'), true, 'art51: 450.1 Exception No. 8 quoted (2017)');
+  eq(has('an individual transformer, single- or polyphase, identified by a single nameplate'), true, 'art51: 450.2 definition quoted');
+  eq(has('polyphase bank of two or more single-phase transformers operating as a unit'), true, 'art51: 450.3 polyphase-bank definition quoted');
+  eq(has('not more than 125 percent of the rated full-load input current'), true, 'art51: 450.4(A) 125% rule quoted');
+  eq(has('not more than 167 percent of the input current'), true, 'art51: 450.4(A) 167% Exception quoted');
+  eq(has('shall not be installed in series with the shunt winding'), true, 'art51: 450.4(A) shunt-winding prohibition quoted');
+  eq(has('not be less than 67 percent of the rated secondary current'), true, 'art51: 450.6(A)(1) 67% tie ampacity quoted');
+  eq(has('not be less than 100 percent of the rated secondary current'), true, 'art51: 450.6(A)(2) 100% tie ampacity quoted');
+  eq(has('not less than 133 percent of the rated secondary current'), true, 'art51: 450.6(A)(4)(b) 133% combined ampacity quoted');
+  eq(has('not more than 250 percent of the rated secondary current'), true, 'art51: 450.6(B) 250% secondary OCPD quoted');
+  eq(has('actuated by a reverse-current relay'), true, 'art51: 450.6(B) reverse-current relay quoted');
+  eq(has('exceeds 150 volts to ground'), true, 'art51: 450.6(A)(5) 150 V-to-ground switch rule quoted');
+  // edition story — 2023 deltas
+  eq(has('other than the following'), true, 'art51: 450.1 2023 exclusion-list wording quoted');
+  eq(has('the previous exceptions in the text were converted to rules'), true, 'art51: 450.1 Mike Holt 2023 quote');
+  eq(has('grounding and bonding'), true, 'art51: 450.10 2023 "Grounding and Bonding" title');
+  eq(has('245.26'), true, 'art51: 2023 450.3 IN Note 1 cites 245.26');
+  eq(has('240.100'), true, 'art51: 2017 450.3 IN Note 1 cites 240.100');
+  eq(has('245.27'), true, 'art51: 2023 450.3 IN Note 1 cites 245.27');
+  eq(has('250.24(b)'), true, 'art51: 2017 450.5 cites 250.24(B)');
+  eq(has('250.24(c)'), true, 'art51: 2023 450.5 cites 250.24(C)');
+  eq(has('314.16(b)(1)'), true, 'art51: 2023 450.12 cites Table 314.16(B)(1)');
+  eq(has('ieee 3002.8'), true, 'art51: 2023 450.3 IN Note 2 adds IEEE 3002.8');
+  eq(has('prohibit storage'), true, 'art51: 2023 450.9 no-storage marking quoted');
+  eq(has('lockable open'), true, 'art51: 2023 450.14 "lockable open"');
+  eq(has('2020 position is not asserted'), true, 'art51: 2020 source boundary disclosed');
+  eq(has('ocr'), true, 'art51: OCR artifacts disclosed');
+  // worked examples — core-computed numbers (art51_numbers.json)
+  eq(has(String(nums.EX1.Ip)), true, 'art51: EX1 rated primary ' + nums.EX1.Ip + ' A');
+  eq(has(String(nums.EX1.Is)), true, 'art51: EX1 rated secondary ' + nums.EX1.Is + ' A');
+  eq(has(String(nums.EX1.po125)), true, 'art51: EX1 125% primary ' + nums.EX1.po125 + ' A');
+  eq(has(String(nums.EX1.po125_std)), true, 'art51: EX1 125% row device ' + nums.EX1.po125_std + ' A');
+  eq(has(String(nums.EX1.note3_stdAtOrBelow)), true, 'art51: EX1 Note 3 6x ceiling device ' + nums.EX1.note3_stdAtOrBelow + ' A');
+  eq(has('6 awg cu'), true, 'art51: EX4 67% tie conductor 6 AWG Cu');
+  eq(has('3 awg cu'), true, 'art51: EX4 100% tie conductor 3 AWG Cu');
+  eq(has(String(nums.EX4.ocpd250_stdAtOrBelow)), true, 'art51: EX4 450.6(B) OCPD ' + nums.EX4.ocpd250_stdAtOrBelow + ' A (250% ceiling)');
+  eq(has('15,035.16'), true, 'art51: EX5 250% secondary ' + nums.EX5.secCB250 + ' A (comma-formatted 15,035.16)');
+  // cross-links
+  eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art51: cross-links to 250.26-250.30 article');
+  eq(art.includes('nec-43072-43075-motor-control-circuit-protection.html'), true, 'art51: cross-links to 430.72 article (450.3(B) Exception)');
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art51: cross-links to 430.22+430.52 article');
+  eq(art.includes('nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art51: cross-links to 440.22+440.32 article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art51: cross-links to 240.6 article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art51: cross-links to 310.16 article');
+  // sitemap + index + README
+  const sitemap51 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: sitemap entry present');
+  eq((sitemap51.match(/<loc>/g) || []).length, 52, 'art51: sitemap has 52 URLs (art51 appended the 52nd)');
+  const index51 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: index cross-link present');
+  const readme51 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

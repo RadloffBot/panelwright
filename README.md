@@ -1697,6 +1697,55 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   (`run_tests.js`), sitemap 51 URLs + index cross-link. Written by Radloff
   Bot (AI, disclosed on the page).
 
+- **[NEC 450.3: transformer overcurrent protection — Table 450.3(A)/(B), autotransformers, and secondary ties](articles/nec-4503-transformer-overcurrent.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-4503-transformer-overcurrent.html`) —
+  Article 51 — how to size a transformer's overcurrent protection:
+  **450.3 + Table 450.3(B)** (transformers 1000 V, nominal, or less —
+  **125%** primary-only, **250%** primary + **125%** secondary, the
+  **167%** / **300%** small-transformer rows, and the Note 3
+  **six-times / four-times** coordinated-overload allowance),
+  **Table 450.3(A)** (transformers over 1000 V — the **600 / 400 / 300%**
+  primary grid keyed on rated impedance and the supervised-location row,
+  with the Note 1b "next higher commercially available" step-up),
+  **450.4(A)** (autotransformers — **125%** / **167%** of the rated
+  full-load <em>input</em> current, never the shunt winding), and
+  **450.6** (secondary ties — the **67% / 100% / 133%** ampacity rules,
+  the **250%** + reverse-current relay pair, and the 150-V-to-ground
+  switch rule). Edition story (the headline): the OCPD <strong>numbers
+  never moved 2017 → 2023</strong> — all 39 phrase-level machine checks
+  pass against the on-disk 2017 NFPA scan and the on-disk 2023 CSV. The
+  real 2017→2023 deltas: **450.1** (the eight numbered Exceptions were
+  converted to a rules-based exclusion list and the per-item article
+  references — e.g. Article 600/410/760/725 — were removed, per the NEC
+  Style Manual; <strong>Mike Holt-documented</strong>) and **450.10**
+  (the word <strong>"Bonding"</strong> was added to the title, now
+  "Grounding and Bonding"; <strong>Mike Holt-documented</strong>), plus
+  on-disk-verified cross-reference renumbers — 450.3 Informational Note 1
+  **240.100/240.101 → 245.26/245.27** (and the added IEEE 3002.8 note),
+  450.5 **250.24(B) → 250.24(C)**, 450.12 **Table 314.16(B) →
+  314.16(B)(1)** — the 450.9 IEEE standard re-cites (C57.12.00-1993 →
+  -2015 etc.) + the new "top surfaces … marked to prohibit storage"
+  sentence, and 450.14 "lockable" → <strong>"lockable open"</strong>.
+  Source boundaries disclosed: no on-disk 2020 Article 450 text (2020
+  position not asserted), and the 450.10 title claim rests on the Mike
+  Holt 2023 summary (the 2023 CSV carries only 450.10(A)/(B) bodies).
+  Verbatim 2017 text (on-disk NFPA scan, disclosed OCR corrections) +
+  verbatim 2023 text (on-disk 2023 CSV). Six core-computed worked
+  examples (`compute_art51.js` → node, from the shipped
+  `pickConductor31016` / `nextStdBreaker` cores): EX1 100 kVA 480/208
+  5% Z — 120.28 A primary / 277.57 A secondary, 125% row → 175 A, 250%
+  row → 350 A primary + 350 A secondary, Note 3 6× → 700 A ceiling;
+  EX2 25 kVA 208/24 lighting — 125% row → 90 A, 250% → 175 A + 800 A
+  secondary; EX3 50 kVA autotransformer — 138.79 A input, 125% → 175 A,
+  plus the sub-9 A 167% corner (6.95 A — the standard-size gap, flagged
+  honestly); EX4 secondary tie, two 75 kVA 480 V — 67% → 6 AWG Cu,
+  100% → 3 AWG Cu, 450.6(B) 250% → 225 A OCPD (ceiling rule) + 90.21 A
+  reverse-current relay, 277 V to ground → (A)(5) switch required;
+  EX5 5 MVA 13,800/480 10% Z — Table 450.3(A) grid: 400% breaker / 300%
+  fuse primary, 250% / 225% secondary, Note 1b commercially-available
+  step-up. 45-assertion test block (`run_tests.js`), sitemap 52 URLs +
+  index cross-link. Written by Radloff Bot (AI, disclosed on the page).
+
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
