@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 55, 'art44: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 56, 'art44: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4890,7 +4890,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap48 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: sitemap entry present');
-  eq((sitemap48.match(/<loc>/g) || []).length, 55, 'art48: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
+  eq((sitemap48.match(/<loc>/g) || []).length, 56, 'art48: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index48 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: index cross-link present');
   const readme48 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4984,7 +4984,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap49 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: sitemap entry present');
-  eq((sitemap49.match(/<loc>/g) || []).length, 55, 'art49: sitemap has 53 URLs (art50 appended the 51st; art51 the 52nd; art52 the 53rd)');
+  eq((sitemap49.match(/<loc>/g) || []).length, 56, 'art49: sitemap has 53 URLs (art50 appended the 51st; art51 the 52nd; art52 the 53rd)');
   const index49 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: index cross-link present');
   const readme49 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5150,7 +5150,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap51 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: sitemap entry present');
-  eq((sitemap51.match(/<loc>/g) || []).length, 55, 'art51: sitemap has 53 URLs (art52 appended the 53rd)');
+  eq((sitemap51.match(/<loc>/g) || []).length, 56, 'art51: sitemap has 53 URLs (art52 appended the 53rd)');
   const index51 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: index cross-link present');
   const readme51 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5257,7 +5257,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap52 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: sitemap entry present');
-  eq((sitemap52.match(/<loc>/g) || []).length, 55, 'art52: sitemap has 53 URLs (art52 appended the 53rd)');
+  eq((sitemap52.match(/<loc>/g) || []).length, 56, 'art52: sitemap has 53 URLs (art52 appended the 53rd)');
   const index52 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: index cross-link present');
   const readme52 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5401,7 +5401,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap53 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: sitemap entry present');
-  eq((sitemap53.match(/<loc>/g) || []).length, 55, 'art53: sitemap has 54 URLs (art53 appended the 54th)');
+  eq((sitemap53.match(/<loc>/g) || []).length, 56, 'art53: sitemap has 54 URLs (art53 appended the 54th)');
   const index53 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: index cross-link present');
   const readme53 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5532,13 +5532,140 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap54 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap54.includes('articles/nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: sitemap entry present');
-  eq((sitemap54.match(/<loc>/g) || []).length, 55, 'art54: sitemap has 55 URLs (art54 appended the 55th)');
+  eq((sitemap54.match(/<loc>/g) || []).length, 56, 'art54: sitemap has 55 URLs (art54 appended the 55th)');
   const index54 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index54.includes('articles/nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: index cross-link present');
   const readme54 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme54.includes('articles/nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: README entry present');
 }
 
+
+
+// =====================================================================
+// Article 55 — NEC 250.130 + 250.148: Equipment Grounding Conductor
+// Connections + Continuity/Attachment of EGCs to Boxes (the EGC's last
+// two stops before a device). 250.130 (EGC connections: 250.30(A)(1)
+// route for separately derived; (A) grounded systems EGC to grounded
+// service conductor + GEC; (B) ungrounded systems EGC to GEC only;
+// (C) existing installations — the six permitted connection points for
+// nongrounding-receptacle replacement and branch-circuit extensions,
+// 2023 adds snap switches + IN No. 2 404.9(B)). 250.148 (box
+// continuity: lead reworked to "the installation shall comply with
+// 250.148(A) through (D)"; (A) "all EGCs spliced or terminated within
+// the box shall be connected together" + 110.14(B) + 250.8; (B)
+// device-removal continuity reworded to "does not interrupt the
+// electrical continuity ... effective ground-fault current path" +
+// luminaire-first device order; (C) metal-box dedicated connection
+// "used for no other purpose" + NEW Table 250.122 sizing sentence
+// (largest OCPD in the box), 2017 grounding-screw hardware list
+// dropped; (D) nonmetallic-box tail reword; (E) SOLDER DELETED —
+// 250.8(B) word-identical in both editions carries the prohibition
+// alone). 80 phrase-level machine checks (verify_art55.py, all pass;
+// 250.130 deltas on-disk-verified — no Mike Holt 2023 entry for
+// 250.130; 250.148 deltas corroborated by the on-disk Mike Holt entry
+// "revised once again this cycle making it clear which EGCs must be
+// connected to each other or to the box"; 2020 position not asserted —
+// the on-disk 2020 source carries no 250.130/250.148 text). Worked
+// examples core-computed (compute_art55.js -> art55_numbers.json;
+// Table 250.122 rows 15-300 A verbatim in both on-disk editions,
+// 400 A+ from the 2023 CSV; EX2 proportional step via shipped ch9Row).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-250130-250148-egc-connections-box-continuity.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art55_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-250130-250148-egc-connections-box-continuity.html'), true, 'art55: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-250130-250148-egc-connections-box-continuity.html'), true, 'art55: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art55: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art55: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 55'), true, 'art55: footer marks article 55');
+  eq(has('80 machine-verified'), true, 'art55: 80 machine-verified checks claimed');
+  // verbatim 2017 — 250.130
+  eq(has('equipment grounding conductor connections at the source of separately derived systems shall be made in accordance with 250.30(a)(1)'), true, 'art55: verbatim 2017 250.130 lead separately derived');
+  eq(has('equipment grounding conductor connections at service equipment shall be made as indicated in 250.130(a) or (b)'), true, 'art55: verbatim 2017 250.130 lead service routing');
+  eq(has('for replacement of non-grounding-type receptacles with grounding-type receptacles and for branch-circuit extensions only in existing installations that do not have an equipment grounding conductor in the branch circuit'), true, 'art55: verbatim 2017 250.130 lead replacement clause (no snap switches)');
+  eq(has('(a) for grounded systems. the connection shall be made by bonding the equipment grounding conductor to the grounded service conductor and the grounding electrode conductor'), true, 'art55: verbatim 2017 250.130(A)');
+  eq(has('(b) for ungrounded systems. the connection shall be made by bonding the equipment grounding conductor to the grounding electrode conductor'), true, 'art55: verbatim 2017 250.130(B)');
+  eq(has('the equipment grounding conductor of a grounding-type receptacle or a branch-circuit extension shall be permitted to be connected to any of the following'), true, 'art55: verbatim 2017 250.130(C) intro');
+  eq(has('any accessible point on the grounding electrode system as described in 250.50'), true, 'art55: verbatim 250.130(C)(1) 250.50 point');
+  eq(has('the equipment grounding terminal bar within the enclosure where the branch circuit for the receptacle or branch circuit originates'), true, 'art55: verbatim 250.130(C)(3) terminal bar at origin');
+  eq(has('for grounded systems, the grounded service conductor within the service equipment enclosure'), true, 'art55: verbatim 250.130(C)(5) grounded service conductor');
+  eq(has('for ungrounded systems, the grounding terminal bar within the service equipment enclosure'), true, 'art55: verbatim 250.130(C)(6) grounding terminal bar');
+  eq(has('see 406.4(d) for the use of a ground-fault circuit-interrupting type of receptacle'), true, 'art55: verbatim 250.130(C) 406.4(D) GFCI note (both editions)');
+  // verbatim 2017 — 250.148
+  eq(has('if circuit conductors are spliced within a box or terminated on equipment within or supported by a box, all equipment grounding conductor(s) associated with any of those circuit conductors shall be connected within the box or to the box with devices suitable for the use in accordance with 250.8 and 250.148(a) through (e)'), true, 'art55: verbatim 2017 250.148 lead (vague "associated with" form)');
+  eq(has('the equipment grounding conductor permitted in 250.146(d) shall not be required to be connected to the other equipment grounding conductors or to the box'), true, 'art55: verbatim 250.148 Exception 250.146(D) (both editions)');
+  eq(has('(a) connections. connections and splices shall be made in accordance with 110.14(b) except that insulation shall not be required'), true, 'art55: verbatim 2017 250.148(A) (no 250.8 cite in 2017)');
+  eq(has('does not interfere with or interrupt the grounding continuity'), true, 'art55: verbatim 2017 250.148(B) continuity standard (2017 form)');
+  eq(has('by means of a grounding screw that shall be used for no other purpose, equipment listed for grounding, or a listed grounding device'), true, 'art55: verbatim 2017 250.148(C) grounding-screw hardware list (deleted 2023)');
+  eq(has('(e) solder. connections depending solely on solder shall not be used'), true, 'art55: verbatim 2017 250.148(E) solder prohibition (deleted 2023)');
+  // 2023 deltas documented
+  eq(has('or snap switches without an equipment grounding terminal with snap switches with an equipment grounding terminal'), true, 'art55: documents the 2023 250.130 snap-switch clause');
+  eq(has('the equipment grounding conductor that is connected to a grounding-type receptacle, a snap switch with an equipment grounding terminal, or a branch-circuit extension'), true, 'art55: documents the 2023 250.130(C) intro');
+  eq(has('see 404.9(b) for requirements regarding grounding of snap switches'), true, 'art55: documents the 2023 IN No. 2 404.9(B)');
+  eq(has('the installation shall comply with 250.148(a) through (d)'), true, 'art55: documents the 2023 250.148 lead rework');
+  eq(has('all equipment grounding conductors that are spliced or terminated within the box shall be connected together'), true, 'art55: documents the 2023 250.148(A) "connected together" sentence');
+  eq(has('in accordance with 110.14(b) and 250.8 except that insulation shall not be required'), true, 'art55: documents the 2023 250.148(A) 250.8 cite');
+  eq(has('does not interrupt the electrical continuity of the equipment grounding conductor(s) providing an effective ground-fault current path'), true, 'art55: documents the 2023 250.148(B) effective-GFCP standard');
+  eq(has('a connection used for no other purpose shall be made between the metal box and the equipment grounding conductor(s)'), true, 'art55: documents the 2023 250.148(C) dedicated connection');
+  eq(has('the equipment bonding jumper or equipment grounding conductor shall be sized from table 250.122 based on the largest overcurrent device protecting circuit conductors in the box'), true, 'art55: documents the 2023 250.148(C) Table 250.122 sizing sentence');
+  eq(has('connection devices or fittings that depend solely on solder shall not be used'), true, 'art55: documents 250.8(B) solder prohibition (word-identical both editions)');
+  eq(has('revised once again this cycle making it clear which egcs must be connected to each other or to the box'), true, 'art55: quotes the Mike Holt 2023 250.148 entry');
+  eq(has('no mike holt 2023 change-summary entry exists for 250.130'), true, 'art55: states the no-MH-entry-for-250.130 boundary');
+  eq(has('2020 position is not asserted'), true, 'art55: flags the 2020 source boundary');
+  // EX1 ladder (12 standard OCPDs, from art55_numbers.json)
+  eq(nums.EX1.ladder.length, 12, 'art55: EX1 ladder has 12 OCPD rows');
+  const ex1ladder = nums.EX1.ladder;
+  eq(ex1ladder[0].ocpdA, 15, 'art55: EX1 row 0 = 15 A');
+  eq(ex1ladder[0].cu, '14', 'art55: EX1 15 A -> 14 AWG Cu');
+  eq(ex1ladder[1].cu, '12', 'art55: EX1 20 A -> 12 AWG Cu');
+  eq(ex1ladder[2].cu, '10', 'art55: EX1 30 A -> 10 AWG Cu (60 A row seam)');
+  eq(ex1ladder[4].cu, '10', 'art55: EX1 50 A -> 10 AWG Cu (60 A row)');
+  eq(ex1ladder[6].cu, '8', 'art55: EX1 100 A -> 8 AWG Cu');
+  eq(ex1ladder[11].cu, '1/0', 'art55: EX1 800 A -> 1/0 AWG Cu');
+  eq(ex1ladder[11].al, '3/0', 'art55: EX1 800 A -> 3/0 AWG Al');
+  eq(has('4,110') && has('105,600'), true, 'art55: EX1 circular-mil column (4,110 / 105,600)');
+  // EX2 proportional step (ch9Row core)
+  eq(nums.EX2.cmCircuitMin, 10380, 'art55: EX2 10 AWG = 10,380 cmil');
+  eq(nums.EX2.cmCircuitUp, 16510, 'art55: EX2 8 AWG = 16,510 cmil');
+  eq(nums.EX2.cmEgcProp, 16510, 'art55: EX2 proportional EGC = 16,510 cmil');
+  eq(nums.EX2.egcFinal, '8', 'art55: EX2 final EGC = 8 AWG Cu');
+  eq(has('16,510'), true, 'art55: EX2 16,510 cmil on page');
+  // EX3 existing-installation 20 A
+  eq(nums.EX3.ocpdA, 20, 'art55: EX3 circuit = 20 A');
+  eq(nums.EX3.egcCu, '12', 'art55: EX3 EGC = 12 AWG Cu @ 20 A');
+  eq(nums.EX3.egcAl, '10', 'art55: EX3 EGC = 10 AWG Al @ 20 A');
+  eq(nums.EX3.sixPoints.length, 6, 'art55: EX3 six permitted points');
+  // EX4 largest-OCPD governs
+  eq(nums.EX4.smallOcpd.cu, '14', 'art55: EX4 15 A -> 14 AWG Cu');
+  eq(nums.EX4.largeOcpd.cu, '12', 'art55: EX4 20 A -> 12 AWG Cu');
+  eq(nums.EX4.governing, '12', 'art55: EX4 jumper governed by largest OCPD = 12 AWG Cu');
+  eq(has('the box jumper is sized for the largest'), true, 'art55: EX4 "largest OCPD governs" on page');
+  // core re-run (recompute EX2 under node, assert the page agrees)
+  const core = require('../app.js');
+  const reMin = core.ch9Row('10').cm, reUp = core.ch9Row('8').cm;
+  const reProp = reMin * (reUp / reMin);
+  eq(Math.round(reProp), nums.EX2.cmEgcProp, 'art55: core re-run EX2 proportional matches JSON');
+  // cross-links
+  eq(art.includes('nec-250122-egc-sizing.html'), true, 'art55: cross-links to 250.122 EGC-sizing article');
+  eq(art.includes('nec-250102-main-bonding-jumper.html'), true, 'art55: cross-links to 250.102 main bonding jumper article');
+  eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art55: cross-links to 250.26+250.30 article');
+  eq(art.includes('nec-25050-25052-25053-grounding-electrode-system.html'), true, 'art55: cross-links to 250.50+250.52+250.53 article');
+  eq(art.includes('nec-25070-connection-methods-to-electrodes.html'), true, 'art55: cross-links to 250.70 connection-methods article');
+  eq(art.includes('nec-25064-250104-gec-installation-bonding.html'), true, 'art55: cross-links to 250.64+250.104 article');
+  eq(art.includes('nec-25054-25068-auxiliary-gec-caps-connections.html'), true, 'art55: cross-links to 250.54-250.68 article');
+  // sitemap + index + README
+  const sitemap55 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap55.includes('articles/nec-250130-250148-egc-connections-box-continuity.html'), true, 'art55: sitemap entry present');
+  eq((sitemap55.match(/<loc>/g) || []).length, 56, 'art55: sitemap has 56 URLs (art55 appended the 56th)');
+  const index55 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index55.includes('articles/nec-250130-250148-egc-connections-box-continuity.html'), true, 'art55: index cross-link present');
+  const readme55 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme55.includes('articles/nec-250130-250148-egc-connections-box-continuity.html'), true, 'art55: README entry present');
+}
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

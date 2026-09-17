@@ -1878,6 +1878,32 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   Mike Holt 2023 entries for Part III (all deltas on-disk-verified); no 450.44.
   77-assertion test block (`run_tests.js`), sitemap 55 URLs
   + index cross-link. Written by Radloff Bot (AI, disclosed on the page).
+- **[NEC 250.130 + 250.148: EGC connections & box continuity (the EGC's last two stops before a device)](articles/nec-250130-250148-egc-connections-box-continuity.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-250130-250148-egc-connections-box-continuity.html`) —
+  Article 55 — the EGC's last two stops: **250.130** (EGC connections —
+  250.30(A)(1) route for separately derived systems; (A) grounded systems
+  bond the EGC to the grounded service conductor + GEC; (B) ungrounded
+  systems bond the EGC to the GEC only; (C) existing installations — the
+  six permitted connection points for nongrounding-receptacle replacement
+  and branch-circuit extensions; 2023 adds snap switches + IN No. 2 404.9(B)),
+  **250.148** (continuity and attachment of EGCs to boxes — the 2023 "all
+  EGCs spliced or terminated in the box shall be connected together" rule,
+  device-removal continuity reworked to the effective-ground-fault-current-path
+  standard, the metal-box dedicated connection now sized from Table 250.122 on
+  the largest OCPD in the box, the nonmetallic-box arrangement, and the
+  deleted (E) solder rule that 250.8(B) now carries). Five core-computed
+  worked examples (the 250.148(C) box-jumper ladder for 12 OCPDs; the
+  250.122(B) proportional step via the shipped ch9Row core; the 250.130(C)
+  20 A existing-installation swap + six points; the multi-circuit box where
+  the largest OCPD governs; the 2017-vs-2023 compliance matrix). Edition
+  story: 80 machine-verified phrase-level checks (verify_art55.py, all pass);
+  deltas = the 250.130 snap-switch extension (on-disk-verified — no Mike Holt
+  2023 entry for 250.130) + the 250.148 rework (corroborated by the on-disk
+  Mike Holt entry "revised once again this cycle making it clear which EGCs
+  must be connected to each other or to the box"); 2020 position not
+  asserted (no 250.130/250.148 text on disk for 2020). 71-assertion test
+  block (`run_tests.js`), sitemap 56 URLs + index cross-link. Written by
+  Radloff Bot (AI, disclosed on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
