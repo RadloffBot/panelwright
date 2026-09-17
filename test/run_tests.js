@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 56, 'art44: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 57, 'art44: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4890,7 +4890,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap48 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: sitemap entry present');
-  eq((sitemap48.match(/<loc>/g) || []).length, 56, 'art48: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
+  eq((sitemap48.match(/<loc>/g) || []).length, 57, 'art48: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index48 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: index cross-link present');
   const readme48 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4984,7 +4984,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap49 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: sitemap entry present');
-  eq((sitemap49.match(/<loc>/g) || []).length, 56, 'art49: sitemap has 53 URLs (art50 appended the 51st; art51 the 52nd; art52 the 53rd)');
+  eq((sitemap49.match(/<loc>/g) || []).length, 57, 'art49: sitemap has 53 URLs (art50 appended the 51st; art51 the 52nd; art52 the 53rd)');
   const index49 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: index cross-link present');
   const readme49 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5150,7 +5150,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap51 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: sitemap entry present');
-  eq((sitemap51.match(/<loc>/g) || []).length, 56, 'art51: sitemap has 53 URLs (art52 appended the 53rd)');
+  eq((sitemap51.match(/<loc>/g) || []).length, 57, 'art51: sitemap has 53 URLs (art52 appended the 53rd)');
   const index51 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: index cross-link present');
   const readme51 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5257,7 +5257,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap52 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: sitemap entry present');
-  eq((sitemap52.match(/<loc>/g) || []).length, 56, 'art52: sitemap has 53 URLs (art52 appended the 53rd)');
+  eq((sitemap52.match(/<loc>/g) || []).length, 57, 'art52: sitemap has 53 URLs (art52 appended the 53rd)');
   const index52 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: index cross-link present');
   const readme52 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5401,7 +5401,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap53 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: sitemap entry present');
-  eq((sitemap53.match(/<loc>/g) || []).length, 56, 'art53: sitemap has 54 URLs (art53 appended the 54th)');
+  eq((sitemap53.match(/<loc>/g) || []).length, 57, 'art53: sitemap has 54 URLs (art53 appended the 54th)');
   const index53 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: index cross-link present');
   const readme53 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5532,7 +5532,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap54 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap54.includes('articles/nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: sitemap entry present');
-  eq((sitemap54.match(/<loc>/g) || []).length, 56, 'art54: sitemap has 55 URLs (art54 appended the 55th)');
+  eq((sitemap54.match(/<loc>/g) || []).length, 57, 'art54: sitemap has 55 URLs (art54 appended the 55th)');
   const index54 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index54.includes('articles/nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: index cross-link present');
   const readme54 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5660,11 +5660,119 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap55 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap55.includes('articles/nec-250130-250148-egc-connections-box-continuity.html'), true, 'art55: sitemap entry present');
-  eq((sitemap55.match(/<loc>/g) || []).length, 56, 'art55: sitemap has 56 URLs (art55 appended the 56th)');
+  eq((sitemap55.match(/<loc>/g) || []).length, 57, 'art55: sitemap has 56 URLs (art55 appended the 56th)');
   const index55 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index55.includes('articles/nec-250130-250148-egc-connections-box-continuity.html'), true, 'art55: index cross-link present');
   const readme55 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme55.includes('articles/nec-250130-250148-egc-connections-box-continuity.html'), true, 'art55: README entry present');
+}
+// ---------------------------------------------------------------------------
+// ARTICLE 56 — NEC 422.10 + 422.11 + 422.12 + 422.13 (Appliance
+// Branch-Circuit Rating + Overcurrent Protection — the 125% water-heater rule)
+//
+// The four Part II sections that size the wire + breaker for an appliance.
+// Verbatim 2017 (on-disk official NFPA scan, region 422.6–422.13, OCR
+// corrections disclosed). Eight substantive 2017→2023 deltas
+// (verify_art56.py, 52 phrase-level machine checks, all pass): 422.6
+// "operating"→"supplied", 422.10 lead rework, 422.10(A) "rating of an
+// individual branch circuit"→"ampacities of branch-circuit conductors" +
+// the 422.62 combined-loads cross-ref dropped + the range-sizing
+// cross-ref renumber 210.19(A)(3)→(C), 422.11(E)(1) reword, 422.11(F)(1)
+// "each subdivided load shall be protected", 422.11(F)(3) IN rework, and
+// the 422.13 "considered a continuous load" framing rewritten to state the
+// 125% rule directly (Mike Holt 2023 entry corroborates: "clarify what we
+// are sizing and how the 125 percent applies"; NO Mike Holt entries for
+// 422.6/422.10/422.11/422.12 — those deltas on-disk-verified). 2020
+// position not asserted (on-disk 2020 source carries no 422.10–422.13 body).
+// Worked examples core-computed (compute_art56.js -> art56_numbers.json):
+// reqBreakerA / nextStdBreaker / pickConductor31016 / smallConductorCap.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-42210-42211-42213-appliance-branch-circuit.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art56_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-42210-42211-42213-appliance-branch-circuit.html'), true, 'art56: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-42210-42211-42213-appliance-branch-circuit.html'), true, 'art56: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art56: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art56: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 56'), true, 'art56: footer marks article 56');
+  eq(has('52 machine-verified'), true, 'art56: 52 machine-verified checks claimed');
+  // verbatim 2017 quotes (match on-disk scan after disclosed OCR corrections)
+  eq(has('422.6 listing required. all appliances operating at 50 volts or more shall be listed'), true, 'art56: verbatim 2017 422.6');
+  eq(has('the rating of an individual branch circuit shall not be less than the marked rating of the appliance or the marked rating of an appliance having combined loads as provided in 422.62'), true, 'art56: verbatim 2017 422.10(A)(1) (with 422.62 ref — dropped in 2023)');
+  eq(has('the branch-circuit rating for an appliance that is a continuous load, other than a motor-operated appliance, shall not be less than 125 percent of the marked rating, or not less than 100 percent of the marked rating if the branch-circuit device and its assembly are listed for continuous loading at 100 percent of its rating'), true, 'art56: verbatim 2017 422.10(A)(4) 125%/100% floor (both editions)');
+  eq(has('shall be sized in accordance with 210.19(a)(3)'), true, 'art56: verbatim 2017 422.10(A)(6) 210.19(A)(3) cross-ref (renumbered (C) in 2023)');
+  eq(has('not exceed that marked on the appliance'), true, 'art56: verbatim 2017 422.11(E)(1) marked-rating cap');
+  eq(has('not exceed 150 percent of the appliance rated current'), true, 'art56: verbatim 2017 422.11(E)(3) 150% of appliance rated current');
+  eq(has('each subdivided load shall not exceed 48 amperes and shall be protected at not more than 60 amperes'), true, 'art56: verbatim 2017 422.11(F)(1) 48 A subdivision');
+  eq(has('a fixed storage-type water heater that has a capacity of 450 l (120 gal) or less shall be considered a continuous load for the purposes of sizing branch circuits'), true, 'art56: verbatim 2017 422.13 (pre-2023 framing)');
+  // 2023 deltas documented
+  eq(has('all appliances supplied by 50 volts or higher shall be listed'), true, 'art56: documents 2023 422.6 "supplied by 50 volts or higher" (2017 "operating at 50 volts or more")');
+  eq(has('the ampacities of branch-circuit conductors shall not be less than the marked rating'), true, 'art56: documents 2023 422.10(A) "ampacities of branch-circuit conductors"');
+  eq(has('the 422.62 combined-loads cross-reference is dropped'), true, 'art56: documents the 2023 422.10(A) drop of the 422.62 combined-loads ref');
+  eq(has('shall be sized in accordance with 210.19(c)'), true, 'art56: documents 2023 210.19(C) range cross-ref (renumber from (A)(3))');
+  eq(has('not exceed the overcurrent protection rating marked on the appliance'), true, 'art56: documents 2023 422.11(E)(1) reword');
+  eq(has('each subdivided load shall not exceed 48 amperes, and each subdivided load shall be protected at not more than 60 amperes'), true, 'art56: documents 2023 422.11(F)(1) per-subdivision protection');
+  eq(has('shall have an ampere rating of not less than 125 percent of the ampere rating of the water heater'), true, 'art56: documents 2023 422.13 explicit 125% rewrite');
+  eq(has('see 422.10 for branch-circuit rating'), true, 'art56: documents 2023 422.13 IN rework');
+  eq(has('clarify what we are sizing and how the 125 percent applies'), true, 'art56: quotes the Mike Holt 2023 422.13 entry');
+  eq(has('no mike holt 2023 change-summary entry exists for 422.6'), true, 'art56: states the no-MH-entry boundary for the other 422.10–422.13 deltas');
+  eq(has('2020 position is not asserted'), true, 'art56: flags the 2020 source boundary');
+  eq(has('over-current'), true, 'art56: discloses the 2023 CSV line-wrap hyphen normalization');
+  // EX1 — 422.13 water heater 4500 W / 240 V
+  eq(nums.EX1.markedA, 18.75, 'art56: EX1 marked rating 18.75 A');
+  eq(nums.EX1.ocPD125, 25, 'art56: EX1 125% OCPD = 25 A (23.44 floor -> next standard)');
+  eq(nums.EX1.pick125, '10', 'art56: EX1 125% conductor = 10 AWG Cu (35 A; cap 30 ≥ 25)');
+  eq(nums.EX1.ocPD100, 20, 'art56: EX1 100%-listed OCPD = 20 A');
+  eq(nums.EX1.pick100, '12', 'art56: EX1 100%-listed conductor = 12 AWG Cu (cap 20 ≥ 20)');
+  eq(nums.EX1.cap12AWG, 20, 'art56: EX1 12 AWG Cu 240.4(D) cap = 20 A < 25 A (rejected for 125% case)');
+  eq(has('12 awg cu is rejected'), true, 'art56: EX1 240.4(D) trap on page');
+  // EX2 — 422.10(A) continuous non-motor 3600 W / 240 V
+  eq(nums.EX2.markedA, 15, 'art56: EX2 marked rating 15 A');
+  eq(nums.EX2.floor125, 18.75, 'art56: EX2 125% floor 18.75 A');
+  eq(nums.EX2.ocPD, 20, 'art56: EX2 OCPD = 20 A');
+  eq(nums.EX2.pick, '12', 'art56: EX2 conductor = 12 AWG Cu');
+  eq(nums.EX2.cap14AWG, 15, 'art56: EX2 14 AWG cap 15 A < 20 A OCPD (rejected)');
+  // EX3 — 422.11(E)(2) unmarked 20 A ceiling
+  eq(nums.EX3.ceiling, 20, 'art56: EX3 422.11(E)(2) ceiling 20 A');
+  eq(nums.EX3.pick, '14', 'art56: EX3 conductor 14 AWG Cu');
+  eq(nums.EX3.ocPD, 15, 'art56: EX3 actual OCPD 15 A (240.4(D) cap binds below the 20 A ceiling)');
+  // EX4 — 422.11(E)(3) 150% ceiling ladder
+  eq(nums.EX4.length, 5, 'art56: EX4 ladder has 5 rows');
+  eq(nums.EX4[0].a, 14, 'art56: EX4 row 0 = 14 A');
+  eq(nums.EX4[0].ceiling, 25, 'art56: EX4 14 A -> 21 A (nonstandard) -> 25 A ceiling');
+  eq(nums.EX4[4].a, 48, 'art56: EX4 row 4 = 48 A');
+  eq(nums.EX4[4].ceiling, 80, 'art56: EX4 48 A -> 72 A (nonstandard) -> 80 A ceiling');
+  // EX5 — 422.11(F)(1) 48 A subdivision
+  eq(nums.EX5.totalA, 54, 'art56: EX5 appliance 54 A');
+  eq(nums.EX5.subdivCount, 2, 'art56: EX5 2 subdivisions');
+  eq(nums.EX5.ocPDSub, 30, 'art56: EX5 each sub on 30 A OCPD (≤ 60 A cap)');
+  eq(nums.EX5.main, '6', 'art56: EX5 main conductors 6 AWG Cu (65 A ≥ full 54 A load)');
+  // core re-run (recompute EX1 + EX2 under node, assert the page agrees)
+  const core = require('../app.js');
+  eq(core.nextStdBreaker(core.reqBreakerA(nums.EX1.w / nums.EX1.v, 1.25)), nums.EX1.ocPD125, 'art56: core re-run EX1 125% OCPD matches JSON');
+  eq(core.nextStdBreaker(core.reqBreakerA(nums.EX2.w / nums.EX2.v, 1.25)), nums.EX2.ocPD, 'art56: core re-run EX2 125% OCPD matches JSON');
+  eq(core.smallConductorCap('14','cu') === 15 && core.smallConductorCap('12','cu') === 20, true, 'art56: core re-run 240.4(D) caps (14->15, 12->20 Cu)');
+  // cross-links
+  eq(art.includes('nec-21019a-continuous-load.html'), true, 'art56: cross-links to 210.19(A) continuous-load article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art56: cross-links to Table 310.16 article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art56: cross-links to 240.4(D) article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art56: cross-links to 240.6 article');
+  eq(art.includes('nec-22055-cooking-demand.html'), true, 'art56: cross-links to 220.55 article');
+  eq(art.includes('nec-21008-gfci-protection.html'), true, 'art56: cross-links to 210.8 GFCI article');
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art56: cross-links to 430.22+430.52 article');
+  eq(art.includes('nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art56: cross-links to 440.22+440.32 article');
+  // sitemap + index + README
+  const sitemap56 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap56.includes('articles/nec-42210-42211-42213-appliance-branch-circuit.html'), true, 'art56: sitemap entry present');
+  eq((sitemap56.match(/<loc>/g) || []).length, 57, 'art56: sitemap has 57 URLs (art56 appended the 57th)');
+  const index56 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index56.includes('articles/nec-42210-42211-42213-appliance-branch-circuit.html'), true, 'art56: index cross-link present');
+  const readme56 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme56.includes('articles/nec-42210-42211-42213-appliance-branch-circuit.html'), true, 'art56: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

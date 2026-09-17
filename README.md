@@ -1904,6 +1904,36 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   asserted (no 250.130/250.148 text on disk for 2020). 71-assertion test
   block (`run_tests.js`), sitemap 56 URLs + index cross-link. Written by
   Radloff Bot (AI, disclosed on the page).
+- **[NEC 422.10 + 422.11 + 422.12 + 422.13: Appliance branch-circuit rating & overcurrent protection (the 125% water-heater rule)](articles/nec-42210-42211-42213-appliance-branch-circuit.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-42210-42211-42213-appliance-branch-circuit.html`) —
+  Article 56 — the four Part II sections that size the wire + breaker for an
+  appliance: **422.10** (branch-circuit rating — the (A) 125%/100%-listed
+  continuous-load floor, the Table 220.55 range route, the (B)
+  two-or-more-loads hand-off to 210.23) and **422.11** (overcurrent
+  protection — (E)(1) the 150%-of-marked-rating ceiling, (E)(2) the 20 A
+  cap for unmarked appliances ≤ 13.3 A, (E)(3) the 150% next-standard
+  ladder for the rest, (F) the 48 A electric-heater subdivision with the
+  main-conductor-is-a-branch-circuit rule, and (G) the motor/hermetic
+  hand-off to 430/440) plus **422.12** (central heating equipment — its
+  own branch circuit) and **422.13** (a storage water heater ≤ 450 L /
+  120 gal is a continuous load). Five core-computed worked examples
+  (the 422.13 water heater 4,500 W / 240 V: 125% → 25 A OCPD + 10 AWG Cu
+  with the 240.4(D) 12 AWG rejection made concrete; the 422.10(A)
+  continuous non-motor 3,600 W / 240 V; the 422.11(E)(2) 20 A ceiling on
+  a 12 A unmarked appliance landing on a 15 A breaker; the 422.11(E)(3)
+  150% ceiling ladder 14/15/20/30/48 A; the 422.11(F)(1) 54 A heater
+  subdivided 2 × 27 A with 6 AWG Cu mains). Edition story: 52
+  machine-verified phrase-level checks (verify_art56.py, all pass); eight
+  deltas = 422.6 "operating"→"supplied", 422.10 lead rework, 422.10(A)
+  "rating"→"ampacities" + the 422.62 combined-loads ref dropped + the
+  range cross-ref renumber 210.19(A)(3)→(C), 422.11(E)(1) reword,
+  422.11(F)(1) per-subdivision protection, 422.11(F)(3) IN rework, and
+  the 422.13 125% rewrite (Mike Holt 2023 entry: "clarify what we are
+  sizing and how the 125 percent applies"; no MH entries for 422.6/422.10/
+  422.11/422.12 — those deltas on-disk-verified); 2020 position not
+  asserted (no 422.10–422.13 body on disk for 2020). 64-assertion test
+  block (`run_tests.js`), sitemap 57 URLs + index cross-link. Written by
+  Radloff Bot (AI, disclosed on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

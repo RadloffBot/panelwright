@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 422.10 + 422.11 + 422.12 + 422.13 — Appliance Branch-Circuit Rating &amp; Overcurrent Protection (the 125% water-heater rule)</title>
+<meta name="description" content="The four Article 422 Part II sections that size the wire and breaker for an appliance: 422.10 (branch-circuit rating — the 125% continuous-load floor, the Table 220.55 range route, the 210.23 multi-load hand-off), 422.11 (overcurrent protection — the marked-rating cap, the 50 A heating-appliance caps, the single non-motor appliance 20 A / 150% rules, the 48 A heater subdivision, the motor-operated hand-off), 422.12 (central heating on its own circuit) and 422.13 (the storage water heater as a 125% continuous load). 2017→2023 edition history — 52 machine-verified checks — plus five worked examples from the shipped cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-42210-42211-42213-appliance-branch-circuit.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 422.10 + 422.11 + 422.12 + 422.13 — Appliance Branch-Circuit Rating &amp; Overcurrent Protection">
+<meta property="og:description" content="How to size the wire and breaker for a water heater, range, or central heater: 422.10 (the 125% continuous-load rating floor), 422.11 (the OCPD ceilings), 422.12 (central heating's own circuit), 422.13 (the water heater is a continuous load). 2017→2023 edition history + worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-42210-42211-42213-appliance-branch-circuit.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 422.10 + 422.11 + 422.12 + 422.13 — Appliance Branch-Circuit Rating &amp; OCPD">
+<meta name="twitter:description" content="The four Article 422 sections that size the wire and breaker for an appliance — the 125% water-heater rule, the 50 A heating caps, the single-appliance 20 A / 150% OCPD rules, the 48 A heater subdivision. 2017→2023 edition history + worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 422.10 branch-circuit rating, NEC 422.11 overcurrent protection appliances, NEC 422.12 central heating equipment branch circuit, NEC 422.13 storage-type water heater continuous load 125%, what size breaker for a water heater, 125 percent continuous load appliance, 422.11(E) 150 percent appliance OCPD, 422.11(F) 48 ampere heater subdivision, electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 422.10 + 422.11 + 422.12 + 422.13 — Appliance Branch-Circuit Rating & Overcurrent Protection",
+  "description": "The four Article 422 Part II sections that size the wire and breaker for an appliance: 422.10 (branch-circuit rating — the 125% continuous-load floor, the Table 220.55 range route, the 210.23 multi-load hand-off), 422.11 (overcurrent protection — the marked-rating cap, the 50 A heating-appliance caps, the single non-motor appliance 20 A / 150% rules, the 48 A heater subdivision, the motor-operated hand-off), 422.12 (central heating on its own circuit) and 422.13 (the storage water heater as a 125% continuous load). Edition history 2017 to 2023, machine-verified with 52 phrase-level checks, with five worked examples computed from the shipped PanelWright cores.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-17",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-42210-42211-42213-appliance-branch-circuit.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What size breaker do I need for a storage water heater?",
+      "acceptedAnswer": { "@type": "Answer", "text": "NEC 422.13 (2017–2023) makes a fixed storage-type water heater 450 L (120 gal) or less a CONTINUOUS load. So per 422.10(A) the branch-circuit rating is not less than 125% of the marked rating — unless the branch-circuit device and its assembly are listed for continuous loading at 100%. A 4,500 W / 240 V heater is 18.75 A; 125% is 23.44 A, which rounds up to a 25 A OCPD, and the conductor is 10 AWG Cu (12 AWG Cu is rejected — its 20 A overcurrent cap from 240.4(D) is below the 25 A device). If the device + assembly are listed for 100% continuous, the floor drops to 18.75 A → a 20 A OCPD on 12 AWG Cu." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the 150 percent rule for a single appliance with no marked breaker size?",
+      "acceptedAnswer": { "@type": "Answer", "text": "422.11(E) — for a branch circuit supplying a SINGLE non-motor-operated appliance with no OCPD rating marked: (E)(2) the OCPD shall not exceed 20 A if the appliance is rated 13.3 A or less; (E)(3) the OCPD shall not exceed 150% of the appliance rated current if it is rated over 13.3 A, and where 150% is not a standard size the next higher standard rating is permitted. These are CEILINGS — the actual OCPD is also set by 240.4 to protect the conductor, which can force it lower (e.g. a 12 A appliance on 14 AWG Cu lands on a 15 A breaker, not 20 A, because 14 AWG's 240.4(D) cap is 15 A)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does central heating need its own branch circuit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "422.12 — central heating equipment OTHER THAN fixed electric space-heating equipment shall be supplied by an individual branch circuit. Two exceptions: (1) auxiliary equipment directly associated with it (a pump, valve, humidifier, electrostatic air cleaner) may ride the same circuit, and (2) permanently connected air-conditioning equipment may ride the same circuit. Word-identical 2017 to 2023." }
+    },
+    {
+      "@type": "Question",
+      "name": "What changed in Article 422 between the 2017 and 2023 NEC for these sections?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Four substantive rewrites, all machine-verified. 422.6: 'operating at 50 volts or more' → 'supplied by 50 volts or higher'. 422.10: the lead is reworked to 'shall comply with 422.10(A) or (B)'; (A) switches from 'the RATING of an individual branch circuit shall not be less than' to 'the AMPACITIES of branch-circuit conductors shall not be less than'; the 422.62 combined-loads cross-reference is dropped; and the range sizing cross-reference renumbers 210.19(A)(3) → 210.19(C) (a real renumber — 2017's 210.19(A)(3) 'Household Ranges' becomes 2023's 210.19(C)). 422.11(E)(1): 'Not exceed that marked on the appliance' → 'Not exceed the overcurrent protection rating marked on the appliance'. 422.13: the 'considered a continuous load' framing is rewritten to state the 125% rule directly — 'the branch-circuit overcurrent device and conductors ... shall have an ampere rating of not less than 125 percent of the ampere rating of the water heater' (the change Mike Holt's 2023 summary flags: 'clarify what we are sizing and how the 125 percent applies'). 52 machine-verified phrase-level checks, all passing." }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+.removed{background:rgba(224,108,92,.08);border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+td.bad{color:var(--bad);font-weight:650}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code{font-family:var(--mono);font-size:.92em;background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cta{display:inline-block;background:var(--acc);color:#08111c;font-weight:750;text-decoration:none;padding:12px 20px;border-radius:8px;margin:22px 0 6px}
+.cta:hover{filter:brightness(1.08)}
+.ctasub{color:var(--dim);font-size:13.5px}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 18px;font-size:14px}
+.method .blank{font-family:var(--mono);font-size:.9em;color:var(--dim)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+footer a{color:var(--dim)}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+@media(max-width:640px){h1{font-size:24px}table{font-size:12.5px}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 422.10 + 422.11 + 422.12 + 422.13 — <span>Appliance Branch-Circuit Rating &amp; Overcurrent Protection</span></h1>
+  <p class="sub">Article 422 (Appliances) Part II is where you answer the two questions an installer always asks for a water heater, range, or central heater: <strong>how big is the branch circuit (422.10)</strong> and <strong>what size breaker protects it (422.11)</strong> — plus the two named-appliance rules that make those two sections concrete: <strong>422.12</strong> (central heating gets its <em>own</em> branch circuit) and <strong>422.13</strong> (a storage water heater ≤ 450 L / 120 gal is a <strong>continuous load</strong>, so it rides the <strong>125%</strong> rule). The 2023 edition rewrites 422.13 to state the 125% rule outright, reworks 422.10's lead, and renumbers the range-sizing cross-reference from 210.19(A)(3) to 210.19(C) — all machine-verified below.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 422.10 + 422.11 + 422.12 + 422.13 for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text on disk)</strong>, the citation anchor; the 2023 changes are documented in the edition-history boxes and machine-verified against the on-disk 2023 NEC (52 phrase-level checks, all passing). Every table lookup and the OCPD↔conductor pairings in the worked examples come from the <strong>shipped PanelWright cores</strong> under node — zero hand math.</div>
+
+  <h2>The sections, in full (2017)</h2>
+  <p>The four Part II sections quoted verbatim from the 2017 NEC, plus 422.6 (the listing threshold, shown because 2023 rewords it):</p>
+
+  <div class="code">422.6 Listing Required. All appliances operating at 50 volts or
+more shall be listed.
+
+Part II. Installation
+
+422.10 Branch-Circuit Rating. This section specifies the
+ratings of branch circuits capable of carrying appliance current
+without overheating under the conditions specified.
+
+(A) Individual Circuits. The rating of an individual branch
+circuit shall not be less than the marked rating of the appliance
+or the marked rating of an appliance having combined loads as
+provided in 422.62.
+
+The rating of an individual branch circuit for motor-operated
+appliances not having a marked rating shall be in accordance with
+Part II of Article 430.
+
+The branch-circuit rating for an appliance that is a continuous
+load, other than a motor-operated appliance, shall not be less
+than 125 percent of the marked rating, or not less than 100
+percent of the marked rating if the branch-circuit device and its
+assembly are listed for continuous loading at 100 percent of its
+rating.
+
+Branch circuits and branch-circuit conductors for household
+ranges and cooking appliances shall be permitted to be in
+accordance with Table 220.55 and shall be sized in accordance
+with 210.19(A)(3).
+
+(B) Circuits Supplying Two or More Loads. For branch circuits
+supplying appliance and other loads, the rating shall be
+determined in accordance with 210.23.
+
+422.11 Overcurrent Protection. Appliances shall be protected
+against overcurrent in accordance with 422.11(A) through (G)
+and 422.10.
+
+(A) Branch-Circuit Overcurrent Protection. Branch circuits
+shall be protected in accordance with 240.4.
+
+If a protective device rating is marked on an appliance, the
+branch-circuit overcurrent device rating shall not exceed the
+protective device rating marked on the appliance.
+
+(B) Household-Type Appliances with Surface Heating Elements.
+Household-type appliances with surface heating elements having a
+maximum demand of more than 60 amperes calculated in accordance
+with Table 220.55 shall have their power supply subdivided into
+two or more circuits, each of which shall be provided with
+overcurrent protection rated at not over 50 amperes.
+
+(C) Infrared Lamp Commercial and Industrial Heating Appliances.
+Infrared lamp commercial and industrial heating appliances shall
+have overcurrent protection not exceeding 50 amperes.
+
+(D) Open-Coil or Exposed Sheathed-Coil Types of Surface Heating
+Elements in Commercial-Type Heating Appliances. Open-coil or
+exposed sheathed-coil types of surface heating elements in
+commercial-type heating appliances shall be protected by
+overcurrent protective devices rated at not over 50 amperes.
+
+(E) Single Non-Motor-Operated Appliance. If the branch circuit
+supplies a single non-motor-operated appliance, the rating of
+overcurrent protection shall comply with the following:
+(1) Not exceed that marked on the appliance.
+(2) Not exceed 20 amperes if the overcurrent protection rating
+is not marked and the appliance is rated 13.3 amperes or less; or
+(3) Not exceed 150 percent of the appliance rated current if the
+overcurrent protection rating is not marked and the appliance is
+rated over 13.3 amperes. Where 150 percent of the appliance
+rating does not correspond to a standard overcurrent device
+ampere rating, the next higher standard rating shall be permitted.
+
+(F) Electric Heating Appliances Employing Resistance-Type
+Heating Elements Rated More Than 48 Amperes.
+(1) Electric Heating Appliances. Electric heating appliances
+employing resistance-type heating elements rated more than 48
+amperes, other than household appliances with surface heating
+elements covered by 422.11(B), and commercial-type heating
+appliances covered by 422.11(D), shall have the heating elements
+subdivided. Each subdivided load shall not exceed 48 amperes and
+shall be protected at not more than 60 amperes.
+These supplementary overcurrent protective devices shall be (1)
+factory-installed within or on the heater enclosure or provided as
+a separate assembly by the heater manufacturer; (2) accessible;
+and (3) suitable for branch-circuit protection.
+The main conductors supplying these overcurrent protective devices
+shall be considered branch-circuit conductors.
+(2) Commercial Kitchen and Cooking Appliances. Commercial
+kitchen and cooking appliances using sheathed-type heating
+elements not covered in 422.11(D) shall be permitted to be
+subdivided into circuits not exceeding 120 amperes and protected
+at not more than 150 amperes where one of the following is met:
+(1) Elements are integral with and enclosed within a cooking surface.
+(2) Elements are completely contained within an enclosure
+identified as suitable for this use.
+(3) Elements are contained within an ASME-rated and stamped vessel.
+(3) Water Heaters and Steam Boilers. Resistance-type immersion
+electric heating elements shall be permitted to be subdivided into
+circuits not exceeding 120 amperes and protected at not more than
+150 amperes as follows:
+(1) Where contained in ASME-rated and stamped vessels
+(2) Where included in listed instantaneous water heaters
+(3) Where installed in low-pressure water heater tanks or
+open-outlet water heater vessels
+Informational Note: Low-pressure and open-outlet heaters are
+atmospheric pressure water heaters as defined in IEC 60335-2-21,
+Household and similar electrical appliances — Safety — Particular
+requirements for storage water heaters.
+
+(G) Motor-Operated Appliances. Motors of motor-operated
+appliances shall be provided with overload protection in
+accordance with Part III of Article 430. Hermetic refrigerant
+motor-compressors in air-conditioning or refrigerating equipment
+shall be provided with overload protection in accordance with
+Part VI of Article 440. Where appliance overcurrent protective
+devices that are separate from the appliance are required, data
+for selection of these devices shall be marked on the appliance.
+The minimum marking shall be that specified in 430.7 and 440.4.
+
+422.12 Central Heating Equipment. Central heating equipment
+other than fixed electric space-heating equipment shall be
+supplied by an individual branch circuit.
+
+Exception No. 1: Auxiliary equipment, such as a pump, valve,
+humidifier, or electrostatic air cleaner directly associated with
+the heating equipment, shall be permitted to be connected to the
+same branch circuit.
+
+Exception No. 2: Permanently connected air-conditioning equipment
+shall be permitted to be connected to the same branch circuit.
+
+422.13 Storage-Type Water Heaters. A fixed storage-type water
+heater that has a capacity of 450 L (120 gal) or less shall be
+considered a continuous load for the purposes of sizing branch
+circuits.
+
+Informational Note: For branch-circuit rating, see 422.10.
+<span class="src">Source: NEC 2017 (NFPA 70), 422.6 + 422.10 + 422.11 + 422.12 + 422.13 — on-disk official scan, reflowed (art56_2017_flat.txt). OCR corrections applied (disclosed): "422,62" re-cited as "422.62" (comma OCR for the period); "210,19(A) (3)" re-cited as "210.19(A)(3)" (comma + intra-reference space OCR); "non—motor-operated" re-cited as "non-motor-operated" (em-dash OCR for a hyphen, 2x in 422.11(E)); "heat ing elements" re-cited as "heating elements" (space OCR); "motorcompressors" re-cited as "motor-compressors" (dropped hyphen); the 422.11(C) trailing comma normalized to a period; a stray running footer "422.16" removed. No other wording altered. 2023 deltas below.</span></div>
+
+  <h2>422.10 — how big is the branch circuit</h2>
+  <p>422.10 is the <em>rating</em> side: it sets the minimum branch-circuit rating (and hence the conductor) for an appliance. It has one rule and three routes:</p>
+  <ul>
+    <li><strong>(A) Individual circuits — the base rule.</strong> The branch-circuit rating (2023: the conductor ampacity) is <strong>not less than the marked rating</strong> of the appliance (or of an appliance having combined loads, per 422.62 in 2017). For a <strong>motor-operated</strong> appliance with no marked rating, route to <strong>Part II of Article 430</strong> (the motor rules). For a <strong>continuous load</strong> that is not motor-operated — the case 422.13 makes concrete for a water heater — the rating is <strong>125% of the marked rating</strong>, <em>or</em> 100% <strong>if the branch-circuit device and its assembly are listed for continuous loading at 100%</strong>. That 125%/100% sentence is the heart of the article (see EX1/EX2).</li>
+    <li><strong>(A) Household ranges and cooking appliances.</strong> These may be sized per <strong>Table 220.55</strong> (the cooking-demand table) and sized in accordance with <strong>210.19(A)(3) (2017) / 210.19(C) (2023)</strong> — the ranges subsection. The cross-reference renumber is one of the verified 2023 deltas (the section itself did not move, only its letter — 210.19 was restructured in 2023).</li>
+    <li><strong>(B) Two or more loads.</strong> When the circuit supplies an appliance <em>and</em> other loads, the rating is determined by <strong>210.23</strong> (permissible loads) — 422.10 hands off rather than competing.</li>
+  </ul>
+  <p>The 2017→2023 move in (A) is worth stating plainly: 2017 frames it as the <em>rating of the branch circuit</em>, 2023 frames it as the <em>ampacity of the branch-circuit conductors</em>. Same obligation (the wire must carry the load), tighter anchor (the conductor, not the abstract "rating").</p>
+
+  <h2>422.11 — what size breaker protects it</h2>
+  <p>422.11 is the <em>overcurrent</em> side: seven subsections (A)–(G) that cap the OCPD. The general rule is (A): protect per <strong>240.4</strong>, and where a protective-device rating is <em>marked</em> on the appliance, the OCPD <strong>shall not exceed</strong> that marked rating. The rest are appliance-class ceilings:</p>
+  <ul>
+    <li><strong>(B) Surface-heating household appliances</strong> over 60 A (Table 220.55 demand): split into two or more circuits, each OCPD <strong>not over 50 A</strong>.</li>
+    <li><strong>(C) Infrared lamp commercial/industrial heating</strong>: OCPD <strong>not exceeding 50 A</strong>.</li>
+    <li><strong>(D) Open-coil / exposed sheathed-coil commercial heating</strong>: OCPD <strong>not over 50 A</strong>.</li>
+    <li><strong>(E) Single non-motor-operated appliance</strong> (the one that matters for a lone water heater, space heater, or appliance with no marked breaker): <strong>(E)(1)</strong> OCPD ≤ the marked rating; <strong>(E)(2)</strong> if unmarked and rated ≤ 13.3 A → OCPD ≤ 20 A; <strong>(E)(3)</strong> if unmarked and rated over 13.3 A → OCPD ≤ <strong>150% of the appliance rated current</strong> (next higher standard size permitted if 150% isn't a standard size). <strong>These are ceilings, not floors</strong> — the OCPD is still set by 240.4 to protect the conductor, which can force it lower (EX3/EX4).</li>
+    <li><strong>(F) Electric heating appliances over 48 A</strong>: the elements shall be <strong>subdivided</strong>. (F)(1) each subdivided load ≤ 48 A, each OCPD ≤ 60 A, and the <strong>main conductors are branch-circuit conductors</strong> (sized for the full load); (F)(2) commercial kitchen/cooking (sheathed elements) may be subdivided into circuits ≤ 120 A protected ≤ 150 A under three enclosure conditions; (F)(3) resistance immersion elements (water heaters/steam boilers) likewise ≤ 120 A / ≤ 150 A under three conditions (ASME vessel / listed instantaneous / low-pressure tank) (EX5).</li>
+    <li><strong>(G) Motor-operated appliances</strong>: route to <strong>Part III of Article 430</strong> (motor overload) or <strong>Part VI of Article 440</strong> (hermetic refrigerant motor-compressor); the selection data must be marked per 430.7 / 440.4.</li>
+  </ul>
+  <p>Read 422.10 and 422.11 together and the workflow is: 422.10(A) gives the <em>rating floor</em> (125% for continuous), 422.11 gives the <em>OCPD ceiling</em> (marked rating, or the (E)/(F) appliance rules), and 240.4 closes the gap by protecting the conductor. The conductor is then picked from Table 310.16 (respecting the 240.4(D) small-conductor caps) — exactly what the worked examples do.</p>
+
+  <h2>422.12 + 422.13 — the two named appliances</h2>
+  <p><strong>422.12 (central heating)</strong> is a one-sentence rule with two exceptions: central heating equipment <em>other than</em> fixed electric space-heating equipment goes on its <strong>own individual branch circuit</strong> — but its associated pump/valve/humidifier/air-cleaner (Exception 1) and permanently connected AC (Exception 2) may ride along. <strong>Word-identical 2017 to 2023.</strong></p>
+  <p><strong>422.13 (storage water heater)</strong> is the section that turns 422.10(A)'s continuous-load sentence into a named-appliance rule: a fixed storage-type water heater <strong>450 L (120 gal) or less is a continuous load</strong> for branch-circuit sizing. In 2017 that's the whole section (plus an Informational Note pointing to 422.10). In <strong>2023 it is rewritten to state the 125% rule directly</strong> — "the branch-circuit overcurrent device and conductors ... shall have an ampere rating of not less than 125 percent of the ampere rating of the water heater" — which is the delta Mike Holt's 2023 summary flags ("clarify what we are sizing and how the 125 percent applies"). The 450 L / 120 gal boundary is unchanged; only the framing sharpens.</p>
+
+  <h2>Edition history: 2017 → 2023</h2>
+  <p>The headline: <strong>2023 didn't change a single percentage in these sections — it re-anchored the wording and fixed the cross-references</strong>. 422.6's "operating" → "supplied", 422.10's "rating of the circuit" → "ampacity of the conductors" (plus the dropped 422.62 ref and the 210.19(A)(3)→(C) renumber), 422.11(E)(1)'s tighter phrasing, and 422.13's explicit 125% rewrite. A targeted machine check (<code>verify_art56.py</code>, <strong>52 phrase-level assertions</strong> reading the on-disk 2017 NFPA scan, the on-disk 2023 NEC, and the on-disk Mike Holt 2023 change summary directly) confirms every claim below, item by item:</p>
+
+  <h3>The verified-substantive core (2017 ≈ 2023)</h3>
+  <table>
+    <thead><tr><th>Section</th><th>2017 → 2023 (machine-verified)</th></tr></thead>
+    <tbody>
+      <tr><td>422.1 scope — "appliances used in any occupancy"</td><td class="ctr ok">IDENTICAL — present unchanged in both</td></tr>
+      <tr><td>422.10(A) — continuous-load 125% / 100%-listed floor</td><td class="ctr ok">IDENTICAL — the full "125 percent of the marked rating, or not less than 100 percent ... listed for continuous loading at 100 percent" sentence present unchanged in both</td></tr>
+      <tr><td>422.10(A) — motor-operated → Part II of 430</td><td class="ctr ok">IDENTICAL — the cross-reference is unchanged</td></tr>
+      <tr><td>422.10(A) — ranges per Table 220.55</td><td class="ctr warn">IDENTICAL core — "in accordance with Table 220.55" unchanged; the <em>sizing</em> cross-reference renumbers 210.19(A)(3) → 210.19(C) (delta below)</td></tr>
+      <tr><td>422.10(B) — two-or-more-loads → 210.23</td><td class="ctr ok">IDENTICAL (2023 inserts "appliances <em>and</em> other" vs 2017 "appliance and other" — a non-substantive article insertion; the 210.23 hand-off is the same)</td></tr>
+      <tr><td>422.11 lead + (A) — 240.4 + marked-rating cap</td><td class="ctr ok">IDENTICAL — both the (A) lead and the "shall not exceed the protective device rating marked on the appliance" cap are unchanged</td></tr>
+      <tr><td>422.11(B) — surface heating &gt; 60 A, OCPD ≤ 50 A</td><td class="ctr ok">IDENTICAL — the 60 A / 50 A numbers unchanged</td></tr>
+      <tr><td>422.11(C) / (D) — infrared + open-coil 50 A</td><td class="ctr ok">IDENTICAL — both 50 A ceilings unchanged</td></tr>
+      <tr><td>422.11(E)(2) / (E)(3) — 20 A / 150% + next standard</td><td class="ctr ok">IDENTICAL — the 13.3 A seam, the 20 A cap, the 150% rule and the next-higher-standard allowance all unchanged</td></tr>
+      <tr><td>422.11(F)(2) / (F)(3) — 120 A / 150 A subdivision</td><td class="ctr warn">IDENTICAL core — the 120 A / 150 A numbers and the three conditions unchanged; the (F)(3) Informational Note wording is reworked (delta below)</td></tr>
+      <tr><td>422.11(G) — motor-operated → Part III 430 / Part VI 440</td><td class="ctr ok">IDENTICAL — both routing sentences + the 430.7 / 440.4 marking requirement unchanged</td></tr>
+      <tr><td>422.12 — individual circuit + both Exceptions</td><td class="ctr ok">IDENTICAL — the rule, Exception 1 (auxiliary equipment), and Exception 2 (AC) are word-identical in both</td></tr>
+      <tr><td>422.13 — the 450 L (120 gal) boundary</td><td class="ctr warn">CORE IDENTICAL — the 450 L / 120 gal capacity limit is unchanged; the framing is rewritten (delta below)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub"><strong>2020 position — stated, not asserted:</strong> the on-disk 2020 source (a SlideShare text extraction of the NEC 2020 PDF) is an <em>excerpts</em> document — it carries only a handful of Article 422 <em>cross-references</em> (in the 210.x / 220.x tables) and <strong>no 422.10–422.13 section body at all</strong>. So this page documents 2017 → 2023 and does not assert any 2020 position for these sections. The identity and delta claims rest on the two on-disk full sources (2017 NFPA scan + 2023 CSV) + the on-disk Mike Holt 2023 change summary, the standard this series uses. <strong>No Mike Holt 2023 change-summary entry exists for 422.6, 422.10, 422.11, or 422.12</strong> (the on-disk summary has an Article 422 block; its only Part II entry is 422.13) — those four deltas are therefore on-disk-verified against the two full-text sources, stated as such; the 422.13 delta is corroborated by the on-disk Mike Holt entry.</p>
+
+  <h3>2017 → 2023 deltas in 422.10 + 422.11 + 422.13 (all verified on disk)</h3>
+  <div class="removed"><strong>422.6 — "operating" → "supplied". <em>On-disk-verified.</em></strong> 2017: "All appliances <strong>operating at 50 volts or more</strong> shall be listed." → 2023: "All appliances <strong>supplied by 50 volts or higher</strong> shall be listed." A tightening of the listing threshold (a 50 V device is judged by its supply, not its operating point). No Mike Holt 2023 entry — on-disk-verified against the two full-text sources.</div>
+  <div class="removed"><strong>422.10 lead — reworked. <em>On-disk-verified.</em></strong> 2017: "This section <strong>specifies the ratings of branch circuits capable of carrying appliance current without overheating under the conditions specified</strong>." → 2023: "Branch circuits supplying appliances <strong>shall comply with 422.10(A) or (B)</strong>." The descriptive lead is replaced by an explicit rule pointer.</div>
+  <div class="removed"><strong>422.10(A) — "rating of the circuit" → "ampacity of the conductors". <em>On-disk-verified. The section's identity shift.</em></strong> 2017: "The <strong>rating of an individual branch circuit</strong> shall not be less than the marked rating of the appliance or the marked rating of an appliance having combined loads <strong>as provided in 422.62</strong>." → 2023: "The <strong>ampacities of branch-circuit conductors</strong> shall not be less than the marked rating of the appliance or the marked rating of an appliance having combined loads." Two moves: the anchor becomes the <em>conductor ampacity</em> (not the abstract circuit rating), and the <strong>422.62 combined-loads cross-reference is dropped</strong> (the obligation survives, the pointer goes).</div>
+  <div class="removed"><strong>422.10(A) — the range-sizing cross-reference renumbers 210.19(A)(3) → 210.19(C). <em>On-disk-verified in BOTH editions' 210.19.</em></strong> 2017: "...shall be sized in accordance with <strong>210.19(A)(3)</strong>." → 2023: "...shall be sized in accordance with <strong>210.19(C)</strong>." This is a <em>real</em> renumber, not an editorial slip: in the 2017 scan 210.19(A) has lettered items and <strong>(3) is "Household Ranges and Cooking Appliances"</strong>; in the 2023 CSV <strong>210.19(C) is "Branch-circuit conductors supplying household ranges, wall-mounted ovens, counter-mounted cooking units, and other household cooking appliances…"</strong> — the same subsection, re-lettered when 210.19 was restructured. (The on-disk 2017 scan prints the reference as "210,19(A) (3)" — comma + intra-ref space OCR, disclosed.)</div>
+  <div class="removed"><strong>422.11(E)(1) — the marked-rating cap, reworded. <em>On-disk-verified.</em></strong> 2017: "(1) Not exceed <strong>that marked on the appliance</strong>." → 2023: "(1) Not exceed <strong>the overcurrent protection rating marked on the appliance</strong>." Same cap, named more precisely.</div>
+  <div class="removed"><strong>422.11(F)(1) — the 48 A subdivision sentence, clarified. <em>On-disk-verified.</em></strong> 2017: "Each subdivided load shall not exceed 48 amperes <strong>and shall be protected</strong> at not more than 60 amperes." → 2023: "Each subdivided load shall not exceed 48 amperes, <strong>and each subdivided load shall be protected</strong> at not more than 60 amperes." The per-subdivision protection is stated explicitly (each one, not the set).</div>
+  <div class="removed"><strong>422.11(F)(3) Informational Note — reworked. <em>On-disk-verified.</em></strong> 2017 IN: "Low-pressure and open-outlet heaters are atmospheric pressure water heaters <strong>as defined in</strong> IEC 60335-2-21, Household and similar electrical appliances — Safety — Particular requirements for storage water heaters." → 2023 IN: "<strong>See</strong> IEC 60335-2-21, Household and similar electrical appliances - Safety - Particular requirements for storage water heaters, <strong>for information on</strong> low-pressure and open-outlet heaters [are atmospheric pressure water heaters]." The note is re-cast as a "See … for information on" pointer.</div>
+  <div class="removed"><strong>422.13 — the 125% rule, stated. <em>On-disk-verified. Mike Holt-corroborated. The section's substantive delta.</em></strong> 2017: "A fixed storage-type water heater that has a capacity of 450 L (120 gal) or less shall be <strong>considered a continuous load</strong> for the purposes of sizing branch circuits." + IN "For branch-circuit rating, see 422.10." → 2023: "The branch-circuit <strong>overcurrent device and conductors</strong> for fixed storage-type water heaters that have a capacity of 450 L (120 gal) or less <strong>shall have an ampere rating of not less than 125 percent of the ampere rating of the water heater</strong>." + IN "See 422.10 for branch-circuit rating." The 2017 framing (the heater <em>is</em> a continuous load, so go to 422.10) is replaced by the rule stated directly (device <em>and</em> conductors at ≥ 125%). Mike Holt's 2023 summary of exactly this section: "A couple minor editorial changes <strong>clarify what we are sizing and how the 125 percent applies</strong>." — i.e. the 125% now explicitly sizes both the OCPD and the conductors, not just the circuit rating.</div>
+
+  <h2>Five worked examples (core-computed)</h2>
+  <p>Every table lookup and OCPD↔conductor pairing below is computed from the shipped PanelWright cores under node — <code>reqBreakerA</code> (the 125%-continuous / 100%-noncontinuous OCPD floor), <code>nextStdBreaker</code> (the 240.6 standard-size step), <code>pickConductor31016</code> (the Table 310.16 conductor pick + its 240.4(D) cap note), <code>smallConductorCap</code> (the 240.4(D) cap), and <code>cookingDemand22055</code> (Table 220.55 demand) — with <strong>zero hand math</strong>. The 240.4(D) small-conductor caps are applied: a conductor is rejected if its cap is below the chosen OCPD. <code>compute_art56.js</code> → <code>art56_numbers.json</code>.</p>
+
+  <h3>EX1 — 422.13: the storage water heater, a continuous load (4,500 W / 240 V)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">125% (not listed 100%)</th><th class="ctr">100% (device + assembly listed continuous)</th></tr></thead>
+    <tbody>
+      <tr><td>Marked rating (4,500 W / 240 V)</td><td class="ctr" colspan="2"><strong>18.75 A</strong></td></tr>
+      <tr><td>422.10(A) / 422.13 rating floor</td><td class="ctr">125% → <strong>23.44 A</strong></td><td class="ctr">100% → <strong>18.75 A</strong></td></tr>
+      <tr><td>OCPD (next standard, 240.6)</td><td class="ctr"><strong>25 A</strong></td><td class="ctr"><strong>20 A</strong></td></tr>
+      <tr><td>Conductor (Table 310.16, 75 °C Cu, 240.4(D)-checked)</td><td class="ctr"><strong>10 AWG Cu</strong> (35 A; 240.4(D) cap 30 A ≥ 25 A)</td><td class="ctr"><strong>12 AWG Cu</strong> (25 A; 240.4(D) cap 20 A ≥ 20 A)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 240.4(D) trap made concrete: for the 125% case a <strong>25 A</strong> device is required, and <strong>12 AWG Cu is rejected</strong> — its 75 °C ampacity (25 A) would pass the floor, but its 240.4(D) overcurrent cap is <strong>20 A</strong>, below the 25 A device. The conductor is <strong>10 AWG Cu</strong>. (If the device + assembly are listed for 100% continuous loading, the floor drops to 18.75 A → a 20 A OCPD on 12 AWG Cu.) The 450 L / 120 gal capacity boundary from 422.13 is the trigger that makes the heater a continuous load in the first place.</p>
+
+  <h3>EX2 — 422.10(A): the continuous non-motor appliance (3,600 W / 240 V)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Marked rating (3,600 W / 240 V), continuous load</td><td class="ctr"><strong>15 A</strong></td></tr>
+      <tr><td>422.10(A) rating floor (125%)</td><td class="ctr"><strong>18.75 A</strong></td></tr>
+      <tr><td>OCPD (next standard, 240.6)</td><td class="ctr"><strong>20 A</strong></td></tr>
+      <tr><td>Conductor (Table 310.16, 75 °C Cu, 240.4(D)-checked)</td><td class="ctr"><strong>12 AWG Cu</strong> (25 A; cap 20 A ≥ 20 A)</td></tr>
+      <tr><td>14 AWG Cu — the rejected pick</td><td class="ctr">75 °C ampacity 20 A ≥ 15 A load, but 240.4(D) cap <strong>15 A &lt; 20 A OCPD</strong> → rejected</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Same trap as EX1, one size smaller: the load is only 15 A, but because it's a <em>continuous</em> load the floor is 125% (18.75 A) → a 20 A OCPD. <strong>14 AWG Cu</strong> looks tempting (20 A ampacity at 75 °C) but its 240.4(D) cap is 15 A — below the 20 A device — so the conductor is <strong>12 AWG Cu</strong>.</p>
+
+  <h3>EX3 — 422.11(E)(2): the small unmarked appliance, 20 A ceiling (12 A / 120 V)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Appliance (unmarked, rated ≤ 13.3 A)</td><td class="ctr"><strong>12 A</strong> @ 120 V</td></tr>
+      <tr><td>422.11(E)(2) OCPD ceiling</td><td class="ctr"><strong>20 A</strong> (the 13.3 A-or-less cap)</td></tr>
+      <tr><td>Conductor (Table 310.16, 60 °C Cu, ≤100 A column)</td><td class="ctr"><strong>14 AWG Cu</strong> (15 A ampacity)</td></tr>
+      <tr><td>Actual OCPD (240.4(D) cap binds below the ceiling)</td><td class="ctr"><strong>15 A</strong> — 14 AWG Cu's 240.4(D) cap is 15 A &lt; the 20 A ceiling</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The teaching point: <strong>422.11(E)(2) is a ceiling, not a target.</strong> The 20 A cap is the most the OCPD may be, but 240.4 still sizes it to protect the conductor — a 12 A appliance on 14 AWG Cu lands on a <strong>15 A</strong> breaker (14 AWG's 240.4(D) cap), not a 20 A one. The (E)(2) ceiling matters when you'd otherwise reach for something bigger.</p>
+
+  <h3>EX4 — 422.11(E)(3): the 150% ceiling ladder (unmarked appliances over 13.3 A)</h3>
+  <table>
+    <thead><tr><th>Appliance rated current (unmarked, &gt; 13.3 A)</th><th class="ctr">150% of rating</th><th class="ctr">OCPD ceiling (next standard if needed)</th></tr></thead>
+    <tbody>
+      <tr><td>14 A</td><td class="ctr">21.0 A</td><td class="ctr"><strong>25 A</strong> (21 A is not a standard size)</td></tr>
+      <tr><td>15 A</td><td class="ctr">22.5 A</td><td class="ctr"><strong>25 A</strong> (22.5 A is not a standard size)</td></tr>
+      <tr><td>20 A</td><td class="ctr">30.0 A</td><td class="ctr"><strong>30 A</strong> (standard)</td></tr>
+      <tr><td>30 A</td><td class="ctr">45.0 A</td><td class="ctr"><strong>45 A</strong> (standard)</td></tr>
+      <tr><td>48 A</td><td class="ctr">72.0 A</td><td class="ctr"><strong>80 A</strong> (72 A is not a standard size)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">This is the (E)(3) ceiling: the OCPD shall not exceed 150% of the appliance rated current, and where 150% isn't a standard size the <em>next higher standard rating</em> is permitted. Read the 14 A row: 150% = 21 A, which isn't standard, so the ceiling is 25 A — the OCPD may be <em>up to</em> 25 A, but 240.4 will still size it to the conductor (often lower). These are all ceilings, never floors.</p>
+
+  <h3>EX5 — 422.11(F)(1): the 48 A electric-heater subdivision (54 A appliance)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Appliance (resistance elements rated &gt; 48 A)</td><td class="ctr"><strong>54 A</strong> @ 240 V</td></tr>
+      <tr><td>422.11(F)(1) requirement</td><td class="ctr">Elements shall be <strong>subdivided</strong>; each load ≤ 48 A, each OCPD ≤ 60 A</td></tr>
+      <tr><td>Subdivision (2 × 27 A)</td><td class="ctr">2 loads × 27 A (each ≤ 48 A), each on a <strong>30 A</strong> OCPD (≤ 60 A)</td></tr>
+      <tr><td>Main conductors ("branch-circuit conductors", sized for the full 54 A)</td><td class="ctr"><strong>6 AWG Cu</strong> (65 A ampacity @ 75 °C; no 240.4(D) cap)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">An electric heater with elements rated over 48 A can't be one big circuit — 422.11(F)(1) forces the elements to be <strong>subdivided</strong>, each sub-load ≤ 48 A on its own ≤ 60 A OCPD. The subtle part: the <strong>main conductors</strong> supplying those supplementary OCPDs "shall be considered branch-circuit conductors" — so they're sized for the <em>full</em> 54 A load (6 AWG Cu at 75 °C), not for one subdivision.</p>
+
+  <h2>Where 422.10 + 422.11 + 422.12 + 422.13 fit</h2>
+  <ul>
+    <li><strong>The continuous-load rule they invoke:</strong> the <a href="nec-21019a-continuous-load.html">NEC 210.19(A) + the 125% "continuous load" rule</a> — 422.10(A) and 422.13 are the appliance-side home of the same 125% that 210.19(A) applies to branch circuits generally.</li>
+    <li><strong>The conductor table they pick from:</strong> the <a href="nec-31016-ampacity.html">Table 310.16 allowable ampacities</a> (the EX1/EX2/EX5 picks) and the <a href="nec-conductor-sizing.html">conductor-sizing meta-article</a> (the end-to-end 240.4 / 310.15 / 240.6 walk-through).</li>
+    <li><strong>The small-conductor caps that bite:</strong> the <a href="nec-2404d-small-conductors.html">NEC 240.4(D) small-conductor OCPD caps</a> — the 14 AWG "20 A ampacity but 15 A breaker" trap that rejects the 12 AWG and 14 AWG picks in EX1/EX2/EX3.</li>
+    <li><strong>The standard-size list the OCPD steps to:</strong> the <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings</a> (the "next higher standard rating" in 422.11(E)(3) and every EX OCPD step).</li>
+    <li><strong>The OCPD side of the same equation:</strong> the <a href="nec-21020-branch-circuit-ocpd.html">NEC 210.20 branch-circuit overcurrent</a> and <a href="nec-21018-branch-circuit-ratings.html">NEC 210.18 branch-circuit ratings</a> articles — 422.11(A)'s "protect per 240.4" is the appliance-specific instance of 210.20.</li>
+    <li><strong>The multi-load hand-off:</strong> the <a href="nec-21023-permissible-loads.html">NEC 210.23 + 210.24 permissible loads</a> — 422.10(B) routes a circuit with an appliance <em>and</em> other loads straight there.</li>
+    <li><strong>The range route:</strong> the <a href="nec-22055-cooking-demand.html">NEC 220.55 cooking demand</a> — 422.10(A)'s "ranges per Table 220.55, sized per 210.19(C)" (the 2023 renumber from 210.19(A)(3)) points here.</li>
+    <li><strong>The GFCI requirement for some appliances:</strong> the <a href="nec-21008-gfci-protection.html">NEC 210.8 GFCI protection</a> and 422.5 (GFCI for personnel — drinking-water coolers, vending machines, tire-inflation machines, etc.) — outside this article's scope but the same Article 422.</li>
+    <li><strong>The motor-operated hand-off:</strong> the <a href="nec-43022-43052-single-motor-branch-circuit.html">NEC 430.22 + 430.52 single-motor branch circuit</a> (422.11(G) → Part III of 430) and the <a href="nec-44022-44032-air-cooling-branch-circuit.html">NEC 440.22 + 440.32 air-conditioning branch circuit</a> (422.11(G) → Part VI of 440 for hermetic refrigerant motor-compressors).</li>
+  </ul>
+  <p class="sub"><strong>Scope boundary, stated:</strong> this article is exactly 422.10 + 422.11 + 422.12 + 422.13 — the Part II branch-circuit rating + overcurrent core. 422.5 (GFCI for personnel), 422.15 (central vacuum), 422.16 (flexible cords), 422.17–422.21 (combustible-material protection, outlet boxes), and 422.30–422.48 (disconnecting means, polarity, specific-appliance provisions) are adjacent sections outside this article's scope, as are 422.60–422.62 (specific-appliance parts, incl. 422.62 the combined-loads rule 422.10(A) cross-references in 2017). <strong>2026 edition (flagged honestly):</strong> no on-disk source confirms the 422.10–422.13 section numbers moved for the 2026 cycle, so this page cites them as stable across 2017–2023 and presents the 2017↔2023 deltas above. <strong>Verify section numbers against the NEC edition adopted in your jurisdiction.</strong></p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>, region 422.1–422.15 extracted to <span class="blank">art56_2017_flat.txt</span>): 422.6, 422.10 + (A)/(B), 422.11 + (A)–(G) + all (F) items + the IEC Informational Note, 422.12 + both Exceptions, 422.13 + Informational Note. OCR line-wrap reflow normalized; disclosed scan artifacts corrected (listed in the source note under the quote block): "422,62"→"422.62", "210,19(A) (3)"→"210.19(A)(3)", "non—motor-operated"→"non-motor-operated", "heat ing"→"heating", "motorcompressors"→"motor-compressors", the 422.11(C) trailing comma→period, a stray "422.16" running footer removed. No other wording altered.</p>
+    <p><strong>2023 quote normalization.</strong> The on-disk 2023 CSV is a PDF-extracted text and carries a line-wrap hyphen in 422.13's "over-current device" — quoted here as "overcurrent device" (hyphen dropped, no other wording altered). The 2023 CSV's trailing markdown source-link per body row is stripped for the identity test only and never changes code text.</p>
+    <p><strong>2023 text.</strong> On-disk 2023 NEC CSV (<span class="blank">art35_nec_csv.csv</span>), rows 422.1, 422.6, 422.10, 422.10(A), 422.10(B), 422.11, 422.11(A)–(G), 422.12, 422.13 — complete for the scope (every subdivision has its row), plus row 210.19(C) for the cross-ref-renumber check.</p>
+    <p><strong>Worked examples (core-computed).</strong> Every OCPD floor, standard-size step, conductor pick, and 240.4(D) cap is computed by the shipped PanelWright cores under node (<span class="blank">compute_art56.js</span> → <span class="blank">art56_numbers.json</span>): <span class="blank">reqBreakerA</span> (125%/100% floor), <span class="blank">nextStdBreaker</span> (240.6 step), <span class="blank">pickConductor31016</span> (Table 310.16 pick + cap note), <span class="blank">smallConductorCap</span> (the 240.4(D) cap), <span class="blank">cookingDemand22055</span> (Table 220.55 — used only as a cross-reference, not in the EX numbers). Zero hand math.</p>
+    <p><strong>Edition-delta claims (machine-checked).</strong> A targeted assertion script (<span class="blank">verify_art56.py</span>) reads both on-disk sources + the on-disk Mike Holt 2023 change summary and asserts <strong>52 phrase-level checks</strong>: 21 identity claims (present in both, alpha-normalized so OCR hyphen/spacing artifacts cannot cause false fails — the 422.12 word-identity, the 422.11(B)/(C)/(D)/(E)(2)/(E)(3)/(F)(2)/(F)(3)/(G) core, the 422.10(A) 125%/100% floor), 11 2017-only probes (each delta's old form: present in 2017, absent in 2023 — the 422.6 "operating", the 422.10 lead, the 422.10(A) "rating of an individual branch circuit" + 422.62 ref + 210.19(A)(3), the 422.11(E)(1) "that marked on the appliance", the 422.11(F)(1) "and shall be protected", the 422.11(F)(3) IN "as defined in IEC", the 422.13 "considered a continuous load" + its IN), 11 2023-only probes (each delta's new form: present in 2023, absent in 2017 — the 422.6 "supplied by", the 422.10 lead, the 422.10(A) "ampacities of branch-circuit conductors" + no-422.62 tail + 210.19(C), the 422.11(E)(1) "the overcurrent protection rating marked", the 422.11(F)(1) "and each subdivided load shall be protected", the 422.11(F)(3) IN "See IEC … for information on", the 422.13 125% rewrite + its IN), 2 the 210.19 cross-ref renumber (2017 (A)(3) "Household Ranges" present in the scan; 2023 (C) is the ranges subsection), 4 Mike Holt probes (the 422.13 entry + its "clarify what we are sizing and how the 125 percent applies" quote; <strong>NO 422.6 / 422.10 / 422.11 / 422.12 entries anywhere in the 2023 change summary</strong>), and 3 scope checks (CSV complete for the scope, the 422.12/422.13 region ending at 422.15, and the 422.14 gap). <strong>All 52 pass</strong> (re-runnable). <strong>2020 position is not asserted:</strong> the on-disk 2020 source carries no 422.10–422.13 section body (excerpts document — verified).</p>
+  </div>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 56 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan + NEC 2023 (on-disk CSV) + the on-disk Mike Holt 2023 change summary (422.13 entry), verbatim, OCR corrections + source boundaries disclosed (2020 not on disk for 422.10–422.13; no Mike Holt 2023 entries for 422.6/422.10/422.11/422.12 — those deltas on-disk-verified; the 422.13 delta corroborated by the on-disk Mike Holt entry). Eight substantive 2017→2023 deltas: 422.6 "operating"→"supplied", 422.10 lead rework, 422.10(A) "rating"→"ampacities" + 422.62 ref dropped + 210.19(A)(3)→(C) renumber, 422.11(E)(1) reword, 422.11(F)(1) clarification, 422.11(F)(3) IN rework, 422.13 explicit 125% rewrite (Mike Holt: "clarify what we are sizing and how the 125 percent applies"). 52 machine-verified checks. Design aid — the adopted edition in your jurisdiction governs.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-21019a-continuous-load.html">NEC 210.19(A) the 125% continuous-load rule</a> · <a href="nec-31016-ampacity.html">Table 310.16 ampacities (the EX conductor picks)</a> · <a href="nec-2404d-small-conductors.html">NEC 240.4(D) small-conductor caps (the EX rejects)</a> · <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings (the OCPD steps)</a> · <a href="nec-22055-cooking-demand.html">NEC 220.55 cooking demand (the 422.10(A) range route)</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>
