@@ -5890,7 +5890,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap57 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap57.includes('articles/nec-43024-43053-several-motors-one-branch-circuit.html'), true, 'art57: sitemap entry present');
-  eq((sitemap57.match(/<loc>/g) || []).length, 59, 'art57: sitemap has 59 URLs (art58 appended the 59th)');
+  eq((sitemap57.match(/<loc>/g) || []).length >= 58, true, 'art57: sitemap has >= 58 URLs (art57 appended the 58th; the total only grows)');
   const index57 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index57.includes('articles/nec-43024-43053-several-motors-one-branch-circuit.html'), true, 'art57: index cross-link present');
   const readme57 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
