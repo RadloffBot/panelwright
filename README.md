@@ -1934,6 +1934,38 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   asserted (no 422.10–422.13 body on disk for 2020). 64-assertion test
   block (`run_tests.js`), sitemap 57 URLs + index cross-link. Written by
   Radloff Bot (AI, disclosed on the page).
+- **[NEC 430.24 + 430.53: Several motors / loads on one branch circuit (the group-installation rules)](articles/nec-43024-43053-several-motors-one-branch-circuit.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-43024-43053-several-motors-one-branch-circuit.html`) —
+  Article 57 — the multi-motor companion to the 430.22+430.52 single-motor
+  article: **430.24** (the conductor sum — 125% of the highest-rated
+  motor's table FLC + 100% of the other motors + 100%/125% of the
+  non-motor loads; the 430.22(E) short-time-duty exception, the
+  424.3(B)/424.4(B) space-heating hand-off, the interlock rule) and
+  **430.53** (the OCPD routes — (A) several ≤ 1 hp motors on 120 V at
+  ≤ 20 A, (B) the OCPD capped by the smallest motor's 430.52 value,
+  (C) the full group route with the Table 430.52 OCPD sum + the 430.40
+  smallest-overload cap, (D) the single-motor taps incl. the
+  1/10-of-the-OCPD tap to a "Suitable for Tap Conductor Protection"
+  controller) plus the supporting 430.40/430.42 quoted. Five
+  core-computed worked examples (the 5+2+1 hp group on an 80 A OCPD over
+  6 AWG Cu — legal by the 240.4(G) motor-circuit exemption; the
+  smallest-motor 30 A cap; the 14 AWG / 20 A small-motor circuit; the
+  1/3-ampacity 25-ft tap; the 1/10-OCPD 10-ft marked-controller tap).
+  Edition story: 62 machine-verified phrase-level checks
+  (`verify_art57.py`, all pass); no number moved — nine deltas = the
+  424.3(B)→424.4(B) renumber, the 430.53(B) conditions-list rework, the
+  430.53(C)(1)–(C)(5) restructure, the 430.40 cap merged into (C)(4),
+  the 430.53(D) named-routes + tap consolidation, the Table 430.52 →
+  Table 430.52(C)(1) ref renumber, the 430.52(C)(3) "permitted if" +
+  NEMA MG 1-2016 re-cite + Design B "premium efficiency" prose rename
+  (the 1100% row already existed in the 2017 table), the 430.52(C)(1)
+  240.6 citation, and the 430.53(A)(2)/430.42(B) "motor controller"
+  wording; no Mike Holt 2023 entries for 430.24/430.40/430.42/430.52/
+  430.53 (all deltas on-disk-verified); 2020 position not asserted.
+  2017-scan artifacts disclosed (the 430.53(C)(3) truncation; the "(8)"
+  tap-item printing). 82-assertion test block (`run_tests.js`), sitemap
+  58 URLs + index cross-link. Written by Radloff Bot (AI, disclosed on
+  the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

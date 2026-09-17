@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 430.24 + 430.53 — Several Motors / Loads on One Branch Circuit (the group-installation rules)</title>
+<meta name="description" content="The two Article 430 sections that let several motors (or a motor plus other loads) share one branch circuit: 430.24 (conductors — 125% of the highest-rated motor + 100% of the other motors + 100%/125% of the non-motor loads, with the short-time-duty, space-heating and interlocked exceptions) and 430.53 (the OCPD — the (A) 1-hp/20 A small-motor circuit, the (B) smallest-motor-protected route, the (C) full group route with the Table 430.52 OCPD sum and the 430.40 smallest-overload cap, and the (D) single-motor taps incl. the 1/10-of-the-OCPD marked-controller tap). 2017→2023 edition history — 62 machine-verified checks — plus five worked examples from the shipped cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-43024-43053-several-motors-one-branch-circuit.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 430.24 + 430.53 — Several Motors / Loads on One Branch Circuit">
+<meta property="og:description" content="How to size the wire and breaker when one branch circuit carries several motors: 430.24 (the conductor sum) and 430.53 (the OCPD routes + single-motor taps). 2017→2023 edition history + worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-43024-43053-several-motors-one-branch-circuit.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 430.24 + 430.53 — Several Motors on One Branch Circuit">
+<meta name="twitter:description" content="Several motors on one branch circuit: 430.24 (125% highest + 100% others + non-motor loads), 430.53 (the OCPD routes + the 1/10 tap rule). 2017→2023 edition history + worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 430.24 several motors conductors, NEC 430.53 several motors on one branch circuit, 430.53(C) group installation OCPD, 430.53(A) 20 ampere motor circuit, 430.53(D) single motor tap 1/10 OCPD, 430.40 overload relay protection group, 430.42 motors general-purpose branch circuits, multiple motors same branch circuit breaker size, motor circuit 240.4(G) exemption, electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 430.24 + 430.53 — Several Motors / Loads on One Branch Circuit",
+  "description": "The two Article 430 sections that let several motors (or a motor plus other loads) share one branch circuit: 430.24 (conductors — 125% of the highest-rated motor + 100% of the other motors + 100%/125% of the non-motor loads) and 430.53 (the OCPD routes (A)/(B)/(C) and the (D) single-motor taps, incl. the 1/10-of-the-OCPD marked-controller tap). Edition history 2017 to 2023, machine-verified with 62 phrase-level checks, with five worked examples computed from the shipped PanelWright cores.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-17",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-43024-43053-several-motors-one-branch-circuit.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can several motors share one branch circuit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — NEC 430.53 permits two or more motors (or a motor plus other loads) on the same branch circuit under its (A), (B), or (C) conditions, with (D) relaxing tap conductors. The branch-circuit protective device must be fuses or inverse time circuit breakers. The three routes: (A) several <= 1 hp motors on a 120 V circuit at not over 20 A (each motor <= 6 A full-load, controller marking not exceeded, 430.32 overload per motor); (B) the OCPD selected not over the 430.52 value for the SMALLEST motor, with individual overload per motor and a worst-case determination; (C) the full group route — controllers/overloads listed for group installation (or a listed factory assembly), the OCPD per Table 430.52 for the highest motor plus the other FLCs and loads, capped by 430.40 for the smallest motor's overload relay." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you size the conductors for a multi-motor branch circuit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "NEC 430.24: ampacity >= 125% of the full-load current of the highest-rated motor (table FLC per 430.6(A), not nameplate) + 100% of all the other motors' FLCs + 100% of any noncontinuous non-motor load + 125% of any continuous non-motor load. Three exceptions: (1) short-time/intermittent/periodic/varying-duty motors are summed per 430.22(E) (the greater of 430.22(E) or 125% of the largest continuous FLC for the highest); (2) motor-operated fixed electric space-heating equipment routes to 424.3(B) (2017) / 424.4(B) (2023); (3) interlocked circuits may be sized on the highest simultaneous-operation total." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why can the breaker be bigger than the wire on a group motor circuit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "On a motor branch circuit the OCPD is sized for STARTING current (Table 430.52 — e.g. 250% of FLC inverse time), not to protect the conductors. NEC 240.4(G) explicitly exempts motor branch circuits from the 240.4(B)/(D) rule that an OCPD not exceed conductor ampacity — the motor's own overload protection (430.32, set at ~125% of nameplate current) is what protects the wire under sustained overload, while the breaker rides through the inrush and clears shorts. That is why a 20 A breaker on 14 AWG Cu, or an 80 A breaker on 6 AWG Cu, is legal on a motor circuit." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the 1/10 tap rule for group installations?",
+      "acceptedAnswer": { "@type": "Answer", "text": "NEC 430.53(D)(2) (2017: printed as item (8)/(4) in the scan) — a tap from the branch circuit to a listed manual motor controller additionally marked 'Suitable for Tap Conductor Protection in Group Installations' (or to a branch-circuit protective device) may have an ampacity as low as ONE-TENTH of the branch-circuit OCPD rating, provided the tap is <= 3 m (10 ft), suitably protected and enclosed (or has branch-circuit ampacity), and the controller-to-motor conductors are separately sized per 430.22 (125% of FLC). A companion 1/3-of-branch-ampacity option runs <= 7.5 m (25 ft)." }
+    },
+    {
+      "@type": "Question",
+      "name": "What changed in 430.24 / 430.53 between the 2017 and 2023 NEC?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No percentage, ampere, or length number moved. The verified deltas: 430.24 Exception 2's cross-reference renumbers 424.3(B) to 424.4(B) (Article 424 restructure); 430.53(B) is restructured from a single 'If the ... is selected not to exceed' sentence into a 'where all of the following conditions are met' list; 430.53(C) is restructured into (C)(1) assembly, (C)(2) overload devices, (C)(3) controllers, (C)(4) OCPD sum (with the 430.40 smallest-overload cap folded in as 'Additionally, this rating shall not be larger than allowed by 430.40...'), (C)(5) other loads; 430.53(D) now references '430.53(A), (B), or (C)' and consolidates the 1/10 and 1/3 tap options under (D)(2); the table reference renumbers 'Table 430.52' to 'Table 430.52(C)(1)'; and the 430.52 instantaneous-breaker prose renames the Design B class to 'Design B premium efficiency' (the 1100% table value already existed in 2017). 62 machine-verified phrase-level checks." }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+.removed{background:rgba(224,108,92,.08);border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+td.bad{color:var(--bad);font-weight:650}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code{font-family:var(--mono);font-size:.92em;background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cta{display:inline-block;background:var(--acc);color:#08111c;font-weight:750;text-decoration:none;padding:12px 20px;border-radius:8px;margin:22px 0 6px}
+.cta:hover{filter:brightness(1.08)}
+.ctasub{color:var(--dim);font-size:13.5px}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 18px;font-size:14px}
+.method .blank{font-family:var(--mono);font-size:.9em;color:var(--dim)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+footer a{color:var(--dim)}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+@media(max-width:640px){h1{font-size:24px}table{font-size:12.5px}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 430.24 + 430.53 — <span>Several Motors / Loads on One Branch Circuit</span></h1>
+  <p class="sub">Article 430's single-motor core (430.22 conductors + 430.52 OCPD, covered in <a href="nec-43022-43052-single-motor-branch-circuit.html">the single-motor article</a>) answers one motor. In the field the circuit often carries <em>several</em>: a machine line with three pumps, a compressor plus its fan, a motor feeding a heater. That's <strong>430.24</strong> (how big is the <em>wire</em> — the 125%-of-the-highest + 100%-of-the-others sum) and <strong>430.53</strong> (what <em>breaker</em> may protect the group — the (A) 1-hp/20 A route, the (B) smallest-motor route, the (C) full group route, and the (D) single-motor taps). The 2023 edition restructured all of 430.53's lettering, renumbered the space-heating cross-reference, and renamed the Design B table class — without moving a single number. All machine-verified below.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 430.24 + 430.53 (with the supporting 430.40, 430.42, and 430.52 pointer) for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text on disk)</strong>, the citation anchor; the 2023 changes are documented in the edition-history boxes and machine-verified against the on-disk 2023 NEC (62 phrase-level checks, all passing). Every table lookup and OCPD↔conductor pairing in the worked examples comes from the <strong>shipped PanelWright cores</strong> under node — zero hand math.</div>
+
+  <h2>The sections, in full (2017)</h2>
+  <p>430.24 and 430.53 verbatim from the 2017 NEC, plus 430.40 and 430.42 (quoted because 430.53's (A) and (C)(5) cap hang on them) and the 430.51/430.52 pointer (the OCPD values in 430.53 come from Table 430.52, covered in full in the single-motor article):</p>
+
+  <div class="code">430.24 Several Motors or a Motor(s) and Other Load(s).
+Conductors supplying several motors, or a motor(s) and other
+load(s), shall have an ampacity not less than the sum of each of
+the following:
+(1) 125 percent of the full-load current rating of the highest
+rated motor, as determined by 430.6(A)
+(2) Sum of the full-load current ratings of all the other motors
+in the group, as determined by 430.6(A)
+(3) 100 percent of the noncontinuous non-motor load
+(4) 125 percent of the continuous non-motor load.
+Informational Note: See Informative Annex D, Example No. D8.
+Exception No. 1: Where one or more of the motors of the group
+are used for short-time, intermittent, periodic, or varying duty,
+the ampere rating of such motors to be used in the summation shall
+be determined in accordance with 430.22(E). For the highest rated
+motor, the greater of either the ampere rating from 430.22(E) or
+the largest continuous duty motor full-load current multiplied by
+1.25 shall be used in the summation.
+Exception No. 2: The ampacity of conductors supplying
+motor-operated fixed electric space-heating equipment shall
+comply with 424.3(B).
+Exception No. 3: Where the circuitry is interlocked so as to
+prevent simultaneous operation of selected motors or other loads,
+the conductor ampacity shall be permitted to be based on the
+summation of the currents of the motors and other loads to be
+operated simultaneously that results in the highest total current.
+
+430.40 Overload Relays. Overload relays and other devices for
+motor overload protection that are not capable of opening short
+circuits or ground faults shall be protected by fuses or circuit
+breakers with ratings or settings in accordance with 430.52 or by
+a motor short-circuit protector in accordance with 430.52.
+Exception: Where approved for group installation and marked to
+indicate the maximum size of fuse or inverse time circuit breaker
+by which they must be protected, the overload devices shall be
+protected in accordance with this marking.
+
+430.42 Motors on General-Purpose Branch Circuits. Overload
+protection for motors used on general-purpose branch circuits as
+permitted in Article 210 shall be provided as specified in
+430.42(A), (B), (C), or (D).
+(A) Not over 1 Horsepower. One or more motors without individual
+overload protection shall be permitted to be connected to a
+general-purpose branch circuit only where the installation
+complies with the limiting conditions specified in 430.32(B) and
+430.32(D) and 430.53(A)(1) and (A)(2).
+(B) Over 1 Horsepower. Motors of ratings larger than specified in
+430.53(A) shall be permitted to be connected to general-purpose
+branch circuits only where each motor is protected by overload
+protection selected to protect the motor as specified in 430.32.
+Both the controller and the motor overload device shall be
+approved for group installation with the short-circuit and
+ground-fault protective device selected in accordance with 430.53.
+(C) Cord-and Plug-Connected. Where a motor is connected to a
+branch circuit by means of an attachment plug and a receptacle or
+a cord connector, and individual overload protection is omitted as
+provided in 430.42(A), the rating of the attachment plug and
+receptacle or cord connector shall not exceed 15 amperes at 125
+volts or 250 volts. Where individual overload protection is
+required as provided in 430.42(B) for a motor or motor-operated
+appliance that is attached to the branch circuit through an
+attachment plug and a receptacle or a cord connector, the
+overload device shall be an integral part of the motor or of the
+appliance. The rating of the attachment plug and receptacle or the
+cord connector shall determine the rating of the circuit to which
+the motor may be connected, as provided in 210.21(B).
+(D) Time Delay. The branch-circuit short-circuit and ground-fault
+protective device protecting a circuit to which a motor or
+motor-operated appliance is connected shall have sufficient time
+delay to permit the motor to start and accelerate its load.
+
+430.51 General. Part IV specifies devices intended to protect the
+motor branch-circuit conductors, the motor control apparatus, and
+the motors against overcurrent due to short circuits or ground
+faults. These rules add to or amend the provisions of Article
+240. ... Informational Note: See Informative Annex D, Example D8.
+The provisions of Part IV shall not apply to motor circuits rated
+over 1000 volts, nominal.
+
+[430.52 — Rating or Setting for Individual Motor Circuit: the
+OCPD values 430.53(B) and (C)(4) reference. The 250% inverse-time /
+175% time-delay / 300% nontime-delay / 800% instantaneous table
+(Table 430.52) is quoted and worked in full in the single-motor
+article; the values used in this page's examples come from it.]
+
+430.53 Several Motors or Loads on One Branch Circuit. Two or more
+motors or one or more motors and other loads shall be permitted to
+be connected to the same branch circuit under conditions specified
+in 430.53(D) and in 430.53(A), (B), or (C). The branch-circuit
+protective device shall be fuses or inverse time circuit breakers.
+(A) Not Over 1 Horsepower. Several motors, each not exceeding 1 hp
+in rating, shall be permitted on a nominal 120-volt branch circuit
+protected at not over 20 amperes or a branch circuit of 1000 volts,
+nominal, or less, protected at not over 15 amperes, if all of the
+following conditions are met:
+(1) The full-load rating of each motor does not exceed 6 amperes.
+(2) The rating of the branch-circuit short-circuit and ground-fault
+protective device marked on any of the controllers is not exceeded.
+(3) Individual overload protection conforms to 430.32.
+(B) If Smallest Rated Motor Protected. If the branch-circuit
+short-circuit and ground-fault protective device is selected not to
+exceed that allowed by 430.52 for the smallest rated motor, two or
+more motors or one or more motors and other load(s), with each
+motor having individual overload protection, shall be permitted to
+be connected to a branch circuit where it can be determined that
+the branch-circuit short-circuit and ground-fault protective device
+will not open under the most severe normal conditions of service
+that might be encountered.
+(C) Other Group Installations. Two or more motors of any rating or
+one or more motors and other load(s), with each motor having
+individual overload protection, shall be permitted to be connected
+to one branch circuit where the motor controller(s) and overload
+device(s) are
+(1) installed as a listed factory assembly and the motor
+branch-circuit short-circuit and ground-fault protective device
+either is provided as part of the assembly or is specified by a
+marking on the assembly, or
+(2) the motor branch-circuit short-circuit and ground-fault
+protective device, the motor controller(s), and overload device(s)
+are field-installed as separate assemblies listed for such use and
+provided with manufacturers' instructions for use with each other,
+and
+(3) all of the following conditions are complied with:
+(1) Each motor overload device is either (a) listed for group
+installation with a specified maximum rating of fuse, inverse time
+circuit breaker, or both, or (b) selected such that the ampere
+rating of the motor-branch short-circuit and ground-fault
+protective device does not exceed that permitted by 430.52 for
+that individual motor overload device and corresponding motor load.
+(2) Each motor controller is either (a) listed for group
+installation with a specified maximum rating of fuse, circuit
+breaker, or both, or (b) selected such that the ampere rating of
+the motor-branch short-circuit and ground-fault protective device
+does not exceed that permitted by 430.52 for that individual
+controller and corresponding motor load.
+(3) Each circuit breaker is listed and is of the inverse time
+[scan gap — remainder of this sentence is missing in the on-disk
+2017 scan; see the source note below].
+(4) the branch circuit shall be protected by fuses or inverse time
+circuit breakers having a rating not exceeding that specified in
+430.52 for the highest rated motor connected to the branch circuit
+plus an amount equal to the sum of the full-load current ratings of
+all other motors and the ratings of other loads connected to the
+circuit. Where this calculation results in a rating less than the
+ampacity of the branch-circuit conductors, it shall be permitted to
+increase the maximum rating of the fuses or circuit breaker to a
+value not exceeding that permitted by 240.4(B).
+(5) The branch-circuit fuses or inverse time circuit breakers are
+not larger than allowed by 430.40 for the overload relay
+protecting the smallest rated motor of the group.
+(6) Overcurrent protection for loads other than motor loads shall
+be in accordance with Parts I through VII of Article 240.
+Informational Note: See 110.10 for circuit impedance and other
+characteristics.
+(D) Single Motor Taps. For group installations described above,
+the conductors of any tap supplying a single motor shall not be
+required to have an individual branch-circuit short-circuit and
+ground-fault protective device, provided they comply with one of
+the following:
+(1) No conductor to the motor shall have an ampacity less than
+that of the branch-circuit conductors.
+(2) No conductor to the motor shall have an ampacity less than
+one-third that of the branch-circuit conductors, with a minimum in
+accordance with 430.22. The conductors from the point of the tap
+to the motor overload device shall be not more than 7.5 m (25 ft)
+long and be protected from physical damage by being enclosed in an
+approved raceway or by use of other approved means.
+(8) Conductors from the point of the tap from the branch circuit
+to a listed manual motor controller additionally marked "Suitable
+for Tap Conductor Protection in Group Installations," or to a
+branch-circuit protective device, shall be permitted to have an
+ampacity not less than one-tenth the rating or setting of the
+branch-circuit short-circuit and ground-fault protective device.
+The conductors from the controller to the motor shall have an
+ampacity in accordance with 430.22. The conductors from the point
+of the tap to the controller(s) shall (1) be suitably protected
+from physical damage and enclosed either by an enclosed controller
+or by a raceway and be not more than 3 m (10 ft) long or (2) have
+an ampacity not less than that of the branch-circuit conductors.
+(4) Conductors from the point of the tap from the branch circuit
+to a listed manual motor controller additionally marked "Suitable
+for Tap Conductor Protection in Group Installations," or to a
+branch-circuit protective device, shall be permitted to have an
+ampacity not less than one-third that of the branch-circuit
+conductors. The conductors from the controller to the motor shall
+have an ampacity in accordance with 430.22. The conductors from
+the point of the tap to the controller(s) shall (1) be suitably
+protected from physical damage and enclosed either by an enclosed
+controller or by a raceway and be not more than 7.5 m (25 ft) long
+or (2) have an ampacity not less than that of the branch-circuit
+conductors.
+<span class="src">Source: NEC 2017 (NFPA 70), 430.24 + 430.40 + 430.42 + 430.51 (pointer) + 430.53 — on-disk official scan, reflowed (art57_2017_flat.txt). OCR corrections applied (disclosed): "fulldoad"/"fullload"/"fulHload" re-cited as "full-load" (3x: 430.24(1), 430.53(A)(1), 430.53(C)(4)); "groundfault" re-cited as "ground-fault" (430.53(A)(2)); "Jixed" re-cited as "fixed" (430.24 Ex 2); "indtcate"/"ihey" re-cited as "indicate"/"they" (430.40 Exception); "contro!" re-cited as "control" (430.51); "430,52" re-cited as "430.52" (430.52(C)(3) — outside the quoted regions, in the verification source); "424. 3(B)" re-cited as "424.3(B)" (space OCR, 430.24 Ex 2); the (D)(8)/(4) items' double-space "short-circuit and  ground-fault" normalized. TWO GENUINE SCAN ARTIFACTS, bracketed not repaired: (a) 430.53(C)(3) is truncated in the scan — it ends "is of the inverse time e." with the rest of the sentence missing (verified against the raw scan lines; the 2023 CSV carries the current wording of this sentence); (b) the 1/10-of-the-OCPD tap item is printed "(8)" in the scan (the surrounding items are (1), (2), (4)) — quoted as printed; 2023 restructures the whole (D) subsection (delta below). No other wording altered. 2023 deltas below.</span></div>
+
+  <h2>430.24 — how big is the wire</h2>
+  <p>430.24 is the conductor rule for a shared circuit. It is a <strong>sum</strong>, and the sum has four terms:</p>
+  <ul>
+    <li><strong>125% of the full-load current (FLC) of the highest-rated motor</strong> — table FLC per 430.6(A)(1) (Table 430.248 single-phase / 430.250 three-phase), <em>not</em> the nameplate.</li>
+    <li><strong>100% of every other motor's FLC.</strong></li>
+    <li><strong>100% of any noncontinuous non-motor load</strong> (a pump, a light, a contactor coil).</li>
+    <li><strong>125% of any continuous non-motor load</strong> (the same 125% as 210.19(A) — a heater or a pump running continuously rides the continuous-load factor).</li>
+  </ul>
+  <p>Three exceptions bend the rule: <strong>Exception 1</strong> — short-time, intermittent, periodic, or varying-duty motors don't enter at table FLC; they enter per <strong>430.22(E)</strong> (the percent-of-FLC duty table), and for the highest-rated motor the sum uses the <em>greater</em> of 430.22(E) or 1.25 × the largest continuous-duty FLC. <strong>Exception 2</strong> — a motor-operated <em>fixed electric space-heating</em> circuit routes out of 430.24 to <strong>424.3(B) (2017) / 424.4(B) (2023)</strong> — the space-heating article's own 125%-continuous rule (the cross-reference renumber is a verified 2023 delta, below). <strong>Exception 3</strong> — if interlocks prevent selected motors/loads from running together, size for the <em>highest simultaneous total</em>, not the full sum. (EX1 is the straight four-term sum; EX2/EX3 are the two-motor special cases.)</p>
+  <p>The Informational Note points at <strong>Informative Annex D, Example D8</strong> — the 2017 book's own multi-motor example, the same shape as EX1 here.</p>
+
+  <h2>430.53 — what breaker protects the group</h2>
+  <p>430.53's lead sentence sets the frame: the group may share a branch circuit only under its (D) tap conditions <em>and</em> one of three OCPD routes — <strong>(A), (B), or (C)</strong> — and the branch device <strong>shall be fuses or inverse time circuit breakers</strong> (no instantaneous-trip-only device, no electronic trip without an inverse element).</p>
+  <ul>
+    <li><strong>(A) Not over 1 Horsepower — the small-motor shared circuit.</strong> Several ≤ 1 hp motors may share a <strong>120 V circuit at ≤ 20 A</strong> (or ≤ 1000 V at ≤ 15 A) when: each motor's full-load rating ≤ <strong>6 A</strong>; the OCPD does not exceed the rating <em>marked on any of the controllers</em>; and each motor has individual <strong>430.32</strong> overload protection. This is the route 430.42(A) points at for general-purpose circuits (and 430.42(C) caps the cord-and-plug variant at 15 A / 125-250 V). <strong>(EX3.)</strong></li>
+    <li><strong>(B) If Smallest Rated Motor Protected — the worst-case route.</strong> If the branch OCPD is selected <strong>not to exceed the 430.52 value for the SMALLEST motor</strong> (250% of its FLC inverse time, stepped to a standard size), two or more motors — each with individual overload — may share the circuit where it <em>can be determined</em> the device won't open under the most severe normal conditions. The physics: the smallest motor's locked-rotor inrush is the one the group device must absorb without tripping, so the group device is capped by the motor with the least inrush headroom. <strong>(EX2.)</strong></li>
+    <li><strong>(C) Other Group Installations — the full route.</strong> Any motor size, when the controllers/overloads are a listed factory assembly (or listed separate assemblies with the manufacturer's pairing instructions) and: each overload is listed for group installation (or selected so the OCPD ≤ its 430.52 value); each controller likewise; each breaker is listed inverse time; the <strong>OCPD ≤ Table 430.52 value for the HIGHEST motor + the sum of all other motors' FLCs + the other loads' ratings</strong> (and if that sum lands below the conductor ampacity, the OCPD may be raised up to what 240.4(B) allows); and the OCPD is <strong>not larger than 430.40 allows for the overload relay protecting the smallest motor</strong>. That last clause is the 430.40 hook: the overload relay is the group's weakest link, so 430.40 (protect the relay per 430.52, or per its group-installation marking) caps the whole circuit. Non-motor loads on the group get their OCPD per Article 240 (IN: 110.10 circuit impedance). <strong>(EX1.)</strong></li>
+    <li><strong>(D) Single Motor Taps — dropping off the group circuit.</strong> A tap feeding one motor needs <em>no separate OCPD</em> if it runs at branch-circuit ampacity ((1)); at <strong>≥ 1/3 branch ampacity</strong> with a 430.22 floor, ≤ <strong>7.5 m (25 ft)</strong> to the overload device in approved raceway ((2)); at <strong>≥ 1/10 of the branch OCPD</strong> to a controller marked <strong>"Suitable for Tap Conductor Protection in Group Installations"</strong>, ≤ 3 m (10 ft), protected/enclosed, with the controller-to-motor wire separately sized per 430.22 ((8) as printed); or at 1/3 branch ampacity ≤ 7.5 m (25 ft) to such a controller ((4)). <strong>(EX4/EX5.)</strong></li>
+  </ul>
+  <div class="renew"><strong>The 240.4(G) exemption — the reason a group circuit's breaker can exceed its wire.</strong> On a motor branch circuit the OCPD is sized for <em>starting</em> (Table 430.52 percentages), and <strong>240.4(G)</strong> exempts motor circuits from the 240.4(B) rule (OCPD ≤ conductor ampacity) and the 240.4(D) small-conductor caps. The conductor is protected under sustained overload by each motor's <strong>430.32</strong> device (~125% of nameplate). So in EX1 an <strong>80 A</strong> OCPD on <strong>6 AWG Cu (65 A)</strong> is legal, and in EX3 a <strong>20 A</strong> OCPD on <strong>14 AWG Cu (15 A at 60 °C)</strong> is legal. (The 240.4(D) caps from <a href="nec-2404d-small-conductors.html">that article</a> apply to the group's <em>non-motor</em> loads, which 430.53(C)(6) sends to Article 240.)</div>
+
+  <h2>Edition history: 2017 → 2023</h2>
+  <p>The headline: <strong>2023 changed no percentage, no ampere value, and no length in 430.24 / 430.52 / 430.53 — it re-anchored the structure and the cross-references</strong>. A targeted machine check (<code>verify_art57.py</code>, <strong>62 phrase-level assertions</strong> reading the on-disk 2017 NFPA scan, the on-disk 2023 NEC CSV, the on-disk Mike Holt 2023 change summary, and the on-disk 2020 source directly) confirms every claim below, item by item:</p>
+
+  <h3>The verified-substantive core (2017 ≈ 2023)</h3>
+  <table>
+    <thead><tr><th>Section</th><th>2017 → 2023 (machine-verified)</th></tr></thead>
+    <tbody>
+      <tr><td>430.24 — the four-term conductor sum</td><td class="ctr ok">IDENTICAL — 125% highest / 100% others / 100% noncontinuous / 125% continuous, all present unchanged</td></tr>
+      <tr><td>430.24 — Exception 1 (430.22(E) duty motors) + Exception 3 (interlock)</td><td class="ctr ok">IDENTICAL — the duty-motor summation and the interlock rule unchanged</td></tr>
+      <tr><td>430.53 lead — (D)+(A)/(B)/(C) routing, fuses/inverse-time device</td><td class="ctr ok">IDENTICAL — the routing sentence and the device-type sentence unchanged</td></tr>
+      <tr><td>430.53(A) — ≤1 hp / 120 V / 20 A / ≤6 A per motor / 430.32 overload</td><td class="ctr ok">IDENTICAL core — the 20 A, 15 A, 6 A, and 430.32 conditions unchanged (the (A)(2) "motor controllers" wording is reworded — delta below)</td></tr>
+      <tr><td>430.53(B) — smallest-motor cap + worst-case determination</td><td class="ctr warn">IDENTICAL core — "not to exceed that allowed by 430.52 for the smallest rated motor" and the "most severe normal conditions" clause unchanged; the sentence structure is reworked (delta below)</td></tr>
+      <tr><td>430.53(C) — group-listing + OCPD sum + 430.40 cap + Article 240 other loads</td><td class="ctr warn">IDENTICAL core — the factory-assembly/field-assembly route, the group-installation markings, the Table 430.52 sum, the 240.4(B) raise, the 430.40 smallest-overload cap, and the Part I–VII other-loads rule all unchanged; the (C)(1)–(C)(5) structure is new (delta below)</td></tr>
+      <tr><td>430.53(D) — tap options: full ampacity / 1/3 @ 25 ft / 1/10 @ 10 ft / 1/3 @ 25 ft</td><td class="ctr ok">IDENTICAL — all four ampacity floors (100%, 1/3, 1/10, 1/3), the 7.5 m / 3 m lengths, the "Suitable for Tap Conductor Protection" marking, and the 430.22 controller-to-motor rule unchanged; (D) is restructured and the "described above" reference is named (delta below)</td></tr>
+      <tr><td>Table 430.52 — 300/175/800/250 (single-phase, polyphase), 1100% Design B instantaneous, 150/150/800/150 wound-rotor, 150/150/250/150 DC</td><td class="ctr ok">IDENTICAL values — row-by-row check, including the Design B 1100% value already present in 2017; only the table's <em>name</em> renumbers (Table 430.52 → Table 430.52(C)(1)) and the 2023 prose renames the class "Design B premium efficiency" (delta below)</td></tr>
+      <tr><td>430.40 — relay protection per 430.52 + group-marking exception</td><td class="ctr ok">IDENTICAL — both sentences unchanged</td></tr>
+      <tr><td>430.42(B) — group-installation approval + 430.53 OCPD selection</td><td class="ctr warn">IDENTICAL core — the approval + selection requirement unchanged; "Both the controller" → "Both the motor controller" (wording, below)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub"><strong>2020 position — stated, not asserted:</strong> the on-disk 2020 sources (a SlideShare text extraction of the NEC 2020 PDF and the on-disk AJB 2020 clean text) are <em>excerpt</em> documents — the SlideShare extraction carries 430.24 only as cross-references in the 210.x / 220.x calculation tables and the 2020-structure renumber table, and <strong>no 430.24 or 430.53 section body at all</strong>; the AJB text has zero 430.53 mentions. So this page documents 2017 → 2023 and does not assert any 2020 position for these sections. <strong>No Mike Holt 2023 change-summary entry exists for 430.24, 430.40, 430.42, 430.52, or 430.53</strong> (verified by direct scan of the on-disk summary) — all deltas below are on-disk-verified against the two full-text sources, stated as such.</p>
+
+  <h3>2017 → 2023 deltas in 430.24 + 430.52 + 430.53 (all verified on disk)</h3>
+  <div class="removed"><strong>430.24 Exception 2 — the space-heating cross-reference renumbers 424.3(B) → 424.4(B). <em>On-disk-verified in BOTH editions' Article 424.</em></strong> 2017: "The ampacity of conductors supplying motor-operated fixed electric space-heating equipment shall comply with <strong>424.3(B)</strong>." → 2023: "...shall comply with <strong>424.4(B)</strong>." This is a <em>real</em> renumber, not a citation slip: in the 2017 scan <strong>424.3 is "Branch Circuits"</strong> and (B) "Branch-Circuit Sizing" is the 125%-continuous space-heating rule (424.4 does not exist in 2017); in the 2023 CSV Article 424 was restructured so <strong>424.3 becomes "Other Articles"</strong> (the Table 424.3 cross-article list) and <strong>424.4 is "Branch Circuits"</strong>, with 424.4(B) carrying the same 125% rule: "The branch-circuit conductor(s) ampacity shall not be less than 125 percent of the load of the fixed electric space-heating equipment and any associated motor(s)."</div>
+  <div class="removed"><strong>430.53(B) — the "If the ... is selected" sentence restructured into a conditions list. <em>On-disk-verified.</em></strong> 2017: "<strong>If the branch-circuit short-circuit and ground-fault protective device is selected not to exceed that allowed by 430.52 for the smallest rated motor</strong>, two or more motors or one or more motors and other load(s), with each motor having individual overload protection, shall be permitted to be connected to a branch circuit where it can be determined that ... will not open under the most severe normal conditions..." → 2023: "Two or more motors or one or more motors and other loads shall be permitted to be connected to a branch circuit <strong>where all of the following conditions are met</strong>:" — (1) the OCPD "is selected not to exceed that allowed by 430.52 for the <strong>smallest rated motor supplied by the branch circuit</strong>", (2) "Each motor is provided with separate overload protection", (3) the same worst-case determination. Same three requirements, one conditional sentence → one numbered list.</div>
+  <div class="removed"><strong>430.53(C) — the inline (1)/(2)+(3) conditions restructured into (C)(1)–(C)(5). <em>On-disk-verified. The section's structural delta.</em></strong> 2017: "Two or more motors of any rating ... shall be permitted ... where the motor controller(s) and overload device(s) are (1) installed as a listed factory assembly ... or (2) ... field-installed as separate assemblies ... and (3) all of the following conditions are complied with: (1) each overload... (2) each controller... (3) each breaker... (4) the branch circuit shall be protected... (5) ... not larger than allowed by 430.40... (6) overcurrent protection for loads other than motor loads..." → 2023: "Two or more motors of any size ... shall be permitted ... where the motor controller(s) and overload device(s) <strong>comply with 430.53(C)(1) through (C)(5)</strong>": <strong>(C)(1)</strong> the assembly type (listed factory assembly / listed field installation), <strong>(C)(2)</strong> each motor overload device (listed for group installation / selected per 430.52), <strong>(C)(3)</strong> each motor controller (same), <strong>(C)(4)</strong> the OCPD sum (below), <strong>(C)(5)</strong> other loads per Part I–VII of Article 240 + the 110.10 IN. The numbered conditions (1)/(2)/(3) that 2017 buried under "(3) all of the following" become top-level (C)(2)/(C)(3).</div>
+  <div class="removed"><strong>430.53(C)(4) — the 430.40 smallest-overload cap folded into the OCPD sentence. <em>On-disk-verified.</em></strong> 2017 split this into two items: (C)(4) "the branch circuit shall be protected by fuses or inverse time circuit breakers having a rating not exceeding that specified in 430.52 for the highest rated motor ... <strong>plus an amount equal to the sum of the full-load current ratings of all other motors and the ratings of other loads</strong>" + separate item (5) "not larger than allowed by 430.40 for the overload relay protecting the smallest rated motor of the group". 2023 merges both into (C)(4): "a rating not exceeding <strong>the sum of all of the following</strong>: The value specified in 430.52 for the highest rated motor ... The sum of the full-load current ratings of all other motors The sum of the current ratings of other loads connected to the circuit ... <strong>Additionally, this rating shall not be larger than allowed by 430.40</strong> for the overload relay protecting the smallest rated motor of the group." Same two ceilings, one item.</div>
+  <div class="removed"><strong>430.53(D) — "described above" → named routes, and the tap options consolidated. <em>On-disk-verified.</em></strong> 2017: "For group installations <strong>described above</strong>..." with the four tap options as (1), (2), (8)-as-printed, (4). → 2023: "For group installations <strong>described in 430.53(A), (B), or (C)</strong>..." with (D)(1) the full-ampacity/one-third-25-ft option and (D)(2) the marked-controller option carrying BOTH the 3 m (10 ft) / 1/10-OCPD sub-option and the 7.5 m (25 ft) / 1/3-ampacity sub-option, each with its own physical-protection Exception. The 1/10 tap floor, the "Suitable for Tap Conductor Protection in Group Installations" marking, the 430.22 controller-to-motor rule, and both lengths are unchanged.</div>
+  <div class="removed"><strong>Table reference renumber: "Table 430.52" → "Table 430.52(C)(1)". <em>On-disk-verified.</em></strong> 2017 430.52(C)(1): "A protective device that has a rating or setting not exceeding the value calculated according to the values given in <strong>Table 430.52</strong> shall be used." → 2023: "...according to the values given in <strong>Table 430.52(C)(1)</strong> shall be used unless otherwise permitted in 430.52(C)(1)(a) or (C)(1)(b)." — and every downstream reference (including the Exception 2 starting-current clauses and 430.52(C)(3)–(C)(7)) follows. The table's VALUES are unchanged row for row (checked: single-phase 300/175/800/250, polyphase 300/175/800/250, Design B 300/175/<strong>1100</strong>/250, synchronous 300/175/800/250, wound-rotor 150/150/800/150, DC 150/150/250/150 — present in both editions).</div>
+  <div class="removed"><strong>430.52(C)(3) — the instantaneous-breaker section: "shall be used only if" → "shall be permitted if", NEMA re-cite, and the Design B class rename. <em>On-disk-verified.</em></strong> 2017: "An instantaneous trip circuit breaker <strong>shall be used only if</strong> adjustable and if part of a listed combination motor controller..." with the 1300%/1700% Design B energy-efficient split, the engineering-evaluation allowance, and IN "NEMA Standards Publication No. MG1-1993, Revision, Motors and Generators, Part 12.59." → 2023: "An instantaneous-trip circuit breaker <strong>shall be permitted if</strong> the conditions of 430.52(C)(3)(a) and (C)(3)(b) are met", with the same 1300% / 1700% values now reading "Design B energy-efficient <strong>and Design B premium efficiency</strong>" and IN 3 re-citing "NEMA MG 1-2016, Motors and Generators, Part 12.59". The class name in the 430.52(C)(1)/(6)/(7) prose changes from "Design B energy-efficient" to "Design B energy-efficient and Design B premium efficiency" — <strong>a prose rename, not a table-row addition: the 2017 Table 430.52 already carries the Design B row with the 1100% instantaneous value</strong> (checked on disk in the 2017 scan).</div>
+  <div class="removed"><strong>430.52(C)(1) — the next-standard-size allowance now cites 240.6. <em>On-disk-verified.</em></strong> 2017: "Where the values ... do not correspond to the standard sizes or ratings of fuses, nonadjustable circuit breakers, thermal protective devices, or possible settings of adjustable circuit breakers, a higher size, rating, or possible setting that does not exceed the next higher standard ampere rating shall be permitted." → 2023: "Where the values as determined by Table 430.52(C)(1) do not correspond to the standard ampere ratings and settings provided in <strong>240.6</strong>, the next higher standard rating or setting shall be permitted." Same step, now anchored to the section number.</div>
+  <div class="removed"><strong>430.53(A)(2) + 430.42(B) — small wording. <em>On-disk-verified.</em></strong> 430.53(A)(2): 2017 "marked on any of <strong>the controllers</strong>" → 2023 "marked on any of <strong>the motor controllers</strong>". 430.42(B): 2017 "Both <strong>the controller</strong> and the motor overload device shall be approved for group installation..." → 2023 "Both <strong>the motor controller</strong> and the motor overload device shall be approved for group installation...". No requirement changes.</div>
+
+  <h2>Five worked examples (core-computed)</h2>
+  <p>Every table lookup and OCPD↔conductor pairing below is computed from the shipped PanelWright cores under node — <code>nextStdBreaker</code> (the 240.6 standard-size step), <code>pickConductor31016</code> (the Table 310.16 conductor pick + 240.4(D) cap note), and the Table 430.52 percentages (250% inverse time for the EX1/EX2 OCPD sums — the single-motor article works that table) — with <strong>zero hand math</strong>. The full-load currents are the Table 430.250 three-phase values (5 hp = 15.2 A, 3 hp = 10.6 A, 2 hp = 7.5 A, 1 hp = 6.6 A) and Table 430.248 single-phase values (1/3 hp = 5.8 A, 1/4 hp = 4.0 A at 120 V). <code>compute_art57.js</code> → <code>art57_numbers.json</code>.</p>
+
+  <h3>EX1 — 430.53(C): the full group route (5 hp + 2 hp + 1 hp three-phase + a 20 A continuous heater)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Group (430.53(C), listed controllers, each motor with 430.32 overload)</td><td class="ctr">5 hp (FLC 15.2 A — highest) + 2 hp (7.5 A) + 1 hp (6.6 A) + 20 A continuous heater</td></tr>
+      <tr><td>430.24 conductor sum</td><td class="ctr">125% × 15.2 = <strong>19.0 A</strong> + (7.5 + 6.6) = 14.1 A + 125% × 20 = 25.0 A → <strong>58.1 A</strong></td></tr>
+      <tr><td>Conductor (Table 310.16, 75 °C Cu)</td><td class="ctr"><strong>6 AWG Cu</strong> (65 A ampacity ≥ 58.1 A)</td></tr>
+      <tr><td>430.53(C)(4) OCPD sum</td><td class="ctr">250% × 15.2 (Table 430.52, highest motor) = <strong>38.0 A</strong> + 14.1 A (other motors) + 20.0 A (heater) = <strong>72.1 A</strong></td></tr>
+      <tr><td>OCPD (next standard, 240.6)</td><td class="ctr"><strong>80 A</strong> (72.1 A is not a standard size; 80 A is the next standard)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The teaching point: the OCPD (80 A) <strong>exceeds the conductor ampacity (65 A)</strong> — and that's legal, for exactly two reasons: 430.53(C)(4) sizes the device from Table 430.52 (starting current), not from the wire, and <strong>240.4(G)</strong> exempts motor branch circuits from 240.4(B)/(D). The 430.32 overload on the 1 hp motor is what protects the wire under sustained overload. One more ceiling to check in the field: the 430.53(C)(5) (2023) / (C)(5)-item (2017) cap — the 80 A device must not be <strong>larger than 430.40 allows for the overload relay protecting the smallest motor</strong> (the 1 hp motor's relay). If that relay's group-installation marking (or its 430.52-based protection) caps below 80 A, the whole group device steps down. The 20 A heater's own OCPD sizing is Article 240 business (430.53(C)(6)); its 125% conductor factor is already in the 430.24 sum.</p>
+
+  <h3>EX2 — 430.53(B): the smallest-motor-protected route (5 hp + 3 hp three-phase)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Group (430.53(B), each motor with individual overload)</td><td class="ctr">5 hp (FLC 15.2 A) + 3 hp (FLC 10.6 A — smallest)</td></tr>
+      <tr><td>430.24 conductor sum</td><td class="ctr">125% × 15.2 = 19.0 A + 10.6 A → <strong>29.6 A</strong></td></tr>
+      <tr><td>Conductor (Table 310.16, 75 °C Cu)</td><td class="ctr"><strong>10 AWG Cu</strong> (35 A ampacity ≥ 29.6 A)</td></tr>
+      <tr><td>430.53(B) OCPD (per the SMALLEST motor, 3 hp)</td><td class="ctr">250% × 10.6 = 26.5 A → <strong>30 A</strong> (next standard)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The trap: the 5 hp motor <em>alone</em> would allow 250% × 15.2 = 38 A — but 430.53(B) caps the group device by the <strong>smallest</strong> motor (3 hp → 30 A), because the group device must ride the worst inrush case without opening. The 10 AWG conductor (35 A) is protected by the 30 A device — and again 240.4(G) is why the 30 A device is free to be set from the motor rule rather than the wire rule. The worst-case determination ("will not open under the most severe normal conditions") is the engineer's call — it is the condition 430.53(B) makes you able to make.</p>
+
+  <h3>EX3 — 430.53(A): the 120 V / 20 A small-motor circuit (1/3 hp + 1/4 hp single-phase)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Group (430.53(A): each ≤ 1 hp, each FLC ≤ 6 A, 430.32 overload per motor, controller marking not exceeded)</td><td class="ctr">1/3 hp (FLC 5.8 A) + 1/4 hp (FLC 4.0 A) @ 120 V</td></tr>
+      <tr><td>430.24 conductor sum</td><td class="ctr">125% × 5.8 = 7.25 A + 4.0 A → <strong>11.25 A</strong></td></tr>
+      <tr><td>Conductor (Table 310.16, 60 °C Cu — the 110.14(C)(1)(a) column for ≤ 100 A circuits)</td><td class="ctr"><strong>14 AWG Cu</strong> (15 A ampacity ≥ 11.25 A)</td></tr>
+      <tr><td>OCPD ceiling (430.53(A))</td><td class="ctr"><strong>20 A</strong> (120 V circuit) — must also not exceed the controller marking</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 20 A OCPD exceeds the 14 AWG conductor's 15 A ampacity — permitted, because 240.4(G) exempts motor branch circuits from the "OCPD ≤ conductor ampacity" rule (the 430.32 overloads protect the wire). This is the same shape as the single-motor article's "30 A on 14 AWG" example, just with two motors and the (A) route's conditions in play: 6 A-per-motor, the controller-marking cap, and 430.32 overload on each. The 430.42(A) cross-reference is the reason this route exists for general-purpose circuits — and 430.42(C) caps the cord-and-plug version at 15 A / 125-250 V.</p>
+
+  <h3>EX4 — 430.53(D)(1)/(2): the 1/3-ampacity tap off the EX1 group circuit (5 hp three-phase)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Branch circuit (EX1)</td><td class="ctr">6 AWG Cu (65 A ampacity)</td></tr>
+      <tr><td>430.53(D) 1/3-branch floor</td><td class="ctr">1/3 × 65 = <strong>21.67 A</strong></td></tr>
+      <tr><td>430.22 minimum for the 5 hp motor</td><td class="ctr">125% × 15.2 = <strong>19.0 A</strong> (lower — the 1/3 floor governs)</td></tr>
+      <tr><td>Tap conductor (Table 310.16, 75 °C Cu)</td><td class="ctr"><strong>12 AWG Cu</strong> (25 A ampacity ≥ 21.67 A)</td></tr>
+      <tr><td>Installation</td><td class="ctr">≤ 7.5 m (25 ft) to the overload device, in approved raceway; <strong>no separate tap OCPD</strong> (430.53(D))</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">A tap that drops off a group circuit to feed one motor needs <em>no OCPD of its own</em> — the branch device covers it — if the tap wire is at branch ampacity, or at ≥ 1/3 branch ampacity (with a 430.22 floor) within 25 ft in raceway. Here the 1/3 floor (21.67 A) beats the 430.22 floor (19.0 A), so 12 AWG Cu (25 A at 75 °C) is the pick. The tap is not a new circuit: it has no disconnect of its own beyond the branch device.</p>
+
+  <h3>EX5 — 430.53(D)(2): the 1/10-of-the-OCPD tap to a marked controller (branch OCPD 80 A)</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Branch OCPD (EX1)</td><td class="ctr">80 A</td></tr>
+      <tr><td>430.53(D) 1/10-OCPD tap floor</td><td class="ctr">1/10 × 80 = <strong>8.0 A</strong></td></tr>
+      <tr><td>Tap conductor (Table 310.16, 75 °C Cu)</td><td class="ctr"><strong>14 AWG Cu</strong> (20 A ampacity ≥ 8.0 A) — the smallest tap wire the group route allows</td></tr>
+      <tr><td>Controller-to-motor conductors (430.22, separately sized)</td><td class="ctr">125% × 15.2 = 19.0 A → <strong>14 AWG Cu</strong> (20 A ampacity ≥ 19.0 A)</td></tr>
+      <tr><td>Installation</td><td class="ctr">≤ 3 m (10 ft) to the controller marked <strong>"Suitable for Tap Conductor Protection in Group Installations"</strong>, suitably protected and enclosed (or at branch ampacity)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 1/10 rule is the group route's cheapest drop: a 14 AWG tap (20 A at 75 °C) off an 80 A circuit, because the floor is 1/10 of the <em>OCPD</em> (8 A), not of the branch ampacity — but only to a controller <em>marked</em> for tap-conductor protection, within 10 ft, protected/enclosed, and with the controller-to-motor wire separately sized per 430.22 (here also 14 AWG). The 2017 scan prints this item "(8)"; the 2023 edition carries it under (D)(2) as a 3 m (10 ft) sub-option. (EX5's 1/10 floor uses the 80 A EX1 OCPD; if the 430.40 smallest-overload cap forced EX1's device smaller, the 1/10 floor drops with it.)</p>
+
+  <h2>Where 430.24 + 430.53 fit</h2>
+  <ul>
+    <li><strong>The single-motor foundation they extend:</strong> the <a href="nec-43022-43052-single-motor-branch-circuit.html">NEC 430.22 + 430.52 single-motor branch circuit</a> — 430.24 replaces 430.22's 125%-of-one-motor with a sum, and 430.53 replaces 430.52's single-motor OCPD with the (A)/(B)/(C) routes; the Table 430.52 values 430.53(B)/(C) reference are worked there.</li>
+    <li><strong>The per-motor protection the group still requires:</strong> the <a href="nec-43032-43036-motor-overload-protection.html">NEC 430.32 + 430.36 motor overload protection</a> article — 430.53's (A)(3), (B), and (C)(2) each demand individual 430.32 overload per motor, and 430.40's cap (in 430.53(C)(5)) is set on that smallest overload relay.</li>
+    <li><strong>The motor-circuit exemption the examples lean on:</strong> the <a href="nec-2404d-small-conductors.html">NEC 240.4(D) small-conductor caps</a> — 240.4(G)'s motor-circuit exemption (why the 80 A breaker on 6 AWG Cu and the 20 A breaker on 14 AWG Cu are legal) is the flip side of this article.</li>
+    <li><strong>The conductor table the sums pick from:</strong> the <a href="nec-31016-ampacity.html">Table 310.16 allowable ampacities</a> and the <a href="nec-21019a-continuous-load.html">NEC 210.19(A) + the 125% "continuous load" rule</a> (430.24's 125% continuous non-motor term is the same 125% as 210.19(A)).</li>
+    <li><strong>The standard-size list the OCPD steps to:</strong> the <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings</a> (EX1's 72.1 A → 80 A step).</li>
+    <li><strong>The general-purpose-circuit bridge:</strong> 430.42 (quoted above) routes general-purpose-circuit motors to 430.53(A) — the <a href="nec-43032-43036-motor-overload-protection.html">motor overload article</a> works the 430.42(A) 1-hp limiting conditions in its examples.</li>
+    <li><strong>The drive-side cousin:</strong> the <a href="nec-430120-430131-adjustable-speed-drive-systems.html">NEC 430.120–430.131 adjustable-speed drive article</a> — 430.122(D) routes several motors on a drive input straight to 430.24, and 430.131 makes the drive count as a motor controller for 430.53's smallest-motor cap.</li>
+    <li><strong>The parallel Article 440 rule:</strong> the <a href="nec-44022-44032-air-cooling-branch-circuit.html">NEC 440.22 + 440.32 air-conditioning branch circuit</a> — 440.33 (multi-motor sum + 25% of the largest) is the compressor-world version of 430.24's sum, with the Article 440 OCPD percentages in place of Table 430.52.</li>
+  </ul>
+  <p class="sub"><strong>Scope boundary, stated:</strong> this article is exactly 430.24 + 430.53, with 430.40 + 430.42 quoted as the cap/route context and 430.51/430.52 as pointers (their full text and Table 430.52 are in the single-motor article). 430.22 (single motor), 430.25–430.26 (multimotor/combination-load equipment marking + feeder demand), 430.32–430.38 (overload devices), 430.43–430.44 (automatic restarting / orderly shutdown), 430.54–430.56 (multimotor-equipment OCPD / combined protection / device location), and 430.57+ (Part V disconnecting means onward) are adjacent sections outside this article's scope. <strong>Part XIII note (disclosed):</strong> the 2017 scan and the 2023 CSV both number the motor <em>grounding</em> sections 430.241–430.245 (430.241 General through 430.245 Method of Grounding) — the "430.24x" rows in the 2023 CSV are those Part XIII grounding sections, NOT subdivisions of 430.24; they are verified on disk in both editions and are out of this article's scope. <strong>2026 edition (flagged honestly):</strong> no on-disk source confirms the 430.24/430.53 section numbers moved for the 2026 cycle, so this page cites them as stable across 2017–2023 and presents the 2017↔2023 deltas above. <strong>Verify section numbers against the NEC edition adopted in your jurisdiction.</strong></p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>, regions reflowed to <span class="blank">art57_2017_flat.txt</span>): 430.24 + Exceptions 1–3 + the Annex D8 IN, 430.40 + its Exception, 430.42 (A)–(D), 430.51 (pointer), 430.53 lead + (A)/(B)/(C)/(D) complete incl. the (D) tap items. OCR line-wrap reflow normalized; disclosed scan artifacts corrected (listed in the source note under the quote block): "fulldoad"/"fullload"/"fulHload"→"full-load" (3x), "groundfault"→"ground-fault", "Jixed"→"fixed", "indtcate"/"ihey"→"indicate"/"they", "contro!"→"control", "424. 3(B)"→"424.3(B)", double-space normalization. <strong>Two genuine scan artifacts are bracketed, not repaired:</strong> 430.53(C)(3) is truncated in the 2017 scan (ends "is of the inverse time e." — verified against the raw scan lines; the 2023 CSV carries the current wording), and the 1/10 tap item is printed "(8)" in the scan (surrounding items (1), (2), (4)) — quoted as printed; 2023 restructures (D) anyway. No other wording altered.</p>
+    <p><strong>2023 text.</strong> On-disk 2023 NEC CSV (<span class="blank">art35_nec_csv.csv</span>): 430.24, 430.40, 430.42 (A)–(D), 430.52 (A)/(B)/(C)(1)–(7)/(D) (with Table 430.52(C)(1) embedded in the (C)(1) row), and 430.53 lead/(A)/(B)/(C)/(C)(1)–(5)/(D)/(D)(1)/(D)(2) — 24 rows, complete for the scope. The 430.241–430.245(C) rows present in the same CSV are Part XIII grounding sections (verified in the 2017 scan too), not subdivisions of 430.24 — out of scope, disclosed above. The CSV's trailing markdown source-link per row is stripped for the identity test only and never changes code text.</p>
+    <p><strong>Worked examples (core-computed).</strong> Every OCPD floor, standard-size step, conductor pick, and 240.4(G) exemption note is computed by the shipped PanelWright cores under node (<span class="blank">compute_art57.js</span> → <span class="blank">art57_numbers.json</span>): <span class="blank">nextStdBreaker</span> (240.6 step — note the core's standard list has no 75 A, so 72.1 A steps to 80 A), <span class="blank">pickConductor31016</span> (Table 310.16 pick + 240.4(D) cap note), with Table 430.248/430.250 FLC values transcribed from the on-disk 2017 scan tables. Zero hand math.</p>
+    <p><strong>Edition-delta claims (machine-checked).</strong> A targeted assertion script (<span class="blank">verify_art57.py</span>) reads both on-disk sources + the on-disk Mike Holt 2023 change summary + the on-disk 2020 source and asserts <strong>62 phrase-level checks</strong>: 27 identity claims (present in both, alpha-normalized so OCR hyphen/spacing artifacts cannot cause false fails — the 430.24 four-term sum + both remaining exceptions, the 430.53 lead + (A) conditions + (B) worst-case clause + (C) group-installation markings + 430.40 cap sentence + other-loads Article 240 + the 110.10 IN, all four (D) tap parameters, 430.40 protection route, 430.42(B) approval), 5 Table 430.52 row checks (whitespace-normalized, both editions), 7 2017-only probes (each delta's old form), 10 2023-only probes (each delta's new form), 5 Mike Holt probes (NO MH 2023 entry for 430.24/430.40/430.42/430.52/430.53 — all deltas on-disk-verified), 1 the 2017-Design-B-table-row check (refuting a "2023 added the row" reading), and 7 scope/boundary checks (24-row CSV completeness for scope, Part XIII row presence both editions, 2020 no-body boundary, the (C)(3) scan-gap marker). <strong>All 62 pass</strong> (re-runnable). <strong>2020 position is not asserted:</strong> the on-disk 2020 sources carry no 430.24/430.53 section body (excerpts documents — verified).</p>
+  </div>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 57 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan + NEC 2023 (on-disk CSV) verbatim, OCR corrections + two bracketed scan artifacts disclosed (the 430.53(C)(3) truncation; the "(8)" tap-item printing). Nine substantive 2017→2023 deltas: the 424.3(B)→424.4(B) renumber, the 430.53(B) conditions-list restructure, the 430.53(C)(1)–(C)(5) restructure, the 430.53(C)(4) 430.40-cap merge, the 430.53(D) named-routes + tap consolidation, the Table 430.52 → Table 430.52(C)(1) reference renumber, the 430.52(C)(3) "permitted if" + NEMA MG 1-2016 re-cite + Design B "premium efficiency" prose rename (table row unchanged since 2017), the 430.52(C)(1) 240.6 citation, and the 430.53(A)(2)/430.42(B) "motor controller" wording. 62 machine-verified checks. Design aid — the adopted edition in your jurisdiction governs.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-43022-43052-single-motor-branch-circuit.html">NEC 430.22 + 430.52 single-motor branch circuit (the foundation)</a> · <a href="nec-43032-43036-motor-overload-protection.html">NEC 430.32 + 430.36 motor overload (the per-motor protection)</a> · <a href="nec-2404d-small-conductors.html">NEC 240.4(D)/(G) small-conductor caps + the motor-circuit exemption</a> · <a href="nec-31016-ampacity.html">Table 310.16 ampacities (the EX conductor picks)</a> · <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings (the OCPD steps)</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>
