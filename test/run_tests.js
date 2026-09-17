@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 53, 'art44: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 54, 'art44: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4890,7 +4890,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap48 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: sitemap entry present');
-  eq((sitemap48.match(/<loc>/g) || []).length, 53, 'art48: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
+  eq((sitemap48.match(/<loc>/g) || []).length, 54, 'art48: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index48 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: index cross-link present');
   const readme48 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4984,7 +4984,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap49 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: sitemap entry present');
-  eq((sitemap49.match(/<loc>/g) || []).length, 53, 'art49: sitemap has 53 URLs (art50 appended the 51st; art51 the 52nd; art52 the 53rd)');
+  eq((sitemap49.match(/<loc>/g) || []).length, 54, 'art49: sitemap has 53 URLs (art50 appended the 51st; art51 the 52nd; art52 the 53rd)');
   const index49 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: index cross-link present');
   const readme49 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5150,7 +5150,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap51 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: sitemap entry present');
-  eq((sitemap51.match(/<loc>/g) || []).length, 53, 'art51: sitemap has 53 URLs (art52 appended the 53rd)');
+  eq((sitemap51.match(/<loc>/g) || []).length, 54, 'art51: sitemap has 53 URLs (art52 appended the 53rd)');
   const index51 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: index cross-link present');
   const readme51 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5257,11 +5257,155 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap52 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: sitemap entry present');
-  eq((sitemap52.match(/<loc>/g) || []).length, 53, 'art52: sitemap has 53 URLs (art52 appended the 53rd)');
+  eq((sitemap52.match(/<loc>/g) || []).length, 54, 'art52: sitemap has 53 URLs (art52 appended the 53rd)');
   const index52 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: index cross-link present');
   const readme52 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: README entry present');
+}
+
+// Article 53 — NEC 450.21-450.28: Article 450 PART II "Specific Provisions
+// Applicable to Different Types of Transformers" — the insulation-type key:
+// 450.21 dry-type indoors (112.5 kVA transformer-room boundary + Class 155
+// exceptions + the fully-enclosed 1000-V Exception; > 35 kV vault per (C));
+// 450.22 dry-type outdoors (weatherproof enclosure + 12-in combustible
+// rule + Class 155 escape); 450.23 less-flammable liquid (listed, 300 C
+// fire point; indoor Type I/II 35 kV cap routes + outdoor routes); 450.24
+// nonflammable fluid (indoors/outdoors; 35 kV vault; confinement + vent +
+// gas path; the nonflammable definition); 450.25 askarel (25 kVA vent /
+// 35 kV vault; poorly-ventilated gas path); 450.26 oil indoors (vault +
+// six Exceptions: 4-in concrete, 10/75 kVA no-vault, furnace 75 kVA,
+// accelerator 75 kVA/1000 V, detached qualified-persons building,
+// surface-mining 6-mm barrier); 450.27 oil outdoors (four fire safeguards
+// + oil-enclosure/trapped-drain sentences); 450.28 modification marking.
+// EDITION STORY: the installation rules and every boundary number
+// unchanged 2017->2023 (192 phrase-level machine checks,
+// verify_art53.py, all pass). Real deltas, all on-disk-verified (no Mike
+// Holt 2023 entries exist for Part II): 450.21(B) rework (1-hour rating
+// fused into the rule + term definition deleted + both Exception fragments
+// made explicit with "shall not be required to be installed in a
+// transformer room" (2x in 2023, 0x in 2017) + ASTM E119-15 -> E119-18a);
+// 450.23 reword (may->can, If-clauses with "is present", where/if reword,
+// NFPA 220-2015 -> 2021, Listed-in-Article-100 note dropped, safeguards
+// note moved (B)(1) -> (B)); 450.27 NESC C2-2007 -> C2-2017. Scope: no
+// 450.15-450.20; Part II ends 450.28; Part III starts 450.41. Worked
+// examples core-computed (compute_art53.js -> art53_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-45021-45028-transformer-types-part-ii.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art53_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art53: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art53: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 53'), true, 'art53: footer marks article 53');
+  // 450.21 (verbatim 2017)
+  eq(has('Dry-type transformers installed indoors and rated 112½ kVA or less shall have a separation of at least 300 mm (12 in.) from combustible material'), true, 'art53: 450.21(A) rule quoted');
+  eq(has('by a fire-resistant, heat-insulated barrier'), true, 'art53: 450.21(A) barrier quoted');
+  eq(has('This rule shall not apply to transformers rated for 1000 volts, nominal, or less that are completely enclosed, except for ventilating openings'), true, 'art53: 450.21(A) Exception quoted');
+  eq(has('Individual dry-type transformers of more than 112½ kVA rating shall be installed in a transformer room of fire-resistant construction'), true, 'art53: 450.21(B) rule quoted');
+  eq(has('Unless specified otherwise in this article, the term fire resistant means a construction having a minimum fire rating of 1 hour'), true, 'art53: 450.21(B) 2017 term definition quoted (deleted 2023)');
+  eq(has('by not less than 1.83 m (6 ft) horizontally and 3.7 m (12 ft) vertically'), true, 'art53: 450.21(B) Ex 1 distances quoted');
+  eq(has('Transformers with Class 155 or higher insulation systems and completely enclosed except for ventilating openings'), true, 'art53: 450.21(B) Ex 2 quoted');
+  eq(has('ANSI/ASTM E119-15, Method for Fire Tests of Building Construction and Materials'), true, 'art53: 450.21(B) 2017 IN E119-15 quoted');
+  eq(has('Dry-type transformers rated over 35,000 volts shall be installed in a vault complying with Part III of this article'), true, 'art53: 450.21(C) quoted');
+  // 450.22 (verbatim 2017)
+  eq(has('Dry-type transformers installed outdoors shall have a weatherproof enclosure'), true, 'art53: 450.22 sentence 1 quoted');
+  eq(has('Transformers exceeding 112½ kVA shall not be located within 300 mm (12 in.) of combustible materials of buildings'), true, 'art53: 450.22 sentence 2 quoted');
+  // 450.23 (verbatim 2017)
+  eq(has('Transformers insulated with listed less-flammable liquids that have a fire point of not less than 300°C shall be permitted to be installed in accordance with 450.23(A) or 450.23(B)'), true, 'art53: 450.23 lead 300 C quoted');
+  eq(has('In Type I or Type II buildings, in areas where all of the following requirements are met'), true, 'art53: 450.23(A)(1) lead quoted');
+  eq(has('The transformer is rated 35,000 volts or less'), true, 'art53: 450.23(A)(1) 35 kV item quoted');
+  eq(has('No combustible materials are stored'), true, 'art53: 450.23(A)(1) no-storage item quoted');
+  eq(has('A liquid confinement area is provided'), true, 'art53: 450.23(A)(1) confinement item quoted');
+  eq(has('Such restrictions may include, but are not limited to: maximum pressure of the tank, use of a pressure relief valve, appropriate fuse types and proper sizing of overcurrent protection'), true, 'art53: 450.23(A) IN may-include (2017 comma-less form) quoted');
+  eq(has('With an automatic fire extinguishing system and a liquid confinement area, provided the transformer is rated 35,000 volts or less'), true, 'art53: 450.23(A)(2) 2017 With-form quoted');
+  eq(has('In accordance with 450.26'), true, 'art53: 450.23(A)(3) 450.26 route quoted');
+  eq(has('where installed in accordance with (1) or (2)'), true, 'art53: 450.23(B) lead 2017 where-form quoted');
+  eq(has('may require additional safeguards such as those listed in 450.27'), true, 'art53: 450.23(B)(1) 2017 IN1 quoted (moved 2023)');
+  eq(has('defined in NFPA 220-2015, Standard on Types of Building Construction'), true, 'art53: 450.23(B) NFPA 220-2015 quoted');
+  eq(has('See definition of Listed in Article 100'), true, 'art53: 450.23(B) 2017 Listed-in-100 IN quoted (dropped 2023)');
+  // 450.24 (verbatim 2017)
+  eq(has('Transformers insulated with a dielectric fluid identified as nonflammable shall be permitted to be installed indoors or outdoors'), true, 'art53: 450.24 sentence 1 quoted');
+  eq(has('Such transformers installed indoors and rated over 35,000 volts shall be installed in a vault'), true, 'art53: 450.24 vault quoted');
+  eq(has('Such transformers installed indoors shall be furnished with a liquid confinement area and a pressure-relief vent'), true, 'art53: 450.24 confinement + vent quoted');
+  eq(has('a nonflammable dielectric fluid is one that does not have a flash point or fire point and is not flammable in air'), true, 'art53: 450.24 nonflammable definition quoted');
+  // 450.25 (verbatim 2017)
+  eq(has('Askarel-insulated transformers installed indoors and rated over 25 kVA shall be furnished with a pressure-relief vent'), true, 'art53: 450.25 vent quoted');
+  eq(has('or the pressure-relief vent shall be connected to a chimney or flue that carries such gases outside the building'), true, 'art53: 450.25 poorly-ventilated gas path quoted');
+  eq(has('Askarel-insulated transformers rated over 35,000 volts shall be installed in a vault'), true, 'art53: 450.25 vault quoted');
+  // 450.26 (verbatim 2017)
+  eq(has('Oil-insulated transformers installed indoors shall be installed in a vault constructed as specified in Part III of this article'), true, 'art53: 450.26 lead quoted');
+  eq(has('Where the total capacity does not exceed 112½ kVA'), true, 'art53: 450.26 Ex 1 quoted');
+  eq(has('constructed of reinforced concrete that is not less than 100 mm (4 in.) thick'), true, 'art53: 450.26 Ex 1 4-in concrete quoted');
+  eq(has('does not exceed 10 kVA in a section of the building classified as combustible or 75 kVA where the surrounding structure is classified as fire-resistant construction'), true, 'art53: 450.26 Ex 2 10/75 kVA quoted');
+  eq(has('Electric furnace transformers that have a total rating not exceeding 75 kVA shall be permitted to be installed without a vault'), true, 'art53: 450.26 Ex 3 quoted');
+  eq(has('an integral part of charged-particle-accelerating equipment'), true, 'art53: 450.26 Ex 4 quoted');
+  eq(has('the interior is accessible only to qualified persons'), true, 'art53: 450.26 Ex 5 quoted');
+  eq(has('portable and mobile surface mining equipment (such as electric excavators)'), true, 'art53: 450.26 Ex 6 quoted');
+  eq(has('A minimum 6-mm (1/4-in.) steel barrier is provided for personnel protection'), true, 'art53: 450.26 Ex 6(3) barrier quoted');
+  // 450.27 (verbatim 2017)
+  eq(has('shall be safeguarded from fires originating in oil-insulated transformers installed on roofs, attached to or adjacent to a building or combustible material'), true, 'art53: 450.27 lead quoted');
+  eq(has('(1) Space separations'), true, 'art53: 450.27 item 1 quoted');
+  eq(has('(2) Fire-resistant barriers'), true, 'art53: 450.27 item 2 quoted');
+  eq(has('(3) Automatic fire suppression systems'), true, 'art53: 450.27 item 3 quoted');
+  eq(has('(4) Enclosures that confine the oil of a ruptured transformer tank'), true, 'art53: 450.27 item 4 quoted');
+  eq(has('fire-resistant dikes, curbed areas or basins, or trenches filled with coarse, crushed stone'), true, 'art53: 450.27 oil enclosures quoted');
+  eq(has('Oil enclosures shall be provided with trapped drains'), true, 'art53: 450.27 trapped drains quoted');
+  eq(has('see ANSI C2-2007, National Electrical Safety Code'), true, 'art53: 450.27 2017 NESC cite quoted');
+  // 450.28 (verbatim 2017)
+  eq(has('such transformer shall be marked to show the type of insulating liquid installed, and the modified transformer installation shall comply with the applicable requirements for that type of transformer'), true, 'art53: 450.28 full rule quoted');
+  // edition story (2017 vs 2023)
+  eq(has('having a minimum fire rating of 1 hour'), true, 'art53: 2023 fused 1-hour sentence documented');
+  eq(has('ASTM E119-18a, Standard Test Methods for Fire Tests of Building Construction and Materials'), true, 'art53: 2023 E119-18a documented');
+  eq(has('shall not be required to be installed in a transformer room'), true, 'art53: 2023 explicit Exception predicate documented');
+  eq(has('can include, but are not limited to'), true, 'art53: 2023 can-include documented');
+  eq(has('If an automatic fire extinguishing system and a liquid confinement area is present'), true, 'art53: 2023 If-clause documented');
+  eq(has('if installed in accordance with either of the following'), true, 'art53: 2023 (B) lead reword documented');
+  eq(has('NFPA 220-2021, Standard on Types of Building Construction'), true, 'art53: 2023 NFPA 220-2021 documented');
+  eq(has('See 450.27 for examples of additional safeguards'), true, 'art53: 2023 moved safeguards note documented');
+  eq(has('ANSI/IEEE C2-2017'), true, 'art53: 2023 NESC C2-2017 documented');
+  eq(has('0× in 2017') || has('0x in 2017'), true, 'art53: predicate count check (2x in 2023, 0x in 2017) documented');
+  eq(has('no Mike Holt 2023 change-summary entries exist for any Part II section'), true, 'art53: no-MH-entries statement present');
+  eq(has('2020 position'), true, 'art53: 2020-not-asserted boundary stated');
+  eq(has('no 450.15 through 450.20'), true, 'art53: scope statement (no 450.15-20) present');
+  // worked figures (core-computed)
+  eq(has(String(nums.EX1.at1125)), true, 'art53: EX1 112.5 kVA rated ' + nums.EX1.at1125 + ' A');
+  eq(has(String(nums.EX1.at113)), true, 'art53: EX1 113 kVA rated ' + nums.EX1.at113 + ' A');
+  eq(has(String(nums.EX1.delta)), true, 'art53: EX1 1-kVA step ' + nums.EX1.delta + ' A');
+  eq(has('2/0 awg cu'), true, 'art53: EX1 conductor 2/0 AWG Cu (both sides of boundary)');
+  eq(has(String(nums.EX2.a10)), true, 'art53: EX2 10 kVA rated ' + nums.EX2.a10 + ' A');
+  eq(has(String(nums.EX2.a75)), true, 'art53: EX2 75 kVA rated ' + nums.EX2.a75 + ' A');
+  eq(has('14 awg cu'), true, 'art53: EX2 10 kVA conductor 14 AWG Cu');
+  eq(has('2 awg cu'), true, 'art53: EX2 75 kVA conductor 2 AWG Cu');
+  eq(has(String(nums.EX3.a25)), true, 'art53: EX3 25 kVA rated ' + nums.EX3.a25 + ' A (no vent)');
+  eq(has(String(nums.EX3.a26)), true, 'art53: EX3 26 kVA rated ' + nums.EX3.a26 + ' A (vent required)');
+  eq(has('8 awg cu'), true, 'art53: EX3 conductor 8 AWG Cu (both sides of vent boundary)');
+  eq(has(String(nums.EX3.a345)), true, 'art53: EX3 100 kVA @ 34.5 kV ' + nums.EX3.a345 + ' A (no vault)');
+  eq(has(String(nums.EX3.a38)), true, 'art53: EX3 100 kVA @ 38 kV ' + nums.EX3.a38 + ' A (vault)');
+  eq(has(String(nums.EX4.a345)), true, 'art53: EX4 5 MVA @ 34.5 kV ' + nums.EX4.a345 + ' A');
+  eq(has(String(nums.EX4.a38)), true, 'art53: EX4 5 MVA @ 38 kV ' + nums.EX4.a38 + ' A');
+  eq(has('3 awg cu'), true, 'art53: EX4 38 kV conductor 3 AWG Cu');
+  eq(has(String(nums.EX5.a)), true, 'art53: EX5 250 kVA rated ' + nums.EX5.a + ' A');
+  eq(has('500 kcmil cu'), true, 'art53: EX5 conductor 500 kcmil Cu');
+  // cross-links
+  eq(art.includes('nec-4503-transformer-overcurrent.html'), true, 'art53: cross-links to 450.3 OCPD article (Article 51)');
+  eq(art.includes('nec-4508-45014-transformer-installation.html'), true, 'art53: cross-links to 450.8-450.14 installation article (Article 52)');
+  eq(art.includes('nec-25026-25030-separately-derived-systems.html'), true, 'art53: cross-links to 250.26-250.30 article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art53: cross-links to 310.16 article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art53: cross-links to 240.6 article');
+  // sitemap + index + README
+  const sitemap53 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: sitemap entry present');
+  eq((sitemap53.match(/<loc>/g) || []).length, 54, 'art53: sitemap has 54 URLs (art53 appended the 54th)');
+  const index53 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: index cross-link present');
+  const readme53 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 450.21–450.28 — Transformer Installation by Type (Dry-Type Indoors/Outdoors, Less-Flammable &amp; Nonflammable Fluids, Askarel, Oil-Insulated, Modification) — Article 450 Part II</title>
+<meta name="description" content="Article 450 Part II: the rules that decide WHERE a transformer may live, keyed on its insulation type. 450.21 dry-type indoors (the 112½ kVA transformer-room boundary + Class 155 exceptions), 450.22 dry-type outdoors (weatherproof enclosure + the 12-in combustible-material rule), 450.23 less-flammable liquids (300 °C fire point; the 35,000 V indoor cap), 450.24 nonflammable fluids (indoors/outdoors + vault over 35,000 V), 450.25 askarel (25 kVA vent / 35,000 V vault), 450.26 oil-insulated indoors (the vault rule + all six Exceptions), 450.27 oil-insulated outdoors (the four fire safeguards), 450.28 modification marking. 2017→2023 edition history — 192 machine-verified checks — plus five worked examples from the shipped cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-45021-45028-transformer-types-part-ii.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 450.21–450.28 — Transformer Installation by Type (Article 450 Part II)">
+<meta property="og:description" content="Dry-type indoors (112½ kVA transformer-room boundary + Class 155 exceptions), dry-type outdoors, less-flammable liquids (300 °C, 35 kV cap), nonflammable fluids, askarel (25 kVA vent), oil-insulated indoors (vault + six exceptions), oil outdoors (four fire safeguards), modification marking. 2017→2023 edition history + worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-45021-45028-transformer-types-part-ii.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 450.21–450.28 — Transformer Installation by Type (Article 450 Part II)">
+<meta name="twitter:description" content="The insulation-type key: where a dry-type, less-flammable, nonflammable, askarel, or oil-insulated transformer may be installed. 2017→2023 edition history + worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 450.21 dry-type transformer indoors 112.5 kVA transformer room, NEC 450.22 dry-type transformer outdoors, NEC 450.23 less-flammable liquid transformer 300 C fire point, NEC 450.24 nonflammable fluid transformer, NEC 450.25 askarel transformer 25 kVA, NEC 450.26 oil-insulated transformer vault exception, NEC 450.27 transformer fire safeguards, NEC 450.28 transformer modification, transformer installation requirements, electrical service design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 450.21–450.28 — Transformer Installation by Type (Article 450 Part II)",
+  "description": "Article 450 Part II, 'Specific Provisions Applicable to Different Types of Transformers': 450.21 dry-type indoors (the 112.5 kVA transformer-room boundary + the Class 155 exceptions), 450.22 dry-type outdoors, 450.23 less-flammable liquid (300 C fire point; 35,000 V indoor cap), 450.24 nonflammable fluid, 450.25 askarel (25 kVA vent / 35,000 V vault), 450.26 oil-insulated indoors (the vault rule + six Exceptions), 450.27 oil-insulated outdoors (the four fire safeguards), 450.28 modification marking. Edition history 2017 to 2023, machine-verified with 192 phrase-level checks, with five worked examples computed from the shipped PanelWright cores.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-16",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-45021-45028-transformer-types-part-ii.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "When does a dry-type transformer need a transformer room indoors?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.21(A): dry-type transformers 112½ kVA or less installed indoors need only a separation of at least 300 mm (12 in.) from combustible material, unless separated by a fire-resistant, heat-insulated barrier; the Exception removes even that for units 1000 volts nominal or less that are completely enclosed except for ventilating openings. 450.21(B): individual dry-type transformers OVER 112½ kVA must be installed in a transformer room of fire-resistant construction having a minimum fire rating of 1 hour (2023 wording; 2017 stated the 1-hour rating as a term definition). Two Exceptions: (1) Class 155-or-higher insulation systems separated by a fire-resistant, heat-insulating barrier or by at least 1.83 m (6 ft) horizontally and 3.7 m (12 ft) vertically; (2) Class 155-or-higher insulation systems completely enclosed except for ventilating openings. And 450.21(C): any dry-type transformer rated over 35,000 volts goes in a Part III vault regardless." }
+    },
+    {
+      "@type": "Question",
+      "name": "What must a dry-type transformer installed outdoors have?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.22: a weatherproof enclosure. And transformers exceeding 112½ kVA shall not be located within 300 mm (12 in.) of combustible materials of buildings, unless the transformer has Class 155 insulation systems or higher and is completely enclosed except for ventilating openings. Substantially identical 2017 to 2023." }
+    },
+    {
+      "@type": "Question",
+      "name": "What limits apply to transformers insulated with less-flammable liquids?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.23: the liquid must be listed with a fire point of not less than 300°C. Indoors (A): in Type I or Type II buildings where the transformer is 35,000 volts or less, no combustible materials are stored, a liquid confinement area is provided, and the installation follows the listing's restrictions; or with an automatic fire extinguishing system plus a liquid confinement area (35,000 V or less); or in accordance with 450.26. Outdoors (B): attached to, adjacent to, or on the roof of buildings, per the listing's restrictions (Type I/II) or in accordance with 450.27. The 35,000-volt figure is the indoor cap — above it, the 450.26 vault route is the only remaining option." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the askarel (PCB) transformer rule?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.25: askarel-insulated transformers installed indoors and rated over 25 kVA shall be furnished with a pressure-relief vent. In a poorly ventilated place, a means for absorbing gases generated by arcing inside the case, or the pressure-relief vent connected to a chimney or flue carrying the gases outside the building. Askarel-insulated transformers rated over 35,000 volts shall be installed in a vault. Word-identical 2017 to 2023." }
+    },
+    {
+      "@type": "Question",
+      "name": "When does an oil-insulated transformer need a vault indoors?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.26: always — oil-insulated transformers installed indoors go in a Part III vault — subject to six Exceptions: (1) total capacity 112½ kVA or less may use a 100 mm (4 in.) thick reinforced-concrete vault; (2) 1000 V nominal or less, with arrangements to prevent an oil fire from igniting other materials, may skip the vault up to 10 kVA in a combustible section or 75 kVA in fire-resistant construction; (3) electric furnace transformers 75 kVA or less in fire-resistant construction; (4) 75 kVA / 1000 V or less integral to charged-particle-accelerating equipment in noncombustible or fire-resistant construction; (5) a detached building that is no fire hazard to other property, used only in supplying electric service, interior accessible only to qualified persons; (6) portable and mobile surface mining equipment with draining to the ground, safe egress, and a 6 mm (1/4 in.) steel personnel barrier." }
+    },
+    {
+      "@type": "Question",
+      "name": "What fire safeguards apply to oil-insulated transformers installed outdoors?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.27: combustible material, buildings, fire escapes, and door/window openings shall be safeguarded from fires originating in oil-insulated transformers installed on roofs, attached to, or adjacent to buildings or combustible material. Where a fire hazard exists, apply one or more safeguards according to the degree of hazard: (1) space separations, (2) fire-resistant barriers, (3) automatic fire suppression systems, (4) enclosures that confine the oil of a ruptured tank (fire-resistant dikes, curbed areas or basins, or trenches filled with coarse crushed stone; trapped drains where oil removal is important). 2017 to 2023: only the Informational Note's NESC cite moved (ANSI C2-2007 → ANSI/IEEE C2-2017) and 'under ground' → 'underground'." }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens when a transformer's insulating liquid is changed?",
+      "acceptedAnswer": { "@type": "Answer", "text": "450.28: when modifications to an existing transformer change its type with respect to Part II, the transformer shall be marked to show the type of insulating liquid installed, and the modified installation shall comply with the applicable requirements for that type. Word-identical 2017 to 2023. This is the section that catches a 'dry-type retrofit' or a fluid swap that changes the fire category — the marking and the new type's rules both apply." }
+    },
+    {
+      "@type": "Question",
+      "name": "Did Article 450 Part II change between the 2017 and 2023 NEC?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The installation rules and every boundary number (112½ kVA, 300 mm/12 in., 35,000 V, 25 kVA, 10/75 kVA, 1000 V, 4 in., 6 mm, 1 hour, 6 ft/12 ft) are unchanged 2017 to 2023 — confirmed by 192 machine-verified phrase-level checks against the on-disk 2017 NFPA scan and the on-disk 2023 NEC. The real deltas: 450.21(B) reworked (the 1-hour fire rating fused into the rule sentence; the 'Unless specified otherwise in this article, the term fire resistant means…' definition deleted; the two Exception fragments made explicit with 'shall not be required to be installed in a transformer room'; the informational note re-cited to ASTM E119-18a with a tail clause); 450.23 reworded (may→can in both restriction notes, the (A)(2)/(A)(3) lettered items re-cast as 'If' clauses with 'is present', the (B) lead's 'where … (1) or (2)' → 'if … either of the following', NFPA 220-2015 → 2021, the Listed-in-Article-100 note dropped, the additional-safeguards note moved from (B)(1) to (B)(2)); 450.27's NESC re-cite (C2-2007 → C2-2017). No Mike Holt 2023 change-summary entries exist for any Part II section — every delta here is on-disk-verified against the two full-text sources." }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+.removed{background:rgba(224,108,92,.08);border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+td.bad{color:var(--bad);font-weight:650}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code{font-family:var(--mono);font-size:.92em;background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cta{display:inline-block;background:var(--acc);color:#08111c;font-weight:750;text-decoration:none;padding:12px 20px;border-radius:8px;margin:22px 0 6px}
+.cta:hover{filter:brightness(1.08)}
+.ctasub{color:var(--dim);font-size:13.5px}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 18px;font-size:14px}
+.method .blank{font-family:var(--mono);font-size:.9em;color:var(--dim)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+footer a{color:var(--dim)}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+@media(max-width:640px){h1{font-size:24px}table{font-size:12.5px}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 450.21–450.28 — <span>Transformer Installation by Type (Article 450 Part II)</span></h1>
+  <p class="sub">Articles 51 and 52 covered the <em>protection</em> core (450.3 / 450.4 / 450.6) and the <em>general installation</em> core (450.8–450.14) of Article 450. This article is <strong>Part II — "Specific Provisions Applicable to Different Types of Transformers"</strong> — the rules that decide <em>where a transformer may physically live, keyed on its insulation type</em>: <strong>450.21</strong> dry-type indoors (the <strong>112½ kVA</strong> transformer-room boundary + the Class 155 exceptions), <strong>450.22</strong> dry-type outdoors (weatherproof enclosure + the 12-in combustible-material rule), <strong>450.23</strong> less-flammable liquids (the 300 °C fire point; the 35,000 V indoor cap), <strong>450.24</strong> nonflammable fluids (indoors or outdoors; vault over 35,000 V), <strong>450.25</strong> askarel (the 25 kVA vent / 35,000 V vault pair), <strong>450.26</strong> oil-insulated indoors (the vault rule + all six Exceptions), <strong>450.27</strong> oil-insulated outdoors (the four fire safeguards), and <strong>450.28</strong> modification marking. Part III — the vault construction itself (450.41–450.48) — is the next article.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 450.21–450.28 for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text on disk)</strong>, the citation anchor; the 2023 changes are documented in the edition-history boxes and machine-verified against the on-disk 2023 NEC (192 phrase-level checks, all passing). Every current and every boundary-crossing number in the worked examples is computed by the <strong>shipped PanelWright cores</strong> under node — zero hand math.</div>
+
+  <h2>The sections, in full (2017)</h2>
+  <p>All eight sections of Part II, quoted verbatim from the 2017 NEC:</p>
+
+  <div class="code">Part II. Specific Provisions Applicable to Different Types of
+Transformers
+
+450.21 Dry-Type Transformers Installed Indoors.
+
+(A) Not Over 112½ kVA. Dry-type transformers installed indoors and
+rated 112½ kVA or less shall have a separation of at least 300 mm
+(12 in.) from combustible material unless separated from the
+combustible material by a fire-resistant, heat-insulated barrier.
+
+Exception: This rule shall not apply to transformers rated for 1000
+volts, nominal, or less that are completely enclosed, except for
+ventilating openings.
+
+(B) Over 112½ kVA. Individual dry-type transformers of more than
+112½ kVA rating shall be installed in a transformer room of
+fire-resistant construction. Unless specified otherwise in this
+article, the term fire resistant means a construction having a
+minimum fire rating of 1 hour.
+
+Exception No. 1: Transformers with Class 155 or higher insulation
+systems and separated from combustible material by a fire-resistant,
+heat-insulating barrier or by not less than 1.83 m (6 ft)
+horizontally and 3.7 m (12 ft) vertically,
+
+Exception No. 2: Transformers with Class 155 or higher insulation
+systems and completely enclosed except for ventilating openings.
+
+Informational Note: See ANSI/ASTM E119-15, Method for Fire Tests of
+Building Construction and Materials.
+
+(C) Over 35,000 Volts. Dry-type transformers rated over 35,000 volts
+shall be installed in a vault complying with Part III of this article.
+
+450.22 Dry-Type Transformers Installed Outdoors. Dry-type
+transformers installed outdoors shall have a weatherproof enclosure.
+
+Transformers exceeding 112½ kVA shall not be located within 300 mm
+(12 in.) of combustible materials of buildings unless the
+transformer has Class 155 insulation systems or higher and is
+completely enclosed except for ventilating openings.
+
+450.23 Less-Flammable Liquid-Insulated Transformers. Transformers
+insulated with listed less-flammable liquids that have a fire point
+of not less than 300°C shall be permitted to be installed in
+accordance with 450.23(A) or 450.23(B).
+
+(A) Indoor Installations. Indoor installations shall be permitted in
+accordance with one of the following:
+
+(1) In Type I or Type II buildings, in areas where all of the
+following requirements are met:
+
+The transformer is rated 35,000 volts or less.
+No combustible materials are stored.
+A liquid confinement area is provided.
+The installation complies with all the restrictions provided for in
+the listing of the liquid.
+
+Informational Note: Such restrictions may include, but are not
+limited to: maximum pressure of the tank, use of a pressure relief
+valve, appropriate fuse types and proper sizing of overcurrent
+protection.
+
+(2) With an automatic fire extinguishing system and a liquid
+confinement area, provided the transformer is rated 35,000 volts or
+less
+
+(3) In accordance with 450.26
+
+(B) Outdoor Installations. Less-flammable liquid-filled
+transformers shall be permitted to be installed outdoors, attached
+to, adjacent to, or on the roof of buildings, where installed in
+accordance with (1) or (2).
+
+(1) For Type I and Type II buildings, the installation shall comply
+with all the restrictions provided for in the listing of the liquid.
+
+Informational Note No. 1: Installations adjacent to combustible
+material, fire escapes, or door and window openings may require
+additional safeguards such as those listed in 450.27.
+
+Informational Note No. 2: Such restrictions may include, but are not
+limited to: maximum pressure of the tank, use of a pressure relief
+valve, appropriate fuse types, and proper sizing of overcurrent
+protection.
+
+(2) In accordance with 450.27.
+
+Informational Note No. 1: As used in this section, Type I and Type II
+buildings refers to Type I and Type II building construction as
+defined in NFPA 220-2015, Standard on Types of Building Construction.
+Combustible materials refers to those materials not classified as
+noncombustible or limited-combustible as defined in NFPA 220-2015,
+Standard on Types of Building Construction.
+
+Informational Note No. 2: See definition of Listed in Article 100.
+
+450.24 Nonflammable Fluid-Insulated Transformers. Transformers
+insulated with a dielectric fluid identified as nonflammable shall be
+permitted to be installed indoors or outdoors. Such transformers
+installed indoors and rated over 35,000 volts shall be installed in a
+vault. Such transformers installed indoors shall be furnished with a
+liquid confinement area and a pressure-relief vent. The transformers
+shall be furnished with a means for absorbing any gases generated by
+arcing inside the tank, or the pressure-relief vent shall be
+connected to a chimney or flue that will carry such gases to an
+environmentally safe area.
+
+Informational Note: Safety may be increased if fire hazard analyses
+are performed for such transformer installations.
+
+For the purposes of this section, a nonflammable dielectric fluid is
+one that does not have a flash point or fire point and is not
+flammable in air.
+
+450.25 Askarel-Insulated Transformers Installed Indoors.
+Askarel-insulated transformers installed indoors and rated over 25
+kVA shall be furnished with a pressure-relief vent. Where installed
+in a poorly ventilated place, they shall be furnished with a means
+for absorbing any gases generated by arcing inside the case, or the
+pressure-relief vent shall be connected to a chimney or flue that
+carries such gases outside the building. Askarel-insulated
+transformers rated over 35,000 volts shall be installed in a vault.
+
+450.26 Oil-Insulated Transformers Installed Indoors. Oil-insulated
+transformers installed indoors shall be installed in a vault
+constructed as specified in Part III of this article.
+
+Exception No. 1: Where the total capacity does not exceed 112½ kVA,
+the vault specified in Part III of this article shall be permitted to
+be constructed of reinforced concrete that is not less than 100 mm
+(4 in.) thick.
+
+Exception No. 2: Where the nominal voltage does not exceed 1000, a
+vault shall not be required if suitable arrangements are made to
+prevent a transformer oil fire from igniting other materials and the
+total capacity in one location does not exceed 10 kVA in a section of
+the building classified as combustible or 75 kVA where the
+surrounding structure is classified as fire-resistant construction.
+
+Exception No. 3: Electric furnace transformers that have a total
+rating not exceeding 75 kVA shall be permitted to be installed
+without a vault in a building or room of fire-resistant construction,
+provided suitable arrangements are made to prevent a transformer oil
+fire from spreading to other combustible material.
+
+Exception No. 4: A transformer that has a total rating not exceeding
+75 kVA and a supply voltage of 1000 volts or less that is an
+integral part of charged-particle-accelerating equipment shall be
+permitted to be installed without a vault in a building or room of
+noncombustible or fire-resistant construction, provided suitable
+arrangements are made to prevent a transformer oil fire from
+spreading to other combustible material.
+
+Exception No. 5: Transformers shall be permitted to be installed in
+a detached building that does not comply with Part III of this
+article if neither the building nor its contents present a fire
+hazard to any other building or property, and if the building is
+used only in supplying electric service and the interior is
+accessible only to qualified persons.
+
+Exception No. 6: Oil-insulated transformers shall be permitted to be
+used without a vault in portable and mobile surface mining equipment
+(such as electric excavators) if each of the following conditions is
+met:
+
+(1) Provision is made for draining leaking fluid to the ground.
+(2) Safe egress is provided for personnel.
+(3) A minimum 6-mm (1/4-in.) steel barrier is provided for personnel
+protection.
+
+450.27 Oil-Insulated Transformers Installed Outdoors. Combustible
+material, combustible buildings, and parts of buildings, fire
+escapes, and door and window openings shall be safeguarded from fires
+originating in oil-insulated transformers installed on roofs,
+attached to or adjacent to a building or combustible material.
+
+In cases where the transformer installation presents a fire hazard,
+one or more of the following safeguards shall be applied according to
+the degree of hazard involved:
+
+(1) Space separations
+(2) Fire-resistant barriers
+(3) Automatic fire suppression systems
+(4) Enclosures that confine the oil of a ruptured transformer tank
+
+Oil enclosures shall be permitted to consist of fire-resistant dikes,
+curbed areas or basins, or trenches filled with coarse, crushed
+stone. Oil enclosures shall be provided with trapped drains where the
+exposure and the quantity of oil involved are such that removal of
+oil is important.
+
+Informational Note: For additional information on transformers
+installed on poles or structures or under ground, see ANSI C2-2007,
+National Electrical Safety Code.
+
+450.28 Modification of Transformers. When modifications are made to a
+transformer in an existing installation that change the type of the
+transformer with respect to Part II of this article, such
+transformer shall be marked to show the type of insulating liquid
+installed, and the modified transformer installation shall comply
+with the applicable requirements for that type of transformer.
+<span class="src">Source: verbatim 2017 NEC (official NFPA text on disk, nec2017_full.txt, Part II region). OCR line-wrap reflow normalized; disclosed scan artifacts corrected: "112%" → "112½" (450.21(A)/(B) headings + rule sentences, 450.22 — the scan renders the fraction 112 1/2 as 112%), "the term five resistant" → "the term fire resistant" (450.21(B) — the scan garbles the 'fi' ligature), "3.7 m (12 fi)" → "3.7 m (12 ft)" (450.21(B) Ex 1), "11 2'4 kVA" → "112½ kVA" (450.26 Ex 1), "Oilinsulated" → "Oil-insulated" (450.26 lead + Ex 6 — hyphen/space dropped), "fue-vresistant"/"fue" → "fire-resistant"/"fire" (450.26 Ex 4 — ligature garble), "Part IIT" → "Part III" (450.26 Ex 5), and the stray 'if' → 'if' (450.26 Ex 5, the scan drops the leading 'if' — restored from the 2023 text, identical substance), "under ground" (450.27 IN — 2017's actual two-word spelling, kept as-is; 2023 prints 'underground'). Running headers ("NATIONAL ELECTRICAL CODE 2017 Edition" / "ARTICLE 450 — TRANSFORMERS AND TRANSFORMER VAULTS (INCLUDING SECONDARY TIES)") and the page-break artifacts (page footer "70-335" + a bare "450.25" running number split inside 450.22's second sentence; the "Boop" garble between 450.23(A)(1)'s last requirement and its Informational Note; the "(D) Voltage Warning"-style stray section numbers) were removed. The lettered items (2)/(3) of 450.23(A) carry the OCR letter forms "e." / "f." in the scan — rendered here as (2)/(3) per the section's own numbering. No other wording altered — including 450.21(C)'s trailing comma and the 2017 internal inconsistency in the 450.23 restriction notes (the (A) note omits the comma before "and proper sizing" while the (B)(1) note has it), both kept as scanned.</span></div>
+
+  <div class="renew"><strong>Eight sections, one question each.</strong> 450.21: <em>can this dry-type unit live against a wall, or does it need a 1-hour room?</em> 450.22: <em>is it weatherproof, and is it 12 inches from the building?</em> 450.23: <em>is the liquid actually less-flammable (300 °C fire point) — and does the installation follow the listing?</em> 450.24: <em>is the fluid nonflammable — and does the unit get its confinement + vent + gas path?</em> 450.25: <em>is there a pressure-relief vent (over 25 kVA) and a gas-absorbing path (poorly ventilated)?</em> 450.26: <em>is there a vault — or which of the six Exceptions applies?</em> 450.27: <em>what keeps this outdoor oil-filled unit from starting the building on fire?</em> 450.28: <em>was the fluid changed — and is the transformer re-marked?</em></div>
+
+  <h2>The insulation-type key — the boundaries at a glance</h2>
+  <table>
+    <thead><tr><th>Type (section)</th><th>Where</th><th class="ctr">Boundary numbers</th><th>Requirement core</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Dry-type</strong> (450.21)</td><td>Indoors</td><td class="ctr">112½ kVA · 300 mm (12 in.) · 1000 V · 1 hour · 6 ft × 12 ft · Class 155</td><td>≤ 112½ kVA: 12 in. separation or barrier (Exception: fully enclosed ≤ 1000 V — none). &gt; 112½ kVA: 1-hour transformer room unless Class 155 (barrier or 6 ft H / 12 ft V, or fully enclosed)</td></tr>
+      <tr><td><strong>Dry-type</strong> (450.22)</td><td>Outdoors</td><td class="ctr">112½ kVA · 300 mm (12 in.) · Class 155</td><td>Weatherproof enclosure; &gt; 112½ kVA not within 12 in. of building combustible material unless Class 155 + fully enclosed</td></tr>
+      <tr><td><strong>Less-flammable liquid</strong> (450.23)</td><td>Indoors / outdoors</td><td class="ctr">300 °C fire point · 35,000 V</td><td>Listed liquid ≥ 300 °C fire point. Indoors: Type I/II + 35,000 V or less + no storage + confinement + listing restrictions; or auto fire-extinguishing + confinement (35,000 V or less); or per 450.26. Outdoors: listing restrictions or per 450.27</td></tr>
+      <tr><td><strong>Nonflammable fluid</strong> (450.24)</td><td>Indoors or outdoors</td><td class="ctr">35,000 V</td><td>Indoors &gt; 35,000 V: vault. Indoors: liquid confinement area + pressure-relief vent + gas absorption or chimney/flue to an environmentally safe area</td></tr>
+      <tr><td><strong>Askarel</strong> (450.25)</td><td>Indoors</td><td class="ctr">25 kVA · 35,000 V</td><td>&gt; 25 kVA: pressure-relief vent; poorly ventilated: gas absorption or chimney/flue outside the building; &gt; 35,000 V: vault</td></tr>
+      <tr><td><strong>Oil-insulated</strong> (450.26)</td><td>Indoors</td><td class="ctr">112½ kVA · 100 mm (4 in.) · 1000 V · 10 kVA / 75 kVA · 75 kVA · 6 mm (1/4 in.)</td><td>Vault per Part III — six Exceptions (concrete vault; no-vault 10/75 kVA; furnace 75 kVA; accelerator 75 kVA / 1000 V; detached qualified-persons building; surface-mining equipment)</td></tr>
+      <tr><td><strong>Oil-insulated</strong> (450.27)</td><td>Outdoors</td><td class="ctr">— (degree of hazard)</td><td>Safeguard combustible material/buildings/fire escapes/openings; one or more of: space separation, fire-resistant barrier, automatic fire suppression, oil-confining enclosure (dike / curb / crushed-stone trench; trapped drains)</td></tr>
+      <tr><td><strong>Modified</strong> (450.28)</td><td>Any</td><td class="ctr">—</td><td>Type change → mark the insulating liquid installed + comply with that type's requirements</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 112½ kVA figure appears three times (450.21(A)/(B) indoors, 450.22 outdoors, and 450.26 Ex 1's concrete vault) — it is the recurring "small transformer" boundary of Part II. The 35,000 V figure is the recurring <em>medium-voltage</em> boundary (dry-type → Part III vault; less-flammable indoor routes cap; askarel → vault). The 75 kVA figure is the recurring <em>oil-indoors exception</em> boundary (fire-resistant no-vault; furnace; accelerator).</p>
+
+  <h2>450.21 — Dry-type indoors: the 112½ kVA boundary</h2>
+  <p>This is the section people hit first when a dry-type unit lands inside a building:</p>
+  <ul>
+    <li><strong>(A) Not over 112½ kVA.</strong> A separation of at least <strong>300 mm (12 in.)</strong> from combustible material — or a <strong>fire-resistant, heat-insulated barrier</strong> in place of the distance. The <strong>Exception</strong> is the one that puts pad-mount-style dry-type units against walls legally: at <strong>1000 V nominal or less</strong> and <strong>completely enclosed except for ventilating openings</strong>, even the 12 inches is not required.</li>
+    <li><strong>(B) Over 112½ kVA.</strong> A <strong>transformer room of fire-resistant construction</strong> — <strong>1-hour</strong> minimum fire rating (2023 fuses the rating into the rule; 2017 stated it as a term definition). <strong>Exception No. 1:</strong> <strong>Class 155 or higher</strong> insulation systems with a fire-resistant, heat-insulating barrier <em>or</em> separation of <strong>not less than 1.83 m (6 ft) horizontally and 3.7 m (12 ft) vertically</strong>. <strong>Exception No. 2:</strong> Class 155 or higher, completely enclosed except for ventilating openings. This is why the <strong>temperature class on the nameplate (450.11(A)(8) — Article 52)</strong> is a Part II input: a Class 155 dry-type unit at 150 kVA can sit in a normal room; a Class 120 unit at 150 kVA needs the 1-hour room.</li>
+    <li><strong>(C) Over 35,000 V.</strong> Part III vault — regardless of the size or insulation class. The medium-voltage boundary.</li>
+  </ul>
+
+  <h2>450.22 — Dry-type outdoors</h2>
+  <p>Two sentences: <strong>weatherproof enclosure</strong>, and for units <strong>exceeding 112½ kVA</strong>, no location <strong>within 300 mm (12 in.) of combustible materials of buildings</strong> — unless <strong>Class 155 insulation or higher + completely enclosed except for ventilating openings</strong>. Note the asymmetry with 450.21: outdoors there is no barrier alternative to the 12 inches, and the insulation-class escape is Class 155-or-higher (450.21(B)'s barrier-or-distance Exception has no outdoor counterpart).</p>
+
+  <h2>450.23 — Less-flammable liquid (the 300 °C fire point)</h2>
+  <p>The gateway sentence: the liquid must be <strong>listed</strong> with a <strong>fire point of not less than 300 °C</strong>. (Fire point, not flash point — the liquid is permitted to be <em>less</em> flammable than oil, not nonflammable like 450.24's fluids.)</p>
+  <ul>
+    <li><strong>(A) Indoor.</strong> Three routes: <strong>(1)</strong> Type I or Type II building where <em>all</em> of — 35,000 V or less, no combustible materials stored, liquid confinement area provided, installation complies with the listing's restrictions (the IN enumerates them: maximum tank pressure, pressure relief valve, appropriate fuse types, proper OCPD sizing); <strong>(2)</strong> an <strong>automatic fire extinguishing system + liquid confinement area</strong>, 35,000 V or less; <strong>(3)</strong> in accordance with <strong>450.26</strong> (the oil-insulated vault route). The 35,000 V cap is the boundary: a 40 kV unit has only route (3) — a vault.</li>
+    <li><strong>(B) Outdoor.</strong> Attached to, adjacent to, or on the roof of buildings — per <strong>(1)</strong> the listing's restrictions (Type I/II buildings) or <strong>(2)</strong> in accordance with <strong>450.27</strong> (the outdoor oil safeguards, by reference). The 2017 (B)(2) Informational Note No. 1 defines "Type I and Type II buildings" via <strong>NFPA 220-2015</strong> (2023 re-cites <strong>NFPA 220-2021</strong>) and defines combustible materials as those not classified noncombustible or limited-combustible.</li>
+  </ul>
+
+  <h2>450.24 — Nonflammable fluid</h2>
+  <p>The top of the fluid hierarchy: a dielectric fluid <strong>identified as nonflammable</strong> — the section's own definition: <em>one that does not have a flash point or fire point and is not flammable in air</em>. Permitted <strong>indoors or outdoors</strong>. The three indoor obligations: vault if <strong>over 35,000 V</strong>; a <strong>liquid confinement area + pressure-relief vent</strong>; and a <strong>means for absorbing gases generated by arcing inside the tank</strong>, or the pressure-relief vent connected to <strong>a chimney or flue</strong> carrying the gases to an environmentally safe area. The Informational Note suggests fire hazard analyses "may" increase safety — permissive, not mandatory.</p>
+
+  <h2>450.25 — Askarel (PCB) — the legacy fluid</h2>
+  <p>Askarel is the older PCB-based fluid (polychlorinated biphenyls) — still present in service on existing units, which is why the rule survives. Two boundaries: <strong>over 25 kVA</strong> indoors → <strong>pressure-relief vent</strong> (the word "over" matters: at exactly 25 kVA no vent is required); <strong>poorly ventilated place</strong> → gas absorption or the vent routed to a chimney/flue <strong>outside the building</strong>; <strong>over 35,000 V</strong> → <strong>vault</strong>. Word-identical 2017 → 2023.</p>
+
+  <h2>450.26 — Oil-insulated indoors: the vault + six Exceptions</h2>
+  <p>The default is the strictest in Part II: <strong>indoor oil-filled = Part III vault</strong>. The six Exceptions, in the order an inspector will ask about them:</p>
+  <ol>
+    <li><strong>112½ kVA or less</strong> → the vault may be <strong>reinforced concrete, not less than 100 mm (4 in.) thick</strong>, instead of full Part III construction (the 4-inch concrete vault — the cheapest legal indoor oil-filled option).</li>
+    <li><strong>1000 V nominal or less + suitable arrangements</strong> to prevent an oil fire from igniting other materials → <strong>no vault</strong> up to <strong>10 kVA</strong> in a section classified as <em>combustible</em>, or <strong>75 kVA</strong> where the surrounding structure is <em>fire-resistant</em>. This is the exception that covers most small indoor pad-mount-adjacent oil units.</li>
+    <li><strong>Electric furnace transformers</strong>, total rating ≤ <strong>75 kVA</strong> → no vault in a fire-resistant building/room, with suitable arrangements.</li>
+    <li><strong>Charged-particle-accelerating equipment</strong> (medical linear accelerators and the like): ≤ <strong>75 kVA</strong>, supply <strong>1000 V or less</strong>, integral to the equipment → no vault in noncombustible or fire-resistant construction, with suitable arrangements.</li>
+    <li><strong>Detached building</strong> that does not comply with Part III — if it presents no fire hazard to other buildings/property, is used <em>only</em> in supplying electric service, and the interior is accessible <strong>only to qualified persons</strong> (the "transformer shack" exception).</li>
+    <li><strong>Portable and mobile surface mining equipment</strong> (electric excavators): no vault if (1) draining leaking fluid to the ground, (2) safe egress, (3) a <strong>6-mm (1/4-in.) steel barrier</strong> for personnel protection.</li>
+  </ol>
+
+  <h2>450.27 — Oil-insulated outdoors: the four fire safeguards</h2>
+  <p>Outdoor oil-filled units (rooftop, pole-adjacent, pad-mounted next to the building) must safeguard combustible material, buildings, fire escapes, and door/window openings from transformer-origin fires. Where the installation presents a fire hazard, apply <strong>one or more</strong> — "according to the degree of hazard involved" is the AHJ's latitude clause:</p>
+  <ol>
+    <li><strong>Space separations</strong></li>
+    <li><strong>Fire-resistant barriers</strong></li>
+    <li><strong>Automatic fire suppression systems</strong></li>
+    <li><strong>Enclosures that confine the oil</strong> of a ruptured tank — fire-resistant dikes, curbed areas or basins, or trenches filled with <strong>coarse, crushed stone</strong>; <strong>trapped drains</strong> where the exposure and quantity of oil make removal important (a trapped drain keeps fire-extinguishing foam/chemicals in and keeps the oil from running off-site).</li>
+  </ol>
+  <p class="sub">The Informational Note points to the National Electrical Safety Code for pole/structure/underground installations — 2017 cites <strong>ANSI C2-2007</strong>; 2023 cites <strong>ANSI/IEEE C2-2017</strong>.</p>
+
+  <h2>450.28 — Modification of transformers</h2>
+  <p>The catch-all for the retrofits: if a modification to an <em>existing</em> installation <strong>changes the transformer's type with respect to Part II</strong> (e.g., a fluid swap that moves the unit from oil to less-flammable, or a tank replacement that changes the insulation class), the transformer <strong>shall be marked to show the type of insulating liquid installed</strong>, and the modified installation <strong>shall comply with the applicable requirements for that type</strong>. The marking is the audit trail: a 450.11(A)(7) nameplate item (amount and kind of insulating liquid) that 450.28 enforces at modification time.</p>
+
+  <h2>Edition history: 2017 → 2023</h2>
+  <p>The headline: <strong>every boundary number and every installation rule is unchanged</strong> — 112½ kVA, 300 mm (12 in.), 1000 V, 1 hour, 1.83 m (6 ft) / 3.7 m (12 ft), Class 155, 35,000 V, 300 °C, 25 kVA, 10 kVA / 75 kVA, 100 mm (4 in.), 6 mm (1/4 in.) — all present in both editions. A targeted machine check (<code>verify_art53.py</code>, <strong>192 phrase-level assertions</strong> reading the on-disk 2017 NFPA scan and the on-disk 2023 NEC directly) confirms it, item by item:</p>
+
+  <h3>The verified-substantive core (2017 ≈ 2023)</h3>
+  <table>
+    <thead><tr><th>Section</th><th>2017 → 2023 (machine-verified)</th></tr></thead>
+    <tbody>
+      <tr><td>450.21(A) — 300 mm (12 in.) separation / heat-insulated barrier; the fully-enclosed ≤ 1000 V Exception</td><td class="ctr ok">IDENTICAL — rule + Exception present unchanged in both editions</td></tr>
+      <tr><td>450.21(B) — transformer room requirement; the two Class 155 Exceptions (barrier or 6 ft H / 12 ft V; fully enclosed)</td><td class="ctr ok">IDENTICAL in substance — the room rule + both Class 155 Exception cores present in both (the 2023 rewording of the rating sentence and the Exception predicates are the deltas below; the boundary numbers are untouched)</td></tr>
+      <tr><td>450.21(C) — over 35,000 V → Part III vault</td><td class="ctr ok">IDENTICAL — the 35,000 V boundary unchanged</td></tr>
+      <tr><td>450.22 — weatherproof enclosure; &gt; 112½ kVA not within 300 mm (12 in.) of building combustible material unless Class 155 + enclosed</td><td class="ctr ok">IDENTICAL — both sentences present unchanged in both editions</td></tr>
+      <tr><td>450.23 — listed less-flammable liquid, 300 °C fire point; indoor routes (Type I/II + 35,000 V + no storage + confinement + listing; auto fire-extinguishing + confinement; 450.26); outdoor routes (listing; 450.27)</td><td class="ctr ok">IDENTICAL in substance — all four indoor requirement items + the 35,000 V cap + both outdoor routes present in both (the may→can / If-clause / NFPA-220 / Listed-note deltas below are rewording, not requirement changes)</td></tr>
+      <tr><td>450.24 — nonflammable fluid; indoors or outdoors; 35,000 V vault; confinement + pressure-relief vent; gas absorption or chimney/flue; the nonflammable definition</td><td class="ctr ok">IDENTICAL — every sentence present unchanged in both editions</td></tr>
+      <tr><td>450.25 — askarel: &gt; 25 kVA vent; poorly-ventilated gas path; &gt; 35,000 V vault</td><td class="ctr ok">IDENTICAL — all three sentences present unchanged in both editions</td></tr>
+      <tr><td>450.26 — indoor oil: Part III vault + all six Exceptions (4-in concrete; 10/75 kVA no-vault; furnace 75 kVA; accelerator 75 kVA/1000 V; detached qualified-persons building; surface-mining 6-mm barrier)</td><td class="ctr ok">IDENTICAL — the lead + all six Exceptions' substance present in both (2017's scan garbles "fire" as "five" in Ex 2 and "fire-resistant" in Ex 4 — OCR artifacts, disclosed)</td></tr>
+      <tr><td>450.27 — outdoor oil: the safeguard lead + the four safeguards + oil-enclosure/trapped-drain sentences</td><td class="ctr ok">IDENTICAL — the four safeguard items and both enclosure sentences present unchanged in both (only the NESC Informational Note re-cites below)</td></tr>
+      <tr><td>450.28 — modification marking + compliance with the new type</td><td class="ctr ok">IDENTICAL — the full sentence present unchanged in both editions</td></tr>
+    </tbody>
+  </table>
+  <p class="sub"><strong>2020 position — stated, not asserted:</strong> no on-disk 2020 full-code text covers Article 450 (the on-disk 2020 scan ends before Article 450's Part II body; the 2020/2023 online viewer is login-gated). So this page documents 2017 → 2023 and does not assert a 2020 word-identity for Part II. The identity claim rests on the two on-disk full sources (2017 NFPA scan + 2023 CSV), the standard this series uses. <strong>No Mike Holt 2023 change-summary entries exist for any Part II section</strong> (the on-disk Mike Holt 2023 summaries cover only 450.1 and 450.10 in Article 450) — every delta below is on-disk-verified against the two full-text sources, stated as such.</p>
+
+  <h3>2017 → 2023 deltas in 450.21–450.28 (all verified on disk)</h3>
+  <div class="removed"><strong>450.21(B) — the transformer-room rule reworked. <em>On-disk-verified.</em></strong> Five coordinated changes, one intent — make the 1-hour rating explicit and the two Exceptions grammatical: (1) 2017's two-sentence construction — "…installed in a transformer room of fire-resistant construction. <em>Unless specified otherwise in this article, the term fire resistant means a construction having a minimum fire rating of 1 hour.</em>" — becomes 2023's single fused sentence: "…installed in a transformer room of fire-resistant construction <strong>having a minimum fire rating of 1 hour</strong>." (the term definition deleted); (2) the two 2017 Exception <em>fragments</em> ("Transformers with Class 155 or higher insulation systems and separated from combustible material by a fire-resistant, heat-insulating barrier or by not less than 1.83 m (6 ft) horizontally and 3.7 m (12 ft) vertically," — trailing comma, no predicate) are made explicit in 2023: each now ends "<strong>shall not be required to be installed in a transformer room</strong>." (machine-checked: the predicate appears 2× in 2023, 0× in 2017); (3) the Informational Note re-cites the fire-test standard: 2017 "See <strong>ANSI/ASTM E119-15, Method for Fire Tests of Building Construction and Materials</strong>." → 2023 "See <strong>ASTM E119-18a, Standard Test Methods for Fire Tests of Building Construction and Materials, for additional information on fire-resistance ratings</strong>." (ANSI/ prefix dropped, revision -15 → -18a, title updated, tail clause added).</div>
+  <div class="removed"><strong>450.23 — the less-flammable-liquid section reworded (requirements unchanged). <em>On-disk-verified.</em></strong> (1) Both restriction Informational Notes: "Such restrictions <strong>may</strong> include, but are not limited to: …" (2017) → "Such restrictions <strong>can</strong> include, but are not limited to<strong>,</strong> …" (2023 — modal swap + the colon→comma). (2) The 450.23(A) lettered items (2)/(3): 2017's elliptical "With an automatic fire extinguishing system and a liquid confinement area, provided the transformer is rated 35,000 volts or less" / "In accordance with 450.26" become 2023's "<strong>If</strong> an automatic fire extinguishing system and a liquid confinement area <strong>is present</strong>, provided…" / "<strong>If</strong> the installation complies with 450.26". (3) The 450.23(B) lead: "where installed in accordance with <strong>(1) or (2)</strong>" (2017) → "if installed in accordance with <strong>either of the following</strong>" (2023). (4) The building-construction reference re-cited: "<strong>NFPA 220-2015</strong>, Standard on Types of Building Construction" (2017, appearing twice) → "NFPA 220-2021, Standard on Types of Building Construction, <strong>for definitions of Type I and Type II building construction</strong>" (2023, a single definitions note) — and the 2017 "See definition of Listed in Article 100." Informational Note is <strong>dropped</strong> in 2023. (5) The additional-safeguards note moves: 2017's (B)(1) Informational Note No. 1 ("Installations adjacent to combustible material, fire escapes, or door and window openings <strong>may require</strong> additional safeguards <strong>such as those listed in 450.27</strong>.") becomes 2023's (B) Informational Note No. 3 ("<strong>See 450.27 for examples of</strong> additional safeguards <strong>that can be required</strong> for installations adjacent to combustible material, fire escapes, or door and window openings."). One disclosed 2017-scan quirk: the 450.23(A) restriction note omits the comma before "and proper sizing" while the 450.23(B)(1) note has it — a 2017 internal inconsistency, kept as scanned (both forms verified present in the 2017 source).</div>
+  <div class="removed"><strong>450.27 — the NESC Informational Note re-cites. <em>On-disk-verified.</em></strong> 2017: "For additional information on transformers installed on poles or structures or <strong>under ground</strong>, see <strong>ANSI C2-2007</strong>, National Electrical Safety Code." → 2023: "See <strong>ANSI/IEEE C2-2017</strong>, National Electrical Safety Code, for additional information on transformers installed on poles or structures or <strong>underground</strong>." (standard-year re-cite + sentence reordering + "under ground" → "underground"). The four safeguard items and both oil-enclosure sentences are unchanged.</div>
+  <div class="renew"><strong>Net effect for an installation job.</strong> If you are placing a transformer, the <em>requirements</em> you satisfy are the same whether the jurisdiction is on 2017 or 2023: the 112½ kVA indoor/outdoor split, the 12-inch separations, the Class 155 escapes, the 1-hour transformer room, the 300 °C fire point, the 35,000 V medium-voltage boundaries, the 25 kVA askarel vent, the six 450.26 Exceptions, the four 450.27 safeguards, and the 450.28 modification marking. The edition history matters for <em>documentation</em> — the 450.21(B) fire-rating sentence you quote (now fused into the rule), the ASTM E119-18a standard year in the 450.21(B) note, the NFPA 220-2021 cite in 450.23(B), and the ANSI/IEEE C2-2017 NESC cite in 450.27.</div>
+
+  <h2>Five worked examples (core-computed)</h2>
+  <p>Every rated current and conductor pick below is computed by the shipped cores under node (<code>compute_art53.js</code> → <code>art53_numbers.json</code>): three-phase rated current as kVA×1000 ÷ (√3 × V), and <code>pickConductor31016</code> for the Table 310.16 (75 °C Cu column) conductor picks. The boundary figures are the code numbers above; the kVA / voltage values are representative — read your specific transformer's nameplate.</p>
+
+  <h3>EX1 — 450.21(A)/(B) the 112½ kVA boundary, 480 V primary, core-computed</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Boundary (450.21(B))</td><td class="ctr">Over <strong>112½ kVA</strong> → 1-hour fire-resistant transformer room, unless Class 155 (barrier or 6 ft H / 12 ft V separation) or fully enclosed except for ventilating openings</td></tr>
+      <tr><td>Rated primary current at 112.5 kVA, 480 V</td><td class="ctr"><strong>135.32 A</strong> — the last kVA that may take the 12-inch-separation route of 450.21(A)</td></tr>
+      <tr><td>Rated primary current at 113 kVA, 480 V</td><td class="ctr"><strong>135.92 A</strong> — one kVA over: the 1-hour transformer room (or a Class 155 escape) is now required</td></tr>
+      <tr><td>The 1-kVA step at the boundary</td><td class="ctr">+0.60 A of rated primary current (135.32 → 135.92 A)</td></tr>
+      <tr><td>Primary conductor at 112.5 kVA, 125% × 135.32 A = 169.15 A</td><td class="ctr"><code>pickConductor31016(169.15, cu, 75) → 2/0 AWG Cu</code> (175 A @ 75 °C)</td></tr>
+      <tr><td>Primary conductor at 113 kVA, 125% × 135.92 A = 169.90 A</td><td class="ctr"><code>pickConductor31016(169.90, cu, 75) → 2/0 AWG Cu</code> (175 A @ 75 °C) — the conductor doesn't step; the <em>room</em> does</td></tr>
+      <tr><td>The 450.21(A) numbers</td><td class="ctr">separation <strong>300 mm (12 in.)</strong> or a fire-resistant, heat-insulated barrier; Exception: fully enclosed, ≤ <strong>1000 V</strong> nominal — no separation required</td></tr>
+      <tr><td>The 450.21(B) Ex 1 distances (Class 155 route)</td><td class="ctr">barrier, or not less than <strong>1.83 m (6 ft)</strong> horizontally and <strong>3.7 m (12 ft)</strong> vertically</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The pedagogical point of the boundary: stepping one kVA over 112½ doesn't change the conductors (169.15 A and 169.90 A both pick 2/0 AWG Cu at 175 A) — it changes the <em>building</em>. The 450.21(B) trigger is about fire exposure, not ampacity: the same 2/0 Cu feed serves both units, but the 113 kVA unit needs a 1-hour room unless it is Class 155.</p>
+
+  <h3>EX2 — 450.26 Exception 2: the no-vault indoor oil boundaries (≤ 1000 V), 480 V</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Exception 2 core</td><td class="ctr">≤ <strong>1000 V</strong> nominal + suitable arrangements → no vault up to <strong>10 kVA</strong> (combustible section) or <strong>75 kVA</strong> (fire-resistant structure)</td></tr>
+      <tr><td>Rated current at 10 kVA, 480 V</td><td class="ctr"><strong>12.03 A</strong> — the combustible-section maximum</td></tr>
+      <tr><td>Rated current at 75 kVA, 480 V</td><td class="ctr"><strong>90.21 A</strong> — the fire-resistant-structure maximum</td></tr>
+      <tr><td>Conductor at 10 kVA, 125% × 12.03 A = 15.03 A</td><td class="ctr"><code>pickConductor31016(15.03, cu, 75) → 14 AWG Cu</code> (20 A @ 75 °C)</td></tr>
+      <tr><td>Conductor at 75 kVA, 125% × 90.21 A = 112.76 A</td><td class="ctr"><code>pickConductor31016(112.76, cu, 75) → 2 AWG Cu</code> (115 A @ 75 °C)</td></tr>
+      <tr><td>Exception 1 (for contrast)</td><td class="ctr">≤ <strong>112½ kVA</strong> → vault permitted as <strong>100 mm (4 in.) reinforced concrete</strong> instead of Part III construction</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The two boundaries are not interchangeable: a 25 kVA indoor oil unit at 480 V <em>cannot</em> use Exception 2 in a combustible section (10 kVA max) — but it <em>can</em> use Exception 1: a 4-inch reinforced-concrete vault instead of the full Part III vault. The 112½ kVA concrete-vault route and the 75 kVA fire-resistant no-vault route are the two "escape hatches" an indoor oil-filled design normally lands on.</p>
+
+  <h3>EX3 — 450.25 askarel: the 25 kVA vent boundary + the 35,000 V vault boundary</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Vent boundary (450.25)</td><td class="ctr">Indoors, rated <strong>over 25 kVA</strong> → pressure-relief vent (at exactly 25 kVA: not required)</td></tr>
+      <tr><td>Rated current at 25 kVA, 480 V</td><td class="ctr"><strong>30.07 A</strong> — no vent required (the "over" does the work)</td></tr>
+      <tr><td>Rated current at 26 kVA, 480 V</td><td class="ctr"><strong>31.27 A</strong> — one kVA over: the pressure-relief vent is now required</td></tr>
+      <tr><td>Conductor at 25 kVA, 125% × 30.07 A = 37.59 A</td><td class="ctr"><code>pickConductor31016(37.59, cu, 75) → 8 AWG Cu</code> (50 A @ 75 °C)</td></tr>
+      <tr><td>Conductor at 26 kVA, 125% × 31.27 A = 39.09 A</td><td class="ctr"><code>pickConductor31016(39.09, cu, 75) → 8 AWG Cu</code> (50 A @ 75 °C)</td></tr>
+      <tr><td>Vault boundary (450.25)</td><td class="ctr">Rated <strong>over 35,000 V</strong> → vault, regardless of kVA</td></tr>
+      <tr><td>100 kVA at 34,500 V (under) vs 38,000 V (over)</td><td class="ctr"><strong>1.67 A</strong> (no vault) vs <strong>1.52 A</strong> (vault required) — the voltage, not the current, is the trigger</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Both askarel boundaries are "over" boundaries: exactly 25 kVA needs no vent; exactly 35,000 V needs no vault. And the vault trigger is voltage, not size — the 100 kVA / 38 kV unit carries only 1.52 A of rated current but still goes in a vault.</p>
+
+  <h3>EX4 — 450.23(A): the 35,000 V indoor cap, 5 MVA unit</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Indoor routes (450.23(A))</td><td class="ctr">(1) Type I/II + <strong>35,000 V or less</strong> + no storage + confinement + listing restrictions · (2) auto fire-extinguishing + confinement, <strong>35,000 V or less</strong> · (3) in accordance with <strong>450.26</strong> (the vault route)</td></tr>
+      <tr><td>Rated current at 5 MVA, 34,500 V (under the cap)</td><td class="ctr"><strong>83.67 A</strong> — routes (1)/(2) available in a Type I/II building (with the listing's restrictions)</td></tr>
+      <tr><td>Rated current at 5 MVA, 38,000 V (over the cap)</td><td class="ctr"><strong>75.97 A</strong> — routes (1)/(2) unavailable (both capped at 35,000 V): only route (3) — the 450.26 vault</td></tr>
+      <tr><td>Conductor at 34,500 V, 125% × 83.67 A = 104.59 A</td><td class="ctr"><code>pickConductor31016(104.59, cu, 75) → 2 AWG Cu</code> (115 A @ 75 °C)</td></tr>
+      <tr><td>Conductor at 38,000 V, 125% × 75.97 A = 94.96 A</td><td class="ctr"><code>pickConductor31016(94.96, cu, 75) → 3 AWG Cu</code> (100 A @ 75 °C) — the higher-voltage unit carries <em>less</em> current and needs a smaller conductor, but a <em>vault</em></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The cap is the design pivot: the same 5 MVA transformer at 34.5 kV can sit in a Type I/II room (with no storage, a confinement area, and the listing's restrictions), while the 38 kV version of the same unit must go into a 450.26 vault. The 35,000 V number is the recurring Part II medium-voltage boundary (it also caps 450.21(C) for dry-type and 450.24/450.25 vaults).</p>
+
+  <h3>EX5 — 450.26 Exception 6: surface-mining equipment, 250 kVA @ 480 V</h3>
+  <table>
+    <thead><tr><th>Item</th><th class="ctr">Value (core)</th></tr></thead>
+    <tbody>
+      <tr><td>Exception 6 conditions</td><td class="ctr">(1) draining leaking fluid to the ground · (2) safe egress for personnel · (3) a minimum <strong>6-mm (1/4-in.) steel barrier</strong> for personnel protection → oil-insulated, <strong>no vault</strong>, in portable/mobile surface mining equipment (e.g., electric excavators)</td></tr>
+      <tr><td>Rated current at 250 kVA, 480 V</td><td class="ctr"><strong>300.70 A</strong></td></tr>
+      <tr><td>Conductor, 125% × 300.70 A = 375.88 A</td><td class="ctr"><code>pickConductor31016(375.88, cu, 75) → 500 kcmil Cu</code> (380 A @ 75 °C)</td></tr>
+      <tr><td>The barrier</td><td class="ctr">6 mm (1/4 in.) steel — personnel protection against an oil-filled tank on a moving machine</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Exception 6 is the only Part II exception that does not mention a building at all: the "vault" is replaced by draining + egress + a 6-mm steel screen. The 250 kVA / 480 V mining unit (300.70 A rated, 500 kcmil Cu feed) would need a full Part III vault indoors — but on the excavator it is legal without one, provided the three conditions hold.</p>
+
+  <h2>Where 450.21–450.28 fit — the type key of Article 450</h2>
+  <ul>
+    <li><strong>The OCPD core these rules sit around:</strong> the <a href="nec-4503-transformer-overcurrent.html">450.3 transformer overcurrent article (Article 51) →</a> — Table 450.3(A)/(B) (whose "over 1000 V" and "1000 V and less" split is the same boundary that splits 450.21(A)/(C)), 450.4 autotransformers, 450.6 secondary ties. Article 51 sizes the protection; this article sizes the envelope.</li>
+    <li><strong>The general installation rules these type rules assume you already satisfy:</strong> the <a href="nec-4508-45014-transformer-installation.html">450.8–450.14 transformer installation article (Article 52) →</a> — guarding, ventilation, grounding, the eight nameplate items (item 7 — amount and kind of insulating liquid — is the 450.28 audit trail; item 8 — temperature class — drives the 450.21(B) Class 155 escapes), the 50 kVA hollow-space boundary (450.13(B) cross-references 450.21(A) directly), and the disconnecting means.</li>
+    <li><strong>The separately-derived-system grounding a transformer secondary ties into:</strong> the <a href="nec-25026-25030-separately-derived-systems.html">250.26–250.30 separately derived systems article →</a>.</li>
+    <li><strong>The ampacity table behind every conductor pick:</strong> the <a href="nec-31016-ampacity.html">Table 310.16 ampacity article →</a>, with the <a href="nec-2406-standard-ampere-ratings.html">240.6 standard ampere ratings →</a> for device picks.</li>
+  </ul>
+  <p class="sub"><strong>Scope boundary, stated:</strong> Part II is exactly these eight sections — there is <strong>no 450.15 through 450.20</strong> (verified against both on-disk sources: the sections are absent from the 2017 scan and have no 2023 CSV rows), and Part II ends at 450.28 — <strong>Part III (Transformer Vaults, 450.41–450.48)</strong> starts at 450.41. <strong>2026 edition (flagged honestly):</strong> no on-disk source confirms the Article 450 section numbers moved for the 2026 cycle, so this page cites 450.21–450.28 as stable across 2017–2023 and presents the 2017↔2023 deltas above. <strong>Verify section numbers against the NEC edition adopted in your jurisdiction.</strong></p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>, Part II region extracted to <span class="blank">art53_2017_flat.txt</span>): 450.21 (A)/(B)/(C) + Exceptions + Informational Note, 450.22, 450.23 (A)(1)–(3)/(B)(1)–(2) + all Informational Notes, 450.24 + Informational Note + definition, 450.25, 450.26 + Exceptions 1–6, 450.27 + Informational Note, 450.28. OCR line-wrap reflow normalized; disclosed scan artifacts corrected (listed in the source note under the quote block): "112%"→"112½", "the term five resistant"→"the term fire resistant", "(12 fi)"→"(12 ft)", "11 2'4 kVA"→"112½ kVA", "Oilinsulated"→"Oil-insulated", "fue-vresistant"→"fire-resistant", "Part IIT"→"Part III", the dropped leading "if" in 450.26 Ex 5 restored (identical substance in the 2023 text), running headers + page-break artifacts removed. <strong>2017 forms kept as scanned:</strong> 450.21(C)'s trailing comma; the 450.23 restriction-note comma inconsistency ((A) note no comma before "and proper sizing", (B)(1) note has it); the 450.23(A) lettered items' OCR "e."/"f." rendered as (2)/(3) per the section's own numbering; "under ground" (450.27 IN, 2017's actual two-word spelling — 2023 prints "underground", a real delta). No other wording altered.</p>
+    <p><strong>2023 text.</strong> On-disk 2023 NEC CSV (<span class="blank">art35_nec_csv.csv</span>), rows 450.21(A)/(B)/(C), 450.22, 450.23, 450.23(A)/(B), 450.24, 450.25, 450.26, 450.27, 450.28 — complete for Part II (unlike Article 450's 450.10, which has no bare row; every Part II section has its row, so no Part II claim rests on the Mike Holt summary). The 2023 CSV carries a trailing markdown link per body (stripped for the identity test only — never changes code text).</p>
+    <p><strong>Edition-delta claims (machine-checked).</strong> A targeted assertion script (<span class="blank">verify_art53.py</span>) reads both on-disk sources and asserts <strong>192 phrase-level checks</strong>: 63 probes on the 2017 text (verbatim, OCR artifacts as-scanned), 42 probes on the 2023 text (verbatim from the CSV), 41 identity claims (present in BOTH, alpha-normalized so OCR hyphen/spacing/degree artifacts cannot cause false fails), 10 2017-only probes (each delta's old form: present in 2017, absent in 2023), 11 2023-only probes (each delta's new form: present in 2023, absent in 2017 — including a count check for the 450.21(B) Exception predicate, which appears 2× in 2023 and 0× in 2017), and scope checks (no 450.15–450.20 or 450.29–450.40 sections in either edition). <strong>All 192 pass</strong> (re-runnable by the test suite). No Mike Holt 2023 change-summary entries exist for any Part II section (the on-disk <span class="blank">art48_mh23cc_full.txt</span> covers only 450.1 and 450.10 in Article 450) — stated, so every delta above is labeled on-disk-verified, not Mike-Holt-documented.</p>
+    <p><strong>Source boundaries (stated, not asserted):</strong> (1) No on-disk 2020 full-code text covers Article 450's Part II (the on-disk 2020 scan ends before it), so the 2020 position is not asserted — this page documents 2017 → 2023 only. (2) The 2017 450.21(B) Exception fragments end in a trailing comma with no predicate in the scan; the 2023 predicate ("shall not be required to be installed in a transformer room") is asserted as 2023-only on the count check, and the Exception cores (Class 155 + barrier/6-ft/12-ft; Class 155 + fully enclosed) are asserted identical in both. (3) The 450.23(A) lettered-item forms (2)/(3) carry the OCR letters "e."/"f." in the 2017 scan — the substance ("With an automatic fire extinguishing system…" / "In accordance with 450.26") is what is quoted and compared. (4) The kVA / voltage values in the worked examples are representative — the method is the point; read your specific transformer's nameplate, the liquid's listing (fire point, restrictions), and the manufacturer's instructions.</p>
+    <p><strong>Worked numbers.</strong> Every rated current, percentage application, and conductor pick computed by the shipped cores under node (<span class="blank">compute_art53.js</span> → <span class="blank">art53_numbers.json</span>): three-phase rated current as kVA×1000 ÷ (√3 × V); <code>pickConductor31016</code> (Table 310.16, 75 °C column) for every conductor pick (EX1 2/0 AWG Cu both sides of the 112½ kVA boundary; EX2 14 AWG Cu @ 10 kVA / 2 AWG Cu @ 75 kVA; EX3 8 AWG Cu both sides of the 25 kVA vent boundary; EX4 2 AWG Cu @ 34.5 kV / 3 AWG Cu @ 38 kV; EX5 500 kcmil Cu @ 250 kVA). The boundary figures (112½ kVA, 300 mm, 12 in., 1000 V, 1 hour, 1.83 m / 6 ft, 3.7 m / 12 ft, Class 155, 35,000 V, 300 °C, 25 kVA, 10 kVA, 75 kVA, 100 mm, 4 in., 6 mm, 1/4 in.) are the code numbers quoted verbatim above. The 2017↔2023 identity and delta claims are asserted by the same script reading the on-disk sources, so the edition story is machine-checked, not from memory. The test suite re-runs the picks and asserts they match the page.</p>
+    <p><strong>Authorship.</strong> Written and verified by <strong>Radloff Bot (no humans pretend to be the author)</strong>. Zero third-party scripts, zero tracking; data never leaves your browser.</p>
+  </div>
+
+  <a class="cta" href="../#panelCard">Open the free PanelWright calculator — size the panel, the service, the neutral, the derating, and the voltage drop in your browser</a>
+  <p class="ctasub">Free, in-browser, zero tracking. Data never leaves your browser. Design aid only — verify against the adopted NEC edition.</p>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 53 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan + NEC 2023 (on-disk CSV), verbatim, OCR corrections + source boundaries disclosed (2020 not on disk for Article 450; no Mike Holt 2023 entries for Part II — all deltas on-disk-verified). The Part II installation rules and every boundary number are unchanged 2017→2023 (192 machine-verified checks); the real deltas are 450.21(B) (1-hour rating fused into the rule + term definition deleted + both Exceptions made explicit + ASTM E119-15 → E119-18a), 450.23 (may→can, If-clauses, where/if reword, NFPA 220-2015 → 2021, Listed-in-Article-100 note dropped, safeguards note moved), and 450.27 (ANSI C2-2007 → ANSI/IEEE C2-2017). Design aid — the adopted edition in your jurisdiction governs.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-4503-transformer-overcurrent.html">NEC 450.3 transformer overcurrent (Article 51)</a> · <a href="nec-4508-45014-transformer-installation.html">NEC 450.8–450.14 transformer installation (Article 52)</a> · <a href="nec-25026-25030-separately-derived-systems.html">NEC 250.26–250.30 separately derived systems</a> · <a href="nec-31016-ampacity.html">Table 310.16 ampacity</a> · <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>

@@ -1784,8 +1784,71 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   but 51 kVA → 141.56 A (3/0 AWG Cu); EX3 the Class 2/3 exemption test —
   a 24 V / 50 VA power-limited circuit (2.08 A) is exempt from 450.14, a
   50 kVA 480/208 unit is not; EX4 the eight nameplate items on a 50 kVA
-  dry-type unit. 45-assertion test block (`run_tests.js`), sitemap 53 URLs
+  dry-type unit. 63-assertion test block (`run_tests.js`), sitemap 54 URLs
   + index cross-link. Written by Radloff Bot (AI, disclosed on the page).
+
+- **[NEC 450.21–450.28: transformer installation by type (Article 450 Part II) — dry-type indoors/outdoors, less-flammable & nonflammable fluids, askarel, oil-insulated, modification](articles/nec-45021-45028-transformer-types-part-ii.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-45021-45028-transformer-types-part-ii.html`) —
+  Article 53 — Part II "Specific Provisions Applicable to Different Types of
+  Transformers", the insulation-type key for where a transformer may live:
+  **450.21** (dry-type indoors — the **112½ kVA** transformer-room boundary:
+  ≤ 112½ kVA gets 300 mm (12 in.) separation or a heat-insulated barrier,
+  Exception: fully enclosed ≤ 1000 V nominal needs neither; over 112½ kVA
+  needs a 1-hour fire-resistant transformer room unless Class 155 insulation
+  (barrier or 6 ft H / 12 ft V, or fully enclosed); over 35,000 V → Part III
+  vault), **450.22** (dry-type outdoors — weatherproof enclosure + no 12 in.
+  of building combustible material over 112½ kVA unless Class 155 +
+  enclosed), **450.23** (less-flammable liquid — listed liquid, **300 °C
+  fire point**; the **35,000 V** indoor cap: Type I/II + no storage +
+  liquid confinement + listing restrictions, or auto fire-extinguishing +
+  confinement, or per 450.26; outdoor routes), **450.24** (nonflammable
+  fluid — indoors or outdoors; vault over 35,000 V; confinement +
+  pressure-relief vent + gas absorption or chimney/flue; the nonflammable
+  definition), **450.25** (askarel — **25 kVA** vent boundary,
+  poorly-ventilated gas path, **35,000 V** vault), **450.26** (oil-insulated
+  indoors — Part III vault + all six Exceptions: 112½ kVA 4-in
+  reinforced-concrete vault; no-vault 10 kVA combustible / 75 kVA
+  fire-resistant at ≤ 1000 V; furnace 75 kVA; accelerator 75 kVA / 1000 V;
+  detached qualified-persons building; surface-mining equipment with the
+  6-mm (1/4-in.) steel barrier), **450.27** (oil-insulated outdoors — the
+  four fire safeguards + oil-enclosure/trapped-drain sentences), **450.28**
+  (modification — the fluid-change marking rule). Edition story (the
+  headline): the installation rules and every boundary number are
+  <strong>unchanged 2017 → 2023</strong> — 192 phrase-level machine checks
+  pass against the on-disk 2017 NFPA scan and the on-disk 2023 CSV
+  (`verify_art53.py`); no Mike Holt 2023 change-summary entries exist for
+  any Part II section (stated), so all deltas are on-disk-verified:
+  **450.21(B)** (the 1-hour fire rating fused into the rule sentence, the
+  "Unless specified otherwise … term fire resistant" definition deleted, the
+  two Class 155 Exception fragments made explicit — the predicate appears
+  2× in 2023, 0× in 2017 — + the informational note re-cited to ASTM
+  E119-18a), **450.23** (may→can in both restriction notes, the (A)(2)/(A)(3)
+  lettered items re-cast as "If" clauses with "is present", the (B) lead's
+  "where … (1) or (2)" → "if … either of the following", NFPA 220-2015 →
+  2021, the Listed-in-Article-100 note dropped, the additional-safeguards
+  note moved from (B)(1) to (B)), and **450.27** (the NESC re-cite ANSI
+  C2-2007 → ANSI/IEEE C2-2017). Scope stated: no 450.15–450.20 exists; Part
+  II ends at 450.28; Part III starts at 450.41. Source boundaries disclosed:
+  no on-disk 2020 Article 450 text (2020 position not asserted); 2017-scan
+  OCR corrections disclosed inline (112% → 112½, "five resistant" → "fire
+  resistant", "12 fi" → "12 ft", "11 2'4" → 112½, "Oilinsulated" →
+  "Oil-insulated", "fue-vresistant" → "fire-resistant", "Part IIT" → Part
+  III, page-break artifacts). Five core-computed worked examples
+  (`compute_art53.js` → node, from the shipped `pickConductor31016` core):
+  EX1 the 112½ kVA boundary at 480 V — 135.32 A (112.5 kVA, 12-in route)
+  vs 135.92 A (113 kVA, 1-hour room required), both pick 2/0 AWG Cu at
+  125% (the room changes, the conductors don't); EX2 the 450.26 Ex 2
+  no-vault boundaries — 10 kVA → 12.03 A (14 AWG Cu) in a combustible
+  section, 75 kVA → 90.21 A (2 AWG Cu) in fire-resistant construction;
+  EX3 the 450.25 askarel boundaries — 25 kVA → 30.07 A (no vent) vs
+  26 kVA → 31.27 A (vent required), 100 kVA @ 34.5 kV (no vault) vs
+  38 kV (vault); EX4 the 450.23(A) 35,000 V indoor cap — 5 MVA @ 34.5 kV
+  (83.67 A, Type I/II routes available, 2 AWG Cu at 125%) vs @ 38 kV
+  (75.97 A, 450.26 vault only, 3 AWG Cu); EX5 the 450.26 Ex 6 surface-mining
+  exception — 250 kVA @ 480 V (300.70 A → 500 kcmil Cu at 125%) with the
+  6-mm (1/4-in.) steel barrier. 93-assertion test block (`run_tests.js`),
+  sitemap 54 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
+  on the page).
 
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
