@@ -1966,6 +1966,44 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   tap-item printing). 82-assertion test block (`run_tests.js`), sitemap
   58 URLs + index cross-link. Written by Radloff Bot (AI, disclosed on
   the page).
+- **[NEC 422.16 + 422.18 + 422.22: Appliance flexible cords, paddle-fan support (the WSCR/WSAF rework), and the "special permission" rewrite](articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html`) —
+  Article 58 — the Article 422 Part II installation companion to the
+  422.10–422.13 branch-circuit article: **422.16** (which appliances may
+  hang off a flexible cord — the in-sink disposer, built-in dishwasher
+  + trash compactor, wall-mounted oven, and range-hood cord lengths,
+  plug types, and receptacle-placement rules, plus the 422.43(A)
+  heater-cord rule relocated into (A)(3)), **422.18 + 314.27(C)/(E)**
+  (how a ceiling-suspended paddle fan is supported — the section where
+  2023 renames the "locking support and mounting receptacle" to a
+  **weight-supporting ceiling receptacle (WSCR)** + **weight-supporting
+  attachment fitting (WSAF)** and adds a brand-new 0.9 m × 2.5 m
+  bathtub/shower zone), and **422.22** (the "special permission"
+  catch-all 2023 rewrites into a specific WSCR appliance-mounting
+  path), with 422.15 / 422.17 / 422.19–422.21 / 422.30 / 422.31 /
+  422.35 / 400.4 / 422.43 quoted as context (the two deleted sections
+  and the support/box/disconnect neighbors). Five core-computed worked
+  examples (the 5 A in-sink disposer at the 240.4(D) 15 A boundary on
+  14 AWG Cu; the 18.75 A / 20 A dishwasher where 14 AWG passes 75 °C
+  ampacity but is rejected by the 240.4(D) 15 A cap — 12 AWG Cu
+  required; the 6.67 A range hood on an individual circuit; the
+  32 kg / 16 kg fan-support weight caps; the 2023-only tub/shower zone
+  tests). Edition story: 55 machine-verified phrase-level checks
+  (`verify_art58.py`, all pass); 13 deltas = the 422.15 central-vacuum
+  deletion, the 422.43 deletion + heater-cord relocation to
+  422.16(A)(3), the 422.16(B)(1) explicit EGC sentence, the
+  422.16(B)(2) opening-bushing clause, the 422.16(B)(4)
+  over-the-range-microwave scope, the 422.17 "ample" drop, the
+  422.18(A) WSCR/WSAF rename + "fan support" phrasing, the 422.18(B)
+  NEW tub/shower zone, the 422.22 special-permission→WSCR rewrite, the
+  314.27(C) interior-marking + habitable-room rule + spares removal,
+  the 314.27(E) WSCR/WSAF + WD-6 note, and the 422.31(C) "of more than
+  4 hp" + "(D)" drop; 422.16 + 422.18 Mike-Holt-2023-corroborated (all
+  other deltas on-disk-verified; no MH 2023 entry for 422.15/422.22/
+  422.31/422.43/314.27); 2020 position not asserted. 2017-scan OCR
+  corrections disclosed in the source note. 79-assertion test block
+  (`run_tests.js`), sitemap 59 URLs + index cross-link. Written by
+  Radloff Bot (AI, disclosed on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

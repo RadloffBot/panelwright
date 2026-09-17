@@ -5890,11 +5890,123 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap57 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap57.includes('articles/nec-43024-43053-several-motors-one-branch-circuit.html'), true, 'art57: sitemap entry present');
-  eq((sitemap57.match(/<loc>/g) || []).length, 58, 'art57: sitemap has 58 URLs (art57 appended the 58th)');
+  eq((sitemap57.match(/<loc>/g) || []).length, 59, 'art57: sitemap has 59 URLs (art58 appended the 59th)');
   const index57 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index57.includes('articles/nec-43024-43053-several-motors-one-branch-circuit.html'), true, 'art57: index cross-link present');
   const readme57 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme57.includes('articles/nec-43024-43053-several-motors-one-branch-circuit.html'), true, 'art57: README entry present');
+}
+
+// ============================================================================
+// Article 58 — NEC 422.16 + 422.18 + 422.22: appliance flexible cords,
+// paddle-fan support (WSCR/WSAF rework), the "special permission" rewrite
+// (panelwright/articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html)
+// Session 83. 2017 scan + 2023 CSV verified on disk (verify_art58.py: 55
+// phrase-level checks, all pass). Thirteen deltas: 422.15 central-vacuum
+// deletion, 422.43 deletion + heater-cord relocation to 422.16(A)(3),
+// 422.16(B)(1) EGC sentence, 422.16(B)(2) opening-bushing clause,
+// 422.16(B)(4) over-the-range-microwave scope, 422.17 "ample" drop,
+// 422.18(A) WSCR/WSAF rename + "fan support", 422.18(B) NEW tub/shower zone,
+// 422.22 special-permission -> WSCR rewrite, 314.27(C) interior-marking +
+// habitable-room + spares removal, 314.27(E) WSCR/WSAF + WD-6, 422.31(C)
+// "of more than 4 hp" + (D) drop. 422.16 + 422.18 MH-2023-corroborated.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art58_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), true, 'art58: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), true, 'art58: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art58: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art58: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 58'), true, 'art58: footer marks article 58');
+  eq(has('55 machine-verified'), true, 'art58: 55 machine-verified checks claimed');
+  eq(has('thirteen verified deltas'), true, 'art58: thirteen deltas claimed');
+  // verbatim 2017 quotes (match on-disk scan after disclosed OCR corrections)
+  eq(has('listed central vacuum outlet assemblies shall be permitted to be connected to a branch circuit in accordance with 210.23(a)'), true, 'art58: verbatim 2017 422.15 central-vacuum lead (deleted in 2023)');
+  eq(has('flexible cord shall be permitted (1) for the connection of appliances to facilitate their frequent interchange or to prevent the transmission of noise or vibration'), true, 'art58: verbatim 2017 422.16(A) two-item general permission');
+  eq(has('the length of the cord shall not be less than 450 mm (18 in.) and not over 900 mm (36 in.)'), true, 'art58: verbatim 2017 422.16(B)(1) disposer cord 450 mm-900 mm');
+  eq(has('distinctly marked to identify it as protected by a system of double insulation shall not be required to be terminated with a grounding-type attachment plug'), true, 'art58: verbatim 2017 422.16(B)(1) double-insulation plug exception');
+  eq(has('the length of the cord shall be 0.9 m to 2.0 m (3 ft to 6.5 ft)'), true, 'art58: verbatim 2017 422.16(B)(2) dishwasher cord 0.9 m-2.0 m');
+  eq(has('the receptacle for a built-in dishwasher shall be located in the space adjacent to the space occupied by the dishwasher'), true, 'art58: verbatim 2017 422.16(B)(2) dishwasher adjacent-space receptacle');
+  eq(has('shall be permitted to be permanently connected or, only for ease in servicing or for installation, cord-and-plug-connected'), true, 'art58: verbatim 2017 422.16(B)(3) wall-oven permanent/cord-plug route');
+  eq(has('the length of the cord is not less than 450 mm (18 in.) and not over 1.2 m (4 ft)'), true, 'art58: verbatim 2017 422.16(B)(4) range-hood cord 450 mm-1.2 m');
+  eq(has('the receptacle is supplied by an individual branch circuit'), true, 'art58: verbatim 2017 422.16(B)(4) individual-branch-circuit condition');
+  eq(has('provide ample protection between the appliance and adjacent combustible material'), true, 'art58: verbatim 2017 422.17 "ample protection" (2023 drops "ample")');
+  eq(has('ceiling-suspended (paddle) fans shall be supported independently of an outlet box or by one of the following'), true, 'art58: verbatim 2017 422.18 support lead');
+  eq(has('a listed outlet box or listed outlet box system identified for the use and installed in accordance with 314.27(c)'), true, 'art58: verbatim 2017 422.18(1) "identified for the use" (2023: "fan support")');
+  eq(has('a listed locking support and mounting receptacle, and a compatible factory installed attachment fitting designed for support'), true, 'art58: verbatim 2017 422.18(2) locking support + mounting receptacle (2023: WSCR/WSAF)');
+  eq(has('appliances employing methods of installation other than covered by this article shall be permitted to be used only by special permission'), true, 'art58: verbatim 2017 422.22 catch-all (2023 rewrites to the WSCR path)');
+  eq(has('shall not support ceiling-suspended (paddle) fans that weigh more than 32 kg (70 lb)'), true, 'art58: verbatim 2017 314.27(C) 70 lb sole-support cap (unchanged in 2023)');
+  eq(has('that weigh more than 16 kg (35 lb), the required marking shall include the maximum weight to be supported'), true, 'art58: verbatim 2017 314.27(C) 35 lb marking floor (unchanged in 2023)');
+  eq(has('where spare, separately switched, ungrounded conductors are provided to a ceiling-mounted outlet box'), true, 'art58: verbatim 2017 314.27(C) spare-conductor sentence (removed in 2023)');
+  eq(has('shall be permitted to support listed locking support and mounting receptacles used in combination with compatible attachment fittings'), true, 'art58: verbatim 2017 314.27(E) separable-attachment-fitting lead (2023: WSCR/WSAF)');
+  eq(has('it shall be included in the fill calculation covered in 314.16(b)(4)'), true, 'art58: verbatim 2017 314.27(E) box-fill hook (unchanged in 2023)');
+  eq(has('the disconnecting means shall comply with 430.109 and 430.110'), true, 'art58: verbatim 2017 422.31(C) disconnect compliance (unchanged core)');
+  eq(has('if an appliance of more than 4 hp is provided with a unit switch that complies with 422.34(a), (b), (c), or (d)'), true, 'art58: verbatim 2017 422.31(C) Exception "of more than 4 hp" + (D) (both dropped in 2023)');
+  eq(has('produce temperatures in excess of 121 degc (250 degf) on surfaces with which the cord is likely to be in contact'), true, 'art58: verbatim 2017 422.43(A) heater-cord temperature trigger (relocated to 422.16(A)(3) in 2023)');
+  eq(has('flexible cords and flexible cables shall conform to the description in table 400.4'), true, 'art58: verbatim 2017 400.4 intro (the relocation destination; unchanged in 2023)');
+  // 2023 deltas documented
+  eq(has('[deleted in 2023 — no 422.15 row in the on-disk 2023 nec; verified.]'), true, 'art58: documents 422.15 central-vacuum deletion (on-disk-verified)');
+  eq(has('no 422.43 row in the on-disk 2023 nec'), true, 'art58: documents 422.43 deletion (on-disk-verified)');
+  eq(has('the (a) heater-cord requirement relocates to 422.16(a)(3)'), true, 'art58: documents the 422.43(A) -> 422.16(A)(3) heater-cord relocation');
+  eq(has('one of the types of heater cords listed in table 400.4'), true, 'art58: documents 2023 422.16(A)(3) heater-cord requirement text');
+  eq(has('the flexible cord has an equipment grounding conductor and is terminated with a grounding-type attachment plug'), true, 'art58: documents 2023 422.16(B)(1) explicit EGC sentence (new)');
+  eq(has('if a flexible cord passes through an opening, it shall be protected against damage by a bushing, grommet, smoothed edge, or other approved means'), true, 'art58: documents 2023 422.16(B)(2) opening-bushing clause (new)');
+  eq(has('range hoods and over-the-range microwave ovens with integral range hoods'), true, 'art58: documents 2023 422.16(B)(4) over-the-range-microwave scope expansion');
+  eq(has('2023: "provide protection between the appliance and adjacent combustible material."'), true, 'art58: documents 2023 422.17 "ample" drop');
+  eq(has('identified for fan support'), true, 'art58: documents 2023 422.18(A)(1) "fan support" phrasing');
+  eq(has('weight-supporting ceiling receptacle') && has('weight-supporting attachment fitting'), true, 'art58: documents 2023 422.18(A)(2)/314.27(E) WSCR/WSAF rename');
+  eq(has('no metal parts of ceiling-suspended (paddle) fans in bathrooms and shower spaces shall be located within a zone measured 900 mm (3 ft) horizontally and 2.5 m (8 ft) vertically from the top of the bathtub rim or shower stall threshold'), true, 'art58: documents 2023 422.18(B) NEW tub/shower zone');
+  eq(has('appliances shall be permitted to use listed weight-supporting ceiling receptacles in combination with compatible weight-supporting attachment fittings used within their ratings'), true, 'art58: documents 2023 422.22 special-permission -> WSCR rewrite');
+  eq(has('on the interior of the box'), true, 'art58: documents 2023 314.27(C) marking-location change');
+  eq(has('ansi/nema wd-6'), true, 'art58: documents 2023 314.27(E) WD-6 Informational Note (new)');
+  eq(has('if an appliance is provided with a unit switch that complies with 422.34(a), (b), or (c)'), true, 'art58: documents 2023 422.31(C) "of more than 4 hp" + (D) drop');
+  // worked examples (core-computed from art58_numbers.json)
+  eq(nums.ex1.reqA, 5, 'art58: EX1 disposer required ampacity = 5 A (non-continuous)');
+  eq(nums.ex1.ocpd, 15, 'art58: EX1 OCPD = 15 A (240.6)');
+  eq(nums.ex1.ampPick60.size, '14', 'art58: EX1 ampacity pick = 14 AWG Cu (15 A @ 60 C)');
+  eq(nums.ex1.cap14, 15, 'art58: EX1 240.4(D) cap on 14 Cu = 15 A (equals the OCPD -> 14 AWG allowed)');
+  eq(nums.ex1.finalPick.size, '14', 'art58: EX1 final pick = 14 AWG Cu');
+  eq(nums.ex2.loadA, 18.75, 'art58: EX2 dishwasher load = 4,500 W / 240 V = 18.75 A');
+  eq(nums.ex2.ocpd, 20, 'art58: EX2 OCPD = 20 A (240.6)');
+  eq(nums.ex2.ampPick75.size, '14', 'art58: EX2 14 AWG Cu passes the 75 C ampacity (20 A >= 18.75 A)');
+  eq(nums.ex2.cap14, 15, 'art58: EX2 240.4(D) cap on 14 Cu = 15 A < 20 A OCPD -> 14 AWG rejected');
+  eq(nums.ex2.finalPick.size, '12', 'art58: EX2 final pick = 12 AWG Cu (20 A @ 60 C / 25 A @ 75 C)');
+  eq(nums.ex3.reqA, 6.67, 'art58: EX3 range-hood load = 800 W / 120 V = 6.67 A');
+  eq(nums.ex3.ocpd, 15, 'art58: EX3 OCPD = 15 A (240.6)');
+  eq(nums.ex3.finalPick.size, '14', 'art58: EX3 final pick = 14 AWG Cu (15 A cap equals the 15 A OCPD)');
+  eq(nums.ex4.boxCapLb === 70 && nums.ex4.boxCapKg === 32, true, 'art58: EX4 314.27(C) sole-support cap = 32 kg (70 lb), both editions');
+  eq(nums.ex4.markFloorLb === 35 && nums.ex4.markFloorKg === 16, true, 'art58: EX4 314.27(C) marking floor = 16 kg (35 lb), both editions');
+  eq(nums.ex4.fans[2].underCap === false && nums.ex4.fans[0].underCap === true && nums.ex4.fans[0].needsWeightMark === false && nums.ex4.fans[1].needsWeightMark === true, true, 'art58: EX4 75 lb fan exceeds the 70 lb cap; 13 lb fan needs no marking; 65 lb fan must be marked');
+  eq(nums.ex5.zone.horizM === 0.9 && nums.ex5.zone.vertM === 2.5, true, 'art58: EX5 422.18(B) zone = 0.9 m horizontal x 2.5 m vertical (2023 only)');
+  eq(nums.ex5.fans[0].inside === false && nums.ex5.fans[1].inside === true && nums.ex5.fans[2].inside === false, true, 'art58: EX5 zone tests — 2.6 m high clears, inside box fails, 1.2 m out clears');
+  // core re-run (recompute under node, assert the page agrees)
+  const core = require('../app.js');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art58: core re-run 240.4(D) 14 Cu = 15 A');
+  eq(core.pickConductor31016(5, 'cu', 60).size, '14', 'art58: core re-run 5 A @ 60 C = 14 AWG Cu');
+  eq(core.pickConductor31016(18.75, 'cu', 60).size, '12', 'art58: core re-run 18.75 A @ 60 C = 12 AWG Cu');
+  eq(core.pickConductor31016(18.75, 'cu', 75).size, '14', 'art58: core re-run 18.75 A @ 75 C = 14 AWG Cu (ampacity passes; the OCPD gate rejects it)');
+  eq(core.nextStdBreaker(18.75), 20, 'art58: core re-run 18.75 A -> 20 A standard OCPD');
+  eq(core.nextStdBreaker(6.67), 15, 'art58: core re-run 6.67 A -> 15 A standard OCPD');
+  // cross-links (all targets exist in articles/)
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art58: cross-links to 240.4(D)/(G) article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art58: cross-links to Table 310.16 article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art58: cross-links to 240.6 article');
+  eq(art.includes('nec-42210-42211-42213-appliance-branch-circuit.html'), true, 'art58: cross-links to the 422.10-422.13 Part I foundation article');
+  eq(art.includes('nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art58: cross-links to the air-cooling article (parallel 440.8 zone)');
+  eq(art.includes('nec-21008-gfci-protection.html'), true, 'art58: cross-links to the 210.8 GFCI article (same bathroom space)');
+  // sitemap + index + README
+  const sitemap58 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap58.includes('articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), true, 'art58: sitemap entry present');
+  eq((sitemap58.match(/<loc>/g) || []).length, 59, 'art58: sitemap has 59 URLs (art58 appended the 59th)');
+  const index58 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index58.includes('articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), true, 'art58: index cross-link present');
+  const readme58 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme58.includes('articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), true, 'art58: README entry present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
