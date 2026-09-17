@@ -4530,7 +4530,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('nec-43032-43036-motor-overload-protection.html'), true, 'art44: cross-links to article 39 (overload)');
   const sitemap44 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: sitemap entry present');
-  eq((sitemap44.match(/<loc>/g) || []).length, 54, 'art44: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
+  eq((sitemap44.match(/<loc>/g) || []).length, 55, 'art44: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index44 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index44.includes('articles/nec-430120-430131-adjustable-speed-drive-systems.html'), true, 'art44: index cross-link present');
   const readme44 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4890,7 +4890,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap48 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: sitemap entry present');
-  eq((sitemap48.match(/<loc>/g) || []).length, 54, 'art48: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
+  eq((sitemap48.match(/<loc>/g) || []).length, 55, 'art48: sitemap now has 53 URLs (articles 49 + 50 + 51 + 52 added; was 49)');
   const index48 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index48.includes('articles/nec-25070-connection-methods-to-electrodes.html'), true, 'art48: index cross-link present');
   const readme48 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -4984,7 +4984,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap49 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: sitemap entry present');
-  eq((sitemap49.match(/<loc>/g) || []).length, 54, 'art49: sitemap has 53 URLs (art50 appended the 51st; art51 the 52nd; art52 the 53rd)');
+  eq((sitemap49.match(/<loc>/g) || []).length, 55, 'art49: sitemap has 53 URLs (art50 appended the 51st; art51 the 52nd; art52 the 53rd)');
   const index49 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index49.includes('articles/nec-46009-46008-pfc-capacitors.html'), true, 'art49: index cross-link present');
   const readme49 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5150,7 +5150,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap51 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: sitemap entry present');
-  eq((sitemap51.match(/<loc>/g) || []).length, 54, 'art51: sitemap has 53 URLs (art52 appended the 53rd)');
+  eq((sitemap51.match(/<loc>/g) || []).length, 55, 'art51: sitemap has 53 URLs (art52 appended the 53rd)');
   const index51 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index51.includes('articles/nec-4503-transformer-overcurrent.html'), true, 'art51: index cross-link present');
   const readme51 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5257,7 +5257,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap52 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: sitemap entry present');
-  eq((sitemap52.match(/<loc>/g) || []).length, 54, 'art52: sitemap has 53 URLs (art52 appended the 53rd)');
+  eq((sitemap52.match(/<loc>/g) || []).length, 55, 'art52: sitemap has 53 URLs (art52 appended the 53rd)');
   const index52 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index52.includes('articles/nec-4508-45014-transformer-installation.html'), true, 'art52: index cross-link present');
   const readme52 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -5401,12 +5401,144 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap53 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: sitemap entry present');
-  eq((sitemap53.match(/<loc>/g) || []).length, 54, 'art53: sitemap has 54 URLs (art53 appended the 54th)');
+  eq((sitemap53.match(/<loc>/g) || []).length, 55, 'art53: sitemap has 54 URLs (art53 appended the 54th)');
   const index53 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: index cross-link present');
   const readme53 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme53.includes('articles/nec-45021-45028-transformer-types-part-ii.html'), true, 'art53: README entry present');
 }
+
+// Article 54 — NEC 450.41-450.48: Article 450 PART III "Transformer
+// Vaults" — the vault construction every Part II vault route points to
+// (450.21(C) dry-type > 35 kV, 450.24 nonflammable fluid > 35 kV,
+// 450.25 askarel > 35 kV, 450.26 indoor oil-filled): 450.41 location
+// (ventilate to outside air, no flues/ducts, wherever practicable);
+// 450.42 walls/roofs/floors (3-hour construction, 100 mm / 4-in.
+// concrete earth-contact floor, 3-hour floor over vacant space/stories,
+// studs and wallboard prohibited, the sprinkler/spray/CO2/halon 1-hour
+// Exception, IN No. 2 typical 150 mm / 6-in. RC); 450.43 doorways
+// (3-hour tight-fitting door + AHJ exterior + 1-hour Exception, 100 mm /
+// 4-in. sill, locks + qualified persons; 2023 egress rework: "capable of
+// opening not less than 90 degrees" + "listed fire exit hardware" +
+// "with access"); 450.45 ventilation (450.9 hook; (A) location, (B)
+// arrangement roughly half / roof-only, (C) 1900 mm2 per kVA + 0.1 m2
+// floor under 50 kVA, (D) covering, (E) automatic closing fire dampers
+// 1-1/2 hours, (F) ducts); 450.46 drainage (> 100 kVA, floor pitched);
+// 450.47 no foreign piping (fire protection / transformer cooling
+// excepted); 450.48 no storage. EDITION STORY: one substantive change —
+// 450.43(C)'s personnel-door egress sentence — plus three Informational
+// Note re-cites (E119-15 -> E119-20, NFPA 80-2013 -> 80-2019,
+// ANSI/UL 555-2011 -> 555-2020); 119 phrase-level machine checks,
+// verify_art54.py, all pass. No Mike Holt 2023 entries exist for any
+// Part III section (all deltas on-disk-verified). Scope: no 450.44
+// (450.43 -> 450.45 gap, both editions); Part III ends at 450.48.
+// Worked examples core-computed (compute_art54.js ->
+// art54_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-45041-45048-transformer-vaults-part-iii.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art54_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art54: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art54: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 54'), true, 'art54: footer marks article 54');
+  // 450.41 (verbatim 2017)
+  eq(has('Vaults shall be located where they can be ventilated to the outside air without using flues or ducts wherever such an arrangement is practicable'), true, 'art54: 450.41 full rule quoted');
+  // 450.42 (verbatim 2017)
+  eq(has('The walls and roofs of vaults shall be constructed of materials that have approved structural strength for the conditions with a minimum fire resistance of 3 hours'), true, 'art54: 450.42 walls/roofs 3-hour quoted');
+  eq(has('The floors of vaults in contact with the earth shall be of concrete that is not less than 100 mm (4 in.) thick'), true, 'art54: 450.42 earth floor 4-in concrete quoted');
+  eq(has('where the vault is constructed with a vacant space or other stories below it, the floor shall have approved structural strength for the load imposed thereon and a minimum fire resistance of 3 hours'), true, 'art54: 450.42 below-stories floor quoted');
+  eq(has('studs and wallboard construction shall not be permitted'), true, 'art54: 450.42 studs/wallboard prohibition quoted');
+  eq(has('Where transformers are protected with automatic sprinkler, water spray, carbon dioxide, or halon, construction of 1-hour rating shall be permitted'), true, 'art54: 450.42 Exception 1-hour quoted');
+  eq(has('ANSI/ASTM E119-15, Method for Fire Tests of Building Construction and Materials'), true, 'art54: 450.42 2017 IN E119-15 quoted');
+  eq(has('A typical 3-hour construction is 150 mm (6 in.) thick reinforced concrete'), true, 'art54: 450.42 IN No. 2 typical RC quoted');
+  // 450.43 (verbatim 2017)
+  eq(has('Vault doorways shall be protected in accordance with 450.43(A), (B), and (C)'), true, 'art54: 450.43 lead quoted');
+  eq(has('Each doorway leading into a vault from the building interior shall be provided with a tight-fitting door that has a minimum fire rating of 3 hours'), true, 'art54: 450.43(A) 3-hour door quoted');
+  eq(has('The authority having jurisdiction shall be permitted to require such a door for an exterior wall opening where conditions warrant'), true, 'art54: 450.43(A) AHJ exterior quoted');
+  eq(has('see NFPA 80-2013, Standard for Fire Doors and Other Opening Protectives'), true, 'art54: 450.43(A) 2017 IN NFPA 80-2013 quoted');
+  eq(has('A door sill or curb that is of an approved height that will confine the oil from the largest transformer within the vault shall be provided, and in no case shall the height be less than 100 mm (4 in.)'), true, 'art54: 450.43(B) sill 4-in quoted');
+  eq(has('Doors shall be equipped with locks, and doors shall be kept locked, access being allowed only to qualified persons'), true, 'art54: 450.43(C) 2017 locks quoted (no "with")');
+  eq(has('Personnel doors shall open in the direction of egress and be equipped with listed panic hardware'), true, 'art54: 450.43(C) 2017 egress + panic hardware quoted (deleted 2023)');
+  // 450.45 (verbatim 2017)
+  eq(has('Where required by 450.9, openings for ventilation shall be provided in accordance with 450.45(A) through (F)'), true, 'art54: 450.45 lead 450.9 hook quoted');
+  eq(has('Ventilation openings shall be located as far as possible from doors, windows, fire escapes, and combustible material'), true, 'art54: 450.45(A) location quoted');
+  eq(has('roughly half of the total area of openings required for ventilation in one or more openings near the floor'), true, 'art54: 450.45(B) half-near-floor quoted');
+  eq(has('or all of the area required for ventilation shall be permitted in one or more openings in or near the roof'), true, 'art54: 450.45(B) roof-only alternative quoted');
+  eq(has('shall not be less than 1900 mm2 (3 in.2) per kVA of transformer capacity in service'), true, 'art54: 450.45(C) per-kVA rate quoted');
+  eq(has('and in no case shall the net area be less than 0.1 m2 (1 ft2) for any capacity under 50 kVA'), true, 'art54: 450.45(C) 0.1 m2 floor under 50 kVA quoted');
+  eq(has('Ventilation openings shall be covered with durable gratings, screens, or louvers'), true, 'art54: 450.45(D) covering quoted');
+  eq(has('All ventilation openings to the indoors shall be provided with automatic closing fire dampers that operate in response to a vault fire'), true, 'art54: 450.45(E) dampers quoted');
+  eq(has('Such dampers shall possess a standard fire rating of not less than 1-1/2 hours'), true, 'art54: 450.45(E) 1-1/2-hour rating quoted');
+  eq(has('See ANSI/UL 555-2011, Standard for Fire Dampers'), true, 'art54: 450.45(E) 2017 IN UL 555-2011 quoted');
+  eq(has('Ventilating ducts shall be constructed of fire-resistant material'), true, 'art54: 450.45(F) ducts quoted');
+  // 450.46 / 450.47 / 450.48 (verbatim 2017)
+  eq(has('Where practicable, vaults containing more than 100 kVA transformer capacity shall be provided with a drain or other means that will carry off any accumulation of oil or water in the vault unless local conditions make this impracticable'), true, 'art54: 450.46 > 100 kVA drain quoted');
+  eq(has('The floor shall be pitched to the drain where provided'), true, 'art54: 450.46 floor pitch quoted');
+  eq(has('Any pipe or duct system foreign to the electrical installation shall not enter or pass through a transformer vault'), true, 'art54: 450.47 foreign piping quoted');
+  eq(has('Piping or other facilities provided for vault fire protection, or for transformer cooling, shall not be considered foreign to the electrical installation'), true, 'art54: 450.47 permitted piping quoted');
+  eq(has('Materials shall not be stored in transformer vaults'), true, 'art54: 450.48 no storage quoted');
+  // edition story (2017 vs 2023)
+  eq(has('shall be capable of opening not less than 90 degrees in the direction of egress and be equipped with listed fire exit hardware'), true, 'art54: 2023 450.43(C) 90-degree egress + fire exit hardware documented');
+  eq(has('locked, with access being allowed only to qualified persons'), true, 'art54: 2023 "with access" insertion documented');
+  eq(has('ASTM E119-20, Standard Test Methods for Fire Tests of Building Construction and Materials'), true, 'art54: 2023 E119-20 documented');
+  eq(has('See NFPA 80-2019, Standard for Fire Doors and Other Opening Protectives'), true, 'art54: 2023 NFPA 80-2019 documented');
+  eq(has('See ANSI/UL 555-2020, Standard for Fire Dampers'), true, 'art54: 2023 ANSI/UL 555-2020 documented');
+  eq(has('119 phrase-level') || has('119 machine-verified'), true, 'art54: 119-check count documented');
+  eq(has('no Mike Holt 2023 change-summary entries exist for any Part III section'), true, 'art54: no-MH-entries statement present');
+  eq(has('2020 position'), true, 'art54: 2020-not-asserted boundary stated');
+  eq(has('there is no 450.44'), true, 'art54: scope statement (no 450.44) present');
+  eq(has('52.63 kVA'), true, 'art54: exact break-even (0.1 m2 / 1900 mm2 per kVA) documented');
+  // worked figures (core-computed)
+  eq(has('950,000 mm²'), true, 'art54: EX1 500 kVA net area 950,000 mm2 (display form)');
+  eq(has(String(nums.EX1.a500m2)), true, 'art54: EX1 500 kVA ' + nums.EX1.a500m2 + ' m2');
+  eq(has(String(nums.EX1.a500ft2)), true, 'art54: EX1 500 kVA ' + nums.EX1.a500ft2 + ' ft2');
+  eq(has(String(nums.EX1.a10m2)), true, 'art54: EX1 10 kVA computed ' + nums.EX1.a10m2 + ' m2');
+  eq(has(String(nums.EX1.floorOverComputed)), true, 'art54: EX1 floor-over-computed ' + nums.EX1.floorOverComputed + 'x');
+  eq(has(String(nums.EX1.breakEvenKVA)), true, 'art54: EX1 exact break-even ' + nums.EX1.breakEvenKVA + ' kVA');
+  eq(has(String(nums.EX1.in2PerKVAExact)), true, 'art54: EX1 exact imperial rate ' + nums.EX1.in2PerKVAExact + ' in2/kVA');
+  eq(has(String(nums.EX1.ft2FloorExact)), true, 'art54: EX1 exact imperial floor ' + nums.EX1.ft2FloorExact + ' ft2');
+  eq(has(String(nums.EX2.a100)), true, 'art54: EX2 100 kVA rated ' + nums.EX2.a100 + ' A (no drain)');
+  eq(has(String(nums.EX2.a101)), true, 'art54: EX2 101 kVA rated ' + nums.EX2.a101 + ' A (drain)');
+  eq(has(String(nums.EX2.delta)), true, 'art54: EX2 1-kVA step ' + nums.EX2.delta + ' A');
+  eq(has('2/0 awg cu'), true, 'art54: EX2 feed 2/0 AWG Cu (both sides of boundary)');
+  eq(has(String(nums.EX3.a)), true, 'art54: EX3 75 kVA rated ' + nums.EX3.a + ' A');
+  eq(has('2 awg cu'), true, 'art54: EX3 feed 2 AWG Cu');
+  eq(has(String(nums.EX4.halfFloorM2)), true, 'art54: EX4 half-near-floor ' + nums.EX4.halfFloorM2 + ' m2');
+  eq(has(String(nums.EX4.halfFloorFt2)), true, 'art54: EX4 half ' + nums.EX4.halfFloorFt2 + ' ft2');
+  eq(has(String(nums.EX5.damperVsWall)), true, 'art54: EX5 damper-vs-wall ratio ' + nums.EX5.damperVsWall + 'x');
+  eq(has(String(nums.EX5.excVsWall)), true, 'art54: EX5 exception-vs-wall ratio ' + nums.EX5.excVsWall + 'x');
+  // core re-run (recompute the picks under node, assert the page agrees)
+  const core = require('../app.js');
+  const reA100 = (100 * 1000) / (Math.sqrt(3) * 480);
+  const reP100 = core.pickConductor31016(1.25 * reA100, 'cu', 75);
+  eq(reP100 && reP100.label === '2/0 AWG Cu', true, 'art54: core re-run 100 kVA feed 2/0 AWG Cu');
+  const reA75 = (75 * 1000) / (Math.sqrt(3) * 480);
+  const reP75 = core.pickConductor31016(1.25 * reA75, 'cu', 75);
+  eq(reP75 && reP75.label === '2 AWG Cu', true, 'art54: core re-run 75 kVA feed 2 AWG Cu');
+  eq(Math.round(reA100 * 100) / 100 === nums.EX2.a100, true, 'art54: core re-run 100 kVA current matches JSON');
+  eq(Math.round((500 * 1900) * 1e-6 * 100) / 100 === nums.EX1.a500m2, true, 'art54: core re-run 500 kVA area matches JSON');
+  // cross-links
+  eq(art.includes('nec-45021-45028-transformer-types-part-ii.html'), true, 'art54: cross-links to 450.21-450.28 Part II article (Article 53)');
+  eq(art.includes('nec-4508-45014-transformer-installation.html'), true, 'art54: cross-links to 450.8-450.14 installation article (Article 52)');
+  eq(art.includes('nec-4503-transformer-overcurrent.html'), true, 'art54: cross-links to 450.3 OCPD article (Article 51)');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art54: cross-links to 310.16 article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art54: cross-links to 240.6 article');
+  // sitemap + index + README
+  const sitemap54 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap54.includes('articles/nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: sitemap entry present');
+  eq((sitemap54.match(/<loc>/g) || []).length, 55, 'art54: sitemap has 55 URLs (art54 appended the 55th)');
+  const index54 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index54.includes('articles/nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: index cross-link present');
+  const readme54 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme54.includes('articles/nec-45041-45048-transformer-vaults-part-iii.html'), true, 'art54: README entry present');
+}
+
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

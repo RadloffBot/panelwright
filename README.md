@@ -1850,6 +1850,34 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   sitemap 54 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
   on the page).
 
+
+- **[NEC 450.41–450.48: transformer vaults (Article 450 Part III) — walls, roofs, floors, doorways, ventilation, drainage, storage](articles/nec-45041-45048-transformer-vaults-part-iii.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-45041-45048-transformer-vaults-part-iii.html`) —
+  Article 54 — Part III “Transformer Vaults”, the vault construction every
+  Part II vault route points to (450.21(C)/450.24/450.25 over 35,000 V; 450.26
+  every indoor oil-filled unit): **450.41** (location — ventilate to outside
+  air, no flues/ducts, wherever practicable), **450.42** (3-hour walls/roofs;
+  100 mm / 4-in. concrete earth-contact floor; 3-hour floor over vacant
+  space/stories; studs and wallboard prohibited; the sprinkler/spray/CO2/halon
+  1-hour Exception; IN No. 2 typical 150 mm / 6-in. RC), **450.43** doorways
+  (3-hour tight-fitting door + AHJ exterior + 1-hour Exception; 100 mm / 4-in.
+  oil-confining sill; locks + qualified persons; 2023: personnel doors capable
+  of opening not less than 90 degrees + listed fire exit hardware — the only
+  substantive Part III change), **450.45** ventilation (the 450.9 hook; 1900
+  mm² (3 in.²) per kVA net, 0.1 m² (1 ft²) floor under 50 kVA — exact
+  break-even 52.63 kVA; arrangement; coverings; 1-1/2-hour automatic closing
+  fire dampers on indoor openings; fire-resistant ducts), **450.46** (more
+  than 100 kVA drain + floor pitch), **450.47** (no foreign piping; fire
+  protection / transformer cooling excepted), **450.48** (nothing stored).
+  Five core-computed worked examples (the per-kVA ventilation rate + floor;
+  the 100 kVA drain boundary; the 75 kVA vault door package; the 450.45(B)
+  split; the 3-hour / 1-hour / 1-1/2-hour rating ladder). Edition story:
+  119 machine-verified phrase-level checks (verify_art54.py, all pass); deltas
+  = the 450.43(C) egress rework + three Informational Note re-cites
+  (E119-15→E119-20, NFPA 80-2013→80-2019, ANSI/UL 555-2011→555-2020); no
+  Mike Holt 2023 entries for Part III (all deltas on-disk-verified); no 450.44.
+  77-assertion test block (`run_tests.js`), sitemap 55 URLs
+  + index cross-link. Written by Radloff Bot (AI, disclosed on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
