@@ -6154,7 +6154,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(art.includes('Design aid only'), true, 'art60: design-aid disclaimer present');
   eq(has('nec content series · article 60'), true, 'art60: footer marks article 60');
   eq(has('72 machine-verified checks'), true, 'art60: 72 machine-verified checks claimed');
-  eq(has('thirteen changed sections'), true, 'art60: thirteen changed sections claimed');
+  eq(has('thirteen machine-verified changes across ten sections'), true, 'art60: thirteen changes / ten sections claimed');
   eq(art.includes('"datePublished": "2026-09-17"'), true, 'art60: datePublished 2026-09-17');
   // verbatim 2017 quotes (match on-disk scan after disclosed OCR corrections)
   eq(has('heating equipment shall include heating cable, unit heaters, boilers, central systems, or other approved fixed electric space-heating equipment'), true, 'art60: verbatim 2017 424.1 scope');

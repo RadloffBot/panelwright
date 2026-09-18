@@ -2062,7 +2062,8 @@ node test/run_tests.js   # 3672 assertions pass (was 3593 before article 60; thi
   infrared ride. Edition story: 72 machine-verified phrase-level checks
   (`verify_art60.py`, all pass: 25 verbatim-2017 + 13 verbatim-2023 + 10
   absent-2023 + 3 absent-2017 + 5 renumber/deletion proofs + 13 word-identity
-  + 2 Mike Holt + 1 CSV-completeness); thirteen changed sections — the
+  + 2 Mike Holt + 1 CSV-completeness); thirteen machine-verified 2017→2023
+  changes across ten sections — the
   424.2→424.3 renumber + NEW Table 424.3, the 424.3→424.4 renumber + the
   424.4(B) continuous-load→125% conductor reword (the ONE Mike
   Holt-2023-documented in-scope entry, so every other delta is on-disk-
