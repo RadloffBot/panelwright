@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 425.1–425.29 — Fixed Resistance &amp; Electrode Industrial Process Heating: Branch Circuits, Installation, Control &amp; Protection (Article 425 Parts I–IV)</title>
+<meta name="description" content="Fixed resistance and electrode industrial process heating equipment (boilers, immersion heaters, process air heaters, duct heaters, strip heaters) — the branch-circuit rules (425.3, continuous load, renumbered to 425.4 in 2023), the installation rules (425.8–425.14, the 425.10 renumber), the control & protection rules (425.19–425.22, the 48 A element subdivision + the 2020 120 A circuit / 150 A OCPD allowance), and the marking rules (425.28–425.29). 2017→2023 edition history — 91 machine-verified checks — plus five worked examples from the shipped cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-42501-42529-industrial-process-heating.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 425.1–425.29 — Fixed Resistance &amp; Electrode Industrial Process Heating (Parts I–IV)">
+<meta property="og:description" content="The branch-circuit, installation, control &amp; protection, and marking rules for boilers, immersion heaters, process air heaters, and strip heaters. 2017→2023 history (incl. the 425.22(B) 120 A / 150 A element allowance) + worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-42501-42529-industrial-process-heating.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 425.1–425.29 — Industrial Process Heating (Parts I–IV)">
+<meta name="twitter:description" content="425.3/425.4 branch circuits (continuous load), 425.8–425.14 installation, 425.19–425.22 control &amp; protection (48 A element subdivision, the 120 A / 150 A allowance), 425.28–425.29 marking. 2017→2023 + worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 425.1 industrial process heating scope, NEC 425.3 branch circuits continuous, NEC 425.4 2023 renumber, NEC 425.6 listed equipment, NEC 425.8 location working space, NEC 425.11 supply conductor marking, NEC 425.12 damp wet locations, NEC 425.13 spacing combustible, NEC 425.14 infrared lamp over 150 volts, NEC 425.19 disconnecting means, 425.19 125% disconnect rating, NEC 425.21 indicating switch, NEC 425.22 overcurrent protection, 425.22(B) 48 ampere element subdivision, 425.22(B) 120 amperes 150 amperes, NEC 425.28 nameplate, NEC 425.29 heating element marking, industrial process heater branch circuit, immersion heater breaker size, electrode boiler OCPD, fixed resistance heating design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 425.1–425.29 — Fixed Resistance & Electrode Industrial Process Heating: Branch Circuits, Installation, Control & Protection (Article 425 Parts I–IV)",
+  "description": "Fixed resistance and electrode industrial process heating equipment (boilers, electrode boilers, duct heaters, strip heaters, immersion heaters, process air heaters): the branch-circuit rules of 425.3 (2017) / 425.4 (2023) (individual circuits at any rating, continuous load), the installation rules of 425.8–425.14 (location/working space renumbered to 425.10, supply-conductor marking, damp/wet, combustible spacing, the 425.14 infrared-lamp rule), the control and protection rules of 425.19–425.22 (the 125% disconnect rating, in-sight-or-lockable-open, unit switches, the 48 A heating-element subdivision with the 2020 120 A circuit / 150 A OCPD allowance, and the 50 kW marked-minimum-conductor route), and the marking rules of 425.28–425.29. Edition history 2017 to 2023, machine-verified with 91 phrase-level checks, with five worked examples computed from the shipped PanelWright cores.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-18",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-42501-42529-industrial-process-heating.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What size branch circuit and conductors does a fixed industrial process heater require (425.3 / 425.4)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "425.3(A) (2017) / 425.4(A) (2023): an individual branch circuit may supply any volt-ampere or wattage rating of fixed industrial process heating equipment for which the branch circuit is rated — there is no multi-outlet cap and no infrared allowance in this article (those live in Article 424). 425.3(B) / 425.4(B): fixed industrial process heating equipment and motors shall be considered continuous loads — so the branch-circuit conductors are sized at 125% of the load (210.19(A)(1)) and the OCPD follows 240.6 from that value. A 15,000 W / 240 V unit heater (62.5 A) therefore needs 78.75 A of conductor ampacity: an 80 A OCPD over 4 AWG Cu (85 A @ 75 °C)." }
+    },
+    {
+      "@type": "Question",
+      "name": "What disconnecting means does a fixed industrial process heater require (425.19)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "425.19: a means shall be provided to simultaneously disconnect the heater, the motor controller(s), and the supplementary overcurrent protective device(s) from all ungrounded conductors; where supplied by more than one source the disconnecting means shall be grouped and identified as having multiple disconnecting means. The 425.19(A)/(B) disconnecting means shall be rated not less than 125 percent of the total load of the motors and the heaters and (2023) capable of being locked in the open position in compliance with 110.25 (2017 said 'lockable in accordance with 110.25'). 425.19(B)(1): for equipment without a motor (or a motor not over 1/8 hp), the branch-circuit switch or breaker may serve as the disconnecting means where it is within sight of the heater or lockable-open per 110.25. A unit switch(es) with a marked 'off' position that disconnects all ungrounded conductors is permitted as the disconnect under 425.19(C). The switch/breaker used as the disconnect must be of the indicating type (425.21)." }
+    },
+    {
+      "@type": "Question",
+      "name": "How does 425.22(B) protect large heating elements (the 48 A subdivision and the 120 A / 150 A allowance)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "425.22(B): resistance-type heating elements in fixed industrial process heating equipment shall be protected at not more than 60 amperes. Equipment rated more than 48 amperes and employing such elements shall have the heating elements subdivided, and each subdivided load shall not exceed 48 amperes. NEW (2020, carried into 2023): the elements shall be permitted to be subdivided into circuits not exceeding 120 amperes and protected at not more than 150 amperes where one of three conditions is met — (1) the elements are integral with and enclosed within a process heating surface, (2) they are completely contained within an enclosure identified as suitable for this use, or (3) they are contained within an ASME-rated and stamped vessel. Where a subdivided load is less than 48 amperes, the supplementary-device rating complies with 425.4(B) (2023; 2017 cited 425.3(B)). A 15,000 W / 240 V heater (62.5 A) must therefore be subdivided into loads of 48 A or less — e.g. two 31.25 A elements — unless the 120 A / 150 A condition applies." }
+    },
+    {
+      "@type": "Question",
+      "name": "What did 2023 change in Article 425 industrial process heating (425.1–425.29)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Twelve machine-verified 2017→2023 changes across twelve sections (91 checks; no Mike Holt 2023 entries for Article 425, so every delta is on-disk-verified). The renumber story: 2017's 425.2 'Other Articles' (the Article 440 cross-reference) moved into a NEW Table 425.3 under renumbered 425.3 'Other Articles'; 2017's 425.3 'Branch Circuits' renumbered to 425.4; 2017's 425.8 'General' (location/working space) renumbered to 425.10; and 2017's 425.9 'Approval' plus 425.10 'Special Permission' were DELETED outright. Substantive edits: 425.1's scope dropped the exclusion list (no more 'shall not apply to ... Article 424 / Article 427 / Article 665 / silicon-carbide furnaces'); 425.4(A) 'for which they are rated' → 'for which the branch circuit is rated'; 425.19 lead + (A)(1) + (B)(1) 'lockable in accordance with 110.25' → 'capable of being locked in the open position in compliance with 110.25'; 425.19(A)(2)(2) dropped the 'complies with 422.34(A)–(D)' unit-switch condition (now 'provided with disconnecting means' + lockable-open); 425.22(A) rewords the 430/440 cross-reference to Part III/IV and Part III; 425.22(B) renumbers 425.3(B) → 425.4(B); 425.28(A) 'giving the identifying name' → 'identifying the manufacturer'; 425.28(B) 'visible or easily accessible' → 'visible or accessible'. The 425.22(B) 120 A circuit / 150 A OCPD element allowance is a 2020 change (independent source: mypdh.engineer's 2020-NEC lesson) carried into 2023. The remaining in-scope sections are word-identical (machine-verified)." }
+    },
+    {
+      "@type": "Question",
+      "name": "What must a fixed industrial process heater nameplate and its heating elements say (425.28–425.29)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "425.28(A): fixed industrial process heating equipment shall be provided with a nameplate identifying the manufacturer (2023; 2017 said 'giving the identifying name') and the rating in volts and watts or volts and amperes; equipment for ac only / dc only / both shall be so marked; equipment consisting of motors over 1/8 hp and other loads shall specify the motor rating in volts, amperes, and frequency and the heating load in volts and watts or volts and amperes. 425.28(B): the nameplate shall be located so as to be permanent and visible or accessible after installation (2023; 2017 said 'visible or easily accessible'). 425.29: all heating elements that are replaceable in the field shall be legibly marked with the ratings in volts and watts or volts and amperes (2023; the 2017 scan prints 'volts or watts or in volts or amperes' — the 2023 'and' form is the clean text)." }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+.removed{background:rgba(224,108,92,.08);border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+td.bad{color:var(--bad);font-weight:650}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code{font-family:var(--mono);font-size:.92em;background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cta{display:inline-block;background:var(--acc);color:#08111c;font-weight:750;text-decoration:none;padding:12px 20px;border-radius:8px;margin:22px 0 6px}
+.cta:hover{filter:brightness(1.08)}
+.ctasub{color:var(--dim);font-size:13.5px}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 18px;font-size:14px}
+.method .blank{font-family:var(--mono);font-size:.9em;color:var(--dim)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+footer a{color:var(--dim)}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+@media(max-width:640px){h1{font-size:24px}table{font-size:12.5px}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 425.1–425.29 — <span>Fixed Resistance &amp; Electrode Industrial Process Heating (Parts I–IV)</span></h1>
+  <p class="sub">The article that answers <em>"what size circuit, conductors, OCPD, and disconnect for my process heater / immersion heater / boiler / process air heater?"</em> — the first ~29 sections of Article 425: <strong>Part I General (425.1–425.6)</strong> — scope and the branch-circuit rules (continuous load; renumbered to <strong>425.4</strong> in 2023, with 2017's 425.2 "Other Articles" cross-reference moved into a NEW Table 425.3); <strong>Part II Installation (425.8–425.14)</strong> — location/working space (renumbered to <strong>425.10</strong>), the two deleted sections (425.9 Approval, 425.10 Special Permission), supply-conductor marking, damp/wet locations, combustible-material spacing, and the 425.14 infrared-lamp rule; <strong>Part III Control &amp; Protection (425.19–425.22)</strong> — the disconnecting means (the 125% rating, in-sight-or-lockable-open, unit switches, indicating switches), the <strong>48 A</strong> heating-element subdivision with the <strong>120 A circuit / 150 A OCPD</strong> allowance (2020, carried into 2023), and the 50 kW marked-minimum-conductor route; and <strong>Part IV Marking (425.28–425.29)</strong> — the nameplate and the field-replaceable element rating. Twelve machine-verified 2017→2023 changes across twelve sections (91 machine-verified checks; no Mike Holt 2023 entries for Article 425, so every delta is on-disk-verified), plus five worked examples from the shipped cores.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 425.1–425.29 (fixed resistance and electrode industrial process heating equipment, Parts I–IV) for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text on disk)</strong>, the citation anchor; the 2023 changes are documented in the edition-history boxes and machine-verified against the on-disk 2023 NEC (91 phrase-level checks, all passing). Every OCPD / conductor / disconnect-rating figure in the worked examples comes from the <strong>shipped PanelWright cores</strong> under node — zero hand math.</div>
+
+  <h2>Part I — General (425.1–425.6), verbatim 2017</h2>
+  <p>Four General sections on disk in this article's scope. 425.2 (the Article 440 cross-reference) is the one 2023 folds into the NEW Table 425.3, and 425.3 "Branch Circuits" renumbers to <strong>425.4</strong>.</p>
+
+  <div class="code">425.1 Scope. This article covers fixed industrial process heating employing electric resistance or electrode heating technology. For the purpose of this article, heating equipment shall include boilers, electrode boilers, duct heaters, strip heaters, immersion heaters, process air heaters, or other approved fixed electric equipment used for industrial process heating. This article shall not apply to heating and room air conditioning for personnel spaces covered by Article 424, fixed heating equipment for pipelines and vessels covered by Article 427, induction and dielectric heating equipment covered by Article 665, and industrial furnaces incorporating silicon carbide, molybdenum, or graphite process heating elements.
+[2023 DELTA — the scope reword: "heating equipment includes boilers, electrode boilers, duct heaters, strip heaters, immersion heaters, process air heaters, or other fixed electric equipment used for industrial process heating" (the "shall include" and "approved" wording are gone) AND the entire exclusion list is dropped — no more "shall not apply to ... Article 424 / Article 427 / Article 665 / silicon-carbide, molybdenum, or graphite furnaces." Machine-verified: all five exclusion phrases are absent from every in-scope 2023 row.]
+<span class="src">NEC 2017 (NFPA 70), Article 425 Part I — verbatim on-disk official scan. OCR line-wrap reflow normalized (the scan prints "heat- ing", "technol- ogy", "molybde- num" across line breaks).</span></div>
+
+  <div class="code">425.2 Other Articles. Fixed industrial process heating equipment incorporating a hermetic refrigerant motor-compressor shall also comply with Article 440.
+[2023 RENUMBER + TABLE — the plain "Article 440" sentence is replaced: 425.3 (2023) now reads "…shall additionally comply with Table 425.3," where the NEW Table 425.3 ("Other Articles") carries two rows — "Motors, motor circuits, and controllers — 430" and "Air-conditioning and refrigerating equipment — 440 (Parts I through IV)." Machine-verified: "shall also comply with Article 440" is absent from every in-scope 2023 row; the Table 425.3 text is present; there is no 425.2 row in 2023.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan.</span></div>
+
+  <div class="code">425.3 Branch Circuits.
+(A) Branch-Circuit Requirements. Individual branch circuits shall be permitted to supply any volt-ampere or wattage rating of fixed industrial process heating equipment for which they are rated.
+(B) Branch-Circuit Sizing. Fixed industrial process heating equipment and motors shall be considered continuous loads.
+[2023 RENUMBER + REWORD — this whole section becomes 425.4. (A) "for which they are rated" → "for which the branch circuit is rated." (B) is word-identical (machine-verified) — the continuous-load declaration survives 2023 unchanged (contrast Article 424, where 2023 reworded 424.3(B) into an explicit 125% conductor rule; Article 425 keeps the 2017 "continuous load" declaration form).]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR line-wrap reflow normalized.</span></div>
+
+  <div class="code">425.6 Listed Equipment. Fixed industrial process heating equipment shall be listed.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. Word-identical in 2023 (machine-verified).</span></div>
+
+  <h2>Part II — Installation (425.8–425.14), verbatim 2017</h2>
+  <p>Seven Part II sections on disk in this article's scope. 2017's <strong>425.8 "General"</strong> (location / working space) renumbers to <strong>425.10</strong>, and <strong>2017's 425.9 "Approval" and 425.10 "Special Permission" are deleted outright</strong> in 2023 — the 2023 425.10 is the renumbered General text.</p>
+
+  <div class="code">425.8 General.
+(A) Location. Fixed industrial process heating equipment shall be located with respect to building construction and other equipment so as to permit access to the equipment. Sufficient clearance shall be maintained to permit replacement of controls and heating elements and for adjusting and cleaning of controls and other parts requiring such attention.
+(B) Working Space. Working space about electrical enclosures for fixed industrial process heating equipment that require examination, adjustment, servicing, or maintenance while energized shall be accessible, and the work space for personnel shall comply with 110.26 and 110.34, based upon the utilization voltage to ground.
+Exception: With special permission, in industrial establishments only, where conditions of maintenance and supervision ensure that only qualified persons will service the installation, working space less than that required in 110.26 or 110.34 shall be permitted.
+(C) Above Grade Level, Floor, or Work Platform. Where the enclosure is located above grade, the floor, or a work platform, all of the following shall apply: (1) The enclosure shall be accessible. (2) The width of the working space shall be the width of the enclosure or a minimum of 762 mm (30 in.), whichever is greater. (3) The depth of the workspace shall comply with 110.26(A) or 110.34 based upon the voltage to ground. (4) All doors or hinged panels shall open to at least 90 degrees.
+[2023 RENUMBER — becomes 425.10, split into 425.10(A) "Fixed industrial process heating equipment shall be accessible" (the (A) Location requirement compressed to its accessible core), 425.10(B) (the Working Space text + Exception, word-identical), and 425.10(C) (the above-grade text, word-identical). Machine-verified: the 425.10(B)/(C) bodies are word-identical to the 2017 425.8(B)/(C); there is no 425.8 row in 2023.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR line-wrap reflow normalized.</span></div>
+
+  <div class="removed">425.9 Approval. All fixed industrial process heating equipment shall be installed in an approved manner.
+[DELETED in 2023 — no 425.9 row in the on-disk 2023 NEC, and "shall be installed in an approved manner" is absent from every in-scope 2023 row. Verified.]</div>
+
+  <div class="removed">425.10 Special Permission. Fixed industrial process heating equipment and systems installed by methods other than covered by this article shall be permitted only by special permission.
+[DELETED in 2023 — "permitted only by special permission" is absent from every in-scope 2023 row; the 2023 425.10 is the renumbered General text (was 425.8). Verified. (Note the 425.8(B) "with special permission" working-space EXCEPTION survives — that is 110.26/110.34 working-space relief, not this section.)]</div>
+
+  <div class="code">425.11 Supply Conductors. Fixed industrial process heating equipment requiring supply conductors with over 60°C insulation shall be clearly and permanently marked. This marking shall be plainly visible after installation and shall be permitted to be adjacent to the field connection box.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR line-wrap reflow normalized. Word-identical in 2023 (machine-verified).</span></div>
+
+  <div class="code">425.12 Locations.
+(A) Exposed to Physical Damage. Where subject to physical damage, fixed industrial process heating equipment shall be protected in an approved manner.
+(B) Damp or Wet Locations. Fixed industrial process heating equipment installed in damp or wet locations shall be listed for such locations and shall be constructed and installed so that water or other liquids cannot enter or accumulate in or on wired sections, electrical components, or ductwork. Informational Note: See 110.11 for equipment exposed to deteriorating agents.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR line-wrap reflow normalized ("dete- riorating"). Word-identical in 2023, both (A) and (B) — including the water-accumulation sentence (contrast 424.12(B), where 2023 dropped it). Machine-verified.</span></div>
+
+  <div class="code">425.13 Spacing from Combustible Materials. Fixed industrial process heating equipment shall be installed to provide the required spacing between the equipment and adjacent combustible material, unless it is listed to be installed in direct contact with combustible material.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. Word-identical in 2023 (machine-verified).</span></div>
+
+  <div class="code">425.14 Infrared Lamp Industrial Heating Equipment. In industrial occupancies, infrared industrial process heating equipment lampholders shall be permitted to be operated in series on circuits of over 150 volts to ground, provided the voltage rating of the lampholders is not less than the circuit voltage.
+Each section, panel, or strip carrying a number of infrared lampholders, including the terminal wiring of such section, panel, or strip, shall be considered as infrared industrial heating equipment. The terminal connection block of each assembly shall be considered an individual outlet.
+[2023 DELTA — the first-paragraph "volt- age rating of the lampholders is not less than the circuit volt- age," (the stray comma-for-period in the 2017 scan) is cleaned to "the circuit voltage." in 2023; the substance (series operation over 150 V to ground only when the lampholder rating ≥ circuit voltage) is unchanged. The second paragraph is word-identical (machine-verified).]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR: the 2017 scan prints "circuit volt- age," (trailing comma) and "heat- ing"; normalized. A page-break running header fragment printed mid-425.14 was a scan artifact and was removed.</span></div>
+
+  <h2>Part III — Control and Protection (425.19–425.22), verbatim 2017</h2>
+  <p>Four Part III sections — the disconnect (the 125% rating, in-sight-or-lockable-open, unit switches), the indicating-switch rule, and the overcurrent protection (the 48 A element subdivision, the 2020 120 A / 150 A allowance, and the 50 kW conductor route).</p>
+
+  <div class="code">425.19 Disconnecting Means. Means shall be provided to simultaneously disconnect the heater, motor controller(s), and supplementary overcurrent protective device(s) of all fixed industrial process heating equipment from all ungrounded conductors. Where heating equipment is supplied by more than one source, feeder, or branch circuit, the disconnecting means shall be grouped and identified as having multiple disconnecting means. Each disconnecting means shall simultaneously disconnect all ungrounded conductors that it controls. The disconnecting means specified in 425.19(A) and (B) shall have an ampere rating not less than 125 percent of the total load of the motors and the heaters and shall be lockable in accordance with 110.25.
+(A) Heating Equipment with Supplementary Overcurrent Protection. The disconnecting means for fixed industrial process heating equipment with supplementary overcurrent protection shall be within sight from the supplementary overcurrent protective device(s), on the supply side of these devices, if fuses, and, in addition, shall comply with either 425.19(A)(1) or (A)(2).
+(1) Heater Containing No Motor Rated over 1/8 Horsepower. The disconnecting means specified in 425.19 or unit switches complying with 425.19(C) shall be permitted to serve as the required disconnecting means for both the motor controller(s) and heater under either of the following conditions: (1) The disconnecting means provided is also within sight from the motor controller(s) and the heater. (2) The disconnecting means is lockable in accordance with 110.25.
+(2) Heater Containing a Motor(s) Rated over 1/8 Horsepower. The above disconnecting means shall be permitted to serve as the required disconnecting means for both the motor controller(s) and heater under either of the following conditions: (1) The disconnecting means is in sight from the motor controller(s) and the heater and complies with Part IX of Article 430. (2) Motor(s) of more than 1/8 hp and the heater are provided with a single unit switch that complies with 422.34(A), (B), (C), or (D), the disconnecting means shall be permitted to be out of sight from the motor controller.
+(B) Heating Equipment Without Supplementary Overcurrent Protection.
+(1) Without Motor or with Motor Not over 1/8 Horsepower. For fixed industrial process heating equipment without a motor rated over 1/8 hp, the branch-circuit switch or circuit breaker shall be permitted to serve as the disconnecting means where the switch or circuit breaker is within sight from the heater or is lockable in accordance with 110.25.
+(2) Over 1/8 Horsepower. For motor-driven fixed industrial process heating equipment with a motor rated over 1/8 hp, a disconnecting means shall be located within sight from the motor controller or shall be permitted to comply with the requirements in 425.19(A)(2).
+(C) Unit Switch(es) as Disconnecting Means. A unit switch(es) with a marked "off" position that is part of a fixed heater and disconnects all ungrounded conductors shall be permitted as the disconnecting means required by this article. The branch circuit switch or circuit breaker, where readily accessible for servicing of the fixed heater, shall be permitted as the other disconnecting means.
+[2023 DELTAS — (1) the lead "and shall be lockable in accordance with 110.25", (A)(1)(2) "The disconnecting means is lockable in accordance with 110.25", and (B)(1) "or is lockable in accordance with 110.25" all become the "capable of being locked in the open position in compliance with 110.25" form; (2) (A)(2)(2) drops the "complies with 422.34(A), (B), (C), or (D)" unit-switch condition — the 2023 text reads "Motor(s) of more than 1/8 hp and the heater are provided with disconnecting means. The disconnecting means shall be permitted to be out of sight from the motor controller and shall be capable of being locked in the open position in compliance with 110.25" (machine-verified: "complies with 422.34" absent from 2023). The (A) core, (A)(1) shared lead, (B)(2) core, and (C) are word-identical. Machine-verified.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR: the 1/8-hp fraction prints as "% Horsepower" / "% hp" (resolved to "1/8"); "A_ unit switch(es)" underscore and the curly quotes in (C) are scan artifacts, normalized; a page-break running header "425.22" printed mid-425.19(B)(1) was removed.</span></div>
+
+  <div class="code">425.21 Switch and Circuit Breaker to Be Indicating. Switches and circuit breakers used as disconnecting means shall be of the indicating type.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. Word-identical in 2023 (machine-verified).</span></div>
+
+  <div class="code">425.22
+(A) Branch-Circuit Devices. Fixed industrial process heating equipment other than such motor-operated equipment as required by Articles 430 and 440 to have additional overcurrent protection shall be permitted to be protected against overcurrent where supplied by one of the branch circuits in Article 210.
+(B) Resistance Elements. Resistance-type heating elements in fixed industrial process heating equipment shall be protected at not more than 60 amperes. Equipment rated more than 48 amperes and employing such elements shall have the heating elements subdivided, and each subdivided load shall not exceed 48 amperes. Where a subdivided load is less than 48 amperes, the rating of the supplementary overcurrent protective device shall comply with 425.3(B). A boiler employing resistance-type immersion heating elements contained in an ASME-rated and stamped vessel shall be permitted to comply with 425.72(A).
+(C) Overcurrent Protective Devices. The supplementary overcurrent protective devices for the subdivided loads specified in 425.22(B) shall be (1) factory installed within or on the heater enclosure or supplied for use with the heater as a separate assembly by the heater manufacturer; (2) accessible, but shall not be required to be readily accessible; and (3) suitable for branch-circuit protection. Informational Note No. 1: See 240.10. Where cartridge fuses are used to provide this overcurrent protection, a single disconnecting means shall be permitted to be used for the several subdivided loads. Informational Note No. 2: For supplementary overcurrent protection, see 240.10. Informational Note No. 3: Disconnecting means for cartridge fuses in circuits of any voltage, see 240.40.
+(D) Branch-Circuit Conductors. The conductors supplying the supplementary overcurrent protective devices shall be considered branch-circuit conductors. Where the heaters are rated 50 kW or more, the conductors supplying the supplementary overcurrent protective devices specified in 425.22(C) shall be permitted to be sized at not less than 100 percent of the nameplate rating of the heater, provided all of the following conditions are met: (1) The heater is marked with a minimum conductor size. (2) The conductors are not smaller than the marked minimum size. (3) A temperature-actuated device controls the cyclic operation of the equipment.
+(E) Conductors for Subdivided Loads. Field-wired conductors between the heater and the supplementary overcurrent protective devices for fixed industrial process heating equipment shall be sized at not less than 125 percent of the load served. The supplementary overcurrent protective devices specified in 425.22(C) shall protect these conductors in accordance with 240.4. Where the heaters are rated 50 kW or more, the ampacity of field-wired conductors between the heater and the supplementary overcurrent protective devices shall be permitted to be not less than 100 percent of the load of their respective subdivided circuits, provided all of the following conditions are met: (1) The heater is marked with a minimum conductor size. (2) The conductors are not smaller than the marked minimum size. (3) A temperature-activated device controls the cyclic operation of the equipment.
+[2023 DELTAS — (A) the cross-reference is reworded: "other than such motor-operated equipment as required by Articles 430 and 440 to have additional overcurrent protection" → "other than motor-operated equipment required to have additional overcurrent protection by Parts III and IV of Article 430 or Part III of Article 440" (and "branch circuits in Article 210" → "Part II of Article 210"); (B) is the headline — the NEW 2020 allowance (carried into 2023, independently sourced): "Resistance-type heating elements in fixed industrial process heating equipment shall be permitted to be subdivided into circuits not exceeding 120 amperes and protected at not more than 150 amperes where one of the following is met: Elements are integral with and enclosed within a process heating surface. Elements are completely contained within an enclosure identified as suitable for this use. Elements are contained within an ASME-rated and stamped vessel." — plus the 425.3(B) → 425.4(B) renumber in the sub-48 A supplementary-device clause; (C) reworks the (1)/(2)/(3) list form and the Informational Note 2/3 wording (the 2017 scan's "No. 8" is an OCR misread of "No. 3" — not an edition change); (D)/(E) are word-identical except "temperature-actuated" → "temperature-activated" in (E)(3). Machine-verified.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR: "shail comply with 425.3(B)" (s/h) and "425,72(A)" (comma) are scan artifacts, resolved by the clean 2023 row; "Informational Note No. 2;" semicolon normalized; the page-break running-header fusions "425.22(B) shall be (1) factory installed..." and "425.22 than 100 percent..." were removed. The 2017 scan prints the section heading as a bare "425.22" (no title) followed by the (A)–(E) subdivisions.</span></div>
+
+  <h2>Part IV — Marking (425.28–425.29), verbatim 2017</h2>
+  <p>The two marking sections — the nameplate and the field-replaceable heating-element rating.</p>
+
+  <div class="code">425.28 Nameplate.
+(A) Marking Required. Fixed industrial process heating equipment shall be provided with a nameplate giving the identifying name and the normal rating in volts and watts or in volts and amperes. Fixed industrial process heating equipment intended for use on alternating current only, direct current only, or both shall be marked to so indicate. The marking of equipment consisting of motors over 1/8 hp and other loads shall specify the rating of the motor in volts, amperes, and frequency and the heating load in volts and watts or in volts and amperes.
+(B) Location. This nameplate shall be located so as to be visible or easily accessible after installation.
+[2023 DELTAS — (A) "a nameplate giving the identifying name and the normal rating" → "a nameplate identifying the manufacturer and the rating" (the "normal" form is gone); (B) "so as to be visible or easily accessible" → "so as to be permanent and shall be visible or accessible." Machine-verified.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR: "motors over % hp" fraction resolved to "1/8 hp".</span></div>
+
+  <div class="code">425.29 Marking of Heating Elements. All heating elements that are replaceable in the field and are part of industrial process heating equipment shall be legibly marked with the ratings in volts and watts or in volts and amperes.
+[2023 DELTA — the 2017 scan prints "in volts or watts or in volts or amperes" (doubled "or"); the clean 2023 row reads "in volts and watts or in volts and amperes" — the "and" form. The 2017 "or/or" reading is almost certainly an OCR artifact (the 2023 text is unambiguous), so this is disclosed, not asserted, as an edition change.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR line-wrap reflow normalized.</span></div>
+
+  <h2>The 2017 → 2023 edition story (machine-verified)</h2>
+  <p class="sub">Twelve changed sections across 91 phrase-level checks (<code>verify_art61.py</code>, all passing). The on-disk Mike Holt 2023 change summary carries <strong>zero</strong> Article-425 entries, so every delta below is on-disk-verified (2017 scan vs 2023 CSV) with the summary's silence noted.</p>
+  <table>
+    <thead><tr><th>#</th><th>2017</th><th>2023</th><th>Change</th><th>Verified</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>425.1 scope — full exclusion list (Article 424 / 427 / 665, silicon-carbide furnaces)</td><td>425.1 — "includes" list, exclusion list dropped</td><td>scope reword + exclusion deletion</td><td class="ok">✓</td></tr>
+      <tr><td>2</td><td>425.2 Other Articles (plain Article 440 sentence)</td><td>425.3 Other Articles + NEW Table 425.3 (430 / 440 rows)</td><td>renumber + new table</td><td class="ok">✓</td></tr>
+      <tr><td>3</td><td>425.3 Branch Circuits</td><td>425.4 Branch Circuits ((A) "branch circuit is rated" reword)</td><td>renumber + (A) reword; (B) word-identical</td><td class="ok">✓</td></tr>
+      <tr><td>4</td><td>425.8 General (location / working space)</td><td>425.10 (A)/(B)/(C) split</td><td>renumber + restructure</td><td class="ok">✓</td></tr>
+      <tr><td>5</td><td>425.9 Approval</td><td>—</td><td>DELETED</td><td class="ok">✓</td></tr>
+      <tr><td>6</td><td>425.10 Special Permission</td><td>—</td><td>DELETED</td><td class="ok">✓</td></tr>
+      <tr><td>7</td><td>425.14 "circuit volt- age," (trailing comma)</td><td>425.14 "circuit voltage."</td><td>punctuation cleanup</td><td class="ok">✓</td></tr>
+      <tr><td>8</td><td>425.19 lead/(A)(1)(2)/(B)(1) "lockable in accordance with 110.25"</td><td>"capable of being locked in the open position in compliance with 110.25"</td><td>lockable-open reword (3 places)</td><td class="ok">✓</td></tr>
+      <tr><td>9</td><td>425.19(A)(2)(2) "complies with 422.34(A)–(D)"</td><td>"provided with disconnecting means" + lockable-open</td><td>unit-switch condition rework</td><td class="ok">✓</td></tr>
+      <tr><td>10</td><td>425.22(A) "required by Articles 430 and 440"</td><td>"by Parts III and IV of Article 430 or Part III of Article 440"</td><td>cross-ref reword</td><td class="ok">✓</td></tr>
+      <tr><td>11</td><td>425.22(B) 48 A subdivision only; cites 425.3(B)</td><td>425.22(B) + the 120 A circuit / 150 A OCPD allowance (3 conditions); cites 425.4(B)</td><td>NEW allowance (2020) + renumber</td><td class="ok">✓</td></tr>
+      <tr><td>12</td><td>425.28(A) "giving the identifying name and the normal rating"; (B) "visible or easily accessible"</td><td>425.28(A) "identifying the manufacturer and the rating"; (B) "permanent and ... visible or accessible"</td><td>marking reword (2 places)</td><td class="ok">✓</td></tr>
+    </tbody>
+  </table>
+  <p class="sub"><strong>Word-identical (machine-verified):</strong> 425.4(B) continuous-load declaration, 425.6, 425.11, 425.12(A), 425.12(B), 425.13, 425.14 second paragraph, 425.19(A) core / (A)(1) shared lead / (B)(2) / (C), 425.21, 425.22(C) core, 425.22(D), 425.22(E) (modulo the "actuated/activated" normalization), 425.29 substance. <strong>Edition of origin for #11:</strong> the 120 A / 150 A allowance first appears in the <strong>2020</strong> NEC (independently sourced from mypdh.engineer's 2020-NEC Significant Code Changes lesson: "Change at a Glance: Resistance-type heating elements in fixed industrial process heating equipment are now permitted to be subdivided into circuits not exceeding 120 amperes and protected at not more than 150 amperes under certain conditions") and is carried unchanged into 2023 — so it does not appear in the 2023 change summary.</p>
+
+  <h2>Worked examples (core-computed, zero hand math)</h2>
+  <p class="sub">Every rating below is computed by the shipped PanelWright cores under node (<code>compute_art61.js</code> → <code>art61_numbers.json</code>): <code>nextStdBreaker</code> (240.6 standard sizes), <code>pickConductor31016</code> (Table 310.16 pick + the 240.4(D) small-conductor OCPD caps), <code>reqBreakerA</code> (125% continuous). The EX loads are nameplate watts ÷ volts.</p>
+
+  <h3>EX1 — the 425.3/425.4 continuous-load package on a 15,000 W unit heater</h3>
+  <p>A 15,000 W / 240 V unit process heater (62.5 A), individually on its own branch circuit. 425.3(A) (2017) / 425.4(A) (2023): any rating the circuit supports; 425.3(B) / 425.4(B): continuous load → conductors at 125%:</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Heater load (15,000 W ÷ 240 V)</td><td class="ctr">62.5 A</td><td>nameplate</td></tr>
+      <tr><td>Continuous-load conductor ampacity (125%)</td><td class="ctr">78.75 A</td><td>425.3(B) / 425.4(B) (reqBreakerA)</td></tr>
+      <tr><td>OCPD (next standard at 78.75 A)</td><td class="ctr ok">80 A</td><td>240.6 (nextStdBreaker)</td></tr>
+      <tr><td>Supply conductors (78.75 A @ 75 °C)</td><td class="ctr">4 AWG Cu (85 A)</td><td>Table 310.16 (pickConductor31016)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 62.5 A load is continuous, so 78.75 A of conductor ampacity is required — an 80 A OCPD over 4 AWG Cu (85 A @ 75 °C). Note there is no multi-outlet cap and no infrared allowance in Article 425 (those are Article 424's 30 A / 50 A rules) — a single process heater rides its own circuit at whatever rating 425.4(A) supports.</p>
+
+  <h3>EX2 — the 425.19(B)(1) breaker-as-disconnect on a motor-less immersion heater</h3>
+  <p>A 6,000 W / 240 V immersion process heater (25 A), no motor (or a motor not over 1/8 hp). 425.19(B)(1) lets the branch-circuit breaker BE the disconnecting means, in sight or lockable-open (110.25); the 425.19 lead rates the disconnect at 125% of the load:</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Heater load (6,000 W ÷ 240 V)</td><td class="ctr">25 A</td><td>nameplate</td></tr>
+      <tr><td>Branch OCPD (next standard at 31.25 A)</td><td class="ctr">35 A</td><td>425.3(B) continuous → 240.6</td></tr>
+      <tr><td>Disconnect rating floor (125% of load)</td><td class="ctr">31.25 A</td><td>425.19 lead — "not less than 125 percent of the total load of the motors and the heaters"</td></tr>
+      <tr><td>Disconnect OCPD (next standard at 31.25 A)</td><td class="ctr ok">35 A</td><td>240.6 (nextStdBreaker)</td></tr>
+      <tr><td>Supply conductors (31.25 A @ 75 °C)</td><td class="ctr">10 AWG Cu (35 A)</td><td>Table 310.16 (pickConductor31016)</td></tr>
+      <tr><td>Location condition</td><td class="ctr">in sight OR lockable-open</td><td>425.19(B)(1) + 110.25 (2023: "capable of being locked in the open position in compliance with 110.25")</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 35 A breaker is both the branch OCPD and the disconnecting means — no separate heater switch is required — provided it is within sight of the heater or lockable-open. The 2017 wording for that lock condition ("is lockable in accordance with 110.25") is exactly what 2023 rewords to the "locked in the open position in compliance with 110.25" form (row 8 in the table above).</p>
+
+  <h3>EX3 — the 425.22(B) 48 A element subdivision (and the 120 A / 150 A allowance)</h3>
+  <p>A 10,000 W / 240 V immersion heater (41.67 A): under the 48 A subdivision threshold, so no subdivision is forced — but the 60 A element ceiling is the binding element-protection rule, and the 2020/2023 120 A / 150 A allowance is the escape for larger elements:</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Heater load (10,000 W ÷ 240 V)</td><td class="ctr">41.67 A</td><td>nameplate</td></tr>
+      <tr><td>48 A subdivision threshold</td><td class="ctr ok">not exceeded</td><td>425.22(B) — "equipment rated more than 48 amperes … shall have the heating elements subdivided"</td></tr>
+      <tr><td>60 A element protection ceiling</td><td class="ctr ok">within (41.67 A ≤ 60 A)</td><td>425.22(B) — "shall be protected at not more than 60 amperes"</td></tr>
+      <tr><td>2020/2023 allowance (if larger elements were used)</td><td class="ctr warn">circuits ≤ 120 A, OCPD ≤ 150 A</td><td>425.22(B) NEW — 3 conditions: process-heating-surface integral / suitable enclosure / ASME vessel</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Compare a 15,000 W / 240 V heater (62.5 A): that one EXCEEDS the 48 A threshold, so its elements must be subdivided into loads of 48 A or less (e.g. two 31.25 A elements) — unless the 120 A / 150 A condition applies (elements integral with a process heating surface, in a suitable enclosure, or in an ASME-rated vessel), in which case a single 120 A circuit / 150 A OCPD is permitted. The supplementary devices for any subdivision follow 425.22(C) (factory-installed, accessible, suitable for branch-circuit protection) and their rating complies with 425.4(B) (2023; 2017 cited 425.3(B)).</p>
+
+  <h3>EX4 — the 425.22(D) 50 kW marked-minimum-conductor route</h3>
+  <p>A 120,000 W / 480 V process heater (250 A nameplate), 50 kW or more: 425.22(D) lets the supply conductors ride at 100% of the nameplate rating (250 A) instead of the 425.4(B) 125% floor (312.5 A) — but only with all three conditions met:</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Heater load (120,000 W ÷ 480 V)</td><td class="ctr">250 A</td><td>nameplate</td></tr>
+      <tr><td>425.4(B) 125% floor (without the route)</td><td class="ctr">312.5 A</td><td>425.4(B) continuous → reqBreakerA</td></tr>
+      <tr><td>425.22(D) 100% route (with 3 conditions)</td><td class="ctr ok">250 A</td><td>425.22(D) — marked minimum conductor size + not-smaller + temperature-actuated control</td></tr>
+      <tr><td>OCPD on the 125% floor</td><td class="ctr">350 A</td><td>240.6 (nextStdBreaker of 312.5 A)</td></tr>
+      <tr><td>OCPD on the 100% route</td><td class="ctr ok">250 A</td><td>240.6 (nextStdBreaker of 250 A)</td></tr>
+      <tr><td>Conductors on the 125% floor (312.5 A @ 75 °C)</td><td class="ctr">400 kcmil Cu (335 A)</td><td>Table 310.16 (pickConductor31016)</td></tr>
+      <tr><td>Conductors on the 100% route (250 A @ 75 °C)</td><td class="ctr ok">250 kcmil Cu (255 A)</td><td>Table 310.16 (pickConductor31016)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 50 kW marked-minimum-conductor route saves a conductor size here (250 kcmil vs 400 kcmil Cu) and drops the OCPD from 350 A to 250 A — but it is conditional: the heater must be marked with a minimum conductor size, the field conductors must not be smaller than that mark, and a temperature-actuated device must control the cyclic operation. Miss any condition and the 125% floor of 425.4(B) governs. (The 425.22(E) companion rule for field-wired conductors to the supplementary devices is 125% of the load served, with the same 50 kW / 100% route.)</p>
+
+  <h3>EX5 — the 425.14 infrared-lamp section at 120 V</h3>
+  <p>A 4,800 W / 120 V infrared lamp section (40 A) in an industrial occupancy: 425.14 permits series lampholder operation on circuits over 150 V to ground only when the lampholder rating ≥ circuit voltage. At 120 V to ground the over-150-V condition is not triggered — the package is the plain continuous-load circuit:</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Infrared section load (4,800 W ÷ 120 V)</td><td class="ctr">40 A</td><td>nameplate</td></tr>
+      <tr><td>Series-over-150-V condition</td><td class="ctr ok">not triggered</td><td>425.14 — "over 150 volts to ground" (120 V to ground does not qualify)</td></tr>
+      <tr><td>Continuous-load conductor ampacity (125%)</td><td class="ctr">50 A</td><td>425.3(B) / 425.4(B)</td></tr>
+      <tr><td>OCPD (next standard at 50 A)</td><td class="ctr">50 A</td><td>240.6 (nextStdBreaker)</td></tr>
+      <tr><td>Supply conductors (50 A @ 75 °C)</td><td class="ctr">8 AWG Cu (50 A)</td><td>Table 310.16 (pickConductor31016)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 40 A infrared load needs 50 A of conductor ampacity (125% continuous) — an 8 AWG Cu (50 A) with a 50 A OCPD. If the same lamp section ran on a 277 V (or higher) circuit, the 425.14 series-lampholder rule would engage: series operation is permitted only if the lampholders are rated for at least the circuit voltage.</p>
+
+  <h2>Where 425.1–425.29 fit</h2>
+  <ul>
+    <li><strong>The space-heating cousin:</strong> the <a href="nec-42401-42429-fixed-space-heating.html">NEC 424.1–424.29 fixed electric space-heating article (60)</a> — Article 424 is the <em>personnel-space</em> heating article (baseboard, duct, boiler, radiant) with the 30 A multi-outlet cap and the 50 A non-dwelling infrared allowance; Article 425 is the <em>industrial process</em> article (boilers, immersion, process air, strip heaters) with no such caps but the 48 A element subdivision and the 120 A / 150 A allowance. 425.1's 2017 scope explicitly carves out "heating and room air conditioning for personnel spaces covered by Article 424" (2023 dropped the exclusion list).</li>
+    <li><strong>The multi-motor hand-off:</strong> the <a href="nec-43024-43053-several-motors-one-branch-circuit.html">NEC 430.24 + 430.53 several-motors article (57)</a> — 425.22(A) (2023) routes motor-operated process heating to "Parts III and IV of Article 430" for the additional overcurrent protection; the 430.24 conductor-sum article is the multi-load companion.</li>
+    <li><strong>The air-conditioning / refrigerating cross-reference:</strong> the <a href="nec-44022-44032-air-cooling-branch-circuit.html">NEC 440.22 + 440.32 air-conditioning branch-circuit article (50)</a> — 425.2 (2017) / 425.3 + Table 425.3 (2023) sends a compressor-equipped process heater to Article 440 (Parts I–IV), which is the source of the 175% / 125% / 72% rules that article works.</li>
+    <li><strong>The disconnecting-means neighbor:</strong> the <a href="nec-430101-430113-disconnecting-means.html">NEC 430.101–430.113 motor disconnecting-means article (42)</a> — 425.19(A)(2)(1) routes a motor-driven process heater to "Part IX of Article 430" (the 430.109/430.110 disconnect type + rating rules); the 2023 425.19(A)(2)(2) rework drops the 422.34 unit-switch hook in favor of the generic "provided with disconnecting means" + lockable-open form.</li>
+    <li><strong>The OCPD catalog and the conductor table behind every rating above:</strong> the <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings</a> (the 80 A / 35 A / 250 A / 350 A OCPD steps) and the <a href="nec-31016-ampacity.html">Table 310.16 allowable ampacities</a> (the 4 AWG / 10 AWG / 250 kcmil / 400 kcmil picks), with the <a href="nec-31015-ampacity-adjustments.html">310.15 ampacity adjustments</a> (derating, when more than two current-carrying conductors).</li>
+  </ul>
+  <p class="sub"><strong>Scope boundary, stated:</strong> this article is exactly 425.1–425.29 — Part I General (425.1–425.6), Part II Installation (425.8–425.14), Part III Control and Protection (425.19–425.22), and Part IV Marking (425.28–425.29). The rest of Article 425 is adjacent scope outside this article: Part V Concealed Fixed Industrial Heating Equipment (425.45–425.54), Part VI Duct Heaters (425.57–425.65), Part VII Resistance-Type Boilers (425.70–425.74), Part VIII Electrode-Type Boilers (425.80–425.86) — the on-disk 2017 scan carries all of it (verified) and the 2023 CSV carries the remaining 25 rows (54 total 425.x rows, 29 in this article's scope). <strong>2020 position is asserted for one delta only:</strong> the 425.22(B) 120 A / 150 A allowance is independently sourced as a 2020 change (mypdh.engineer 2020 lesson) and is carried unchanged into 2023; no on-disk 2020 source carries the other 425.1–425.29 section bodies, so the rest of the edition story is 2017↔2023 only. <strong>Verify section numbers against the NEC edition adopted in your jurisdiction.</strong></p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>, lines 50946–51329 reflowed to <span class="blank">art61_2017_cont.txt</span> with scan furniture stripped — page numbers 70-288…70-290, the edition lines, the ARTICLE 425 banners, the Part I/II/III/IV part headers, the article-title lines, and the running-header bare section numbers 425.22 (3 occurrences: one page-break mid-425.19(B)(1), two fusions mid-425.22(C) and mid-425.22(D)): 425.1, 425.2, 425.3 (A)/(B), 425.6, 425.8 (A)/(B)/(C), 425.9, 425.10, 425.11, 425.12 (A)/(B), 425.13, 425.14, 425.19 lead/(A)/(A)(1)/(A)(2)/(B)(1)/(B)(2)/(C), 425.21, 425.22 (A)–(E), 425.28 (A)/(B), 425.29. OCR line-wrap reflow normalized; disclosed scan artifacts corrected (listed per quote block): the 1/8-hp fraction printing as "% hp" / "% Horsepower" (425.19, 425.28(A)), the "shail comply" s/h and "425,72(A)" comma in 425.22(B) (resolved by the clean 2023 row), the "Informational Note No. 8" in 425.22(C) (OCR misread of "No. 3" — not an edition change), the "circuit volt- age," trailing comma in 425.14, the "volts or watts or in volts or amperes" doubled-"or" in 425.29 (2023 "and" form is the clean text), and the page-break running-header fusions (removed). No other wording altered.</p>
+    <p><strong>2023 text.</strong> On-disk 2023 NEC CSV (<span class="blank">art35_nec_csv.csv</span>): 29 in-scope rows — 425.1; 425.3; 425.4(A)/(B); 425.6; 425.10(A)/(B)/(C); 425.11; 425.12(A)/(B); 425.13; 425.14; 425.19 lead/(A)/(A)(1)/(A)(2)/(B)(1)/(B)(2)/(C); 425.21; 425.22(A)–(E); 425.28(A)/(B); 425.29 — complete for the scope (verified: the row set matches exactly; <strong>no 425.2, 425.8, 425.9, or 425.10 "Special Permission" rows — confirming the 425.2→Table 425.3 renumber, the 425.8→425.10 renumber, and the 425.9 / 425.10 deletions</strong>). The CSV carries 54 425.x rows total; the other 25 are the concealed / duct / boiler / electrode-boiler parts out of this article's scope.</p>
+    <p><strong>Worked examples (core-computed).</strong> Every rating is computed by the shipped PanelWright cores under node (<span class="blank">compute_art61.js</span> → <span class="blank">art61_numbers.json</span>): <span class="blank">nextStdBreaker</span> (240.6 standard sizes), <span class="blank">pickConductor31016</span> (Table 310.16 pick + the 240.4(D) small-conductor OCPD caps), <span class="blank">reqBreakerA</span> (125% continuous). Zero hand math — the EX loads are nameplate watts ÷ volts, the 125% and next-standard steps are core calls, and the conductor picks are core calls.</p>
+    <p><strong>Edition-delta claims (machine-checked).</strong> A targeted assertion script (<span class="blank">verify_art61.py</span>) reads the on-disk 2017 NFPA scan (reflowed), the on-disk 2023 NEC CSV, the on-disk Mike Holt 2023 change summary, and the independently-fetched mypdh.engineer 2020-NEC lesson, and asserts <strong>91 phrase-level checks</strong>: 26 verbatim-2017 presence probes (every in-scope section's 2017 text, each delta's 2017 side), 18 verbatim-2023 presence probes (each delta's 2023 side, including the 425.4(A) "branch circuit is rated" reword, the 425.19 lockable-open reword, the 425.22(B) 120 A / 150 A allowance, the 425.22(A) Parts cross-ref reword, and the 425.28(A) "identifying the manufacturer" reword), 16 one-sided delta-absence probes from the 2023 side (the 425.2 "shall also comply with Article 440" drop, the 425.1 exclusion-list drops [5 probes], the 425.9 "installed in an approved manner" drop, the 425.10 special-permission drop, the 425.19 "lockable in accordance with 110.25" drop, the 425.19 "complies with 422.34" drop, the 425.22(A) old cross-ref drop, the 425.28(B) "easily accessible" drop, the 425.29 "or/or" drop, and the 425.22(C) "IN No. 8" OCR-artifact absence), 4 one-sided NEW-in-2023 probes from the 2017 side (Table 425.3, the 120 A / 150 A allowance [2 probes], and the 425.28(A) "identifying the manufacturer" — all absent from the 2017 scan), 7 renumber/deletion proofs (no 425.2 / 425.8 / 425.9 rows; 425.3 carries Table 425.3; 425.4(A) present; 425.10(A) carries the General accessible text; 425.10 special-permission text absent), 15 word-identity checks (alpha-normalized 2017↔2023), 2 Mike Holt probes (zero "Article 425" entries AND zero bare "425.N" references in the whole 2023 summary — ELR silence), 2 independent-source probes (mypdh 2020 carries the 425.22(B) 120/150 A text and labels it a 425.22(B) change), and the 29-row CSV completeness check (26 + 18 + 16 + 4 + 7 + 15 + 2 + 2 + 1 = 91). <strong>All 91 pass</strong> (re-runnable, exit 0). <strong>2020 position is asserted for one delta only:</strong> the 425.22(B) 120 A / 150 A allowance (independently sourced); no on-disk 2020 source carries the other 425.1–425.29 section bodies.</p>
+  </div>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 61 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan + NEC 2023 (on-disk CSV) verbatim, OCR corrections disclosed (listed in the source notes). Twelve machine-verified 2017→2023 changes across twelve sections of the in-scope set — 425.1 scope reword + exclusion drop, 425.2→Table 425.3 renumber, 425.3→425.4 renumber + (A) reword, 425.8→425.10 renumber, 425.9 + 425.10 "Special Permission" deleted, 425.14 comma cleanup, 425.19 lockable-open reword (3 places), 425.19(A)(2)(2) unit-switch rework, 425.22(A) cross-ref reword, 425.22(B) 120 A / 150 A allowance (2020) + 425.3(B)→425.4(B), 425.22(C) list/IN rework, 425.28 marking reword (2 places). 91 machine-verified checks. Design aid — the adopted edition in your jurisdiction governs.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-42401-42429-fixed-space-heating.html">NEC 424.1–424.29 fixed electric space-heating (the personnel-space cousin)</a> · <a href="nec-43024-43053-several-motors-one-branch-circuit.html">NEC 430.24 + 430.53 several motors (the 425.22(A) hand-off)</a> · <a href="nec-44022-44032-air-cooling-branch-circuit.html">NEC 440.22 + 440.32 air-conditioning branch circuit (the Table 425.3 cross-ref)</a> · <a href="nec-430101-430113-disconnecting-means.html">NEC 430.101–430.113 motor disconnecting means (425.19's Part IX hook)</a> · <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings (the EX OCPD steps)</a> · <a href="nec-31016-ampacity.html">Table 310.16 ampacities (the EX conductor picks)</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>

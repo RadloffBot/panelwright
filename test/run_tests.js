@@ -6216,7 +6216,7 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap60 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap60.includes('articles/nec-42401-42429-fixed-space-heating.html'), true, 'art60: sitemap entry present');
-  eq((sitemap60.match(/<loc>/g) || []).length, 61, 'art60: sitemap has 61 URLs (art60 appended the 61st)');
+  eq((sitemap60.match(/<loc>/g) || []).length >= 61, true, 'art60: sitemap has >= 61 URLs (never-shrink; grows per article)');
   const index60 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index60.includes('articles/nec-42401-42429-fixed-space-heating.html'), true, 'art60: index cross-link present');
   const readme60 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
@@ -6224,6 +6224,143 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
 }
 // === ART60_BLOCK_END ===
 
+
+
+// === ART61_BLOCK_BEGIN (article 61 - NEC 425.1-425.29 fixed resistance & electrode industrial process heating) ===
+// 12 changed sections 2017->2023 (verify_art61.py, 91 checks, all pass):
+// 425.1 scope reword + exclusion-list drop, 425.2->Table 425.3 renumber,
+// 425.3->425.4 renumber + (A) reword, 425.8->425.10 renumber, 425.9
+// Approval + 425.10 "Special Permission" deleted, 425.14 comma cleanup,
+// 425.19 lockable-open reword (3 places), 425.19(A)(2)(2) unit-switch
+// rework, 425.22(A) cross-ref reword, 425.22(B) 120 A / 150 A element
+// allowance (2020 origin, independently sourced) + 425.3(B)->425.4(B),
+// 425.22(C) list/IN rework, 425.28 marking reword (2 places). No Mike Holt
+// 2023 entries for Article 425 (zero "Article 425" + zero "425.N" in the
+// summary - verified), so every delta is on-disk-verified. Worked examples
+// core-computed (compute_art61.js -> art61_numbers.json): nextStdBreaker /
+// pickConductor31016 / reqBreakerA.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-42501-42529-industrial-process-heating.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art61_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-42501-42529-industrial-process-heating.html'), true, 'art61: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-42501-42529-industrial-process-heating.html'), true, 'art61: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art61: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art61: Article + FAQPage JSON-LD present');
+  eq(art.includes('Design aid only'), true, 'art61: design-aid disclaimer present');
+  eq(has('nec content series · article 61'), true, 'art61: footer marks article 61');
+  eq(has('91 machine-verified checks'), true, 'art61: 91 machine-verified checks claimed');
+  eq(has('twelve machine-verified 2017→2023 changes across twelve sections'), true, 'art61: twelve changes / twelve sections claimed');
+  eq(art.includes('"datePublished": "2026-09-18"'), true, 'art61: datePublished 2026-09-18');
+  // verbatim 2017 quotes (match on-disk scan after disclosed OCR corrections)
+  eq(has('this article covers fixed industrial process heating employing electric resistance or electrode heating technology'), true, 'art61: verbatim 2017 425.1 scope');
+  eq(has('heating equipment shall include boilers, electrode boilers, duct heaters, strip heaters, immersion heaters, process air heaters, or other approved fixed electric equipment'), true, 'art61: verbatim 2017 425.1 equipment list');
+  eq(has('shall not apply to heating and room air conditioning for personnel spaces covered by article 424'), true, 'art61: verbatim 2017 425.1 exclusion (dropped in 2023)');
+  eq(has('incorporating a hermetic refrigerant motor-compressor shall also comply with article 440'), true, 'art61: verbatim 2017 425.2 other articles (2023 -> Table 425.3)');
+  eq(has('individual branch circuits shall be permitted to supply any volt-ampere or wattage rating of fixed industrial process heating equipment for which they are rated'), true, 'art61: verbatim 2017 425.3(A) individual circuit');
+  eq(has('fixed industrial process heating equipment and motors shall be considered continuous loads'), true, 'art61: verbatim 2017 425.3(B) continuous load (word-identical 2023)');
+  eq(has('fixed industrial process heating equipment shall be listed'), true, 'art61: verbatim 2017 425.6 listed (word-identical 2023)');
+  eq(has('exception: with special permission, in industrial establishments only'), true, 'art61: verbatim 2017 425.8(B) working-space exception (word-identical 2023)');
+  eq(has('all fixed industrial process heating equipment shall be installed in an approved manner'), true, 'art61: verbatim 2017 425.9 approval (deleted in 2023)');
+  eq(has('shall be permitted only by special permission'), true, 'art61: verbatim 2017 425.10 special permission (deleted in 2023)');
+  eq(has('requiring supply conductors with over 60°c insulation shall be clearly and permanently marked'), true, 'art61: verbatim 2017 425.11 supply-conductor marking (word-identical 2023)');
+  eq(has('water or other liquids cannot enter or accumulate in or on wired sections'), true, 'art61: verbatim 2017 425.12(B) water sentence (word-identical 2023)');
+  eq(has('shall be permitted to be operated in series on circuits of over 150 volts to ground'), true, 'art61: verbatim 2017 425.14 infrared series rule (word-identical 2023)');
+  eq(has('shall have an ampere rating not less than 125 percent of the total load of the motors and the heaters'), true, 'art61: verbatim 2017 425.19 lead 125% disconnect rating');
+  eq(has('the disconnecting means provided is also within sight from the motor controller(s) and the heater'), true, 'art61: verbatim 2017 425.19(A)(1) in-sight condition (word-identical 2023)');
+  eq(has('provided with a single unit switch that complies with 422.34(a), (b), (c), or (d)'), true, 'art61: verbatim 2017 425.19(A)(2)(2) 422.34 unit-switch hook (2023 rework)');
+  eq(has('switches and circuit breakers used as disconnecting means shall be of the indicating type'), true, 'art61: verbatim 2017 425.21 indicating (word-identical 2023)');
+  eq(has('resistance-type heating elements in fixed industrial process heating equipment shall be protected at not more than 60 amperes'), true, 'art61: verbatim 2017 425.22(B) 60 A element ceiling (word-identical 2023)');
+  eq(has('equipment rated more than 48 amperes and employing such elements shall have the heating elements subdivided, and each subdivided load shall not exceed 48 amperes'), true, 'art61: verbatim 2017 425.22(B) 48 A subdivision (word-identical 2023)');
+  eq(has('shall be permitted to be sized at not less than 100 percent of the nameplate rating of the heater'), true, 'art61: verbatim 2017 425.22(D) 50 kW 100% route (word-identical 2023)');
+  eq(has('field-wired conductors between the heater and the supplementary overcurrent protective devices'), true, 'art61: verbatim 2017 425.22(E) field-wired conductors');
+  eq(has('a nameplate giving the identifying name and the normal rating in volts and watts or in volts and amperes'), true, 'art61: verbatim 2017 425.28(A) nameplate (2023 reword)');
+  eq(has('shall be located so as to be visible or easily accessible after installation'), true, 'art61: verbatim 2017 425.28(B) "easily accessible" (2023 drop)');
+  eq(has('all heating elements that are replaceable in the field and are part of industrial process heating equipment shall be legibly marked'), true, 'art61: verbatim 2017 425.29 element marking');
+  // 2023 delta sides (match on-disk 2023 CSV rows)
+  eq(has('heating equipment includes boilers, electrode boilers, duct heaters, strip heaters, immersion heaters, process air heaters'), true, 'art61: 2023 425.1 scope reword (includes list, exclusions gone)');
+  eq(has('shall additionally comply with table 425.3'), true, 'art61: 2023 425.3 NEW Table 425.3 cross-ref');
+  eq(has('motors, motor circuits, and controllers'), true, 'art61: 2023 Table 425.3 430 row');
+  eq(has('air-conditioning and refrigerating equipment'), true, 'art61: 2023 Table 425.3 440 row');
+  eq(has('for which the branch circuit is rated'), true, 'art61: 2023 425.4(A) reword');
+  eq(has('fixed industrial process heating equipment shall be accessible'), true, 'art61: 2023 425.10(A) General accessible core');
+  eq(has('the circuit voltage'), true, 'art61: 2023 425.14 circuit-voltage punctuation cleanup');
+  eq(has('capable of being locked in the open position in compliance with 110.25'), true, 'art61: 2023 425.19 lockable-open reword');
+  eq(has('motor(s) of more than 1/8 hp and the heater are provided with disconnecting means'), true, 'art61: 2023 425.19(A)(2)(2) unit-switch rework (422.34 hook dropped)');
+  eq(has('required to have additional overcurrent protection by parts iii and iv of article 430 or part iii of article 440'), true, 'art61: 2023 425.22(A) Parts cross-ref reword');
+  eq(has('shall be permitted to be subdivided into circuits not exceeding 120 amperes and protected at not more than 150 amperes'), true, 'art61: 2023 425.22(B) NEW 120 A / 150 A allowance (2020 origin)');
+  eq(has('elements are integral with and enclosed within a process heating surface'), true, 'art61: 2023 425.22(B) condition 1 (process heating surface)');
+  eq(has('425.3(b) → 425.4(b) renumber in the sub-48 a supplementary-device clause'), true, 'art61: 2023 425.22(B) 425.3(B)->425.4(B) renumber documented');
+  eq(has('identifying the manufacturer and the rating'), true, 'art61: 2023 425.28(A) "identifying the manufacturer" reword');
+  eq(has('so as to be permanent and shall be visible or accessible'), true, 'art61: 2023 425.28(B) "permanent" + "easily" drop');
+  eq(has('in volts and watts or in volts and amperes'), true, 'art61: 2023 425.29 "and" form (clean text)');
+  // 2020-edition provenance callout (independent source)
+  eq(has('2020 nec'), true, 'art61: 2020-edition provenance callout present');
+  eq(has('mypdh.engineer'), true, 'art61: independent 2020 source cited (mypdh.engineer)');
+  // edition story table + method
+  eq(has('no mike holt 2023 entries for article 425'), true, 'art61: MH 2023 silence claimed (zero entries)');
+  eq(has('twelve changed sections'), true, 'art61: twelve-changed-sections claimed in method');
+  // worked examples (core-computed)
+  eq(nums.EX1.loadA, 62.5, 'art61: EX1 load = 62.5 A (15,000 W / 240 V)');
+  eq(nums.EX1.conductorAmpacityRequired_125, 78.13, 'art61: EX1 125% conductor ampacity = 78.13 A');
+  eq(nums.EX1.ocpdA, 80, 'art61: EX1 OCPD = 80 A (nextStdBreaker)');
+  eq(nums.EX1.conductor.indexOf('4 AWG Cu') === 0, true, 'art61: EX1 conductors = 4 AWG Cu (85 A @ 75 C)');
+  eq(nums.EX2.loadA, 25, 'art61: EX2 load = 25 A (6,000 W / 240 V)');
+  eq(nums.EX2.branchOcpdA, 35, 'art61: EX2 branch OCPD = 35 A');
+  eq(nums.EX2.disconnectRatingRequired_125, 31.25, 'art61: EX2 125% disconnect rating = 31.25 A');
+  eq(nums.EX2.disconnectOcpdA, 35, 'art61: EX2 disconnect OCPD = 35 A (425.19 lead 125%)');
+  eq(nums.EX2.conductor.indexOf('10 AWG Cu') === 0, true, 'art61: EX2 conductors = 10 AWG Cu (35 A @ 75 C)');
+  eq(nums.EX3.loadA, 41.67, 'art61: EX3 load = 41.67 A (10,000 W / 240 V)');
+  eq(nums.EX3.mustSubdivide, false, 'art61: EX3 under the 48 A threshold (no subdivision forced)');
+  eq(nums.EX3.within48, true, 'art61: EX3 within 48 A (41.67 A)');
+  eq(nums.EX3.elementCeilingA, 60, 'art61: EX3 60 A element ceiling');
+  eq(nums.EX3.allowed2023CircuitCapA, 120, 'art61: EX3 2020/2023 120 A circuit cap');
+  eq(nums.EX3.allowed2023OcpdCapA, 150, 'art61: EX3 2020/2023 150 A OCPD cap');
+  eq(nums.EX4.loadA, 250, 'art61: EX4 load = 250 A (120,000 W / 480 V)');
+  eq(nums.EX4.conductorAmpacityRequired_125_floor, 312.5, 'art61: EX4 125% floor = 312.5 A (without route)');
+  eq(nums.EX4.conductorAmpacityAllowed_100_route, 250, 'art61: EX4 100% route = 250 A (425.22(D))');
+  eq(nums.EX4.ocpdA_125floor, 350, 'art61: EX4 OCPD on 125% floor = 350 A');
+  eq(nums.EX4.ocpdA_100route, 250, 'art61: EX4 OCPD on 100% route = 250 A');
+  eq(nums.EX4.conductor_125floor.indexOf('400 kcmil Cu') === 0, true, 'art61: EX4 conductors on 125% floor = 400 kcmil Cu (335 A)');
+  eq(nums.EX4.conductor_100route.indexOf('250 kcmil Cu') === 0, true, 'art61: EX4 conductors on 100% route = 250 kcmil Cu (255 A)');
+  eq(nums.EX5.loadA, 40, 'art61: EX5 load = 40 A (4,800 W / 120 V infrared)');
+  eq(nums.EX5.conductorAmpacityRequired_125, 50, 'art61: EX5 125% conductor ampacity = 50 A');
+  eq(nums.EX5.ocpdA, 50, 'art61: EX5 OCPD = 50 A');
+  eq(nums.EX5.conductor.indexOf('8 AWG Cu') === 0, true, 'art61: EX5 conductors = 8 AWG Cu (50 A @ 75 C)');
+  // core re-runs (independent of the JSON)
+  eq(core.reqBreakerA(62.5, true), 78.125, 'art61: core re-run 62.5 A continuous x 1.25 = 78.125 A (EX1)');
+  eq(core.nextStdBreaker(78.125), 80, 'art61: core re-run 78.125 A -> 80 A (EX1)');
+  eq(core.pickConductor31016(78.125, 'cu', 75).size, '4', 'art61: core re-run 78.125 A @ 75 C = 4 AWG Cu (EX1)');
+  eq(core.nextStdBreaker(31.25), 35, 'art61: core re-run 31.25 A -> 35 A (EX2)');
+  eq(core.pickConductor31016(31.25, 'cu', 75).size, '10', 'art61: core re-run 31.25 A @ 75 C = 10 AWG Cu (EX2)');
+  eq(core.nextStdBreaker(312.5), 350, 'art61: core re-run 312.5 A -> 350 A (EX4 floor)');
+  eq(core.nextStdBreaker(250), 250, 'art61: core re-run 250 A is a 240.6 standard size (EX4 route)');
+  eq(core.pickConductor31016(312.5, 'cu', 75).size, '400', 'art61: core re-run 312.5 A @ 75 C = 400 kcmil Cu (EX4 floor)');
+  eq(core.pickConductor31016(250, 'cu', 75).size, '250', 'art61: core re-run 250 A @ 75 C = 250 kcmil Cu (EX4 route)');
+  eq(core.reqBreakerA(40, true), 50, 'art61: core re-run 40 A continuous x 1.25 = 50 A (EX5)');
+  eq(core.nextStdBreaker(50), 50, 'art61: core re-run 50 A is a 240.6 standard size (EX5)');
+  eq(core.pickConductor31016(50, 'cu', 75).size, '8', 'art61: core re-run 50 A @ 75 C = 8 AWG Cu (EX5)');
+  // cross-links
+  eq(art.includes('nec-42401-42429-fixed-space-heating.html'), true, 'art61: cross-links to the 424.1-424.29 fixed space-heating article (60)');
+  eq(art.includes('nec-43024-43053-several-motors-one-branch-circuit.html'), true, 'art61: cross-links to the 430.24/430.53 several-motors article (57)');
+  eq(art.includes('nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art61: cross-links to the 440.22/440.32 air-conditioning article (50)');
+  eq(art.includes('nec-430101-430113-disconnecting-means.html'), true, 'art61: cross-links to the 430.101-430.113 motor disconnecting-means article (42)');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art61: cross-links to the 240.6 standard ampere ratings article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art61: cross-links to the Table 310.16 ampacity article');
+  // sitemap + index + README
+  const sitemap61 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap61.includes('articles/nec-42501-42529-industrial-process-heating.html'), true, 'art61: sitemap entry present');
+  eq((sitemap61.match(/<loc>/g) || []).length, 62, 'art61: sitemap has 62 URLs (art61 appended the 62nd)');
+  const index61 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index61.includes('articles/nec-42501-42529-industrial-process-heating.html'), true, 'art61: index cross-link present');
+  const readme61 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme61.includes('articles/nec-42501-42529-industrial-process-heating.html'), true, 'art61: README entry present');
+}
+// === ART61_BLOCK_END ===
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

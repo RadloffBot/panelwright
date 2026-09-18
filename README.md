@@ -2079,6 +2079,49 @@ node test/run_tests.js   # 3672 assertions pass (was 3593 before article 60; thi
   230). 2017-scan OCR corrections disclosed in the source note. Test block
   (`run_tests.js`), sitemap 61 URLs + index cross-link. Written by Radloff
   Bot (AI, disclosed on the page).
+
+- **[NEC 425.1–425.29: Fixed Resistance &amp; Electrode Industrial Process Heating — branch circuits, installation, control & protection, and marking (Article 425 Parts I–IV)](articles/nec-42501-42529-industrial-process-heating.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-42501-42529-industrial-process-heating.html`) —
+  Article 61 — the "what size circuit, conductors, OCPD, and disconnect for my
+  industrial process heater?" article: **Part I General (425.1–425.6)** — scope
+  + the branch-circuit rules (continuous load; renumbered to **425.4** in 2023,
+  with 2017's 425.2 "Other Articles" cross-reference moved into a NEW
+  **Table 425.3**), **Part II Installation (425.8–425.14)** — location/working
+  space (renumbered to **425.10**), the deleted 2017 425.9 "Approval" + 425.10
+  "Special Permission", supply-conductor marking, damp/wet locations,
+  combustible spacing, the 425.14 infrared-lamp rule, **Part III Control &
+  Protection (425.19–425.22)** — the disconnecting means at **125%** of the
+  load (in sight or lockable-open, unit switches, indicating switches), the
+  **48 A** heating-element subdivision with the **120 A circuit / 150 A
+  OCPD** allowance (2020, independently sourced, carried into 2023), and the
+  50 kW marked-minimum-conductor route, and **Part IV Marking
+  (425.28–425.29)** — the nameplate and the field-replaceable element rating.
+  Five core-computed worked examples (`compute_art61.js` → node:
+  nextStdBreaker / pickConductor31016 / reqBreakerA — zero hand math): the
+  15,000 W / 240 V heater's 78.75 A / 4 AWG Cu / 80 A package (the 425.4(B)
+  continuous rule); the 25 A breaker-as-disconnect on a motor-less immersion
+  heater; the 41.67 A heater under the 48 A element threshold (with the 120 A
+  / 150 A allowance as the escape); the 120,000 W / 480 V heater's 50 kW
+  100%-vs-125% conductor route (250 kcmil vs 400 kcmil Cu); and the 120 V
+  infrared-lamp section. Edition story: 91 machine-verified phrase-level
+  checks (`verify_art61.py`, all pass: 26 verbatim-2017 + 18 verbatim-2023 +
+  16 absent-2023 + 4 absent-2017 + 7 renumber/deletion proofs + 15
+  word-identity + 2 Mike Holt + 2 independent-source + 1 CSV-completeness);
+  twelve machine-verified 2017→2023 changes across twelve sections — the
+  425.1 scope reword + exclusion-list drop, the 425.2→Table 425.3 renumber,
+  the 425.3→425.4 renumber + (A) reword, the 425.8→425.10 renumber, the 425.9
+  + 425.10 "Special Permission" deletions, the 425.14 comma cleanup, the
+  425.19 lockable-open reword (3 places), the 425.19(A)(2)(2) unit-switch
+  rework, the 425.22(A) cross-ref reword, the 425.22(B) 120 A / 150 A
+  allowance (2020 origin) + 425.3(B)→425.4(B), the 425.22(C) list/IN rework,
+  and the 425.28 marking reword (2 places) — **no Mike Holt 2023 entries for
+  Article 425** (zero "Article 425" + zero "425.N" in the summary), so every
+  delta is on-disk-verified with the summary's silence noted. 2020 position
+  asserted for one delta only (the 425.22(B) 120 A / 150 A allowance,
+  independently sourced from mypdh.engineer's 2020-NEC lesson). 2017-scan
+  OCR corrections disclosed in the source note. Test block (`run_tests.js`),
+  sitemap 62 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
+  on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
