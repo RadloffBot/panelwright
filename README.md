@@ -2026,14 +2026,13 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   disconnect rating via 430.110(C)(1) — 4.0 A motor FLC + 1.09 A other
   load = 5.09 A → 15 A; the 422.47/422.48 limit-means and 300 W
   lampholder boundary package). Edition story: 75 machine-verified
-  phrase-level checks (`verify_art59.py`, all pass); 8 deltas = the
-  422.31 NEW routing lead, the 422.31(A)/(B) "lockable in accordance
-  with 110.25" reword, the 422.31(B) IN reword, the 422.31(C)
-  "of more than 4 hp" + "(D)" drops, the 422.33(B) "meet the intent"
-  → "shall be permitted" rewrite (MH-2023-corroborated), the
-  422.40 IN "(A)" drop, the 422.41 position-phrase drop, the 422.46
-  deletion, the 422.47 list-flatten + ANSI Z21.22 note drop, and the
-  422.50 deletion; exactly one Mike Holt 2023 entry in scope (422.33)
+  phrase-level checks (`verify_art59.py`, all pass); 8 section-level deltas (the 422.31 rework = NEW routing lead +
+  (A)/(B) "lockable in accordance with 110.25" reword + (B) IN
+  reword; the 422.31(C) "of more than 4 hp" + "(D)" drops; the
+  422.33(B) "meet the intent" → "shall be permitted" rewrite
+  (MH-2023-corroborated); the 422.40 IN "(A)" drop; the 422.41
+  position-phrase drop; the 422.46 deletion; the 422.47 list-flatten
+  + ANSI Z21.22 note drop; the 422.50 deletion); exactly one Mike Holt 2023 entry in scope (422.33)
   so every other delta is on-disk-verified with ELR silence; 2020
   position not asserted (no on-disk 2020 source carries these bodies).
   2017-scan OCR corrections disclosed in the source note. Test block
