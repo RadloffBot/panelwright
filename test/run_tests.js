@@ -6002,12 +6002,127 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap58 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap58.includes('articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), true, 'art58: sitemap entry present');
-  eq((sitemap58.match(/<loc>/g) || []).length, 59, 'art58: sitemap has 59 URLs (art58 appended the 59th)');
+  eq((sitemap58.match(/<loc>/g) || []).length >= 59, true, 'art58: sitemap has >= 59 URLs (art58 appended the 59th; the total only grows per the S82 structural fix');
   const index58 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index58.includes('articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), true, 'art58: index cross-link present');
   const readme58 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme58.includes('articles/nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), true, 'art58: README entry present');
 }
+
+// === ART59_BLOCK_BEGIN (inserted by Session 84 — keep as one contiguous block) ===
+// ============================================================================
+// Article 59 — NEC 422.30–422.62: appliance disconnecting means (Part III),
+// construction (Part IV), marking (Part V)
+// (panelwright/articles/nec-42230-42262-appliance-disconnect-construction.html)
+// Session 84. 2017 scan + 2023 CSV verified on disk (verify_art59.py: 75
+// phrase-level checks, all pass). Deltas: 422.31 NEW routing lead,
+// 422.31(A)/(B) lockable-clause reword, 422.31(B) IN reword, 422.31(C)
+// "of more than 4 hp" + "(D)" drop, 422.33(B) "meet the intent" -> "shall be
+// permitted" (the ONE Mike Holt-2023-documented in-scope entry), 422.40 IN
+// "(A)" drop, 422.41 position-phrase drop, 422.46 deleted, 422.47
+// list-flatten + ANSI Z21.22 note drop, 422.50 deleted. 2020 position not
+// asserted (no on-disk 2020 source carries the 422.30-422.62 bodies; the
+// on-disk 2020 scan ends before Article 422 — verified). Worked examples
+// core-computed (compute_art59.js -> art59_numbers.json):
+// nextStdBreaker / pickConductor31016 / reqBreakerA + one Table 430.248 FLC
+// transcription (1/2 hp 208 V = 4.0 A, from the on-disk 2017 scan).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-42230-42262-appliance-disconnect-construction.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art59_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-42230-42262-appliance-disconnect-construction.html'), true, 'art59: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-42230-42262-appliance-disconnect-construction.html'), true, 'art59: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art59: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art59: Article + FAQPage JSON-LD present');
+  eq(has('nec content series · article 59'), true, 'art59: footer marks article 59');
+  eq(has('75 machine-verified'), true, 'art59: 75 machine-verified checks claimed');
+  // verbatim 2017 quotes (match on-disk scan after disclosed OCR corrections)
+  eq(has('a means shall be provided to simultaneously disconnect each appliance from all ungrounded conductors in accordance with the following sections of part iii'), true, 'art59: verbatim 2017 422.30 lead');
+  eq(has('for permanently connected appliances rated at not over 300 volt-amperes or 1/8 hp, the branch-circuit overcurrent device shall be permitted to serve as the disconnecting means where the switch or circuit breaker is within sight from the appliance or is lockable in accordance with 110.25'), true, 'art59: verbatim 2017 422.31(A) 300 VA / 1/8 hp route');
+  eq(has('for permanently connected appliances rated over 300 volt-amperes, the branch-circuit switch or circuit breaker shall be permitted to serve as the disconnecting means'), true, 'art59: verbatim 2017 422.31(B) over-300-VA route');
+  eq(has('the disconnecting means shall comply with 430.109 and 430.110'), true, 'art59: verbatim 2017 422.31(C) motor-operated compliance (unchanged core)');
+  eq(has('exception: if an appliance of more than 4 hp is provided with a unit switch that complies with 422.34(a), (b), (c), or (d), the switch or circuit breaker serving as the other disconnecting means shall be permitted to be out of sight from the appliance'), true, 'art59: verbatim 2017 422.31(C) Exception "of more than 4 hp" + (D) (both dropped in 2023)');
+  eq(has('an accessible separable connector or an accessible plug (or attachment fitting) and receptacle combination shall be permitted to serve as the disconnecting means'), true, 'art59: verbatim 2017 422.33(A) receptacle-as-disconnect route (unchanged)');
+  eq(has('accessible from the front by removal of a drawer, shall meet the intent of 422.33(a)'), true, 'art59: verbatim 2017 422.33(B) range-drawer "meet the intent" (reworded in 2023)');
+  eq(has('the rating of a receptacle or of a separable connector shall not be less than the rating of any appliance connected thereto'), true, 'art59: verbatim 2017 422.33(C) receptacle rating floor (unchanged)');
+  eq(has('a unit switch(es) with a marked-off position that is a part of an appliance and disconnects all ungrounded conductors shall be permitted as the disconnecting means required by this article where other means for disconnection are provided in occupancies specified in 422.34(a) through (d)'), true, 'art59: verbatim 2017 422.34 unit-switch lead (unchanged)');
+  eq(has('switches and circuit breakers used as disconnecting means shall be of the indicating type'), true, 'art59: verbatim 2017 422.35 indicating type (unchanged)');
+  eq(has('informational note: for polarity of edison-base lampholders, see 410.82(a)'), true, 'art59: verbatim 2017 422.40 IN cites 410.82(A) (2023 drops the (A))');
+  eq(has('shall be constructed to provide protection for personnel against electrocution when immersed while in the "on" or "off" position'), true, 'art59: verbatim 2017 422.41 immersion protection with position phrase (phrase dropped in 2023)');
+  eq(has('each electrically heated appliance or group of appliances intended to be applied to combustible material shall be provided with a signal or an integral temperature-limiting device'), true, 'art59: verbatim 2017 422.42 heated-appliance signal (unchanged)');
+  eq(has('current-carrying parts are effectively insulated from electrical contact with the substance in which they are immersed'), true, 'art59: verbatim 2017 422.44 immersion heater insulation (unchanged)');
+  eq(has('shall be equipped with an approved stand, which shall be permitted to be a separate piece of equipment or a part of the appliance'), true, 'art59: verbatim 2017 422.45 approved stand (unchanged)');
+  eq(has('electrically heated smoothing irons shall be equipped with an identified temperature-limiting means'), true, 'art59: verbatim 2017 422.46 flatiron limit means (DELETED in 2023)');
+  eq(has('all storage or instantaneous-type water heaters shall be equipped with a temperature-limiting means in addition to its control thermostat to disconnect all ungrounded conductors'), true, 'art59: verbatim 2017 422.47 water-heater limit means lead');
+  eq(has('a capacity of 60 kw or above'), true, 'art59: verbatim 2017 422.47 Ex 1 60 kW capacity (scan "60 RW" garble resolved to "60 kW")');
+  eq(has('infrared heating lamps rated at 300 watts or less shall be permitted with lampholders of the medium-base, unswitched porcelain type'), true, 'art59: verbatim 2017 422.48(A) 300 W-or-less lampholder rule (unchanged)');
+  eq(has('screw shell lampholders shall not be used with infrared lamps rated over 300 watts'), true, 'art59: verbatim 2017 422.48(B) screw-shell prohibition (unchanged)');
+  eq(has('cord-and-plug-connected pipe heating assemblies intended to prevent freezing of piping shall be listed'), true, 'art59: verbatim 2017 422.50 pipe-heating listing (DELETED in 2023)');
+  eq(has('each electrical appliance shall be provided with a nameplate giving the identifying name and the rating in volts and amperes, or in volts and watts'), true, 'art59: verbatim 2017 422.60(A) nameplate rating (unchanged core)');
+  eq(has('shall be legibly marked with the ratings in volts and amperes, or in volts and watts, or with the manufacturer\'s part number'), true, 'art59: verbatim 2017 422.61 heating-element marking (unchanged)');
+  eq(has('the nameplate value shall not be less than the equivalent horsepower of the combined loads, calculated in accordance with 430.110(c)(1)'), true, 'art59: verbatim 2017 422.62(A) 430.110(C)(1) combined-hp hook (unchanged)');
+  // 2023 deltas documented
+  eq(has('for appliances that do not have a disconnecting means in accordance with 422.33 or 422.34, a disconnecting means shall be provided in accordance with 422.31(a), (b), or (c)'), true, 'art59: documents 2023 422.31 NEW routing lead');
+  eq(has('or be capable of being locked in the open position in compliance with 110.25'), true, 'art59: documents 2023 422.31(A)/(B) lockable-clause reword');
+  eq(has('see 422.34 for appliances employing unit switches'), true, 'art59: documents 2023 422.31(B) IN reword');
+  eq(has('if an appliance is provided with a unit switch that complies with 422.34(a), (b), or (c)'), true, 'art59: documents 2023 422.31(C) "of more than 4 hp" + (D) drop');
+  eq(has('accessible from the front by removal of a drawer, shall be permitted'), true, 'art59: documents 2023 422.33(B) "shall be permitted" ending');
+  eq(has('considered accessible by the removal of the drawer at the front of the range'), true, 'art59: quotes the Mike Holt 2023 422.33(B) drawer clarification');
+  eq(has('see 410.82 for polarity of edison-base lampholders'), true, 'art59: documents 2023 422.40 IN "(A)" drop');
+  eq(has('against electrocution when immersed'), true, 'art59: documents 2023 422.41 immersion-sentence ending (position phrase dropped)');
+  eq(has('[deleted in 2023 — no 422.46 row in the on-disk 2023 nec; verified.]'), true, 'art59: documents 422.46 deletion (on-disk-verified)');
+  eq(has('ansi z21.22-1999/csa 4.4-m99 informational note is dropped'), true, 'art59: documents 2023 422.47 ANSI Z21.22 note drop + list-flatten');
+  eq(has('[deleted in 2023 — no 422.50 row in the on-disk 2023 nec; verified.]'), true, 'art59: documents 422.50 deletion (on-disk-verified)');
+  // worked examples (core-computed from art59_numbers.json)
+  eq(nums.EX1.loadA, 50, 'art59: EX1 12,000 W / 240 V range load = 50 A');
+  eq(nums.EX1.receptacleFloorA, 50, 'art59: EX1 422.33(C) receptacle floor = 50 A (= appliance rating)');
+  eq(nums.EX1.receptacleRejected, 40, 'art59: EX1 40 A receptacle rejected (40 A < 50 A floor)');
+  eq(nums.EX1.ocpd, 50, 'art59: EX1 OCPD = 50 A (240.6 standard size)');
+  eq(nums.EX1.conductor, '8 AWG Cu (50 A @ 75 C)', 'art59: EX1 conductors = 8 AWG Cu @ 75 C');
+  eq(nums.EX2.loadA, 45, 'art59: EX2 10,800 W / 240 V range load = 45 A');
+  eq(nums.EX2.receptacleFloorA, 45, 'art59: EX2 422.33(B) rear-base receptacle floor = 45 A');
+  eq(nums.EX2.ocpd, 45, 'art59: EX2 OCPD = 45 A (45 IS a 240.6 standard size)');
+  approx(nums.EX3.a.loadA, 2.61, 0.01, 'art59: EX3 300 VA / 115 V boundary = 2.61 A');
+  approx(nums.EX3.b.loadA, 3.04, 0.01, 'art59: EX3 350 VA / 115 V = 3.04 A');
+  eq(nums.EX3.boundaryVA, 300, 'art59: EX3 boundary = 300 VA (422.31(A)/(B) seam)');
+  eq(nums.EX3.a.ocpd && nums.EX3.b.ocpd, 15, 'art59: EX3 both routes land on the 15 A OCPD floor');
+  eq(nums.EX4.flcA, 4, 'art59: EX4 1/2 hp 208 V motor FLC = 4.0 A (Table 430.248 transcription)');
+  approx(nums.EX4.ctrlA, 1.09, 0.01, 'art59: EX4 250 W / 230 V control load = 1.09 A');
+  approx(nums.EX4.ratingReqA, 5.09, 0.01, 'art59: EX4 430.110(C)(1) sum = 4.0 + 1.09 = 5.09 A');
+  eq(nums.EX4.minDisconnectRatingA, 15, 'art59: EX4 min disconnect rating = 15 A (nextStdBreaker)');
+  eq(nums.EX4.hp, 0.5, 'art59: EX4 appliance hp = 0.5 (fails the 2017 4-hp gate; exempt in 2023)');
+  approx(nums.EX5.heater.continuous125A, 23.44, 0.01, 'art59: EX5 18.75 A continuous × 1.25 = 23.44 A (422.13)');
+  eq(nums.EX5.heater.ocpd, 25, 'art59: EX5 water-heater OCPD = 25 A (240.6)');
+  eq(nums.EX5.heater.ex1.exempt, false, 'art59: EX5 4.5 kW storage heater is NOT exempt from 422.47 Ex 1 (4.5 kW < 60 kW)');
+  approx(nums.EX5.lamp.allowed.A, 2.5, 0.01, 'art59: EX5 300 W / 120 V lamp = 2.5 A (exactly at the 422.48(A) boundary)');
+  approx(nums.EX5.lamp.over.A, 2.71, 0.01, 'art59: EX5 325 W / 120 V lamp = 2.71 A (over 300 W -> 422.48(B))');
+  // core re-runs (independent of the JSON)
+  eq(core.nextStdBreaker(45), 45, 'art59: core re-run 45 A is a 240.6 standard size (EX2)');
+  eq(core.nextStdBreaker(49), 50, 'art59: core re-run 49 A -> 50 A standard size');
+  eq(core.nextStdBreaker(5.09), 15, 'art59: core re-run 5.09 A -> 15 A standard size (EX4)');
+  eq(core.pickConductor31016(45, 'cu', 75).size, '8', 'art59: core re-run 45 A @ 75 C = 8 AWG Cu (EX1/EX2)');
+  eq(core.reqBreakerA(18.75, true), 23.4375, 'art59: core re-run 18.75 A continuous x1.25 = 23.4375 A (EX5)');
+  // cross-links
+  eq(art.includes('nec-42210-42211-42213-appliance-branch-circuit.html'), true, 'art59: cross-links to the 422.10-422.13 Part I foundation article');
+  eq(art.includes('nec-42216-42218-42222-flexible-cords-ceiling-fans.html'), true, 'art59: cross-links to the Part II installation article (422.43 home)');
+  eq(art.includes('nec-430101-430113-disconnecting-means.html'), true, 'art59: cross-links to the motor disconnecting-means article (422.31(C) hook)');
+  eq(art.includes('nec-43022-43052-single-motor-branch-circuit.html'), true, 'art59: cross-links to the single-motor branch-circuit article');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art59: cross-links to the 240.6 standard ampere ratings article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art59: cross-links to the Table 310.16 ampacity article');
+  // sitemap + index + README
+  const sitemap59 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap59.includes('articles/nec-42230-42262-appliance-disconnect-construction.html'), true, 'art59: sitemap entry present');
+  eq((sitemap59.match(/<loc>/g) || []).length, 60, 'art59: sitemap has 60 URLs (art59 appended the 60th)');
+  const index59 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index59.includes('articles/nec-42230-42262-appliance-disconnect-construction.html'), true, 'art59: index cross-link present');
+  const readme59 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme59.includes('articles/nec-42230-42262-appliance-disconnect-construction.html'), true, 'art59: README entry present');
+}
+// === ART59_BLOCK_END ===
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

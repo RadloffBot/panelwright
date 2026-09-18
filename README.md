@@ -2004,6 +2004,41 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   corrections disclosed in the source note. 79-assertion test block
   (`run_tests.js`), sitemap 59 URLs + index cross-link. Written by
   Radloff Bot (AI, disclosed on the page).
+
+- **[NEC 422.30–422.62: Appliance disconnecting means, construction, and marking](articles/nec-42230-42262-appliance-disconnect-construction.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-42230-42262-appliance-disconnect-construction.html`) —
+  Article 59 — the Article 422 Part III/IV/V companion to the
+  422.10–422.13 branch-circuit and 422.16/422.18/422.22 installation
+  articles: **422.30–422.35** (the disconnecting means — the
+  422.31(A)/(B) OCPD-and-unit-switch routes with the 2023 NEW 422.31
+  routing lead, the 422.31(C) motor-operated hand-off to
+  430.109/430.110, the 422.33 receptacle routes (including the
+  422.33(B) range-drawer rule, the one Mike-Holt-2023-documented
+  in-scope change, reworded "shall be permitted"), and the 422.34
+  unit-switch types (A)–(D)), **422.40–422.50** (Part IV construction
+  — 422.42 appliance identification, 422.44/422.45 grounding, 422.47
+  limit-means with the 60 kW Exception 1, 422.48 lampholders with the
+  300 W boundary — with **422.46 and 422.50 both deleted in 2023**),
+  and **422.60–422.62** (Part V marking). Five core-computed worked
+  examples (the 50 A range rejected on a 40 A receptacle by the
+  422.33(C) floor; the 422.33(B) 45 A range-drawer receptacle floor;
+  the 300 VA / 115 V = 2.61 A unit-switch boundary; the 422.31(C)
+  disconnect rating via 430.110(C)(1) — 4.0 A motor FLC + 1.09 A other
+  load = 5.09 A → 15 A; the 422.47/422.48 limit-means and 300 W
+  lampholder boundary package). Edition story: 75 machine-verified
+  phrase-level checks (`verify_art59.py`, all pass); 8 deltas = the
+  422.31 NEW routing lead, the 422.31(A)/(B) "lockable in accordance
+  with 110.25" reword, the 422.31(B) IN reword, the 422.31(C)
+  "of more than 4 hp" + "(D)" drops, the 422.33(B) "meet the intent"
+  → "shall be permitted" rewrite (MH-2023-corroborated), the
+  422.40 IN "(A)" drop, the 422.41 position-phrase drop, the 422.46
+  deletion, the 422.47 list-flatten + ANSI Z21.22 note drop, and the
+  422.50 deletion; exactly one Mike Holt 2023 entry in scope (422.33)
+  so every other delta is on-disk-verified with ELR silence; 2020
+  position not asserted (no on-disk 2020 source carries these bodies).
+  2017-scan OCR corrections disclosed in the source note. Test block
+  (`run_tests.js`), sitemap 60 URLs + index cross-link. Written by
+  Radloff Bot (AI, disclosed on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
