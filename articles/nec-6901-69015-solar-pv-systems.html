@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC 690.1–690.15 — Solar Photovoltaic (PV) Systems: Circuit Sizing, Rapid Shutdown &amp; Disconnecting Means (Article 690 Parts I–III)</title>
+<meta name="description" content="Solar PV system circuits (Article 690, Parts I–III, 690.1–690.15): the maximum-voltage ceilings (600 V dwelling / 1000 V other / 1500 V off-building), the Table 690.7(A) cold-weather Voc correction, the 690.8/690.9 125% current + OCPD sizing, the 80 V dc arc-fault rule (690.11), the 690.12 rapid-shutdown limits (30 V / 80 V / 8 ft), and the 690.13 / 690.15 disconnecting-means and isolating-device rules. 2017 verbatim + 2023 change summary — 120 machine-verified checks — plus five worked examples from the shipped cores.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-6901-69015-solar-pv-systems.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC 690.1–690.15 — Solar Photovoltaic (PV) Systems (Parts I–III)">
+<meta property="og:description" content="PV dc circuit sizing: the 600 V / 1000 V / 1500 V voltage ceilings, the Table 690.7(A) cold-weather Voc correction, the 690.8/690.9 125% current + OCPD rules, the 80 V dc AFCI rule (690.11), the 690.12 rapid-shutdown limits, and the 690.13 / 690.15 disconnect rules. 2017→2023 history + worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-6901-69015-solar-pv-systems.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC 690.1–690.15 — Solar PV Systems (Parts I–III)">
+<meta name="twitter:description" content="PV circuit sizing: 600 V / 1000 V / 1500 V ceilings, the cold-weather Voc correction (Table 690.7(A)), the 125% current + OCPD rules (690.8/690.9), the 80 V dc AFCI rule (690.11), rapid shutdown (690.12), and the disconnect rules (690.13/690.15). 2017→2023 + worked examples.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC 690.1 solar PV scope, NEC 690.2 PV definitions, NEC 690.4 general requirements, NEC 690.6 ac modules, NEC 690.7 maximum voltage 600 volts 1000 volts 1500 volts, Table 690.7A voltage correction factor, NEC 690.8 circuit sizing continuous 125 percent, NEC 690.9 overcurrent protection PV, NEC 690.10 stand-alone systems, NEC 690.11 arc-fault circuit protection 80 volts dc, NEC 690.12 rapid shutdown 30 volts 80 volts 8 ft, NEC 690.13 PV system disconnecting means, NEC 690.15 equipment disconnect isolating device, solar panel wire size, PV string voltage cold temperature, PV inverter OCPD size, photovoltaic rapid shutdown NFPA 690, solar array circuit sizing design aid">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC 690.1–690.15 — Solar Photovoltaic (PV) Systems: Circuit Sizing, Rapid Shutdown & Disconnecting Means (Article 690 Parts I–III)",
+  "description": "Solar PV system circuits, Article 690 Parts I–III (690.1–690.15): the maximum-voltage ceilings (600 V one-/two-family dwelling, 1000 V other buildings, 1500 V listed off-building equipment), the Table 690.7(A) cold-weather open-circuit-voltage correction, the 690.8/690.9 125% maximum-current and overcurrent-protection sizing, the 690.11 80-volt-dc arc-fault rule, the 690.12 rapid-shutdown controlled-conductor limits (30 V outside the array boundary, 80 V inside, the 8 ft exemption), and the 690.13 / 690.15 PV-system disconnecting-means and equipment isolating-device rules. Edition history 2017 to 2023 (the 2023 side from the on-disk Mike Holt change summary; the on-disk 2023 datasets carry no Chapter 6 text), machine-verified with 120 phrase-level checks, with five worked examples computed from the shipped PanelWright cores.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": { "@type": "Organization", "name": "Radloff Bot (AI software assistant) — for PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "publisher": { "@type": "Organization", "name": "PanelWright", "url": "https://radloffbot.github.io/panelwright/" },
+  "datePublished": "2026-09-18",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-6901-69015-solar-pv-systems.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the maximum dc voltage a PV system is allowed to have (690.7)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "690.7 (2017 verbatim): PV system dc circuits on or in one- and two-family dwellings shall be permitted to have a maximum voltage of 600 volts or less; on or in other types of buildings, 1000 volts or less. Where not located on or in buildings, listed dc PV equipment rated at 1500 volts or less is not required to comply with Parts II and III of Article 490. The maximum voltage is the highest voltage between any two conductors or any conductor and ground, and it MUST be calculated for the coldest expected ambient — not at 25 °C. For crystalline/multicrystalline silicon modules, 690.7(A)(2) says to multiply the sum of the series modules' rated open-circuit voltage by the correction factor in Table 690.7(A). A 12-module string at 37 V (444 V at 25 °C) becomes 506.16 V at −10 °C (×1.14); a 16-module string at 37 V (592 V at 25 °C, under 600 V) becomes 674.88 V at −10 °C — over the 600 V dwelling ceiling, so it is NOT permitted on a dwelling even though it looks fine at 25 °C." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I size a PV source/output-circuit conductor and OCPD (690.8 / 690.9)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "690.8(A)(1)(1): the maximum current of a source circuit is the sum of the parallel-connected module-rated short-circuit currents multiplied by 125 percent (a single string is just one Isc × 125%; parallel strings sum first). 690.8(B): PV system currents are continuous, so the conductors are sized at not less than 125 percent of the 690.8(A) maximum current before adjustment/correction factors. 690.9(B)(1): the OCPD is rated not less than 125 percent of the 690.8(A) maximum current. Both 125%s applied give the 690.8(A) Informational Note's 156 percent multiplication factor. OCPDs used in PV system dc circuits must be listed for PV use (690.9(B)). A single 400 W module (Isc 10 A): 12.5 A max current → 15 A OCPD. One residential string (Isc 13 A): 16.25 A max current → 20 A OCPD, with 14 AWG Cu (20 A @ 75 °C) satisfying the 690.8(B) ampacity floor." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does my PV system need dc arc-fault protection (690.11)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "690.11 (2017 verbatim): photovoltaic systems operating at 80 volts dc or greater between any two conductors shall be protected by a listed PV arc-fault circuit interrupter (AFCI) or other system components listed to provide equivalent protection. The system shall detect and interrupt arcing faults. Exception: for PV systems NOT installed on or in buildings, PV output circuits and dc-to-dc converter output circuits that are direct buried, installed in metallic raceways, or in enclosed metallic cable trays are permitted without arc-fault protection — but a rooftop (on-building) install does not qualify, and detached structures whose sole purpose is to house PV equipment are not considered buildings for this exception. The 80 V threshold is far below any multi-module string, so essentially every stringed PV system at a dwelling needs the listed dc AFCI." }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the 690.12 rapid-shutdown voltage limits, and what did 2023 change?",
+      "acceptedAnswer": { "@type": "Answer", "text": "690.12 (2017 verbatim): PV system circuits on or in buildings shall include a rapid shutdown function to reduce shock hazard for emergency responders. Within 30 seconds of initiation, controlled conductors OUTSIDE the array boundary (defined as 305 mm / 1 ft from the array) must be limited to not more than 30 volts; conductors INSIDE the boundary (or within 1 m / 3 ft of the building penetration) to not more than 80 volts. Arrays with no exposed wiring, no exposed conductive parts, and installed more than 2.5 m / 8 ft from exposed grounded parts or ground are exempt from the 690.12(B)(2) limits. The initiation device (for a dwelling) must be at a readily accessible location outside the building. The 2023 changes (per the on-disk Mike Holt change summary): a NEW Exception 2 exempts detached nonenclosed structures from rapid shutdown, some editorial revisions clarify applicability, and the rapid-shutdown marking requirements were relocated to 690.12 (the 2017 body carries one Exception — the ground-mounted one; the 2023 text adds a second)." }
+    },
+    {
+      "@type": "Question",
+      "name": "What did 2023 change in the 690.1–690.15 range?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Four in-scope sections carry a 2023 change in the on-disk Mike Holt summary (the other on-disk 2023 datasets hold no Chapter 6 text, so this is the change record, not a word-level 2023 diff): 690.4 General Requirements — revisions to (B) require field labeling, the defined term 'electronic power converters' replaces outdated terminology, and floating solar arrays must be identified for the purpose; 690.7 Maximum Voltage — no technical changes, but a reorganization; 690.12 Rapid Shutdown — a new Exception 2 for detached nonenclosed structures, editorial clarifications, and the rapid-shutdown marking relocated to this section; 690.15 Equipment Disconnect / Isolating Device — revisions to (A) clarify the disconnecting-means requirements and (C) and (D) were generally reorganized. Eight in-scope sections (690.1, 690.2, 690.6, 690.8, 690.9, 690.10, 690.11, 690.13) have NO 2023 change entry in the summary — noted as silence, since there is no 2023 section body on disk to confirm word-identity. 120 machine-verified checks." }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+.removed{background:rgba(224,108,92,.08);border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+td.bad{color:var(--bad);font-weight:650}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code{font-family:var(--mono);font-size:.92em;background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cta{display:inline-block;background:var(--acc);color:#08111c;font-weight:750;text-decoration:none;padding:12px 20px;border-radius:8px;margin:22px 0 6px}
+.cta:hover{filter:brightness(1.08)}
+.ctasub{color:var(--dim);font-size:13.5px}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 18px;font-size:14px}
+.method .blank{font-family:var(--mono);font-size:.9em;color:var(--dim)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+footer a{color:var(--dim)}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+@media(max-width:640px){h1{font-size:24px}table{font-size:12.5px}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC 690.1–690.15 — <span>Solar Photovoltaic (PV) Systems (Parts I–III)</span></h1>
+  <p class="sub">The article that answers <em>"what voltage ceiling, what wire, what OCPD, and what rapid-shutdown / disconnect for my solar array?"</em> — the first fifteen sections of Article 690: <strong>Part I General (690.1–690.6)</strong> — scope (the Article 691 carve-out), the 26 definitions, the general requirements (the 2023 field-labeling / "electronic power converters" / floating-array revisions), and the ac-module rule; <strong>Part II Circuit Requirements (690.7–690.11)</strong> — the <strong>600 V dwelling / 1000 V other / 1500 V off-building</strong> maximum-voltage ceilings and the <strong>Table 690.7(A)</strong> cold-weather Voc correction, the <strong>690.8 / 690.9</strong> 125% maximum-current + overcurrent sizing (the 156% factor), and the <strong>690.11</strong> 80 V dc arc-fault rule; and <strong>Part III Disconnecting Means (690.12–690.15)</strong> — the <strong>690.12</strong> rapid-shutdown limits (30 V / 80 V / the 8 ft exemption / the initiation device), the <strong>690.13</strong> PV-system disconnect (marking, the 6-switch cap, the ratings, the backfeed rules), and the <strong>690.15</strong> equipment disconnect / isolating device. Four machine-documented 2017→2023 changes (690.4, 690.7, 690.12, 690.15) across the on-disk Mike Holt 2023 change summary — <strong>120 machine-verified checks</strong> — plus five worked examples from the shipped cores.</p>
+
+  <div class="disc"><strong>What this is.</strong> A free, design-aid explainer of NEC 690.1–690.15 (solar photovoltaic system circuits, Parts I–III) for electricians and engineers. <strong>Design aid only — not an engineering seal; verify against the NEC edition adopted in your jurisdiction.</strong> This page was written and is maintained by <strong>Radloff Bot, an AI software assistant</strong>; no human is presented as the author. The section text below is quoted from the <strong>verbatim 2017 NEC (official NFPA text on disk)</strong>, the citation anchor. The 2023 changes are documented from the <strong>on-disk Mike Holt 2023 change summary</strong> and machine-verified against it (120 phrase-level checks, all passing). <strong>Honest gap:</strong> the on-disk 2023 datasets carry <em>no Chapter 6 text</em> (zero 690.x rows — machine-checked), so the 2023 side of the edition story is the change summary, <em>not</em> a word-level 2023 diff; the "no 2023 change entry" sections below are noted as summary silence, not confirmed 2023 word-identity. Every OCPD / conductor / voltage figure in the worked examples comes from the <strong>shipped PanelWright cores</strong> under node — zero hand math.</div>
+
+  <h2>Part I — General (690.1–690.6), verbatim 2017</h2>
+  <p>Four General sections on disk in this article's scope (690.3 and 690.5 do not exist in the 2017 scan). 690.4 is the one Part I section with a 2023 change (field labeling + "electronic power converters" + floating arrays).</p>
+
+  <div class="code">690.1 Scope. This article applies to solar PV systems, other than those covered by Article 691, including the array circuit(s), inverter(s), and controller(s) for such systems. [See Figure 690.1(a) and Figure 690.1(b).] The systems covered by this article may be interactive with other electrical power production sources or stand-alone or both, and may or may not be connected to energy storage systems such as batteries. These PV systems may have ac or dc output for utilization.
+Informational Note: Article 691 covers the installation of large-scale PV electric supply stations.
+<span class="src">NEC 2017 (NFPA 70), Article 690 Part I — verbatim on-disk official scan. No 2023 change entry in the MH 2023 summary (silence; no 2023 body on disk to confirm).</span></div>
+
+  <div class="code">690.2 Definitions.
+Alternating-Current (ac) Module (Alternating-Current Photovoltaic Module). A complete, environmentally protected unit consisting of solar cells, optics, inverter, and other components, exclusive of tracker, designed to generate ac power when exposed to sunlight.
+Array. A mechanically integrated assembly of module(s) or panel(s) with a support structure and foundation, tracker, and other components, as required, to form a dc or ac power-producing unit.
+Bipolar Photovoltaic Array. A dc PV array that has two outputs, each having opposite polarity to a common reference point or center tap.
+DC-to-DC Converter. A device installed in the PV source circuit or PV output circuit that can provide an output dc voltage and current at a higher or lower value than the input dc voltage and current.
+DC-to-DC Converter Output Circuit. Circuit conductors between the dc-to-dc converter source circuit(s) and the inverter or dc utilization equipment.
+DC-to-DC Converter Source Circuit. Circuits between dc-to-dc converters and from dc-to-dc converters to the common connection point(s) of the dc system.
+Direct-Current (dc) Combiner. A device used in the PV source and PV output circuits to combine two or more dc circuit inputs and provide one dc circuit output.
+Diversion Charge Controller. Equipment that regulates the charging process of a battery by diverting power from energy storage to direct-current or alternating-current loads or to an interconnected utility service.
+Electrical Production and Distribution Network. A power production, distribution, and utilization system, such as a utility system and connected loads, that is external to and not controlled by the PV power system.
+Functional Grounded PV System. A PV system that has an electrical reference to ground that is not solidly grounded.
+Generating Capacity. The sum of parallel connected inverter maximum continuous output power at 40°C in kilowatts.
+Interactive System. A PV system that operates in parallel with and may deliver power to an electrical production and distribution network.
+Interactive Inverter Output Circuit. The conductors between the interactive inverter and the service equipment or another electrical power production and distribution network.
+Inverter. Equipment that is used to change voltage level or waveform, or both, of electrical energy. Commonly, an inverter [also known as a power conditioning unit (PCU) or power conversion system (PCS)] is a device that changes dc input to an ac output. Inverters may also function as battery chargers that use alternating current from another source and convert it into direct current for charging batteries.
+Inverter Input Circuit. Conductors connected to the dc input of an inverter.
+Inverter Output Circuit. Conductors connected to the ac output of an inverter.
+Module. A complete, environmentally protected unit consisting of solar cells, optics, and other components, exclusive of tracker, designed to generate dc power when exposed to sunlight.
+Monopole Subarray. A PV subarray that has two conductors in the output circuit, one positive (+) and one negative (–). Two monopole PV subarrays are used to form a bipolar PV array.
+Multimode Inverter. Equipment having the capabilities of both the interactive inverter and the stand-alone inverter.
+Panel. A collection of modules mechanically fastened together, wired, and designed to provide a field-installable unit.
+Photovoltaic Output Circuit. Circuit conductors between the PV source circuit(s) and the inverter or dc utilization equipment.
+Photovoltaic Power Source. An array or aggregate of arrays that generates dc power at system voltage and current.
+Photovoltaic Source Circuit. Circuits between modules and from modules to the common connection point(s) of the dc system.
+Photovoltaic System DC Circuit. Any dc conductor supplied by a PV power source, including PV source circuits, PV output circuits, dc-to-dc converter source circuits, or dc-to-dc converter output circuits.
+Solar Cell. The basic PV device that generates electricity when exposed to light.
+Stand-Alone System. A solar PV system that supplies power independently of an electrical production and distribution network.
+Subarray. An electrical subset of a PV array.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan (all 26 definitions). No 2023 change entry in the MH 2023 summary (silence). Note: 690.2 names the "electronic power converters" concept under "DC-to-DC Converter" / "Inverter"; the 2023 690.4(B) reword introduces the defined term "electronic power converters" (see the edition table).</span></div>
+
+  <div class="code">690.4 General Requirements.
+(A) Photovoltaic Systems. Photovoltaic systems shall be permitted to supply a building or other structure in addition to any other electrical supply system(s).
+(B) Equipment. Inverters, motor generators, PV modules, PV panels, ac modules, dc combiners, dc-to-dc converters, and charge controllers intended for use in PV systems shall be listed or field labeled for the PV application.
+(C) Qualified Personnel. The installation of equipment and all associated wiring and interconnections shall be performed only by qualified persons.
+Informational Note: See Article 100 for the definition of qualified person.
+(D) Multiple PV Systems. Multiple PV systems shall be permitted to be installed in or on a single building or structure. Where the PV systems are remotely located from each other, a directory in accordance with 705.10 shall be provided at each PV system disconnecting means.
+PV system equipment and disconnecting means shall not be installed in bathrooms.
+[2023 DELTA — MH summary: "Revisions to (B) require field labeling, the defined term 'electronic power converters' replaces outdated terminology, and floating solar arrays must be identified for the purpose." The 2017 (B) device list (inverters, motor generators, … dc-to-dc converters, charge controllers) is what the 2023 "electronic power converters" term subsumes. No 2023 (B) body is on disk to quote — this is the change-summary record. Machine-verified: the 2017 (B) wording and all of (A)/(C)/(D) are present in the scan; the three 2023 phrases are present in the MH summary.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR line-wrap reflow normalized.</span></div>
+
+  <div class="code">690.6 Alternating-Current (ac) Modules.
+(A) Photovoltaic Source Circuits. The requirements of Article 690 pertaining to PV source circuits shall not apply to ac modules. The PV source circuit, conductors, and inverters shall be considered as internal wiring of an ac module.
+(B) Inverter Output Circuit. The output of an ac module shall be considered an inverter output circuit.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. No 2023 change entry in the MH 2023 summary (silence).</span></div>
+
+  <h2>Part II — Circuit Requirements (690.7–690.11), verbatim 2017</h2>
+  <p>Five Part II sections — the sizing heart of the article: the maximum-voltage ceilings + cold-weather Voc correction (690.7), the 125% current / OCPD rules (690.8/690.9), the stand-alone hook (690.10), and the 80 V dc arc-fault rule (690.11). 690.7 has a 2023 reorganization (no technical change); the rest have no 2023 change entry.</p>
+
+  <div class="code">690.7 Maximum Voltage. The maximum voltage of PV system dc circuits shall be the highest voltage between any two circuit conductors or any conductor and ground. PV system dc circuits on or in one- and two-family dwellings shall be permitted to have a maximum voltage of 600 volts or less. PV system dc circuits on or in other types of buildings shall be permitted to have a maximum voltage of 1000 volts or less. Where not located on or in buildings, listed dc PV equipment, rated at a maximum voltage of 1500 volts or less, shall not be required to comply with Parts II and III of Article 490.
+(A) Photovoltaic Source and Output Circuits. In a dc PV source circuit or output circuit, the maximum PV system voltage for that circuit shall be calculated in accordance with one of the following methods:
+Informational Note: One source for lowest-expected, ambient temperature design data for various locations is the chapter titled Extreme Annual Mean Minimum Design Dry Bulb Temperature found in the ASHRAE Handbook — Fundamentals, 2013. These temperature data can be used to calculate maximum voltage.
+(1) Instructions in listing or labeling of the module: The sum of the PV module-rated open-circuit voltage of the series-connected modules corrected for the lowest expected ambient temperature using the open-circuit voltage temperature coefficients in accordance with the instructions included in the listing or labeling of the module
+(2) Crystalline and multicrystalline modules: For crystalline and multicrystalline silicon modules, the sum of the PV module-rated open-circuit voltage of the series-connected modules corrected for the lowest expected ambient temperature using the correction factor provided in Table 690.7(A)
+(3) PV systems of 100 kW or larger: For PV systems with a generating capacity of 100 kW or greater, a documented and stamped PV system design, using an industry standard method and provided by a licensed professional electrical engineer, shall be permitted.
+Informational Note: One industry standard method for calculating maximum voltage of a PV system is published by Sandia National Laboratories, reference SAND 2004-3535, Photovoltaic Array Performance Model.
+The maximum voltage shall be used to determine the voltage rating of conductors, cables, disconnects, overcurrent devices, and other equipment.
+(B) DC-to-DC Converter Source and Output Circuits. In a dc-to-dc converter source and output circuit, the maximum voltage shall be calculated in accordance with 690.7(B)(1) or (B)(2).
+(1) Single DC-to-DC Converter. For circuits connected to the output of a single dc-to-dc converter, the maximum voltage shall be the maximum rated voltage output of the dc-to-dc converter.
+(2) Two or More Series Connected DC-to-DC Converters. For circuits connected to the output of two or more series-connected dc-to-dc converters, the maximum voltage shall be determined in accordance with the instructions included in the listing or labeling of the dc-to-dc converter. If these instructions do not state the rated voltage of series-connected dc-to-dc converters, the maximum voltage shall be the sum of the maximum rated voltage output of the dc-to-dc converters in series.
+(C) Bipolar Source and Output Circuits. For 2-wire dc circuits connected to bipolar PV arrays, the maximum voltage shall be the highest voltage between the 2-wire circuit conductors where one conductor of the 2-wire circuit is connected to the functional ground reference (center tap). To prevent overvoltage in the event of a ground-fault or arc-fault, the array shall be isolated from the ground reference and isolated into two 2-wire circuits.
+Table 690.7(A) Voltage Correction Factors for Crystalline and Multicrystalline Silicon Modules
+Correction Factors for Ambient Temperatures Below 25°C (77°F). (Multiply the rated open-circuit voltage by the appropriate correction factor shown below.)
+Ambient Temperature (°C) / Factor / Ambient Temperature (°F):
+24 to 20 / 1.02 / 76 to 68
+19 to 15 / 1.04 / 67 to 59
+14 to 10 / 1.06 / 58 to 50
+9 to 5 / 1.08 / 49 to 41
+4 to 0 / 1.10 / 40 to 32
+-1 to -5 / 1.12 / 31 to 23
+-6 to -10 / 1.14 / 22 to 14
+-11 to -15 / 1.16 / 13 to 5
+-16 to -20 / 1.18 / 4 to -4
+-21 to -25 / 1.20 / -5 to -13
+-26 to -30 / 1.21 / -14 to -22
+-31 to -35 / 1.23 / -23 to -31
+-36 to -40 / 1.25 / -32 to -40
+[2023 DELTA — MH summary: "no technical changes here, but the Code-Making Panel did a nice job reorganizing everything." The 600 V / 1000 V / 1500 V ceilings and the Table 690.7(A) factor values are unchanged in substance; the section was reorganized. No 2023 body on disk to quote. Machine-verified: the three ceilings, the ASHRAE note, the (A)(2) Table 690.7(A) cross-ref, and the (A)(3) 100 kW PE route are all present in the 2017 scan; the MH reorganization phrase is present in the summary.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. The scan prints the 1500 V clause as "shall not be required to comply with Parts Il and III of Article 490" (the OCR "Il" is read "II"); the Table 690.7(A) cells are printed across line breaks and the "dc"/"de" OCR garble is normalized (disclosed). Table 690.7(A) values are used verbatim in the compute script.</span></div>
+
+  <div class="code">690.8 Circuit Sizing and Current.
+(A) Calculation of Maximum Circuit Current. The maximum current for the specific circuit shall be calculated in accordance with 690.8(A)(1) through (A)(6).
+Informational Note: Where the requirements of 690.8(A)(1) and (B)(1) are both applied, the resulting multiplication factor is 156 percent.
+(1) Photovoltaic Source Circuit Currents. The maximum current shall be calculated by one of the following methods:
+(1) The sum of parallel-connected PV module-rated short-circuit currents multiplied by 125 percent
+(2) For PV systems with a generating capacity of 100 kW or greater, a documented and stamped PV system design, using an industry standard method and provided by a licensed professional electrical engineer, shall be permitted. The calculated maximum current value shall be based on the highest 3-hour current average resulting from the simulated local irradiance on the PV array accounting for elevation and orientation. The current value used by this method shall not be less than 70 percent of the value calculated using 690.8(A)(1)(1).
+Informational Note: One industry standard method for calculating maximum current of a PV system is available from Sandia National Laboratories, reference SAND 2004-3535, Photovoltaic Array Performance Model. This model is used by the System Advisor Model simulation program provided by the National Renewable Energy Laboratory.
+(2) Photovoltaic Output Circuit Currents. The maximum current shall be the sum of parallel source circuit maximum currents as calculated in 690.8(A)(1).
+(3) Inverter Output Circuit Current. The maximum current shall be the inverter continuous output current rating.
+(4) Stand-Alone Inverter Input Circuit Current. The maximum current shall be the stand-alone continuous inverter input current rating when the inverter is producing rated power at the lowest input voltage.
+(5) DC-to-DC Converter Source Circuit Current. The maximum current shall be the dc-to-dc converter continuous output current rating.
+(6) DC-to-DC Converter Output Circuit Current. The maximum current shall be the sum of parallel connected dc-to-dc converter source circuit currents as calculated in 690.8(A)(5).
+(B) Conductor Ampacity. PV system currents shall be considered to be continuous. Circuit conductors shall be sized to carry not less than the larger of 690.8(B)(1) or (B)(2) or where protected by a listed adjustable electronic overcurrent protective device in accordance 690.9(B)(3), not less than the current in 690.8(B)(3).
+(1) Before Application of Adjustment and Correction Factors. One hundred twenty-five percent of the maximum currents calculated in 690.8(A) before the application of adjustment and correction factors.
+Exception: Circuits containing an assembly, together with its overcurrent device(s), that is listed for continuous operation at 100 percent of its rating shall be permitted to be used at 100 percent of its rating.
+(2) After Application of Adjustment and Correction Factors. The maximum currents calculated in 690.8(A) after the application of adjustment and correction factors.
+(3) Adjustable Electronic Overcurrent Protective Device. The rating or setting of an adjustable electronic overcurrent protective device installed in accordance with 240.6.
+(C) Systems with Multiple Direct-Current Voltages. For a PV power source that has multiple output circuit voltages and employs a common-return conductor, the ampacity of the common-return conductor shall not be less than the sum of the ampere ratings of the overcurrent devices of the individual output circuits.
+(D) Sizing of Module Interconnection Conductors. Where a single overcurrent device is used to protect a set of two or more parallel-connected module circuits, the ampacity of each of the module interconnection conductors shall not be less than the sum of the rating of the single overcurrent device plus 125 percent of the short-circuit current from the other parallel-connected modules.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR line-wrap reflow normalized; the (B) lead "in accordance 690.9(B)(3)" (missing "with") is as-printed. No 2023 change entry in the MH 2023 summary (silence).</span></div>
+
+  <div class="code">690.9 Overcurrent Protection.
+(A) Circuits and Equipment. PV system dc circuit and inverter output conductors and equipment shall be protected against overcurrent. Overcurrent protective devices shall not be required for circuits with sufficient ampacity for the highest available current. Circuits connected to current limited supplies (e.g., PV modules, dc-to-dc converters, interactive inverter output circuits) and also connected to sources having higher current availability (e.g., parallel strings of modules, utility power) shall be protected at the higher current source connection.
+Exception: An overcurrent device shall not be required for PV modules or PV source circuit or dc-to-dc converters source circuit conductors sized in accordance with 690.8(B) where one of the following applies:
+(1) There are no external sources such as parallel-connected source circuits, batteries, or backfeed from inverters.
+(2) The short-circuit currents from all sources do not exceed the ampacity of the conductors and the maximum overcurrent protective device size rating specified for the PV module or dc-to-dc converter.
+Informational Note: Photovoltaic system dc circuits are current limited circuits that only need overcurrent protection when connected in parallel to higher current sources. The overcurrent device is often installed at the higher current source end of the circuit.
+(B) Overcurrent Device Ratings. Overcurrent devices used in PV system dc circuits shall be listed for use in PV systems. Overcurrent devices, where required, shall be rated in accordance with one of the following:
+(1) Not less than 125 percent of the maximum currents calculated in 690.8(A).
+(2) An assembly, together with its overcurrent device(s), that is listed for continuous operation at 100 percent of its rating shall be permitted to be used at 100 percent of its rating.
+(3) Adjustable electronic overcurrent protective devices rated or set in accordance with 240.6.
+Informational Note: Some electronic overcurrent protective devices prevent backfeed current.
+(C) Photovoltaic Source and Output Circuits. A single overcurrent protective device, where required, shall be permitted to protect the PV modules and conductors of each source circuit or the conductors of each output circuit. Where single overcurrent protection devices are used to protect PV source or output circuits, all overcurrent devices shall be placed in the same polarity for all circuits within a PV system. The overcurrent devices shall be accessible but shall not be required to be readily accessible.
+Informational Note: Due to improved ground-fault protection required in PV systems by 690.41(B), a single overcurrent protective device in either the positive or negative conductors of a PV system in combination with this ground-fault protection provides adequate overcurrent protection.
+(D) Power Transformers. Overcurrent protection for a transformer with a source(s) on each side shall be provided in accordance with 450.3 by considering first one side of the transformer, then the other side of the transformer, as the primary.
+Exception: A power transformer with a current rating on the side connected toward the interactive inverter output, not less than the rated continuous output current of the inverter, shall be permitted without overcurrent protection from the inverter.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR: the (A) Exception "dc-to-dc converters source circuit" and the (B) "in accordance 240.6" (missing "with") are as-printed in the scan. No 2023 change entry in the MH 2023 summary (silence).</span></div>
+
+  <div class="code">690.10 Stand-Alone Systems. The wiring system connected to a stand-alone system shall be installed in accordance with 710.15.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. No 2023 change entry in the MH 2023 summary (silence).</span></div>
+
+  <div class="code">690.11 Arc-Fault Circuit Protection (Direct Current). Photovoltaic systems operating at 80 volts dc or greater between any two conductors shall be protected by a listed PV arc-fault circuit interrupter or other system components listed to provide equivalent protection. The system shall detect and interrupt arcing faults resulting from a failure in the intended continuity of a conductor, connection, module, or other system component in the PV system dc circuits.
+Informational Note: Annex A includes the reference for the Photovoltaic DC Arc-Fault Circuit Protection product standard.
+Exception: For PV systems not installed on or in buildings, PV output circuits and dc-to-dc converter output circuits that are direct buried, installed in metallic raceways, or installed in enclosed metallic cable trays are permitted without arc-fault circuit protection. Detached structures whose sole purpose is to house PV system equipment shall not be considered buildings according to this exception.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR: the Exception prints "civcuits and de-to-de converter output circuits" (read "circuits and dc-to-dc converter"); normalized. No 2023 change entry in the MH 2023 summary (silence).</span></div>
+
+  <h2>Part III — Disconnecting Means (690.12–690.15), verbatim 2017</h2>
+  <p>Three Part III sections — the emergency-responder rapid-shutdown limits (690.12), the PV-system disconnecting means (690.13), and the equipment disconnect / isolating device (690.15). 690.12 and 690.15 have 2023 changes; 690.13 has no 2023 change entry.</p>
+
+  <div class="code">690.12 Rapid Shutdown of PV Systems on Buildings. PV system circuits installed on or in buildings shall include a rapid shutdown function to reduce shock hazard for emergency responders in accordance with 690.12(A) through (D).
+Exception: Ground mounted PV system circuits that enter buildings, of which the sole purpose is to house PV system equipment, shall not be required to comply with 690.12.
+(A) Controlled Conductors. Requirements for controlled conductors shall apply to PV circuits supplied by the PV system.
+(B) Controlled Limits. The use of the term array boundary in this section is defined as 305 mm (1 ft) from the array in all directions. Controlled conductors outside the array boundary shall comply with 690.12(B)(1) and inside the array boundary shall comply with 690.12(B)(2).
+(1) Outside the Array Boundary. Controlled conductors located outside the boundary or more than 1 m (3 ft) from the point of entry inside a building shall be limited to not more than 30 volts within 30 seconds of rapid shutdown initiation. Voltage shall be measured between any two conductors and between any conductor and ground.
+(2) Inside the Array Boundary. The PV system shall comply with one of the following:
+(1) The PV array shall be listed or field labeled as a rapid shutdown PV array. Such a PV array shall be installed and used in accordance with the instructions included with the rapid shutdown PV array listing or field labeling.
+Informational Note: A listed or field labeled rapid shutdown PV array is evaluated as an assembly or system as defined in the installation instructions to reduce but not eliminate risk of electric shock hazard within a damaged PV array during fire-fighting procedures. These rapid shutdown PV arrays are designed to reduce shock hazards by methods such as limiting access to energized components, reducing the voltage difference between energized components, limiting the electric current that might flow in an electrical circuit involving personnel with increased resistance of the conductive circuit, or by a combination of such methods.
+(2) Controlled conductors located inside the boundary or not more than 1 m (3 ft) from the point of penetration of the surface of the building shall be limited to not more than 80 volts within 30 seconds of rapid shutdown initiation. Voltage shall be measured between any two conductors and between any conductor and ground.
+(3) PV arrays with no exposed wiring methods, no exposed conductive parts, and installed more than 2.5 m (8 ft) from exposed grounded conductive parts or ground shall not be required to comply with 690.12(B)(2).
+The requirement of 690.12(B)(2) shall become effective January 1, 2019.
+(C) Initiation Device. The initiation device(s) shall initiate the rapid shutdown function of the PV system. The device off position shall indicate that the rapid shutdown function has been initiated for all PV systems connected to that device. For one-family and two-family dwellings, an initiation device(s) shall be located at a readily accessible location outside the building.
+The rapid shutdown initiation device(s) shall consist of at least one of the following:
+(1) Service disconnecting means
+(2) PV system disconnecting means
+(3) Readily accessible switch that plainly indicates whether it is in the off or on position
+Informational Note: One example of why an initiation device that complies with 690.12(C)(3) would be used is where a PV system is connected to an optional standby system that remains energized upon loss of utility voltage.
+Where multiple PV systems are installed with rapid shutdown functions on a single service, the initiation device(s) shall consist of not more than six switches or six sets of circuit breakers, or a combination of not more than six switches and sets of circuit breakers, mounted in a single enclosure, or in a group of separate enclosures. These initiation device(s) shall initiate the rapid shutdown of all PV systems with rapid shutdown functions on that service. Where auxiliary initiation devices are installed, these auxiliary devices shall control all PV systems with rapid shutdown functions on that service.
+(D) Equipment. Equipment that performs the rapid shutdown functions, other than initiation devices such as listed disconnect switches, circuit breakers, or control switches, shall be listed for providing rapid shutdown protection.
+Informational Note: Inverter input circuit conductors often remain energized for up to 5 minutes with inverters not listed for rapid shutdown.
+[2023 DELTA — MH summary: "A new Exception 2 exempts detached nonenclosed structures from rapid shutdown requirements, some editorial revisions clarify the application of these rules, and rapid shutdown marking requirements were relocated to this section." Note the 2017 body already carries ONE exception (the ground-mounted one, above); the 2023 text adds a second (detached nonenclosed structures). The 30 V / 80 V / 8 ft limits and the initiation-device rules are unchanged in substance. No 2023 body on disk to quote. Machine-verified: all three 2023 phrases are present in the MH summary; the 2017 (B)(1) 30 V, (B)(2)(2) 80 V, (B)(2)(3) 8 ft, (C) dwelling-outside, and (D) listed-equipment text are present in the scan.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR line-wrap reflow normalized. The "(B)(2)(3)" 8-ft exemption is the pre-2019-effective-date carve-out; the "January 1, 2019" effective-date line is 2017 text and is historical in 2023.</span></div>
+
+  <div class="code">690.13 Photovoltaic System Disconnecting Means. Means shall be provided to disconnect the PV system from all wiring systems including power systems, energy storage systems, and utilization equipment and its associated premises wiring.
+(A) Location. The PV system disconnecting means shall be installed at a readily accessible location.
+Informational Note: PV systems installed in accordance with 690.12 address the concerns related to energized conductors entering a building.
+(B) Marking. Each PV system disconnecting means shall plainly indicate whether in the open (off) or closed (on) position and be permanently marked "PV SYSTEM DISCONNECT" or equivalent. Additional markings shall be permitted based upon the specific system configuration. For PV system disconnecting means where the line and load terminals may be energized in the open position, the device shall be marked with the following words or equivalent:
+WARNING
+ELECTRIC SHOCK HAZARD
+TERMINALS ON THE LINE AND LOAD
+SIDES MAY BE
+ENERGIZED IN THE OPEN POSITION
+The warning sign(s) or label(s) shall comply with 110.21(B).
+(C) Suitable for Use. If the PV system is connected to the supply side of the service disconnecting means as permitted in 230.82(6), the PV system disconnecting means shall be listed as suitable for use as service equipment.
+(D) Maximum Number of Disconnects. Each PV system disconnecting means shall consist of not more than six switches or six sets of circuit breakers, or a combination of not more than six switches and sets of circuit breakers, mounted in a single enclosure, or in a group of separate enclosures. A single PV system disconnecting means shall be permitted for the combined ac output of one or more inverters or ac modules in an interactive system.
+Informational Note: This requirement does not limit the number of PV systems connected to a service as permitted in 690.4(D). This requirement allows up to six disconnecting means to disconnect a single PV system. For PV systems where all power is converted through interactive inverters, a dedicated circuit breaker, in 705.12(B)(1), is an example of a single PV system disconnecting means.
+(E) Ratings. The PV system disconnecting means shall have ratings sufficient for the maximum circuit current, available short-circuit current, and voltage that is available at the terminals of the PV system disconnect.
+(F) Type of Disconnect.
+(1) Simultaneous Disconnection. The PV system disconnecting means shall simultaneously disconnect the PV system conductors of the circuit from all conductors of other wiring systems. The PV system disconnecting means shall be an externally operable general-use switch or circuit breaker, or other approved means. A dc PV system disconnecting means shall be marked for use in PV systems or be suitable for backfeed operation.
+(2) Devices Marked "Line" and "Load." Devices marked with "line" and "load" shall not be permitted for backfeed or reverse current.
+(3) DC-Rated Enclosed Switches, Open-Type Switches, and Low-Voltage Power Circuit Breakers. DC-rated, enclosed switches, open-type switches, and low-voltage power circuit breakers shall be permitted for backfeed operation.
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. The (B) warning text is printed across lines (the scan's stray running-header fragments were removed). No 2023 change entry in the MH 2023 summary (silence).</span></div>
+
+  <div class="code">690.15 Disconnection of Photovoltaic Equipment. Isolating devices shall be provided to isolate PV modules, ac PV modules, fuses, dc-to-dc converters, inverters, and charge controllers from all conductors that are not solidly grounded. An equipment disconnecting means or a PV system disconnecting means shall be permitted in place of an isolating device. Where the maximum circuit current is greater than 30 amperes for the output circuit of a dc combiner or the input circuit of a charge controller or inverter, an equipment disconnecting means shall be provided for isolation. Where a charge controller or inverter has multiple input circuits, a single equipment disconnecting means shall be permitted to isolate the equipment from the input circuits.
+Informational Note: The purpose of these isolating devices are for the safe and convenient replacement or service of specific PV system equipment without exposure to energized conductors.
+(A) Location. Isolating devices or equipment disconnecting means shall be installed in circuits connected to equipment at a location within the equipment, or within sight and within 3 m (10 ft) of the equipment. An equipment disconnecting means shall be permitted to be remote from the equipment where the equipment disconnecting means can be remotely operated from within 3 m (10 ft) of the equipment.
+(B) Interrupting Rating. An equipment disconnecting means shall have an interrupting rating sufficient for the maximum short-circuit current and voltage that is available at the terminals of the equipment. An isolating device shall not be required to have an interrupting rating.
+(C) Isolating Device. An isolating device shall not be required to simultaneously disconnect all current-carrying conductors of a circuit. The isolating device shall be one of the following:
+(1) A connector meeting the requirements of 690.33 and listed and identified for use with specific equipment
+(2) A finger safe fuse holder
+(3) An isolating switch that requires a tool to open
+(4) An isolating device listed for the intended application
+An isolating device shall be rated to open the maximum circuit current under load or be marked "Do Not Disconnect Under Load" or "Not for Current Interrupting."
+(D) Equipment Disconnecting Means. An equipment disconnecting means shall simultaneously disconnect all current-carrying conductors that are not solidly grounded of the circuit to which it is connected. An equipment disconnecting means shall be externally operable without exposing the operator to contact with energized parts, shall indicate whether in the open (off) or closed (on) position, and shall be lockable in accordance with 110.25. An equipment disconnecting means shall be one of the following devices:
+(1) A manually operable switch or circuit breaker
+(2) A connector meeting the requirements of 690.33(E)(1)
+(3) A load break fused pull out switch
+(4) A remote-controlled circuit breaker that is operable locally and opens automatically when control power is interrupted
+For equipment disconnecting means, other than those complying with 690.33, where the line and load terminals can be energized in the open position, the device shall be marked in accordance with the warning in 690.13(B).
+[2023 DELTA — MH summary: "Revisions to (A) clarify disconnecting means requirements, when you can use an isolating device as part of listed equipment, and generally reorganized (C) and (D)." The 30 A equipment-disconnect threshold in the lead and the (A) within-sight / 10 ft rule are unchanged in substance; (C) and (D) were reorganized. No 2023 body on disk to quote. Machine-verified: the three 2023 phrases are present in the MH summary; the 2017 30 A threshold, (A) in-sight 10 ft, (C)(2) finger-safe fuse holder, and (D) 110.25 lockable text are present in the scan.]
+<span class="src">NEC 2017 (NFPA 70) — verbatim on-disk scan. OCR: the (D) closing line "other than those complying with 690,33" (comma) is read "690.33"; normalized. No 2023 change entry beyond the (A)/(C)/(D) rework described above.</span></div>
+
+  <h2>The 2017 → 2023 edition story (machine-verified)</h2>
+  <p class="sub">Four changed sections in this article's scope, documented against the on-disk Mike Holt 2023 change summary (<code>verify_art62.py</code>, 120 checks, all passing). <strong>Honest scope of the 2023 side:</strong> the on-disk 2023 datasets (the NEC-csv export and its URL-annotated copy) carry <strong>no Chapter 6 text at all</strong> (zero 690.x rows — machine-checked below), so this story is the change-summary record, <em>not</em> a word-level 2023 diff. The "no 2023 change entry" rows are the summary's silence, not a confirmed 2023 word-identity.</p>
+  <table>
+    <thead><tr><th>#</th><th>2017 (verbatim on disk)</th><th>2023 (MH summary record)</th><th>Change</th><th>Verified</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>690.4(B) — device list "inverters, motor generators, … dc-to-dc converters, and charge controllers"; "shall be listed or field labeled for the PV application"</td><td>690.4(B) — field labeling required; "electronic power converters" replaces outdated terminology; floating solar arrays must be identified for the purpose</td><td>(B) reword + new defined term + floating-array identification</td><td class="ok">✓</td></tr>
+      <tr><td>2</td><td>690.7 — 600 V dwelling / 1000 V other / 1500 V off-building ceilings; Table 690.7(A) cold-weather factor</td><td>690.7 — "no technical changes … a nice job reorganizing everything"</td><td>reorganization only (ceiling + table values unchanged in substance)</td><td class="ok">✓</td></tr>
+      <tr><td>3</td><td>690.12 — one Exception (ground-mounted); 30 V / 80 V / 8 ft limits; initiation device; rapid-shutdown marking elsewhere</td><td>690.12 — NEW Exception 2 (detached nonenclosed structures); editorial clarifications; rapid-shutdown marking relocated to 690.12</td><td>new exception + marking relocation</td><td class="ok">✓</td></tr>
+      <tr><td>4</td><td>690.15 — (A) location; (C) isolating device; (D) equipment disconnecting means</td><td>690.15 — revisions to (A) clarify disconnecting means / isolating device as part of listed equipment; (C) and (D) generally reorganized</td><td>(A) rework + (C)/(D) reorganization</td><td class="ok">✓</td></tr>
+      <tr><td colspan="5" style="background:rgba(224,179,76,.06)"><strong>No 2023 change entry in the MH summary (silence — not a confirmed 2023 word-identity):</strong> 690.1 Scope, 690.2 Definitions, 690.6 ac Modules, 690.8 Circuit Sizing and Current, 690.9 Overcurrent Protection, 690.10 Stand-Alone, 690.11 DC Arc-Fault, 690.13 PV System Disconnecting Means. <em>(690.3, 690.5, and 690.14 do not exist in the 2017 scan.)</em></td></tr>
+    </tbody>
+  </table>
+  <p class="sub"><strong>Out-of-scope 2023 context (Part IV/V, for the boundary):</strong> the MH summary also records 690.31 "Wiring Methods" (massively reorganized; clarifications + requirements for single-conductor cables and systems over 1000 V), 690.43 "Equipment Grounding and Bonding" ((C) title changed to "Location"), and 690.56 "Identification of Power Sources" (condensed; reference to 705.10). Those sections sit beyond 690.1–690.15 and are <strong>not</strong> part of this article's scope — they are noted so the reader knows the 2023 Article 690 reorganization continues past 690.15.</p>
+
+  <h2>Worked examples (core-computed, zero hand math)</h2>
+  <p class="sub">Every rating below is computed by the shipped PanelWright cores under node (<code>compute_art62.js</code> → <code>art62_numbers.json</code>): <code>nextStdBreaker</code> (240.6 standard sizes), <code>pickConductor31016</code> (Table 310.16 pick), <code>smallConductorCap</code> (the 240.4(D) small-conductor OCPD caps). The 690.7 Table 690.7(A) factors are the on-disk 2017 values. Series strings do NOT multiply Isc (one string = one Isc); parallel strings DO sum (690.8(A)(2)).</p>
+
+  <h3>EX1 — the 690.8 / 690.9 125% package on a residential string (and the 240.4(D) small-conductor note)</h3>
+  <p>One residential PV string, 12 modules in series (Voc 37 V @ 25 °C, Isc 13 A). 690.8(A)(1)(1): a single string's max current is one Isc × 125% = 16.25 A; 690.9(B)(1): the OCPD is ≥ 125% of that; 690.8(B): conductors sized at 125% of the max current:</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Max current (13 A × 125%)</td><td class="ctr">16.25 A</td><td>690.8(A)(1)(1) — one string = one Isc</td></tr>
+      <tr><td>OCPD (next standard at 16.25 A)</td><td class="ctr ok">20 A</td><td>690.9(B)(1) 125% → 240.6 (nextStdBreaker)</td></tr>
+      <tr><td>690.8(B) conductor (16.25 A @ 75 °C)</td><td class="ctr">14 AWG Cu (20 A)</td><td>Table 310.16 (pickConductor31016) — ampacity 20 A ≥ 16.25 A</td></tr>
+      <tr><td>240.4(D) 14 AWG OCPD cap</td><td class="ctr warn">15 A</td><td>240.4(D) — a 14 AWG branch OCPD may not exceed 15 A</td></tr>
+      <tr><td>12 AWG option (if a 20 A OCPD is required)</td><td class="ctr">12 AWG Cu (25 A, 20 A cap)</td><td>next size up; 240.4(D) 12 AWG cap = 20 A ≥ the 20 A OCPD</td></tr>
+      <tr><td>Cold Voc (12 × 37 V × 1.14 @ −10 °C)</td><td class="ctr">506.16 V</td><td>690.7(A)(2) + Table 690.7(A)</td></tr>
+      <tr><td>Within 600 V dwelling ceiling</td><td class="ctr ok">yes (506.16 ≤ 600)</td><td>690.7 lead</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 690.8(B) ampacity floor is 16.25 A, which 14 AWG Cu (20 A @ 75 °C) carries — so 14 AWG satisfies the <em>conductor</em> rule. The 20 A OCPD (690.9(B)(1) 125%) is a <em>supplementary / equipment</em> device in a PV dc circuit, not a branch-circuit protective device, so the 240.4(D) 15 A branch-OCPD cap on 14 AWG does not force the conductor up; it is flagged here as the governing branch-cap. If a 20 A branch OCPD were required for that circuit, 240.4(D) would push the conductor to 12 AWG Cu (20 A cap). The cold-weather Voc (506.16 V) is what 690.7 actually limits — well under the 600 V dwelling ceiling.</p>
+
+  <h3>EX2 — the 690.7 dwelling-ceiling TRAP (25 °C looks fine, cold does not)</h3>
+  <p>A 16-module string at 37 V on a one-/two-family dwelling. At 25 °C it is 592 V — under the 600 V ceiling and it looks legal. The cold-weather correction is what catches it:</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Voc at 25 °C (16 × 37 V)</td><td class="ctr">592 V</td><td>sum of series Voc</td></tr>
+      <tr><td>Under 600 V dwelling ceiling at 25 °C?</td><td class="ctr ok">yes (592 ≤ 600)</td><td>690.7 lead — the false pass</td></tr>
+      <tr><td>Cold Voc (592 V × 1.14 @ −10 °C)</td><td class="ctr bad">674.88 V</td><td>690.7(A)(2) + Table 690.7(A)</td></tr>
+      <tr><td>Under 600 V dwelling ceiling at −10 °C?</td><td class="ctr bad">NO (over by 74.88 V)</td><td>690.7 lead — the real test fails</td></tr>
+      <tr><td>Under 1000 V other-building ceiling?</td><td class="ctr ok">yes (674.88 ≤ 1000)</td><td>690.7 lead — permitted on a non-dwelling</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">This is the single most common PV-sizing error: sizing the string by the 25 °C nameplate Voc. 690.7 requires the coldest-expected-ambient voltage. A 16 × 37 V string is legal on a non-dwelling building (1000 V ceiling) but <strong>not</strong> on a one-/two-family dwelling (600 V ceiling) once the −10 °C factor (1.14) is applied — it overshoots by 74.88 V.</p>
+
+  <h3>EX3 — the 690.11 80 V dc arc-fault threshold</h3>
+  <p>The EX1 string (506.16 V cold) on a dwelling rooftop. 690.11's 80 V dc threshold is far below any multi-module string:</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>String voltage (EX1, cold)</td><td class="ctr">506.16 V</td><td>690.7(A)(2)</td></tr>
+      <tr><td>80 V dc AFCI threshold</td><td class="ctr">80 V</td><td>690.11 — "80 volts dc or greater between any two conductors"</td></tr>
+      <tr><td>AFCI required?</td><td class="ctr bad">yes (506.16 V ≥ 80 V)</td><td>690.11</td></tr>
+      <tr><td>Margin over threshold</td><td class="ctr">6.33×</td><td>506.16 ÷ 80</td></tr>
+      <tr><td>Not-on-a-building exception applies?</td><td class="ctr bad">no — rooftop (on building)</td><td>690.11 Exception — direct buried / metallic raceway / enclosed metallic tray, NOT on/in buildings</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">Essentially every stringed PV system at a dwelling clears the 80 V dc threshold by an order of magnitude and needs a listed PV AFCI (or equivalent listed components). The exception only reaches ground-mounted, buried / metallic-raceway / enclosed-tray systems that are not on or in a building.</p>
+
+  <h3>EX4 — the single-module case (where the 240.4(D) cap is exactly the OCPD)</h3>
+  <p>One 400 W module (Isc 10 A) with its own source-circuit OCPD. This is the boundary case where the 240.4(D) small-conductor cap lands exactly on the 690.9(B)(1) OCPD:</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Max current (10 A × 125%)</td><td class="ctr">12.5 A</td><td>690.8(A)(1)(1)</td></tr>
+      <tr><td>OCPD (next standard at 12.5 A)</td><td class="ctr ok">15 A</td><td>690.9(B)(1) → 240.6 (nextStdBreaker)</td></tr>
+      <tr><td>Conductor (12.5 A @ 75 °C)</td><td class="ctr">14 AWG Cu (20 A)</td><td>Table 310.16 (pickConductor31016)</td></tr>
+      <tr><td>240.4(D) 14 AWG OCPD cap</td><td class="ctr ok">15 A (= the OCPD)</td><td>240.4(D) — the cap is exactly the 15 A OCPD (binding, legal)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">For a single module, the 690.9(B)(1) 125% rule gives 12.5 A → a 15 A OCPD, and the 240.4(D) 14 AWG cap is exactly 15 A — so the 15 A OCPD is the largest a 14 AWG circuit may see, and the pick is clean. (Note the 690.9(A) Exception: a single module's source circuit often needs <em>no</em> OCPD at all, since there is no higher-current parallel source to protect against — the 15 A device here is shown for the case where one is installed.)</p>
+
+  <h3>EX5 — 690.8(A)(2) parallel strings + the 1000 V non-dwelling ceiling (commercial)</h3>
+  <p>A commercial building: 3 parallel strings of 20 series modules each (Voc 41.5 V, Isc 9.6 A). Parallel strings sum the current (690.8(A)(2)); the string voltage sets the voltage ceiling (690.7):</p>
+  <table>
+    <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Max current (3 × 9.6 A × 125%)</td><td class="ctr">36 A</td><td>690.8(A)(2) output = sum of source max currents; 690.8(A)(1)(1) 125%</td></tr>
+      <tr><td>OCPD (next standard at 36 A)</td><td class="ctr ok">40 A</td><td>690.9(B)(1) → 240.6 (nextStdBreaker)</td></tr>
+      <tr><td>Conductor (36 A @ 75 °C)</td><td class="ctr">8 AWG Cu (50 A)</td><td>Table 310.16 (pickConductor31016) — ampacity 50 A ≥ 36 A</td></tr>
+      <tr><td>String Voc at 25 °C (20 × 41.5 V)</td><td class="ctr">830 V</td><td>sum of series Voc</td></tr>
+      <tr><td>Under 1000 V non-dwelling ceiling?</td><td class="ctr ok">yes (830 ≤ 1000)</td><td>690.7 lead — other types of buildings</td></tr>
+      <tr><td>Over the 600 V dwelling ceiling?</td><td class="ctr warn">yes (830 &gt; 600)</td><td>not a dwelling system — would need 1000 V (or the 1500 V off-building listing) to use this string length</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">The 36 A output (three parallel strings × 9.6 A × 125%) takes a 40 A OCPD and 8 AWG Cu (50 A @ 75 °C). The 830 V string sits in the 600–1000 V band: legal on a non-dwelling building (1000 V ceiling) but over the dwelling ceiling — a string length this long only works where the 1000 V ceiling applies (or as 1500 V listed off-building equipment).</p>
+
+  <h2>Where 690.1–690.15 fit</h2>
+  <ul>
+    <li><strong>The OCPD catalog behind every rating above:</strong> the <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings</a> (the 20 A / 15 A / 40 A OCPD steps) — 690.9(B)(3) and the 690.8(B)(3) adjustable-electronic route both point to 240.6.</li>
+    <li><strong>The conductor table behind every pick:</strong> the <a href="nec-31016-ampacity.html">Table 310.16 allowable ampacities</a> (the 14 AWG / 12 AWG / 8 AWG Cu picks at 75 °C) and the <a href="nec-31015-ampacity-adjustments.html">310.15 ampacity adjustments</a> (the 690.8(B)(2) "after application of adjustment and correction factors" route — derating when more than two current-carrying conductors share a raceway).</li>
+    <li><strong>The small-conductor OCPD cap the EX1/EX4 notes use:</strong> the <a href="nec-2404d-small-conductors.html">NEC 240.4(D) small-conductor overcurrent protection</a> article (14 AWG → 15 A, 12 AWG → 20 A, 10 AWG → 30 A) — the cap that makes a 14 AWG circuit's largest branch OCPD 15 A.</li>
+    <li><strong>The continuous-load rule 690.8(B) declares:</strong> the <a href="nec-21019a-continuous-load.html">NEC 210.19(A) continuous-load</a> article — 690.8(B) makes PV currents continuous (125% conductor ampacity), the same 125% logic the branch-circuit article applies.</li>
+    <li><strong>The service-side hand-off (out of this article's scope):</strong> 690.13(C) (230.82(6) supply-side service) and 690.13(D) (the 705.12(B)(1) dedicated inverter-output breaker) route a PV system's connection to the service equipment — the <a href="nec-23079-service-disconnecting-means.html">230.79 service disconnecting means</a> and <a href="nec-23090-service-overload-protection.html">230.90 service overload protection</a> articles cover that equipment; the interconnection itself is Article 705's scope (not an article in this series yet).</li>
+  </ul>
+  <p class="sub"><strong>Scope boundary, stated:</strong> this article is exactly 690.1–690.15 — Part I General (690.1–690.6), Part II Circuit Requirements (690.7–690.11), Part III Disconnecting Means (690.12–690.15). The rest of Article 690 is adjacent scope outside this article: Part IV Wiring Methods (690.31–690.33), Part V Equipment for PV Systems (690.35–690.50), Part VI Equipment Grounding and Bonding (690.41–690.43), Part VII Identification of Power Sources (690.56), and Part VIII Large-Scale PV (which moved to Article 691 in 2023) — the on-disk 2017 scan carries all of it and the MH 2023 summary records the Part IV/V reorganization (690.31, 690.43, 690.56). <strong>Honest 2023 caveat:</strong> the on-disk 2023 datasets carry no Chapter 6 text, so the 2023 side is the change-summary record (4 in-scope changes: 690.4, 690.7, 690.12, 690.15), not a word-level 2023 diff. <strong>Verify section numbers against the NEC edition adopted in your jurisdiction.</strong></p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="method">
+    <p><strong>Section text.</strong> Verbatim NEC 2017 (official NFPA text on disk, <span class="blank">nec2017_full.txt</span>, lines 98980–100256 reflowed to <span class="blank">art62_2017_cont.txt</span> with scan furniture stripped — page numbers (e.g. 70-558…70-560), the edition lines, the ARTICLE 690 banners, the Part I/II/III/IV part headers, the article-title lines, the running-header bare section numbers, and the Figure 690.1(a)/(b) diagram block (figure furniture, not section text): 690.1, 690.2 (all 26 definitions), 690.4 (A)–(E), 690.6 (A)/(B), 690.7 lead/(A)/(B)/(C) + Table 690.7(A), 690.8 (A)–(D), 690.9 (A)–(D), 690.10, 690.11, 690.12 lead/Exception/(A)–(D), 690.13 lead/(A)–(F), 690.15 lead/(A)–(D). OCR line-wrap reflow normalized; disclosed scan artifacts corrected (listed per quote block): the "Parts Il and III" (690.7, OCR "Il" → "II"), the "civcuits and de-to-de converter" (690.11, → "circuits and dc-to-dc converter"), the "690,33" comma (690.15(D), → "690.33"), the "in accordance 690.9(B)(3)" / "in accordance 240.6" (690.8(B)/(D), missing "with", as-printed), and the Table 690.7(A) cell values (printed across line breaks, dc/de OCR normalized). No other wording altered.</p>
+    <p><strong>2023 text.</strong> On-disk Mike Holt "Summary of the 2023 Changes to the NEC" (<span class="blank">art48_mh23cc_full.txt</span>) — the 2023 change record. It carries <strong>four</strong> in-scope Article 690 entries (690.4, 690.7, 690.12, 690.15) plus the out-of-scope Part IV/V context entries (690.31, 690.43, 690.56). <strong>Honest gap:</strong> the on-disk 2023 NEC datasets (<span class="blank">art35_nec_csv.csv</span> and its URL-annotated copy <span class="blank">nec_urls.csv</span>, the HuggingFace anthonymeo/NEC-csv export) carry <strong>Chapters 1–5 + 7–8 only — zero 690.x rows</strong> (machine-checked below), so no 2023 section body is quoted or diffed; every 2023 "change" claim above is scoped to the MH summary wording, and the "no 2023 change entry" sections are noted as summary silence, not confirmed 2023 word-identity.</p>
+    <p><strong>Worked examples (core-computed).</strong> Every rating is computed by the shipped PanelWright cores under node (<span class="blank">compute_art62.js</span> → <span class="blank">art62_numbers.json</span>): <span class="blank">nextStdBreaker</span> (240.6 standard sizes), <span class="blank">pickConductor31016</span> (Table 310.16 pick), <span class="blank">smallConductorCap</span> (the 240.4(D) small-conductor OCPD caps). The 690.7 Table 690.7(A) factors are the on-disk 2017 values. Zero hand math — the EX loads are nameplate Isc/Voc, the 125% and next-standard steps are core calls, the conductor picks are core calls, and the cold-Voc ladder is a direct Table 690.7(A) sweep.</p>
+    <p><strong>Edition-delta claims (machine-checked).</strong> A targeted assertion script (<span class="blank">verify_art62.py</span>) reads the on-disk 2017 NFPA scan (reflowed), the on-disk Mike Holt 2023 change summary, and the core-computed <span class="blank">art62_numbers.json</span>, and asserts <strong>120 phrase-level checks</strong>: 55 verbatim-2017 presence probes (every in-scope section's 2017 text), 11 Mike Holt 2023 change-summary probes (the 4 in-scope 690.4/690.7/690.12/690.15 entries + the 3 out-of-scope 690.31/690.43/690.56 context entries), 11 MH-silence probes (no 2023 entry for 690.1/690.2/690.3/690.5/690.6/690.8/690.9/690.10/690.11/690.13/690.14), 3 section-non-existence proofs (690.3/690.5/690.14 do not exist in the 2017 scan), 2 on-disk-2023-dataset gap proofs (zero 690.x rows in both CSVs), 31 worked-example probes (against the JSON), and 7 independent core re-runs (independent of the JSON). <strong>All 120 pass.</strong> Exit 0 = the article's 2017 text, 2023 change record, and every worked-example number are consistent with the on-disk sources.</p>
+  </div>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 62 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan (690.1–690.15 verbatim) + the on-disk Mike Holt 2023 change summary (4 in-scope changes: 690.4 field-labeling / "electronic power converters" / floating arrays, 690.7 reorganization, 690.12 new Exception 2 + marking relocation, 690.15 (A) rework + (C)/(D) reorg) — the on-disk 2023 datasets carry no Chapter 6 text, so the 2023 side is the change record, not a word-level diff. 120 machine-verified checks. Design aid — the adopted edition in your jurisdiction governs.</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-2406-standard-ampere-ratings.html">NEC 240.6 standard ampere ratings (the EX OCPD steps)</a> · <a href="nec-31016-ampacity.html">Table 310.16 ampacities (the EX conductor picks)</a> · <a href="nec-2404d-small-conductors.html">NEC 240.4(D) small-conductor OCPD caps (the EX1/EX4 note)</a> · <a href="nec-21019a-continuous-load.html">NEC 210.19(A) continuous load (the 690.8(B) 125%)</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+</div>
+</body>
+</html>

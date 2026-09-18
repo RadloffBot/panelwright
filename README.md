@@ -2122,6 +2122,46 @@ node test/run_tests.js   # 3672 assertions pass (was 3593 before article 60; thi
   OCR corrections disclosed in the source note. Test block (`run_tests.js`),
   sitemap 62 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
   on the page).
+
+- **[NEC 690.1–690.15: Solar Photovoltaic (PV) Systems — circuit sizing, rapid shutdown, and disconnecting means (Article 690 Parts I–III)](articles/nec-6901-69015-solar-pv-systems.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-6901-69015-solar-pv-systems.html`) —
+  Article 62 — the "what voltage ceiling, what wire, what OCPD, and what
+  rapid-shutdown / disconnect for my solar array?" article: **Part I General
+  (690.1–690.6)** — scope (the Article 691 carve-out), the 26 definitions, the
+  general requirements (the 2023 field-labeling / "electronic power
+  converters" / floating-array revisions), and the ac-module rule; **Part II
+  Circuit Requirements (690.7–690.11)** — the **600 V dwelling / 1000 V other /
+  1500 V off-building** maximum-voltage ceilings + the **Table 690.7(A)**
+  cold-weather Voc correction, the **690.8 / 690.9** 125% maximum-current +
+  overcurrent sizing (the 156% factor), and the **690.11** 80 V dc arc-fault
+  rule; and **Part III Disconnecting Means (690.12–690.15)** — the **690.12**
+  rapid-shutdown limits (30 V / 80 V / the 8 ft exemption / the initiation
+  device), the **690.13** PV-system disconnect (marking, the 6-switch cap,
+  the ratings, the backfeed rules), and the **690.15** equipment disconnect /
+  isolating device. Five core-computed worked examples (`compute_art62.js` →
+  node: nextStdBreaker / pickConductor31016 / smallConductorCap — zero hand
+  math): the residential string's 16.25 A / 14 AWG Cu / 20 A package (with the
+  240.4(D) 15 A cap note); the 16 × 37 V string that looks fine at 25 °C
+  (592 V) but breaks the 600 V dwelling ceiling at −10 °C (674.88 V, over by
+  74.88 V); the 690.11 80 V dc AFCI threshold on a rooftop string; the
+  single-module case where the 240.4(D) cap is exactly the OCPD; and the 3
+  parallel-string commercial case (36 A / 8 AWG Cu / 40 A, 830 V, the 1000 V
+  non-dwelling ceiling). Edition story: 120 machine-verified phrase-level
+  checks (`verify_art62.py`, all pass: 55 verbatim-2017 + 11 Mike Holt 2023
+  change-summary + 11 MH-silence + 3 section-non-existence + 2 on-disk-2023
+  dataset gap proofs + 31 worked-example + 7 core re-run); four
+  machine-documented 2017→2023 changes across the on-disk Mike Holt 2023
+  change summary — **690.4** field-labeling / "electronic power converters" /
+  floating arrays, **690.7** reorganization (no technical change), **690.12**
+  new Exception 2 (detached nonenclosed) + marking relocation, **690.15**
+  (A) rework + (C)/(D) reorg. **Honest 2023 gap:** the on-disk 2023 datasets
+  carry no Chapter 6 text (zero 690.x rows — machine-checked), so the 2023
+  side is the change-summary record, not a word-level 2023 diff; the "no 2023
+  change entry" sections (690.1, 690.2, 690.6, 690.8, 690.9, 690.10, 690.11,
+  690.13) are noted as summary silence, not confirmed 2023 word-identity.
+  2017-scan OCR corrections disclosed in the source note. Test block
+  (`run_tests.js`), sitemap 63 URLs + index cross-link. Written by Radloff
+  Bot (AI, disclosed on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

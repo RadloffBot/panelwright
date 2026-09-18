@@ -6356,13 +6356,132 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap61 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap61.includes('articles/nec-42501-42529-industrial-process-heating.html'), true, 'art61: sitemap entry present');
-  eq((sitemap61.match(/<loc>/g) || []).length, 62, 'art61: sitemap has 62 URLs (art61 appended the 62nd)');
+  eq((sitemap61.match(/<loc>/g) || []).length >= 62, true, 'art61: sitemap has >= 62 URLs (never-shrink; grows per article)');
   const index61 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index61.includes('articles/nec-42501-42529-industrial-process-heating.html'), true, 'art61: index cross-link present');
   const readme61 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme61.includes('articles/nec-42501-42529-industrial-process-heating.html'), true, 'art61: README entry present');
 }
 // === ART61_BLOCK_END ===
+
+// === ART62_BLOCK_BEGIN (article 62 - NEC 690.1-690.15 solar photovoltaic (PV) systems) ===
+// 120 checks (verify_art62.py, all pass): 55 verbatim-2017 + 11 Mike Holt 2023
+// change-summary (690.4, 690.7, 690.12, 690.15 + 690.31/690.43/690.56 out-of-scope
+// context) + 11 MH-silence (no 2023 entry for the other in-scope sections) +
+// 3 section-non-existence (690.3/690.5/690.14 not in the 2017 scan) + 2
+// on-disk-2023-dataset gap proofs (zero 690.x rows in both CSVs) + 31
+// worked-example + 7 core re-run. HONEST GAP: the on-disk 2023 datasets carry
+// no Chapter 6 text, so the 2023 side is the change-summary record, not a
+// word-level 2023 diff. Worked examples core-computed (compute_art62.js ->
+// art62_numbers.json): nextStdBreaker / pickConductor31016 /
+// smallConductorCap + the Table 690.7(A) cold-weather Voc factor.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-6901-69015-solar-pv-systems.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art62_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-6901-69015-solar-pv-systems.html'), true, 'art62: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-6901-69015-solar-pv-systems.html'), true, 'art62: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art62: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art62: Article + FAQPage JSON-LD present');
+  eq(art.includes('Design aid only'), true, 'art62: design-aid disclaimer present');
+  eq(has('nec content series · article 62'), true, 'art62: footer marks article 62');
+  eq(has('120 machine-verified checks'), true, 'art62: 120 machine-verified checks claimed');
+  eq(has('four machine-documented 2017→2023 changes'), true, 'art62: four changes claimed');
+  eq(has('honest gap'), true, 'art62: honest 2023 gap stated');
+  eq(has('zero 690.x rows'), true, 'art62: zero-690.x-rows gap proof stated');
+  // in-scope section coverage (verbatim 2017 quote blocks)
+  eq(art.includes('690.1 Scope'), true, 'art62: 690.1 scope quoted');
+  eq(art.includes('690.2 Definitions'), true, 'art62: 690.2 definitions quoted');
+  eq(art.includes('690.4 General Requirements'), true, 'art62: 690.4 quoted');
+  eq(art.includes('690.6 Alternating-Current (ac) Modules'), true, 'art62: 690.6 quoted');
+  eq(art.includes('690.7 Maximum Voltage'), true, 'art62: 690.7 quoted');
+  eq(art.includes('690.8 Circuit Sizing and Current'), true, 'art62: 690.8 quoted');
+  eq(art.includes('690.9 Overcurrent Protection'), true, 'art62: 690.9 quoted');
+  eq(art.includes('690.10 Stand-Alone Systems'), true, 'art62: 690.10 quoted');
+  eq(art.includes('690.11 Arc-Fault Circuit Protection (Direct Current)'), true, 'art62: 690.11 quoted');
+  eq(art.includes('690.12 Rapid Shutdown of PV Systems on Buildings'), true, 'art62: 690.12 quoted');
+  eq(art.includes('690.13 Photovoltaic System Disconnecting Means'), true, 'art62: 690.13 quoted');
+  eq(art.includes('690.15 Disconnection of Photovoltaic Equipment'), true, 'art62: 690.15 quoted');
+  // key verbatim rules (alpha-tolerant via has())
+  eq(has('maximum voltage of 600 volts or less'), true, 'art62: 600 V dwelling ceiling');
+  eq(has('maximum voltage of 1000 volts or less'), true, 'art62: 1000 V other-building ceiling');
+  eq(has('maximum voltage of 1500 volts or less'), true, 'art62: 1500 V off-building clause');
+  eq(has('corrected for the lowest expected ambient temperature using the correction factor provided in Table 690.7(a)'), true, 'art62: Table 690.7(A) cold-weather rule');
+  eq(has('multiplied by 125 percent'), true, 'art62: 690.8(A)(1)(1) 125% Isc rule');
+  eq(has('pv system currents shall be considered to be continuous'), true, 'art62: 690.8(B) continuous declaration');
+  eq(has('156 percent'), true, 'art62: the 156% factor Informational Note');
+  eq(has('not less than 125 percent of the maximum currents calculated in 690.8(a)'), true, 'art62: 690.9(B)(1) 125% OCPD rule');
+  eq(has('80 volts dc or greater between any two conductors shall be protected by a listed pv arc-fault circuit interrupter'), true, 'art62: 690.11 80 V dc AFCI rule');
+  eq(has('not more than 30 volts within 30 seconds of rapid shutdown initiation'), true, 'art62: 690.12(B)(1) 30 V limit');
+  eq(has('not more than 80 volts within 30 seconds of rapid shutdown initiation'), true, 'art62: 690.12(B)(2)(2) 80 V limit');
+  eq(has('installed more than 2.5 m (8 ft) from exposed grounded conductive parts or ground'), true, 'art62: 690.12(B)(2)(3) 8 ft exemption');
+  eq(has('pv system disconnect'), true, 'art62: 690.13(B) PV SYSTEM DISCONNECT marking');
+  eq(has('greater than 30 amperes for the output circuit of a dc combiner'), true, 'art62: 690.15 30 A equipment-disconnect threshold');
+  // 2023 change record (MH summary phrases)
+  eq(has('electronic power converters'), true, 'art62: 2023 "electronic power converters" term');
+  eq(has('floating solar arrays must be identified for the purpose'), true, 'art62: 2023 690.4 floating-array identification');
+  eq(has('a new exception 2 exempts detached nonenclosed structures from rapid shutdown requirements'), true, 'art62: 2023 690.12 new Exception 2');
+  eq(has('rapid shutdown marking requirements were relocated to this section'), true, 'art62: 2023 690.12 marking relocation');
+  eq(has('no technical changes here, but the code-making panel did a nice job reorganizing everything'), true, 'art62: 2023 690.7 reorganization (no technical change)');
+  eq(has('generally reorganized (c) and (d)'), true, 'art62: 2023 690.15 (C)/(D) reorg');
+  // worked examples (core-computed; art62_numbers.json)
+  eq(nums.EX1.maxCurrent_125, 16.25, 'art62: EX1 max current = 16.25 A (13 A Isc x 125%)');
+  eq(nums.EX1.ocpdA, 20, 'art62: EX1 OCPD = 20 A (240.6 at 16.25 A)');
+  eq(nums.EX1.pick14.indexOf('14 AWG Cu') === 0, true, 'art62: EX1 690.8(B) pick = 14 AWG Cu (20 A @ 75 C)');
+  eq(nums.EX1.cap14, 15, 'art62: EX1 240.4(D) 14 AWG OCPD cap = 15 A');
+  eq(nums.EX1.pick12.indexOf('12 AWG Cu') === 0, true, 'art62: EX1 12 AWG option = 12 AWG Cu (25 A, 20 A cap)');
+  eq(nums.EX1.vocSumColdV, 506.16, 'art62: EX1 cold Voc = 506.16 V (444 x 1.14 @ -10 C)');
+  eq(nums.EX1.withinDwelling, true, 'art62: EX1 within 600 V dwelling ceiling');
+  eq(nums.EX2.vocSum25V, 592, 'art62: EX2 Voc at 25 C = 592 V (16 x 37)');
+  eq(nums.EX2.vocSumColdV, 674.88, 'art62: EX2 cold Voc = 674.88 V (592 x 1.14)');
+  eq(nums.EX2.withinDwelling600_cold, false, 'art62: EX2 cold EXCEEDS 600 V dwelling ceiling');
+  eq(nums.EX2.overDwellingBy, 74.88, 'art62: EX2 over dwelling ceiling by 74.88 V');
+  eq(nums.EX2.withinOtherBuilding1000, true, 'art62: EX2 within 1000 V other-building ceiling');
+  eq(nums.EX3.vocSumColdV, 506.16, 'art62: EX3 string voltage = 506.16 V');
+  eq(nums.EX3.afciThresholdV, 80, 'art62: EX3 80 V dc AFCI threshold');
+  eq(nums.EX3.afciRequired, true, 'art62: EX3 AFCI required (506.16 V >= 80 V)');
+  eq(nums.EX3.marginFactor, 6.33, 'art62: EX3 margin = 6.33x the threshold');
+  eq(nums.EX4.maxCurrent_125, 12.5, 'art62: EX4 max current = 12.5 A (10 A Isc x 125%)');
+  eq(nums.EX4.ocpdA, 15, 'art62: EX4 OCPD = 15 A (240.6 at 12.5 A)');
+  eq(nums.EX4.conductor.indexOf('14 AWG Cu') === 0, true, 'art62: EX4 conductor = 14 AWG Cu (20 A @ 75 C)');
+  eq(nums.EX4.capEqualsOcpd, true, 'art62: EX4 240.4(D) cap (15 A) == the OCPD');
+  eq(nums.EX5.maxCurrent_125, 36, 'art62: EX5 max current = 36 A (3 x 9.6 A x 125%)');
+  eq(nums.EX5.ocpdA, 40, 'art62: EX5 OCPD = 40 A (240.6 at 36 A)');
+  eq(nums.EX5.conductor.indexOf('8 AWG Cu') === 0, true, 'art62: EX5 conductor = 8 AWG Cu (50 A @ 75 C)');
+  eq(nums.EX5.vocSum25V, 830, 'art62: EX5 string Voc = 830 V (20 x 41.5)');
+  eq(nums.EX5.withinOtherBuilding1000, true, 'art62: EX5 within 1000 V non-dwelling ceiling');
+  eq(nums.voltageLadder.length, 13, 'art62: Table 690.7(A) ladder has 13 rows');
+  eq(nums.voltageLadder[6].factor, 1.14, 'art62: ladder -6..-10 C factor = 1.14');
+  eq(nums.voltageLadder[12].vocV, 555, 'art62: ladder -36..-40 C (x1.25) = 555 V');
+  // core re-runs (independent of the JSON)
+  eq(core.nextStdBreaker(16.25), 20, 'art62: core re-run 16.25 A -> 20 A (EX1)');
+  eq(core.nextStdBreaker(12.5), 15, 'art62: core re-run 12.5 A -> 15 A (EX4)');
+  eq(core.nextStdBreaker(36), 40, 'art62: core re-run 36 A -> 40 A (EX5)');
+  eq(core.pickConductor31016(16.25, 'cu', 75).size, '14', 'art62: core re-run 16.25 A @ 75 C = 14 AWG Cu (EX1)');
+  eq(core.pickConductor31016(36, 'cu', 75).size, '8', 'art62: core re-run 36 A @ 75 C = 8 AWG Cu (EX5)');
+  eq(core.smallConductorCap('14', 'cu'), 15, 'art62: core re-run 240.4(D) 14 AWG Cu cap = 15 A');
+  eq(core.smallConductorCap('12', 'cu'), 20, 'art62: core re-run 240.4(D) 12 AWG Cu cap = 20 A');
+  // cross-links
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art62: cross-links to the 240.6 standard ampere ratings article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art62: cross-links to the Table 310.16 ampacity article');
+  eq(art.includes('nec-2404d-small-conductors.html'), true, 'art62: cross-links to the 240.4(D) small-conductor article');
+  eq(art.includes('nec-21019a-continuous-load.html'), true, 'art62: cross-links to the 210.19(A) continuous-load article');
+  eq(art.includes('nec-23079-service-disconnecting-means.html'), true, 'art62: cross-links to the 230.79 service disconnecting means article');
+  eq(art.includes('nec-23090-service-overload-protection.html'), true, 'art62: cross-links to the 230.90 service overload protection article');
+  // sitemap + index + README
+  const sitemap62 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap62.includes('articles/nec-6901-69015-solar-pv-systems.html'), true, 'art62: sitemap entry present');
+  eq((sitemap62.match(/<loc>/g) || []).length >= 63, true, 'art62: sitemap has >= 63 URLs (never-shrink; grows per article)');
+  const index62 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index62.includes('articles/nec-6901-69015-solar-pv-systems.html'), true, 'art62: index cross-link present');
+  const readme62 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme62.includes('articles/nec-6901-69015-solar-pv-systems.html'), true, 'art62: README entry present');
+}
+// === ART62_BLOCK_END ===
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
