@@ -6482,6 +6482,87 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   eq(readme62.includes('articles/nec-6901-69015-solar-pv-systems.html'), true, 'art62: README entry present');
 }
 // === ART62_BLOCK_END ===
+// === ART63_BLOCK_BEGIN (article 63 - NEC 490 -> 495 equipment over 1000 V edition migration) ===
+// 126 checks (verify_art63.py, all pass): 38 verbatim-2017 presence + 38
+// quote-block + 28 on-disk-2023 presence + 24 delta-pair + 12 absence
+// proofs + 4 relocation/merge + 5 worked-example + 3 core re-run. This
+// article's 2023 text IS on disk (55 495.x rows + 44 245.x rows), so it is a
+// real word-level 2017->2023 diff, not a change-summary record. Worked
+// examples core-computed (compute_art63.js -> art63_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-490-495-equipment-over-1000v.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art63_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-490-495-equipment-over-1000v.html'), true, 'art63: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-490-495-equipment-over-1000v.html'), true, 'art63: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art63: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art63: Article + FAQPage JSON-LD present');
+  eq(art.includes('Design aid only'), true, 'art63: design-aid disclaimer present');
+  eq(has('nec content series · article 63'), true, 'art63: footer marks article 63');
+  eq(has('126 machine-verified checks'), true, 'art63: 126 machine-verified checks claimed');
+  eq(has('five parts'), true, 'art63: five-part structure stated');
+  eq(has('digit-identical'), true, 'art63: table values digit-identical stated');
+  eq(has('two honesty notes'), true, 'art63: two honesty notes stated');
+  eq(has('zero article 100 rows'), true, 'art63: zero-Art-100-rows gap stated');
+  // 38 verbatim-2017 quote blocks (heading present in a code div)
+  const SECTIONS = ['490.1','490.2','490.3','490.21','490.22','490.23','490.24','490.25',
+    '490.30','490.31','490.32','490.33','490.34','490.35','490.36','490.37','490.38','490.39','490.40',
+    '490.41','490.42','490.43','490.44','490.45','490.46','490.47','490.48',
+    '490.51','490.52','490.53','490.54','490.55','490.56',
+    '490.70','490.71','490.72','490.73','490.74'];
+  for (const n of SECTIONS) {
+    eq(art.includes('class="code">' + n + ' '), true, 'art63: verbatim-2017 block ' + n);
+  }
+  eq((art.match(/class="code">/g) || []).length, 38, 'art63: exactly 38 quote blocks');
+  // in-scope 2023 landings (on-disk 495.x / 245.x)
+  for (const n of ['495.1','495.2','495.3','495.22','495.23','495.24','495.25','495.30','495.35','495.37','495.44','495.46','495.48','495.49','495.61','495.62','495.66','495.70','495.72','495.73']) {
+    eq(art.includes(n), true, 'art63: 2023 landing ' + n);
+  }
+  // headline structural moves
+  eq(has('new article 245'), true, 'art63: new Article 245 stated');
+  eq(art.includes('245.21'), true, 'art63: 245.21 relocation target');
+  eq(has('490.51'), true, 'art63: Part IV old number');
+  eq(has('495.61'), true, 'art63: Part IV new number');
+  eq(has('490.36+490.37'), true, 'art63: 490.36+37 merge');
+  eq(art.includes('495.37'), true, 'art63: 495.37 merge target');
+  eq(has('250.190'), true, 'art63: new 250.190 cite');
+  eq(has('reconditioned equipment'), true, 'art63: NEW 495.2 reconditioned');
+  eq(has('reconditioned switchgear'), true, 'art63: NEW 495.49 reconditioned');
+  // substantive deltas (2017 -> 2023 wording)
+  eq(has('either'), true, 'art63: 495.35(B) either');
+  eq(has('both'), true, 'art63: 495.35(B) both');
+  eq(has('7½%'), true, 'art63: 495.72(D) 7.5% delta');
+  eq(has('lockable open'), true, 'art63: 495.46 lockable open delta');
+  eq(has('parts ii and iii'), true, 'art63: 495.3(A) Parts II and III delta');
+  eq(has('heating elements'), true, 'art63: 495.73 heating elements delta');
+  // worked examples (core-computed, from art63_numbers.json: EX1/EX2/EX3)
+  eq(art.includes(String(nums.EX1.flcA)), true, 'art63: EX1 FLC ' + nums.EX1.flcA + ' A');
+  eq(art.includes(String(nums.EX1.pct75A)), true, 'art63: EX1 7.5% trip ' + nums.EX1.pct75A + ' A');
+  eq(art.includes(String(nums.EX1.instA)), true, 'art63: EX1 25% instantaneous ' + nums.EX1.instA + ' A');
+  eq(art.includes(String(nums.EX2.branchMinA)), true, 'art63: EX2 100% branch min ' + nums.EX2.branchMinA + ' A');
+  eq(art.includes(String(nums.EX2.ocpd)), true, 'art63: EX2 OCPD ' + nums.EX2.ocpd + ' A');
+  eq(art.includes(nums.EX2.pick.label), true, 'art63: EX2 conductor pick ' + nums.EX2.pick.label);
+  eq(has('495.61'), true, 'art63: EX3 Part IV map 495.61');
+  eq(has('495.66'), true, 'art63: EX3 Part IV map 495.66');
+  // sitemap + index + README
+  const sitemap63 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap63.includes('articles/nec-490-495-equipment-over-1000v.html'), true, 'art63: sitemap entry present');
+  eq((sitemap63.match(/<loc>/g) || []).length >= 64, true, 'art63: sitemap has >= 64 URLs (never-shrink; grows per article)');
+  const index63 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index63.includes('articles/nec-490-495-equipment-over-1000v.html'), true, 'art63: index cross-link present');
+  const readme63 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme63.includes('articles/nec-490-495-equipment-over-1000v.html'), true, 'art63: README entry present');
+  // tag balance (the quote-block </div> regression guard from this build)
+  const divOpen = (art.match(/<div\b/g) || []).length;
+  const divClose = (art.match(/<\/div>/g) || []).length;
+  eq(divOpen, divClose, 'art63: div tags balanced (' + divOpen + '/' + divClose + ')');
+}
+// === ART63_BLOCK_END ===
+
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

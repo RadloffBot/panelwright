@@ -2162,6 +2162,45 @@ node test/run_tests.js   # 3672 assertions pass (was 3593 before article 60; thi
   2017-scan OCR corrections disclosed in the source note. Test block
   (`run_tests.js`), sitemap 63 URLs + index cross-link. Written by Radloff
   Bot (AI, disclosed on the page).
+
+- **[NEC 490 → 495: Equipment Over 1000 Volts (Medium Voltage) — the full edition migration](articles/nec-490-495-equipment-over-1000v.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-490-495-equipment-over-1000v.html`) —
+  Article 63 — the "which code section governs my 13.8 kV switchgear, my
+  15 kV substation, or my medium-voltage portable equipment — and what did
+  2023 actually change?" article. 2017 **Article 490 "Equipment Over 1000
+  Volts, Nominal"** → 2023 **Article 495 "Equipment Over 1000 Volts ac, 1500
+  Volts dc, Nominal"**: **Part I General (490.1–3 / 495.1–3)** — the scope
+  (the 2023 ac/dc ceiling), the NEW **495.2** reconditioned-equipment ban, the
+  Article 450 hand-off (the "Parts I and III → Parts II and III" delta);
+  **Part II Specific Provisions (490.21–25 / 495.22–25)** — the Table
+  490.24/495.24 minimum-clearance grid (values verified digit-identical
+  2017→2023, both editions on disk) and the section that left: **490.21
+  Circuit-Interrupting Devices → NEW Article 245 (245.21)**; **Part III
+  Switchgear and Industrial Control Assemblies (490.30–48 / 495.30–49)** — the
+  DANGER–HIGH VOLTAGE–KEEP OUT door rule (490.35(A)), the 490.35(B)
+  low-voltage-control-in-high-voltage-compartment rule (the 2023 "either →
+  both" delta), the 490.36+37 → 495.37 merge (+ the new 250.190 cite), and the
+  NEW **495.49** reconditioned-switchgear section; **Part IV Mobile and
+  Portable Equipment (490.51–56 → 495.61–66)** — the ten-number renumber (the
+  2023 grounding re-anchor to Part X of Article 250); **Part V Electrode-Type
+  Boilers (490.70–74 / 495.70–74)** — the 1000 V solidly-grounded-wye supply,
+  the 495.72(D) ground-current-detection rule (the 2023 7% → 7½% delta), the
+  "electrodes → heating elements" rename. 38 verbatim 2017 sections (disclosed
+  OCR fixes), a 38-row delta table, eleven substantive 2017→2023 text deltas,
+  and core-computed worked examples (`compute_art63.js` → node:
+  nextStdBreaker / pickConductor31016 — zero hand math): the 200 A boiler's
+  15 A / 50 A ground-fault trip thresholds (with the 7% → 7½% delta), the
+  60 A boiler's 5 A floor corner (4.5 A < 5 A), and the renumber map.
+  Edition story: 132 machine-verified phrase-level checks (`verify_art63.py`,
+  all pass: 38 verbatim-2017 + 38 quote-block + 28 on-disk-2023 + 24
+  delta-pair + 12 absence + 4 relocation/merge + 5 worked-example + 3 core
+  re-run) — a real word-level 2017→2023 diff (this article's 2023 text IS on
+  disk: 55 495.x rows + 44 245.x rows), corroborated by three independent
+  live sources (electricallicenserenewal.com, Leviton Captain Code 2023, IAEI
+  Magazine "NFPA Code Talk"). Honest gap: the on-disk 2023 dataset has zero
+  Article 100 rows, so the old 490.2 "High Voltage" definition's 2023 home is
+  flagged, not asserted. Test block (`run_tests.js`), sitemap 64 URLs + index
+  cross-link. Written by Radloff Bot (AI, disclosed on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
