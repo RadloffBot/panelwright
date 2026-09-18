@@ -2098,7 +2098,7 @@ node test/run_tests.js   # 3672 assertions pass (was 3593 before article 60; thi
   (425.28–425.29)** — the nameplate and the field-replaceable element rating.
   Five core-computed worked examples (`compute_art61.js` → node:
   nextStdBreaker / pickConductor31016 / reqBreakerA — zero hand math): the
-  15,000 W / 240 V heater's 78.75 A / 4 AWG Cu / 80 A package (the 425.4(B)
+  15,000 W / 240 V heater's 78.13 A / 4 AWG Cu / 80 A package (the 425.4(B)
   continuous rule); the 25 A breaker-as-disconnect on a motor-less immersion
   heater; the 41.67 A heater under the 48 A element threshold (with the 120 A
   / 150 A allowance as the escape); the 120,000 W / 480 V heater's 50 kW

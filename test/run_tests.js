@@ -6307,6 +6307,8 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // worked examples (core-computed)
   eq(nums.EX1.loadA, 62.5, 'art61: EX1 load = 62.5 A (15,000 W / 240 V)');
   eq(nums.EX1.conductorAmpacityRequired_125, 78.13, 'art61: EX1 125% conductor ampacity = 78.13 A');
+  eq(has('78.13'), true, 'art61: article body prints EX1 ampacity 78.13 A (62.5 x 1.25)');
+  eq(has('78.75'), false, 'art61: no 78.75 typo in the article (S86 fix)');
   eq(nums.EX1.ocpdA, 80, 'art61: EX1 OCPD = 80 A (nextStdBreaker)');
   eq(nums.EX1.conductor.indexOf('4 AWG Cu') === 0, true, 'art61: EX1 conductors = 4 AWG Cu (85 A @ 75 C)');
   eq(nums.EX2.loadA, 25, 'art61: EX2 load = 25 A (6,000 W / 240 V)');

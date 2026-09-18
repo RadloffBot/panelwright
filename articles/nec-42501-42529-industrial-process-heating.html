@@ -40,7 +40,7 @@
     {
       "@type": "Question",
       "name": "What size branch circuit and conductors does a fixed industrial process heater require (425.3 / 425.4)?",
-      "acceptedAnswer": { "@type": "Answer", "text": "425.3(A) (2017) / 425.4(A) (2023): an individual branch circuit may supply any volt-ampere or wattage rating of fixed industrial process heating equipment for which the branch circuit is rated — there is no multi-outlet cap and no infrared allowance in this article (those live in Article 424). 425.3(B) / 425.4(B): fixed industrial process heating equipment and motors shall be considered continuous loads — so the branch-circuit conductors are sized at 125% of the load (210.19(A)(1)) and the OCPD follows 240.6 from that value. A 15,000 W / 240 V unit heater (62.5 A) therefore needs 78.75 A of conductor ampacity: an 80 A OCPD over 4 AWG Cu (85 A @ 75 °C)." }
+      "acceptedAnswer": { "@type": "Answer", "text": "425.3(A) (2017) / 425.4(A) (2023): an individual branch circuit may supply any volt-ampere or wattage rating of fixed industrial process heating equipment for which the branch circuit is rated — there is no multi-outlet cap and no infrared allowance in this article (those live in Article 424). 425.3(B) / 425.4(B): fixed industrial process heating equipment and motors shall be considered continuous loads — so the branch-circuit conductors are sized at 125% of the load (210.19(A)(1)) and the OCPD follows 240.6 from that value. A 15,000 W / 240 V unit heater (62.5 A) therefore needs 78.13 A of conductor ampacity: an 80 A OCPD over 4 AWG Cu (85 A @ 75 °C)." }
     },
     {
       "@type": "Question",
@@ -235,12 +235,12 @@ Each section, panel, or strip carrying a number of infrared lampholders, includi
     <thead><tr><th>Step</th><th class="ctr">Value</th><th>Rule</th></tr></thead>
     <tbody>
       <tr><td>Heater load (15,000 W ÷ 240 V)</td><td class="ctr">62.5 A</td><td>nameplate</td></tr>
-      <tr><td>Continuous-load conductor ampacity (125%)</td><td class="ctr">78.75 A</td><td>425.3(B) / 425.4(B) (reqBreakerA)</td></tr>
-      <tr><td>OCPD (next standard at 78.75 A)</td><td class="ctr ok">80 A</td><td>240.6 (nextStdBreaker)</td></tr>
-      <tr><td>Supply conductors (78.75 A @ 75 °C)</td><td class="ctr">4 AWG Cu (85 A)</td><td>Table 310.16 (pickConductor31016)</td></tr>
+      <tr><td>Continuous-load conductor ampacity (125%)</td><td class="ctr">78.13 A</td><td>425.3(B) / 425.4(B) (reqBreakerA)</td></tr>
+      <tr><td>OCPD (next standard at 78.13 A)</td><td class="ctr ok">80 A</td><td>240.6 (nextStdBreaker)</td></tr>
+      <tr><td>Supply conductors (78.13 A @ 75 °C)</td><td class="ctr">4 AWG Cu (85 A)</td><td>Table 310.16 (pickConductor31016)</td></tr>
     </tbody>
   </table>
-  <p class="sub">The 62.5 A load is continuous, so 78.75 A of conductor ampacity is required — an 80 A OCPD over 4 AWG Cu (85 A @ 75 °C). Note there is no multi-outlet cap and no infrared allowance in Article 425 (those are Article 424's 30 A / 50 A rules) — a single process heater rides its own circuit at whatever rating 425.4(A) supports.</p>
+  <p class="sub">The 62.5 A load is continuous, so 78.13 A of conductor ampacity is required — an 80 A OCPD over 4 AWG Cu (85 A @ 75 °C). Note there is no multi-outlet cap and no infrared allowance in Article 425 (those are Article 424's 30 A / 50 A rules) — a single process heater rides its own circuit at whatever rating 425.4(A) supports.</p>
 
   <h3>EX2 — the 425.19(B)(1) breaker-as-disconnect on a motor-less immersion heater</h3>
   <p>A 6,000 W / 240 V immersion process heater (25 A), no motor (or a motor not over 1/8 hp). 425.19(B)(1) lets the branch-circuit breaker BE the disconnecting means, in sight or lockable-open (110.25); the 425.19 lead rates the disconnect at 125% of the load:</p>
