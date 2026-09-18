@@ -6116,13 +6116,114 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
   // sitemap + index + README
   const sitemap59 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   eq(sitemap59.includes('articles/nec-42230-42262-appliance-disconnect-construction.html'), true, 'art59: sitemap entry present');
-  eq((sitemap59.match(/<loc>/g) || []).length, 60, 'art59: sitemap has 60 URLs (art59 appended the 60th)');
+  eq((sitemap59.match(/<loc>/g) || []).length >= 60, true, 'art59: sitemap has >= 60 URLs (art59 appended the 60th; the total only grows per the S82 structural fix)');
   const index59 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   eq(index59.includes('articles/nec-42230-42262-appliance-disconnect-construction.html'), true, 'art59: index cross-link present');
   const readme59 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
   eq(readme59.includes('articles/nec-42230-42262-appliance-disconnect-construction.html'), true, 'art59: README entry present');
 }
 // === ART59_BLOCK_END ===
+
+// === ART60_BLOCK_BEGIN (article 60 — NEC 424.1-424.29 fixed electric space-heating) ===
+// 13 changed sections 2017->2023 (verify_art60.py, 72 checks, all pass):
+// 424.2->424.3 renumber + NEW Table 424.3, 424.3->424.4 renumber + the
+// 424.4(B) continuous-load -> 125% conductor reword (the ONE
+// Mike Holt-2023-documented in-scope entry), 424.9->424.10 renumber +
+// 210.50(B)->210.52, 424.10 "Special Permission" deleted, 424.11
+// insulation-rating reword, 424.12(B) water-sentence drop, 424.19
+// lead + (B)(1) lockable-open reword, 424.19(C)(1)/(C)(2)
+// general-purpose-circuits reword, 424.20(A) new accessible-location
+// condition, 424.22(A) cross-ref reword, 424.22(B) 424.3(B)->424.4(B),
+// 424.28(B) "easily" drop. 2020 position not asserted (no on-disk 2020
+// source carries the 424.1-424.29 bodies; the on-disk 2020 scan ends at
+// Article 230 - verified). Worked examples core-computed
+// (compute_art60.js -> art60_numbers.json): nextStdBreaker /
+// pickConductor31016 / reqBreakerA.
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-42401-42429-fixed-space-heating.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art60_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-42401-42429-fixed-space-heating.html'), true, 'art60: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-42401-42429-fixed-space-heating.html'), true, 'art60: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art60: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art60: Article + FAQPage JSON-LD present');
+  eq(art.includes('Design aid only'), true, 'art60: design-aid disclaimer present');
+  eq(has('nec content series · article 60'), true, 'art60: footer marks article 60');
+  eq(has('72 machine-verified checks'), true, 'art60: 72 machine-verified checks claimed');
+  eq(has('thirteen changed sections'), true, 'art60: thirteen changed sections claimed');
+  eq(art.includes('"datePublished": "2026-09-17"'), true, 'art60: datePublished 2026-09-17');
+  // verbatim 2017 quotes (match on-disk scan after disclosed OCR corrections)
+  eq(has('heating equipment shall include heating cable, unit heaters, boilers, central systems, or other approved fixed electric space-heating equipment'), true, 'art60: verbatim 2017 424.1 scope');
+  eq(has('individual branch circuits shall be permitted to supply any volt-ampere or wattage rating of fixed electric space-heating equipment for which they are rated'), true, 'art60: verbatim 2017 424.3(A) individual circuit');
+  eq(has('branch circuits supplying two or more outlets for fixed electric space-heating equipment shall be rated not over 30 amperes'), true, 'art60: verbatim 2017 424.3(A) 30 A cap');
+  eq(has('fixed electric space-heating equipment and motors shall be considered continuous load'), true, 'art60: verbatim 2017 424.3(B) continuous-load declaration');
+  eq(has('shall be permitted only by special permission'), true, 'art60: verbatim 2017 424.10 special permission (deleted in 2023)');
+  eq(has('requiring supply conductors with over 60°c insulation shall be clearly and permanently marked'), true, 'art60: verbatim 2017 424.11 supply-conductor marking');
+  eq(has('shall be listed for such locations and shall be constructed and installed so that water or other liquids cannot enter or accumulate'), true, 'art60: verbatim 2017 424.12(B) water sentence (dropped in 2023)');
+  eq(has('shall have an ampere rating not less than 125 percent of the total load of the motors and the heaters'), true, 'art60: verbatim 2017 424.19 lead 125% disconnect rating');
+  eq(has('a unit switch(es) with a marked "off" position that is part of a fixed heater and disconnects all ungrounded conductors'), true, 'art60: verbatim 2017 424.19(C) unit-switch route');
+  eq(has('shall also be permitted to control lamps and appliances'), true, 'art60: verbatim 2017 424.19(C)(1) lamps-and-appliances (2023 reword)');
+  eq(has('resistance-type heating elements in electric space-heating equipment shall be protected at not more than 60 amperes'), true, 'art60: verbatim 2017 424.22(B) 60 A element ceiling');
+  eq(has('all heating elements that are replaceable in the field and are part of an electric heater shall be legibly marked'), true, 'art60: verbatim 2017 424.29 element marking');
+  // 2023 delta sides (match on-disk 2023 CSV rows)
+  eq(has('heating equipment includes heating cables, unit heaters, boilers, central heating systems'), true, 'art60: 2023 424.1 scope reword');
+  eq(has('shall additionally comply with table 424.3'), true, 'art60: 2023 424.3 NEW Table 424.3 cross-ref');
+  eq(has('for which the branch circuit is rated'), true, 'art60: 2023 424.4(A) reword');
+  eq(has('the branch-circuit conductor(s) ampacity shall not be less than 125 percent of the load of the fixed electric space-heating equipment and any associated motor(s)'), true, 'art60: 2023 424.4(B) 125% conductor rule (MH-documented)');
+  eq(has('is capable of being locked in the open position in compliance with 110.25'), true, 'art60: 2023 424.19(B)(1) lockable-open reword');
+  eq(has('shall also be permitted to control general-purpose circuits and appliance circuits'), true, 'art60: 2023 424.19(C)(1) general-purpose reword');
+  eq(has('located in an accessible location'), true, 'art60: 2023 424.20(A) NEW fifth condition');
+  eq(has('parts iii and iv of article 430 or parts iii and vi of article 440'), true, 'art60: 2023 424.22(A) specific cross-refs');
+  eq(has('visible or accessible after installation'), true, 'art60: 2023 424.28(B) "easily" drop');
+  eq(has('required by 210.52'), true, 'art60: 2023 424.10 baseboard receptacle 210.52 cross-ref');
+  // worked examples (core-computed, art60_numbers.json)
+  eq(nums.EX1.loadA, 50, 'art60: EX1 12,000 W / 240 V = 50 A load');
+  approx(nums.EX1.conductorAmpacityRequired_125, 62.5, 0.001, 'art60: EX1 125% continuous = 62.5 A (424.4(B))');
+  eq(nums.EX1.ocpdA, 70, 'art60: EX1 OCPD = 70 A (nextStdBreaker)');
+  eq(nums.EX1.conductor.indexOf('6 AWG Cu') === 0, true, 'art60: EX1 conductors = 6 AWG Cu (65 A @ 75 C)');
+  eq(nums.EX2.loadA, 20, 'art60: EX2 4,800 W / 240 V = 20 A (two heaters)');
+  eq(nums.EX2.circuitCapA, 30, 'art60: EX2 424.4(A) multi-outlet cap = 30 A');
+  eq(nums.EX2.ocpdA, 25, 'art60: EX2 OCPD = 25 A (under the 30 A cap)');
+  eq(nums.EX2.conductor.indexOf('12 AWG Cu') === 0, true, 'art60: EX2 conductor core pick = 12 AWG Cu (240.4(D) 20 A cap flagged)');
+  eq(nums.EX3.nameplateA, 62.5, 'art60: EX3 15,000 W / 240 V = 62.5 A nameplate');
+  eq(nums.EX3.mustSubdivide, true, 'art60: EX3 over the 48 A threshold -> must subdivide');
+  approx(nums.EX3.perSubdivisionA, 31.25, 0.001, 'art60: EX3 two subdivisions = 31.25 A each (<= 48 A)');
+  eq(nums.EX3.perSubdivisionWithin48, true, 'art60: EX3 each subdivided load within 48 A');
+  approx(nums.EX4.disconnectRating_125, 25, 0.001, 'art60: EX4 20 A load x 1.25 = 25 A disconnect floor (424.19 lead)');
+  eq(nums.EX4.disconnectOcpdA, 25, 'art60: EX4 breaker-as-disconnect = 25 A (nextStdBreaker)');
+  eq(nums.EX5.loadA, 40, 'art60: EX5 4,800 W / 120 V infrared = 40 A load');
+  eq(nums.EX5.infraredCapA, 50, 'art60: EX5 non-dwelling infrared cap = 50 A');
+  eq(nums.EX5.ocpdA, 50, 'art60: EX5 OCPD = 50 A (at the cap)');
+  eq(nums.EX5.conductor.indexOf('8 AWG Cu') === 0, true, 'art60: EX5 conductors = 8 AWG Cu (50 A @ 75 C)');
+  // core re-runs (independent of the JSON)
+  eq(core.nextStdBreaker(62.5), 70, 'art60: core re-run 62.5 A -> 70 A (EX1)');
+  eq(core.nextStdBreaker(25), 25, 'art60: core re-run 25 A is a 240.6 standard size (EX2/EX4)');
+  eq(core.nextStdBreaker(50), 50, 'art60: core re-run 50 A is a 240.6 standard size (EX5)');
+  eq(core.pickConductor31016(62.5, 'cu', 75).size, '6', 'art60: core re-run 62.5 A @ 75 C = 6 AWG Cu (EX1)');
+  eq(core.pickConductor31016(50, 'cu', 75).size, '8', 'art60: core re-run 50 A @ 75 C = 8 AWG Cu (EX5)');
+  eq(core.reqBreakerA(50, true), 62.5, 'art60: core re-run 50 A continuous x 1.25 = 62.5 A (EX1)');
+  // cross-links
+  eq(art.includes('nec-42210-42211-42213-appliance-branch-circuit.html'), true, 'art60: cross-links to the 422.10-422.13 appliance branch-circuit article');
+  eq(art.includes('nec-43024-43053-several-motors-one-branch-circuit.html'), true, 'art60: cross-links to the 430.24/430.53 several-motors article (424.4(B) hand-off)');
+  eq(art.includes('nec-42230-42262-appliance-disconnect-construction.html'), true, 'art60: cross-links to the 422.30-422.62 appliance disconnecting-means article');
+  eq(art.includes('nec-44022-44032-air-cooling-branch-circuit.html'), true, 'art60: cross-links to the 440.22/440.32 air-conditioning article (Table 424.3)');
+  eq(art.includes('nec-2406-standard-ampere-ratings.html'), true, 'art60: cross-links to the 240.6 standard ampere ratings article');
+  eq(art.includes('nec-31016-ampacity.html'), true, 'art60: cross-links to the Table 310.16 ampacity article');
+  // sitemap + index + README
+  const sitemap60 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap60.includes('articles/nec-42401-42429-fixed-space-heating.html'), true, 'art60: sitemap entry present');
+  eq((sitemap60.match(/<loc>/g) || []).length, 61, 'art60: sitemap has 61 URLs (art60 appended the 61st)');
+  const index60 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index60.includes('articles/nec-42401-42429-fixed-space-heating.html'), true, 'art60: index cross-link present');
+  const readme60 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme60.includes('articles/nec-42401-42429-fixed-space-heating.html'), true, 'art60: README entry present');
+}
+// === ART60_BLOCK_END ===
+
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

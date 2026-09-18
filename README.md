@@ -182,7 +182,7 @@ Or just open `index.html` in a browser.
 
 ## Test
 ```
-node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branch-circuit-overcurrent-protection article; this entry added +45 for the 210.18 branch-circuit-ratings article on top of the full prior suite)
+node test/run_tests.js   # 3672 assertions pass (was 3593 before article 60; this entry added +79 for the NEC 424.1–424.29 fixed electric space-heating article on top of the full prior suite)
 ```
 
 ## Articles
@@ -2038,6 +2038,46 @@ node test/run_tests.js   # 2014 assertions pass (was 1969 after the 210.20 branc
   2017-scan OCR corrections disclosed in the source note. Test block
   (`run_tests.js`), sitemap 60 URLs + index cross-link. Written by
   Radloff Bot (AI, disclosed on the page).
+
+- **[NEC 424.1–424.29: Fixed Electric Space-Heating Equipment — branch circuits, installation, control & protection, and marking (Article 424 Parts I–IV)](articles/nec-42401-42429-fixed-space-heating.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-42401-42429-fixed-space-heating.html`) —
+  Article 60 — the "what size circuit, conductors, OCPD, and disconnect for my
+  baseboard / duct / radiant heater?" article: **Part I General (424.1–424.6)**
+  — scope + the branch-circuit rules (renumbered to **424.4** in 2023: the
+  **125% continuous-load conductor rule**, the **30 A** two-or-more-outlets
+  cap, the non-dwelling **50 A infrared** allowance), **Part II Installation
+  (424.9–424.13)** — the baseboard-receptacle rule, the deleted 2017
+  "special permission" clause, supply-conductor marking, damp/wet locations,
+  combustible spacing, **Part III Control & Protection (424.19–424.22)** — the
+  disconnecting means at **125%** of the load (in sight or lockable-open, unit
+  switches), thermostatically controlled switching, indicating switches, and
+  the **48 A** heating-element subdivision, and **Part IV Marking
+  (424.28–424.29)** — the nameplate and the field-replaceable element rating.
+  Five core-computed worked examples (`compute_art60.js` → node:
+  nextStdBreaker / pickConductor31016 / reqBreakerA — zero hand math): the
+  12,000 W / 240 V heater's 62.5 A / 6 AWG Cu / 70 A package (the 424.4(B)
+  125% rule); the 30 A cap on two heaters with the 240.4(D) 12 AWG → 20 A
+  trap; the 62.5 A heater's 48 A element subdivision (2 × 31.25 A); the 25 A
+  breaker-as-disconnect on a motor-less heater; and the 50 A non-dwelling
+  infrared ride. Edition story: 72 machine-verified phrase-level checks
+  (`verify_art60.py`, all pass: 25 verbatim-2017 + 13 verbatim-2023 + 10
+  absent-2023 + 3 absent-2017 + 5 renumber/deletion proofs + 13 word-identity
+  + 2 Mike Holt + 1 CSV-completeness); thirteen changed sections — the
+  424.2→424.3 renumber + NEW Table 424.3, the 424.3→424.4 renumber + the
+  424.4(B) continuous-load→125% conductor reword (the ONE Mike
+  Holt-2023-documented in-scope entry, so every other delta is on-disk-
+  verified with ELR silence), the 424.9→424.10 renumber + 210.50(B)→210.52,
+  the 424.10 "Special Permission" deletion, the 424.11 insulation-rating
+  reword, the 424.12(B) water-sentence drop, the 424.19 lead + (B)(1)
+  lockable-open reword, the 424.19(C)(1)/(C)(2) general-purpose-circuits
+  reword, the 424.20(A) new accessible-location condition, the 424.22(A)
+  cross-ref reword, the 424.22(B) 424.3(B)→424.4(B), and the 424.28(B)
+  "easily" drop — no ampere, watt, or percentage number in Parts I–IV moved
+  between editions. 2020 position not asserted (no on-disk 2020 source
+  carries the 424.1–424.29 bodies; the on-disk 2020 scan ends at Article
+  230). 2017-scan OCR corrections disclosed in the source note. Test block
+  (`run_tests.js`), sitemap 61 URLs + index cross-link. Written by Radloff
+  Bot (AI, disclosed on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
