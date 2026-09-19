@@ -6650,5 +6650,116 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
 }
 // === ART64_BLOCK_END ===
 
+// === ART65_BLOCK_BEGIN ===
+// Article 65 - NEC 250.180-250.194 (Article 250 Part X): Grounding of Systems
+// and Circuits of over 1000 Volts. All 9 sections verbatim from the on-disk
+// 2017 NFPA scan + all 38 on-disk 2023 rows; 10 machine-diffed 2017->2023
+// deltas (NEW 250.184(C) Exception, 490.55->495.65, copper-clad aluminum,
+// IEEE re-cites); 6 core-computed worked examples (compute_art65.js ->
+// art65_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-250180-250194-mv-grounding-part-x.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art65_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-250180-250194-mv-grounding-part-x.html'), true, 'art65: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-250180-250194-mv-grounding-part-x.html'), true, 'art65: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art65: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art65: Article + FAQPage JSON-LD present');
+  eq(art.includes('Design aid only'), true, 'art65: design-aid disclaimer present');
+  eq(has('nec content series \u00b7 article 65'), true, 'art65: footer marks article 65');
+  eq(has('240 machine-verified checks'), true, 'art65: 240 machine-verified checks claimed');
+  eq(has('all 240 pass'), true, 'art65: all 240 pass claimed');
+  eq((art.match(/"@type": "Question"/g) || []).length, 7, 'art65: 7 FAQ questions');
+  // 18 quote blocks (9 2017 + 9 2023)
+  const BLOCKS = ['250.180 General.', '250.182 Derived Neutral Systems.', '250.184 Solidly Grounded Neutral Systems.',
+    '250.186 Grounding Systems. Service-Supplied Alternating-Current Systems.',
+    '250.187 Impedance Grounded Neutral Systems.',
+    '250.188 Grounding of Systems Supplying Portable or Mobile Equipment.',
+    '250.190 Grounding of Equipment.', '250.191 Grounding System at Alternating-Current Substations.',
+    '250.194 Grounding and Bonding of Fences and Other Metal Structures.',
+    '250.180 General.', '250.182 Derived Neutral Systems.', '250.184 Solidly Grounded Neutral Systems.',
+    '250.186 Grounding Systems \u2014 Service-Supplied Alternating-Current Systems.',
+    '250.187 Impedance Grounded Neutral Systems.', '250.188 Systems Supplying Portable or Mobile Equipment.',
+    '250.190 Grounding of Equipment.', '250.191 AC Substations.', '250.194 Fences and Other Metal Structures.'];
+  for (const b of BLOCKS) {
+    eq(art.includes('class="code">' + b), true, 'art65: quote block ' + b.slice(0, 34));
+  }
+  eq((art.match(/class="code">/g) || []).length, 18, 'art65: exactly 18 quote blocks');
+  // 2023 section coverage
+  for (const n of ['250.180', '250.182', '250.184', '250.186', '250.187', '250.188', '250.190', '250.191', '250.194']) {
+    eq(art.includes(n), true, 'art65: section ' + n);
+  }
+  // verbatim 2017 probes
+  eq(has('provisions of the preceding sections of this article'), true, 'art65: 2017 250.180 old ref');
+  eq(has('33% percent of the ampacity of the phase conductors'), true, 'art65: 2017 33% percent OCR');
+  eq(has('inserted in the grounding electrode conductor'), true, 'art65: 2017 250.187(A) inserted');
+  eq(has('Part III of Article 400 for cables and 490.55 for couplers'), true, 'art65: 2017 490.55 couplers');
+  eq(has('IEEE 80-2013, IEEE Guide for Safety in AC Substation Grounding'), true, 'art65: 2017 IEEE 80-2013');
+  // 2023 delta probes (the 10 machine-diffed deltas)
+  eq(has('requirements of 250.1 through 250.178'), true, 'art65: D1 250.180 explicit ref');
+  eq(has('For multigrounded neutral systems as permitted in 250.184(C)'), true, 'art65: D2 NEW qualifier');
+  eq(has('331/3 percent'), true, 'art65: D3 2023 33 1/3');
+  eq(has('bare, covered, or insulated'), true, 'art65: D4 2023 EGC list');
+  eq(has('a grounding electrode shall not be required to bond the neutral conductor in an uninterrupted conductor exceeding 400 m (1300 ft)'), true, 'art65: D5 NEW 2023 Exception');
+  eq(has('310.10(G)'), true, 'art65: D6 2023 310.10(G)');
+  eq(has('310.10(H)'), true, 'art65: D6 2017 310.10(H)');
+  eq(has('installed between the grounding electrode conductor and the impedance grounding conductor'), true, 'art65: D7 2023 250.187(A)');
+  eq(has('A bare impedance grounding conductor shall be permitted'), true, 'art65: D7 NEW bare Exception');
+  eq(has('the system neutral point shall not be connected to ground'), true, 'art65: D7 2023 neutral point');
+  eq(has('495.65 for couplers'), true, 'art65: D8 2023 495.65');
+  eq(has('4 AWG aluminum or copper-clad aluminum'), true, 'art65: D9 copper-clad aluminum');
+  eq(has('IEEE 80, IEEE Guide'), true, 'art65: D10 2023 IEEE 80 no year');
+  // identity (no number moved)
+  eq(has('shall not exceed 100 volts'), true, 'art65: 100 V frame cap');
+  eq(has('6.0 m (20 ft)'), true, 'art65: 6.0 m isolation');
+  eq(has('400 m (1300 ft)'), true, 'art65: 400 m spacing');
+  eq(has('57.7 percent of the phase-to-phase voltage'), true, 'art65: 57.7% note');
+  // MH silence claim present
+  eq(has('250.18x'), true, 'art65: MH silence 250.18x claim');
+  eq(has('250.19x'), true, 'art65: MH silence 250.19x claim');
+  // worked examples (core-computed, from art65_numbers.json: EX1..EX6)
+  eq(art.includes(String(nums.EX1.neutralMinA)), true, 'art65: EX1 neutralMinA ' + nums.EX1.neutralMinA);
+  eq(art.includes(nums.EX1.neutralPick.label), true, 'art65: EX1 pick ' + nums.EX1.neutralPick.label);
+  eq(art.includes(String(nums.EX2.maxFaultA)), true, 'art65: EX2 maxFaultA ' + nums.EX2.maxFaultA);
+  eq(art.includes(String(nums.EX2.ocstd)), true, 'art65: EX2 next std ' + nums.EX2.ocstd);
+  eq(art.includes(nums.EX2.pick.label), true, 'art65: EX2 pick ' + nums.EX2.pick.label);
+  eq(art.includes(String(nums.EX3.maxNeutralV)), true, 'art65: EX3 max neutral V ' + nums.EX3.maxNeutralV);
+  eq(art.includes(String(nums.EX4.rows[0].R_ohms_at_30A)), true, 'art65: EX4 8kV R ' + nums.EX4.rows[0].R_ohms_at_30A);
+  eq(art.includes(String(nums.EX4.rows[1].R_ohms_at_30A)), true, 'art65: EX4 13.8kV R ' + nums.EX4.rows[1].R_ohms_at_30A);
+  eq(art.includes(String(nums.EX5.jumperIntervalFt)), true, 'art65: EX5 160 ft interval');
+  eq(art.includes(nums.EX6.cases[0].cu), true, 'art65: EX6 2/0 AWG');
+  // core re-run under node
+  const r = require('child_process').spawnSync('node', ['-e', `const core = require('./panelwright/app.js');
+const j = require('./art65_numbers.json');
+const ok = (a,b,l) => { if (JSON.stringify(a)!==JSON.stringify(b)) { console.log('MISMATCH '+l); process.exit(1); } };
+ok(core.pickConductor31016(j.EX1.neutralMinA,'cu',75), j.EX1.neutralPick, 'EX1');
+ok(core.pickConductor31016(j.EX2.maxFaultA,'cu',75), j.EX2.pick, 'EX2');
+ok(core.nextStdBreaker(j.EX2.maxFaultA), j.EX2.ocstd, 'EX2 std');
+`], { cwd: path.join(__dirname, '..', '..'), encoding: 'utf8' });
+  eq(r.status === 0, true, 'art65: core re-run matches art65_numbers.json');
+  // cross-links
+  for (const l of ['nec-490-495-equipment-over-1000v.html', 'nec-245-overcurrent-protection-over-1000v.html', 'nec-2152b-235202-feeder-relocation.html', 'nec-250122-egc-sizing.html']) {
+    eq(art.includes(l), true, 'art65: cross-link ' + l.slice(0, 30));
+  }
+  // sitemap + index + README
+  const sitemap65 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap65.includes('articles/nec-250180-250194-mv-grounding-part-x.html'), true, 'art65: sitemap entry present');
+  eq((sitemap65.match(/<loc>/g) || []).length >= 66, true, 'art65: sitemap has >= 66 URLs (never-shrink; grows per article)');
+  const index65 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index65.includes('articles/nec-250180-250194-mv-grounding-part-x.html'), true, 'art65: index cross-link present');
+  const readme65 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme65.includes('articles/nec-250180-250194-mv-grounding-part-x.html'), true, 'art65: README entry present');
+  // tag balance (the quote-block </div> regression guard)
+  const divOpen = (art.match(/<div\b/g) || []).length;
+  const divClose = (art.match(/<\/div>/g) || []).length;
+  eq(divOpen, divClose, 'art65: div tags balanced (' + divOpen + '/' + divClose + ')');
+}
+// === ART65_BLOCK_END ===
+
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

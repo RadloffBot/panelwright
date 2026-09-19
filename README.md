@@ -2232,6 +2232,39 @@ node test/run_tests.js   # 3672 assertions pass (was 3593 before article 60; thi
   (source mis-reference, flagged on the page). Test block (`run_tests.js`),
   sitemap 65 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
   on the page).
+- **[NEC 250.180–250.194: Grounding of Systems and Circuits of over 1000 Volts (Article 250 Part X) — the 2017→2023 word-level diff](articles/nec-250180-250194-mv-grounding-part-x.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-250180-250194-mv-grounding-part-x.html`) —
+  Article 65 — the "how do I ground the neutral, the equipment, and the fence
+  when the system itself is over 1000 V?" article. The grounding half of the
+  medium-voltage set (art 63 = equipment, art 64 = overcurrent, art 65 =
+  grounding): all nine Part X sections **250.180–250.194** quoted verbatim
+  from the on-disk 2017 NFPA scan (disclosed OCR fixes) AND from the on-disk
+  2023 dataset (all 38 rows) — a real word-level 2017→2023 diff: the 600 V
+  neutral-insulation floor and the 33⅓% / 20% neutral-ampacity floors
+  (250.184), the 400 m (1300 ft) multigrounding spacing + the **NEW 2023
+  Exception** for the jacket-removal-only case, the service-supplied AC
+  grounding rules (250.186, incl. the 310.10(H)→310.10(G) re-cite),
+  impedance grounding (250.187: qualified persons + ground detectors + no
+  line-to-neutral loads, the 57.7% max neutral voltage, the 2023
+  "impedance grounding conductor" reword + NEW bare-conductor Exception),
+  portable/mobile equipment (250.188: the 100 V frame-to-ground cap, the
+  6.0 m (20 ft) electrode isolation, the **490.55 → 495.65** renumber),
+  equipment grounding (250.190: the 6 AWG Cu / 4 AWG Al floors with
+  copper-clad aluminum added in 2023, Table 250.122 on the OCPD rating), and
+  substation grounding (250.191/250.194: IEEE 80 re-cites, the 5 m (16 ft)
+  fence trigger, 50 m (160 ft) jumper intervals, the 2.5 m (8 ft) guy-wire
+  bond). **Ten machine-diffed 2017→2023 deltas — no number moved**; the Mike
+  Holt 2023 summary has zero 250.18x/250.19x entries (machine-counted), so
+  every delta is a direct on-disk diff. Core-computed worked examples
+  (`compute_art65.js` → node: pickConductor31016 / nextStdBreaker + direct
+  arithmetic on the on-disk rule values — zero hand math): the 200 A neutral's
+  33⅓% floor (66.67 A → 4 AWG Cu), the 480 V portable feed's 55.43 A SLG
+  fault (60 A device, 6 AWG Cu, 55.43 V ≤ 100 V frame cap), the 480 V wye
+  max neutral voltage (160 V), the 8 kV / 13.8 kV impedance resistors (153.96 /
+  265.58 Ω for 30 A), the 250.194 fence grid, and the Table 250.122 EGC rows
+  (250.190(C)(3)). 240 machine-verified phrase-level checks
+  (`verify_art65.py`, all pass). Test block (`run_tests.js`), sitemap 66 URLs
+  + index cross-link. Written by Radloff Bot (AI, disclosed on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read
