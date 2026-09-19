@@ -2273,3 +2273,16 @@ share it. MIT licensed.
 
 ## License
 MIT — do what you want, no warranty, verify electrical work against the NEC.
+
+- **[NEC Article 235 — Circuits Over 1000 V, Nominal (2023): the brand-new medium-voltage branch-circuit, feeder, and service article](articles/nec-235-circuits-over-1000v.html)**
+  Article 66 — the "where do the over-1000-V branch-circuit, feeder, and service
+  rules live when the article itself is brand-new?" article. The 2023 NEC created
+  Article 235 by consolidating the over-1000-V rules that were scattered through
+  2017 Articles 210 (210.9/18/19(B)/20/22/23/63), 215 (215.2(B)/3/5/6), 225
+  (outside), and 230 Part VIII (services). All 40 top-level sections (91 on-disk
+  rows) across Parts I–V quoted verbatim from the on-disk 2023 dataset, the 12
+  on-disk 2017 source sections verbatim from the on-disk NFPA scan, the on-disk
+  2020 scan proving the two-step edition story (threshold 600→1000 V in 2020;
+  article created in 2023), ten machine-diffed 2017→2023 deltas (no number moved),
+  and six core-computed worked examples (zero hand math). 221 machine-verified
+  checks.

@@ -6761,5 +6761,148 @@ ok(core.nextStdBreaker(j.EX2.maxFaultA), j.EX2.ocstd, 'EX2 std');
 // === ART65_BLOCK_END ===
 
 
+// === ART66_BLOCK_BEGIN ===
+// Article 66 - NEC Article 235: Circuits Over 1000 V, Nominal (2023). The
+// brand-new 2023 consolidation: 2017's over-1000-V rules scattered through
+// 210.9/18/19(B)/20/22/23/63 (branch circuits), 215.2(B)/3/5/6 (feeders),
+// 225 (outside), 230 Part VIII (services) -> one medium-voltage article.
+// All 91 on-disk 2023 rows + 40 top-level sections + 12 verbatim-2017
+// sources; two-step edition story (threshold 600->1000 V in 2020, article
+// created in 2023 per the on-disk ELR log); 10 machine-diffed 2017->2023
+// deltas; 6 core-computed worked examples (compute_art66.js -> art66_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-235-circuits-over-1000v.html'), 'utf8');
+  const a = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const AN = a(art);
+  const has = (s) => a(s) !== '' && AN.includes(a(s));
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art66_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-235-circuits-over-1000v.html'), true, 'art66: slug present');
+  eq(has('Radloff Bot, an AI software assistant'), true, 'art66: AI disclosure');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art66: Article+FAQPage JSON-LD');
+  eq(has('Design aid only'), true, 'art66: design-aid disclaimer');
+  eq(has('nec content series \u00b7 article 66'), true, 'art66: footer marks article 66');
+  eq(has('221 machine-verified checks'), true, 'art66: 221 machine-verified checks');
+  eq(has('all 221 pass'), true, 'art66: all 221 pass');
+  eq(art.startsWith('<!DOCTYPE html>'), true, 'art66: doctype');
+  // all 91 on-disk 2023 rows present (alpha-normalized probe, first 32 alnum chars)
+  const csvTxt = fs.readFileSync(path.join(__dirname, '..', '..', 'art35_nec_csv.csv'), 'utf8');
+  // proper CSV state machine (handles quoted multi-line Body fields; col0=Chapter col1=Reference col2=Body col3=URL)
+  const rowBodies = {};
+  {
+    let field = '', inQ = false, row = [], i = 0;
+    const commit = () => { if (row.length > 0) { row.pop(); const ref = (row[1] || '').trim(); if (/^235\./.test(ref)) rowBodies[ref] = (row[2] || '').replace(/\s*\[[^\]]+\]\([^)]+\)\s*$/, '').trim(); } row = []; field = ''; };
+    for (; i < csvTxt.length; i++) {
+      const c = csvTxt[i];
+      if (inQ) {
+        if (c === '"') { if (csvTxt[i+1] === '"') { field += '"'; i++; } else inQ = false; }
+        else field += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\r') { /* skip */ }
+        else if (c === '\n') { row.push(field); commit(); }
+        else field += c;
+      }
+    }
+    if (field || row.length) { row.push(field); commit(); }
+  }
+  let rowsPresent = 0, rowsMiss = 0;
+  for (const ref of Object.keys(rowBodies)) {
+    const body = (rowBodies[ref] || '').replace(/\s*\[[^\]]+\]\([^)]+\)\s*$/, '').trim();
+    const probe = a(body).slice(0, 32);
+    if (probe && AN.includes(probe)) rowsPresent++; else { rowsMiss++; if (rowsMiss <= 3) console.log('  MISS', ref, probe.slice(0,32)); }
+  }
+  eq(rowsMiss, 0, 'art66: all ' + rowsPresent + ' on-disk 2023 rows present (0 missing)');
+  eq(rowsPresent, 91, 'art66: exactly 91 on-disk 2023 rows');
+  // 12 verbatim-2017 source sections
+  const probes2017 = {
+    '210.9': 'circuitsderivedfromautotransformersbranc',
+    '210.18': 'ratingbranchcircuitsrecognizedbythisarti',
+    '210.19(B)': 'bbranchcircuitsover600voltstheampacityof',
+    '210.20': 'overcurrentprotectionbranchcircuitconduc',
+    '210.22': 'permissibleloadsindividualbranchcircuits',
+    '210.23': 'permissibleloadsmultipleoutletbranchcirc',
+    '210.63': 'heatingairconditioningandrefrigerationeq',
+    '215.2(B)': 'bfeedersover600voltstheampacityofconduct',
+    '215.3': 'overcurrentprotectionfeedersshallbeprote',
+    '215.5': 'diagramsoffeedersifrequiredbytheauthorit',
+    '215.6': 'feederequipmentgroundingconductorwhereaf',
+    '230.200': 'generalserviceconductorsandequipmentused',
+  };
+  for (const k of Object.keys(probes2017)) {
+    eq(AN.includes(probes2017[k]), true, 'art66: 2017 verbatim ' + k);
+  }
+  // edition story
+  eq(has('1000 volts ac or 1500 volts dc'), true, 'art66: 2023 threshold (D1 right)');
+  eq(has('the threshold moved in 2020'), true, 'art66: two-step story (2020)');
+  eq(has('Article 235 is new in the 2023 NEC'), true, 'art66: ELR provenance line');
+  eq(has('Feeders over 1000 Volts'), true, 'art66: 2020 scan finding');
+  // 10 machine-diffed deltas (D1-D10 markers + key text)
+  for (const d of ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10']) eq(has(d), true, 'art66: delta marker ' + d);
+  eq(has('310.14 and 315.60'), true, 'art66: D2 2023 ampacity refs');
+  eq(has('210.23(a) through (e)'), true, 'art66: D5 2023 re-anchor');
+  eq(has('ansi/ieee c2-2017'), true, 'art66: D10 C2-2017');
+  eq(has('table 235.3'), true, 'art66: D8 new Table 235.3');
+  eq(has('250.32'), true, 'art66: D6 2023 250.32');
+  // honesty probes
+  eq(has('disclosed OCR'), true, 'art66: disclosed OCR fixes');
+  eq(has('915.4'), true, 'art66: 915.4 misread disclosed');
+  eq(has('zero hand math'), true, 'art66: zero hand math');
+  eq(has('no delta is attributed to the Mike Holt'), true, 'art66: no MH attribution');
+  // 6 worked examples (core-computed)
+  for (const t of ['EX1','EX2','EX3','EX4','EX5','EX6']) eq(has(t), true, 'art66: ' + t + ' present');
+  eq(art.includes(String(nums.EX1.ampacity_floor_A)), true, 'art66: EX1 ampacity floor ' + nums.EX1.ampacity_floor_A);
+  eq(art.includes(String(nums.EX1.oc)), true, 'art66: EX1 OCPD ' + nums.EX1.oc);
+  eq(art.includes(nums.EX1.conductor_75cu), true, 'art66: EX1 conductor ' + nums.EX1.conductor_75cu);
+  eq(art.includes(String(nums.EX2.floor_A)), true, 'art66: EX2 floor ' + nums.EX2.floor_A);
+  eq(art.includes(String(nums.EX2.oc)), true, 'art66: EX2 OCPD ' + nums.EX2.oc);
+  eq(art.includes(String(nums.EX3.sum)), true, 'art66: EX3 sum ' + nums.EX3.sum);
+  eq(art.includes(String(nums.EX3.oc)), true, 'art66: EX3 OCPD ' + nums.EX3.oc);
+  eq(art.includes(String(nums.EX4.at35kV[0].at35kV_m)), true, 'art66: EX4 35kV m ' + nums.EX4.at35kV[0].at35kV_m);
+  eq(art.includes(String(nums.EX4.at35kV[0].at35kV_ft)), true, 'art66: EX4 35kV ft ' + nums.EX4.at35kV[0].at35kV_ft);
+  eq(art.includes(String(nums.EX5.min_circuits)), true, 'art66: EX5 min circuits ' + nums.EX5.min_circuits);
+  eq(art.includes(String(nums.EX6.min_disconnect_rating)), true, 'art66: EX6 min disconnect ' + nums.EX6.min_disconnect_rating);
+  // core re-run under node
+  const r = require('child_process').spawnSync('node', ['-e', `const core = require('./panelwright/app.js');
+const j = require('./art66_numbers.json');
+const ok = (a2,b,l) => { if (JSON.stringify(a2)!==JSON.stringify(b)) { console.log('MISMATCH '+l); process.exit(1); } };
+ok(core.nextStdBreaker(j.EX1.oc_floor_A), j.EX1.oc, 'EX1 std');
+ok(core.nextStdBreaker(j.EX2.floor_A), j.EX2.oc, 'EX2 std');
+ok(core.nextStdBreaker(j.EX3.sum), j.EX3.oc, 'EX3 std');
+ok(core.nextStdBreaker(j.EX6.loadA), j.EX6.min_disconnect_rating, 'EX6 std');
+const p = core.pickConductor31016(j.EX1.ampacity_floor_A,'cu',75);
+ok(p && p.size, j.EX1.conductor_75cu, 'EX1 conductor');
+`], { cwd: path.join(__dirname, '..', '..'), encoding: 'utf8' });
+  eq(r.status === 0, true, 'art66: core re-run matches art66_numbers.json (no MISMATCH)');
+  eq((r.stdout || '') + (r.stderr || ''), '', 'art66: core re-run clean output');
+  // cross-links
+  for (const l of ['nec-2152b-235202-feeder-relocation.html', 'nec-490-495-equipment-over-1000v.html', 'nec-245-overcurrent-protection-over-1000v.html', 'nec-250180-250194-mv-grounding-part-x.html', 'nec-2152-feeder-ampacity.html', 'nec-250122-egc-sizing.html']) {
+    eq(art.includes(l), true, 'art66: cross-link ' + l.slice(0, 30));
+  }
+  // sitemap + index + README
+  const sitemap66 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap66.includes('articles/nec-235-circuits-over-1000v.html'), true, 'art66: sitemap entry present');
+  eq((sitemap66.match(/<loc>/g) || []).length >= 67, true, 'art66: sitemap has >= 67 URLs (never-shrink; grows per article)');
+  const index66 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index66.includes('articles/nec-235-circuits-over-1000v.html'), true, 'art66: index cross-link present');
+  const readme66 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme66.includes('articles/nec-235-circuits-over-1000v.html'), true, 'art66: README entry present');
+  // tag balance (the quote-block </div> regression guard)
+  const divOpen = (art.match(/<div\b/g) || []).length;
+  const divClose = (art.match(/<\/div>/g) || []).length;
+  eq(divOpen, divClose, 'art66: div tags balanced (' + divOpen + '/' + divClose + ')');
+}
+// === ART66_BLOCK_END ===
+
+
+
+
+
+
+
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

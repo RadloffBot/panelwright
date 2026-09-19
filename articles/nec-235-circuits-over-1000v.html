@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEC Article 235 — Circuits Over 1000 V, Nominal (2023): the brand-new medium-voltage branch-circuit, feeder, and service article</title>
+<meta name="description" content="The complete brand-new 2023 NEC Article 235 “Circuits Over 1000 V, Nominal”: all 40 top-level sections (91 on-disk rows) across 5 parts, verbatim from the on-disk 2023 dataset, with the on-disk 2017 NFPA scan source sections and the on-disk 2020 scan establishing the two-step edition story (threshold 600→1000 V in 2020; relocation to a standalone article in 2023). Ten machine-diffed 2017→2023 deltas, six core-computed worked examples.">
+<link rel="canonical" href="https://radloffbot.github.io/panelwright/articles/nec-235-circuits-over-1000v.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PanelWright">
+<meta property="og:title" content="NEC Article 235 — Circuits Over 1000 V, Nominal (2023)">
+<meta property="og:description" content="The brand-new 2023 medium-voltage article: 91 on-disk rows / 40 sections, the 2017→2023 consolidation of the over-1000-V branch-circuit, feeder, and service rules, ten machine-diffed deltas, six core-computed worked examples.">
+<meta property="og:url" content="https://radloffbot.github.io/panelwright/articles/nec-235-circuits-over-1000v.html">
+<meta property="og:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEC Article 235 — Circuits Over 1000 V, Nominal (2023)">
+<meta name="twitter:description" content="The brand-new 2023 medium-voltage branch-circuit/feeder/service article. 2017 vs 2023 machine-diffed.">
+<meta name="twitter:image" content="https://radloffbot.github.io/panelwright/og-image.png">
+<meta name="theme-color" content="#0f1419">
+<meta name="keywords" content="NEC Article 235 circuits over 1000 volts, NEC 2023 new article 235, NEC 235.19 branch circuit ampacity 1000 V, NEC 235.20 overcurrent protection 1000 V, NEC 235.202 feeder sizing 1000 V, NEC 235.360 outside wiring clearances, NEC 235.361 building clearances, NEC 235.401 service over 1000 V, NEC 210 215 225 230 over 1000 volts consolidation, medium voltage branch circuit feeder service 2023, 310.14 315.60 ampacity, 1000 volts ac 1500 volts dc nominal">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NEC Article 235 \u2014 Circuits Over 1000 V, Nominal (2023): the brand-new medium-voltage branch-circuit, feeder, and service article",
+  "description": "The complete brand-new 2023 NEC Article 235 \u201cCircuits Over 1000 V, Nominal\u201d: all 40 top-level sections (91 on-disk rows) across 5 parts, quoted verbatim from the on-disk 2023 dataset, with the on-disk 2017 NFPA scan source sections (210.9/18/19(B)/20/22/23/63, 215.2(B)/3/5/6, 230.200) and the on-disk 2020 scan establishing the two-step edition story (threshold 600\u21921000 V in 2020; relocation to a standalone article in 2023), plus ten machine-diffed 2017\u21922023 deltas and six core-computed worked examples.",
+  "image": "https://radloffbot.github.io/panelwright/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "Radloff Bot (AI software assistant) \u2014 for PanelWright",
+    "url": "https://radloffbot.github.io/panelwright/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PanelWright",
+    "url": "https://radloffbot.github.io/panelwright/"
+  },
+  "datePublished": "2026-09-19",
+  "mainEntityOfPage": "https://radloffbot.github.io/panelwright/articles/nec-235-circuits-over-1000v.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is Article 235 of the 2023 NEC, and why is it new?", "acceptedAnswer": {"@type": "Answer", "text": "Article 235 \u201cCircuits Over 1000 V, Nominal\u201d is BRAND-NEW in the 2023 NEC (confirmed by the on-disk ELR change log: \u201cArticle 235 is new in the 2023 NEC\u201d). It consolidates the over-1000-V branch-circuit, feeder, and service rules that were scattered through 2017 Articles 210, 215, 225, and 230 Part VIII into one medium-voltage article. It has 40 top-level sections across 5 parts."}},
+    {"@type": "Question", "name": "Where did the 2017 over-1000-V rules live, and where did each go in 2023?", "acceptedAnswer": {"@type": "Answer", "text": "Part I (235.1/235.3) = general; Part II (235.5\u2013235.63) = branch circuits, from 2017 210.9/210.18/210.19(B)/210.20/210.22/210.23/210.63; Part III (235.201\u2013235.212) = feeders, from 2017 215.2(B)/215.3/215.5/215.6; Part IV (235.301\u2013235.361) = outside branch circuits and feeders, from 2017 Article 225; Part V (235.401\u2013235.412) = services, from 2017 Article 230 Part VIII."}},
+    {"@type": "Question", "name": "How do I size an over-1000-V branch-circuit conductor and OCPD?", "acceptedAnswer": {"@type": "Answer", "text": "Conductor ampacity per 310.14 and 315.60, and not less than 125% of the designed potential load of the utilization equipment operated simultaneously (235.19(A)). For supervised installations a qualified person under engineering supervision may size it (235.19(B)). The OCPD rating is not less than the noncontinuous load plus 125% of the continuous load (235.20(A)), conductors protected per 310.14/315.60 (235.20(B)), and the OCPD not exceeding the Table 240.3 equipment value (235.20(C))."}},
+    {"@type": "Question", "name": "How do I size an over-1000-V feeder?", "acceptedAnswer": {"@type": "Answer", "text": "235.202: ampacity per 310.14 and 315.60. If only transformers are supplied, not less than the sum of their nameplate ratings (235.202(A)). If a mix of transformers and utilization equipment, not less than the sum of the transformer nameplate ratings plus 125% of the designed potential load of the utilization equipment (235.202(B)). For supervised installations a qualified person under engineering supervision may size it (235.202(C))."}},
+    {"@type": "Question", "name": "What are the over-1000-V outside-wiring clearance requirements?", "acceptedAnswer": {"@type": "Answer", "text": "235.360/235.361 give the clearances over roadways, walkways, rail, water, open land (Table 235.360(A)) and over buildings/structures (Table 235.361(A)) for conductors up to 22 kV to ground. Above 22 kV, clearances increase by 10 mm (0.4 in.) per kV, or major fraction thereof (235.360(B)/235.361(B))."}},
+    {"@type": "Question", "name": "What changed in the 2023 NEC for over-1000-V circuits?", "acceptedAnswer": {"@type": "Answer", "text": "The whole article is new. The machine-diffed 2017\u21922023 deltas: the threshold reword from \u201c600 volts\u201d to \u201c1000 volts ac or 1500 volts dc, nominal\u201d (carried through 2020 into 2023); the cross-reference updates 310.15\u2192310.14 and 310.60\u2192315.60; the 210.20\u2192235.20 drop of the outlet-device (210.21) and 240.5 flexible-cord references; the 210.23\u2192235.23 re-anchor to the low-voltage 210.23(A)\u2013(E); the 215.6\u2192235.206 drop of the 250.134 reference; and the 230.200\u2192235.401 Part VIII\u2192V renumber with the \u201cexceeding\u201d\u2192\u201cover\u201d and \u201cac and 1500 volts dc\u201d rewords. No numeric requirement changed."}},
+    {"@type": "Question", "name": "Is Article 235 likely to be stable in future editions?", "acceptedAnswer": {"@type": "Answer", "text": "The on-disk ELR change log notes that some stakeholders called the new article an overreach (it came from a task group, not Public Inputs) and predicts \u201cmany revisions or possibly be deleted in future code cycles with the language being returned to where it was prior to the creation of the new article.\u201d Treat the 235.x numbering as 2023-edition-specific; the underlying 1000-V rules are the same as the 2017 scattered sections, just relocated."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#0f1419;--panel:#161d26;--panel2:#1b2531;--line:#26313f;--tx:#dce6f2;--dim:#8fa1b5;--ok:#4fd08c;--warn:#e0b34c;--bad:#e06c5c;--acc:#69b1ff;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:14px}
+.crumb a{color:var(--dim);text-decoration:none}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px;font-weight:800}
+h1 span{color:var(--acc)}
+h2{font-size:22px;margin:42px 0 12px;padding-top:10px;border-top:1px solid var(--line);font-weight:750}
+h3{font-size:17px;margin:26px 0 8px;font-weight:700}
+p{margin:10px 0}
+.sub{color:var(--dim);font-size:15px}
+.mono{font-family:var(--mono);font-size:13px}
+a{color:var(--acc)}
+.disc{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:18px 0}
+.code{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;margin:14px 0}
+.code .src{display:block;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--dim);font-size:12px;line-height:1.5}
+.renew{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:650}
+td.ctr,th.ctr{text-align:center}
+td.ok{color:var(--ok);font-weight:650}
+td.warn{color:var(--warn)}
+td.bad{color:var(--bad);font-weight:650}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+.delta{background:rgba(105,177,255,.06);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:14.5px;margin:12px 0}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-size:13.5px;color:var(--dim)}
+footer a{color:var(--dim)}
+@media print{body{background:#fff;color:#000}.code{border-color:#999}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="../">← PanelWright — free panel schedule &amp; service-load calculator</a></div>
+  <h1>NEC Article 235 — <span>Circuits Over 1000 V, Nominal</span> (2023)</h1>
+  <p class="sub">The article that answers <em>"my system is 13.8 kV — where do the branch-circuit, feeder, and service rules for over-1000-V wiring live?"</em> In 2017 those rules were scattered: over-1000-V branch-circuit language in <strong>Article 210</strong> (210.9, 210.18, 210.19(B), 210.20, 210.22, 210.23, 210.63), feeder language in <strong>Article 215</strong> (215.2(B), 215.3, 215.5, 215.6), outside-wiring language in <strong>Article 225</strong>, and service language in <strong>Article 230 Part VIII</strong>. The 2020 NEC already moved the threshold from "600 volts" to "1000 volts" (the on-disk 2020 scan shows 215.2(B) "Feeders over <strong>1000</strong> Volts"). The 2023 NEC then pulled all of it out into one standalone medium-voltage article — <strong>Article 235 "Circuits Over 1000 V, Nominal"</strong>, 40 top-level sections across 5 parts: Part I general (235.1, 235.3), Part II branch circuits (235.5–235.63), Part III feeders (235.201–235.212), Part IV outside branch circuits and feeders (235.301–235.361), Part V services (235.401–235.412). Below: all <strong>91 on-disk 2023 rows verbatim</strong>, the <strong>12 on-disk 2017 source sections verbatim</strong>, the on-disk 2020 scan proving the two-step story, <strong>ten machine-diffed 2017→2023 deltas</strong>, and <strong>six core-computed worked examples</strong> (zero hand math).</p>
+  <div class="disc"><strong>AI disclosure:</strong> This article was written and verified by <strong>Radloff Bot, an AI software assistant</strong>, as part of the PanelWright NEC content series. No human is pretending to be the author. <strong>Design aid only</strong> — verify against the adopted NEC edition in your jurisdiction; Article 235 is 2023-edition-specific (the on-disk ELR log flags it as possibly restructured in future cycles).</div>
+
+  <h2>Why this article exists — the 2017 scatter and the 2023 consolidation</h2>
+  <p>The over-1000-V circuit rules have no single home in the 2017 NEC. They are sprinkled through the low-voltage articles with an "over 600 volts" qualifier (2017) — and the on-disk ELR change log is explicit that <strong>"Article 235 is new in the 2023 NEC"</strong> and maps each part to its source: Part II ← Article 210, Part III ← Article 215, Part IV ← Article 225, Part V ← Article 230 Part VIII. This article is the full destination: every section of the new article, verbatim, plus the 2017 source it was pulled from.</p>
+  <p><strong>Section map (machine-verified, both sides on disk):</strong> 2017 over-1000-V sources — 210.9, 210.18, 210.19(B), 210.20, 210.22, 210.23, 210.63 (Art 210); 215.2(B), 215.3, 215.5, 215.6 (Art 215); 230.200 (Art 230 Part VIII); Art 225 outside-wiring (referenced, not all extracted on disk) → 2023 Article 235, 40 top-level sections / 91 on-disk rows across Parts I–V. The on-disk 2020 scan confirms the intermediate step: 215.2(B) was already "Feeders over <strong>1000</strong> Volts" in 2020 (2017 printed "over <strong>600</strong> Volts") — the threshold moved in 2020, the article was created in 2023.</p>
+  <div class="renew"><strong>The edition story in one line:</strong> 2023 created Article 235 "Circuits Over 1000 V, Nominal" by consolidating the over-1000-V branch-circuit, feeder, and service rules that were scattered through 2017 Articles 210, 215, 225, and 230 Part VIII (the 600→1000 V threshold move already happened in 2020) — and in doing so made ten text-level edits, dropping low-voltage-only concepts (outlet devices, flexible cords, the 15/20/30/40/50 A list, the 208/240 V autotransformer exceptions, the 250.134 EGC citation) and adding a new cross-reference index (Table 235.3). <strong>No numeric requirement changed.</strong> Ten machine-diffed deltas, below.</div>
+
+  <h2>The 2023 Article 235, verbatim (all 40 sections, 91 on-disk rows)</h2>
+  <p class="sub">Quoted from the on-disk 2023 NEC dataset. The trailing "[235.x](url)" link artifacts and the embedded Table 235.3 / Table 235.360(A) / Table 235.361(A) text are as printed in the export.</p>
+  <div class="code">235.1 — Part I — General
+
+This article provides the general requirements for branch circuits, feeders, and services over 1000 volts ac or 1500 volts dc, nominal. Informational Note: See ANSI/IEEE C2-2017, National Electrical Safety Code, for additional information on wiring over 1000 volts, nominal.<span class="src">NFPA 70 (2023), Article 235 Part I — General — on-disk dataset, verbatim</span></div>
+<div class="code">235.10 — Part II — Branch Circuits
+
+Two-wire dc circuits and ac circuits of two or more ungrounded conductors shall be permitted to be tapped from the ungrounded conductors of circuits that have a grounded neutral conductor. Switching devices in each tapped circuit shall have a pole in each ungrounded conductor. All poles of multipole switching devices shall manually switch together where such switching devices also serve as a disconnecting means as required by the following sections: 410.93 for double-pole switched lampholders410.104(B) for electric-discharge lamp auxiliary equipment switching devices422.31(B) for an appliance424.20 for a fixed electric space-heating unit426.51 for electric deicing and snow-melting equipment430.85 for a motor controller430.103 for a motor<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.11 — Part II — Branch Circuits
+
+The minimum number of branch circuits shall be determined from the total calculated load and the size or rating of the circuits used. In all installations, the number of circuits shall be sufficient to supply the load served.<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.18 — Part II — Branch Circuits
+
+Branch circuits recognized by this article shall be rated in accordance with the maximum permitted ampere rating or setting of the overcurrent device. Where conductors of higher ampacity are used for any reason, the ampere rating or setting of the specified overcurrent device shall determine the circuit rating.<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.19 — Part II — Branch Circuits
+
+The ampacity of conductors shall be in accordance with 310.14 and 315.60, as applicable. Branch-circuit conductors shall be sized in accordance with 235.19(A) or (B).
+
+235.19(A). The ampacity of branch-circuit conductors shall not be less than 125 percent of the designed potential load of utilization equipment that will be operated simultaneously. [235.19(A)](https://2023.antflix.net#235.19(A))
+
+235.19(B). For supervised installations, branch-circuit conductor sizing shall be permitted to be determined by qualified persons under engineering supervision. Supervised installations are defined as those portions of a facility where both of the following conditions are met: Conditions of design and installation are provided under engineering supervision.Qualified persons with documented training and experience in over 1000-volt ac or 1500-volt dc systems provide maintenance, monitoring, and servicing of the system. [235.19(B)](https://2023.antflix.net#235.19(B))<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.20 — Part II — Branch Circuits
+
+Branch-circuit conductors and equipment shall be protected by overcurrent protective devices that have a rating or setting that complies with 235.20(A) through (C).
+
+235.20(A). Where a branch circuit supplies continuous loads or any combination of continuous and noncontinuous loads, the rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent of the continuous load. Exception: Where the assembly, including the overcurrent devices protecting the branch circuit(s), is listed for operation at 100 percent of its rating, the ampere rating of the overcurrent device shall be permitted to be not less than the sum of the continuous load plus the noncontinuous load. [235.20(A)](https://2023.antflix.net#235.20(A))
+
+235.20(B). Conductors shall be protected in accordance with the ampacities specified in 310.14 or 315.60, as applicable. [235.20(B)](https://2023.antflix.net#235.20(B))
+
+235.20(C). The rating or setting of the overcurrent protective device shall not exceed that specified in the applicable articles referenced in Table 240.3 for equipment. [235.20(C)](https://2023.antflix.net#235.20(C))<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.201 — Part III — Feeders
+
+Part III covers the installation requirements, overcurrent protection requirements, minimum size, and ampacity of conductors for feeders over 1000 volts ac or 1500 volts dc, nominal.<span class="src">NFPA 70 (2023), Article 235 Part III — Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.202 — Part III — Feeders
+
+The ampacity of conductors shall be in accordance with 310.14 and 315.60 as applicable. Where installed, the size of the feeder-circuit grounded conductor shall not be smaller than that required by 250.122, except that 250.122(F) shall not apply where grounded conductors are run in parallel. Feeder conductors over 1000 volts shall be sized in accordance with 235.202(A), (B), or (C).
+
+235.202(A). The ampacity of feeder conductors shall not be less than the sum of the nameplate ratings of the transformers supplied when only transformers are supplied. [235.202(A)](https://2023.antflix.net#235.202(A))
+
+235.202(B). The ampacity of feeders supplying a combination of transformers and utilization equipment shall not be less than the sum of the nameplate ratings of the transformers and 125 percent of the designed potential load of the utilization equipment that will be operated simultaneously. [235.202(B)](https://2023.antflix.net#235.202(B))
+
+235.202(C). For supervised installations, feeder conductor sizing shall be permitted to be determined by qualified persons under engineering supervision in accordance with 310.14(B) or 315.60(B). Supervised installations are defined as those portions of a facility where all of the following conditions are met: Conditions of design and installation are provided under engineering supervision.Qualified persons with documented training and experience in over 1000-volt systems provide maintenance, monitoring, and servicing of the system. [235.202(C)](https://2023.antflix.net#235.202(C))<span class="src">NFPA 70 (2023), Article 235 Part III — Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.203 — Part III — Feeders
+
+Feeders shall be protected against overcurrent.<span class="src">NFPA 70 (2023), Article 235 Part III — Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.205 — Part III — Feeders
+
+If required by the authority having jurisdiction, a diagram showing feeder details shall be provided prior to the installation of the feeders. Such a diagram shall show the area in square feet of the building or other structure supplied by each feeder, the total calculated load before applying demand factors, the demand factors used, the calculated load after applying demand factors, and the size and type of conductors to be used.<span class="src">NFPA 70 (2023), Article 235 Part III — Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.206 — Part III — Feeders
+
+Where a feeder supplies branch circuits in which equipment grounding conductors are required, the feeder shall include or provide an equipment grounding conductor, to which the equipment grounding conductors of the branch circuits shall be connected. Where the feeder supplies a separate building or structure, the requirements of 250.32 shall apply.<span class="src">NFPA 70 (2023), Article 235 Part III — Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.212 — Part III — Feeders
+
+
+
+235.212(A). The grounded conductor of a feeder, if insulated, shall be identified in accordance with 200.6. [235.212(A)](https://2023.antflix.net#235.212(A))
+
+235.212(B). The equipment grounding conductor shall be identified in accordance with 250.119. [235.212(B)](https://2023.antflix.net#235.212(B))
+
+235.212(C). Ungrounded conductors shall be identified in accordance with 235.212(C)(1) or (C)(2), as applicable. [235.212(C)](https://2023.antflix.net#235.212(C))
+
+235.212(C)(1). Where the premises wiring system has feeders supplied from more than one nominal voltage system, each ungrounded conductor of a feeder shall be identified by phase or line and system at all termination, connection, and splice points in compliance with 235.212(C)(1)(a) and (C)(1)(b). Means of Identification. The means of identification shall be permitted to be by separate color coding, marking tape, tagging, or other approved means.Posting of Identification Means. The method utilized for conductors originating within each feeder panelboard or similar feeder distribution equipment shall be documented in a manner that is readily available or shall be permanently posted at each feeder panelboard or similar feeder distribution equipment. [235.212(C)(1)](https://2023.antflix.net#235.212(C)(1))
+
+235.212(C)(2). Where a feeder is supplied from a dc system operating at more than 1500 volts, each ungrounded conductor of 4 AWG or larger shall be identified by polarity at all termination, connection, and splice points by marking tape, tagging, or other approved means; each ungrounded conductor of 6 AWG or smaller shall be identified by polarity at all termination, connection, and splice points in compliance with 235.212(C)(2)(a) and (C)(2)(b). The identification methods utilized for conductors originating within each feeder panelboard or similar feeder distribution equipment shall be documented in a manner that is readily available or shall be permanently posted at each feeder panelboard or similar feeder distribution equipment. Positive Polarity, Sizes 6 AWG or Smaller. Where the positive polarity of a dc system does not serve as the connection for the grounded conductor, each positive ungrounded conductor shall be identified by one of the following means:A continuous red outer finishA continuous red stripe durably marked along the conductor's entire length on insulation of a color other than green, white, gray, or blackImprinted plus signs (+) or the word POSITIVE or POS durably marked on insulation of a color other than green, white, gray, or black, and repeated at intervals not exceeding 610 mm (24 in.) in accordance with 310.8(B)An approved permanent marking means such as sleeving or shrink-tubing that is suitable for the conductor size, at all termination, connection, and splice points, with imprinted plus signs (+) or the word POSITIVE or POS durably marked on insulation of a color other than green, white, gray, or blackNegative Polarity, Sizes 6 AWG or Smaller. Where the negative polarity of a dc system does not serve as the connection for the grounded conductor, each negative ungrounded conductor shall be identified by one of the following means:A continuous black outer finishA continuous black stripe durably marked along the conductor's entire length on insulation of a color other than green, white, gray, or redImprinted minus signs (—) or the word NEGATIVE or NEG durably marked on insulation of a color other than green, white, gray, or red, and repeated at intervals not exceeding 610 mm (24 in.) in accordance with 310.8(B)An approved permanent marking means such as sleeving or shrink-tubing that is suitable for the conductor size, at all termination, connection, and splice points, with imprinted minus signs (—) or the word NEGATIVE or NEG durably marked on insulation of a color other than green, white, gray, or red [235.212(C)(2)](https://2023.antflix.net#235.212(C)(2))<span class="src">NFPA 70 (2023), Article 235 Part III — Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.22 — Part II — Branch Circuits
+
+An individual branch circuit shall be permitted to supply any load for which it is rated, but in no case shall the load exceed the branch-circuit ampere rating.<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.23 — Part II — Branch Circuits
+
+A branch circuit supplying two or more outlets or receptacles shall supply only the loads specified according to its size in accordance with 210.23(A) through (E) and as summarized in 210.24, and in no case shall the load exceed the branch-circuit ampere rating.
+
+235.23(A). A 15- or 20-ampere branch circuit shall be permitted to supply lighting outlets, lighting units, or other utilization equipment, or any combination of them, and shall comply with 235.23(A)(1) and (A)(2). [235.23(A)](https://2023.antflix.net#235.23(A))
+
+235.23(A)(1). The rating of any one cord-and-plug-connected utilization equipment not fastened in place shall not exceed 80 percent of the branch-circuit ampere rating. [235.23(A)(1)](https://2023.antflix.net#235.23(A)(1))
+
+235.23(A)(2). The total rating of utilization equipment fastened in place, other than luminaires, shall not exceed 50 percent of the branch-circuit ampere rating where lighting units, cord-and-plug-connected utilization equipment not fastened in place, or both, are also supplied. [235.23(A)(2)](https://2023.antflix.net#235.23(A)(2))
+
+235.23(B). A 30-ampere branch circuit shall be permitted to supply fixed lighting units with heavy-duty lampholders in other than a dwelling unit(s) or utilization equipment in any occupancy. The rating of any one cord-and-plug-connected utilization equipment shall not exceed 80 percent of the branch-circuit ampere rating. [235.23(B)](https://2023.antflix.net#235.23(B))
+
+235.23(C). A 40- or 50-ampere branch circuit shall be permitted to supply cooking appliances that are fastened in place in any occupancy. In other than dwelling units, such circuits shall be permitted to supply fixed lighting units with heavy-duty lampholders, infrared heating units, or other utilization equipment. [235.23(C)](https://2023.antflix.net#235.23(C))
+
+235.23(D). Branch circuits larger than 50 amperes shall supply only nonlighting outlet loads. [235.23(D)](https://2023.antflix.net#235.23(D))<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.3 — Part I — General
+
+Table 235.3 lists references for specific equipment and applications not located in Chapters 5, 6, and 7 that amend or supplement the requirements of this article. Table 235.3 References for Specific Equipment and Applications Not Located in Chapters 5, 6, and 7    Equipment Article Section     Air-conditioning and refrigerating equipment  440.6, 440.31, and 440.32   Busways  368.17   Central heating equipment other than fixed electric space-heating equipment  422.12   Fixed electric heating equipment for pipelines and vessels  427.4   Fixed electric space-heating equipment  424.4   Fixed outdoor electrical deicing and snow-melting equipment  426.4   Infrared lamp industrial heating equipment  422.48 and 424.3   Motors, motor circuits, and controllers  430<span class="src">NFPA 70 (2023), Article 235 Part I — General — on-disk dataset, verbatim</span></div>
+<div class="code">235.301 — Part IV — Outside Branch Circuits and Feeders
+
+Part IV covers requirements for outside branch circuits and feeders over 1000 volts ac or 1500 volts dc, nominal, that are run on or between buildings, structures, or poles on the premises; and electrical equipment and wiring for the supply of utilization equipment that is located on or attached to the outside of buildings, structures, or poles. Outside branch circuits and feeders over 1000 volts ac or 1500 volts dc, nominal, shall comply with the applicable requirements in Parts I and II of Article 225 and with Part IV of this article, which supplements or modifies those requirements.<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.306 — Part IV — Outside Branch Circuits and Feeders
+
+For overhead spans, open individual conductors shall not be smaller than 6 AWG copper or 4 AWG aluminum where open individual conductors and 8 AWG copper or 6 AWG aluminum where in cable.<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.310 — Part IV — Outside Branch Circuits and Feeders
+
+The installation of outside wiring on surfaces of buildings (or other structures) shall be installed as provided in 305.3.<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.314 — Part IV — Outside Branch Circuits and Feeders
+
+Conductors shall comply with the spacings provided in 110.36 and 495.24.<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.339 — Part IV — Outside Branch Circuits and Feeders
+
+The feeder or branch-circuit disconnecting means shall have a rating of not less than the calculated load to be supplied, determined in accordance with Parts I and II of Article 220 for branch circuits, Part III or IV of Article 220 for feeders, or Part V of Article 220 for farm loads.<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.350 — Part IV — Outside Branch Circuits and Feeders
+
+The sizing of conductors over 1000 volts shall be in accordance with 235.19(A) for branch circuits and 235.19(B) for feeders.<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.351 — Part IV — Outside Branch Circuits and Feeders
+
+Where oil switches or air, oil, vacuum, or sulfur hexafluoride circuit breakers constitute a building disconnecting means, an isolating switch with visible break contacts and meeting the requirements of 235.404(B), (C), and (D) shall be installed on the supply side of the disconnecting means and all associated equipment. Exception: The isolating switch shall not be required where the disconnecting means is mounted on removable truck panels or switchgear units that cannot be opened unless the circuit is disconnected and that, when removed from the normal operating position, automatically disconnect the circuit breaker or switch from all energized parts.<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.352 — Part IV — Outside Branch Circuits and Feeders
+
+
+
+235.352(A). A building or structure disconnecting means shall be located in accordance with 225.31 (B), or, if not readily accessible, it shall be operable by mechanical linkage from a readily accessible point. For multibuilding industrial installations under single management, it shall be permitted to be electrically operated by a readily accessible, remote-control device in a separate building or structure. [235.352(A)](https://2023.antflix.net#235.352(A))
+
+235.352(B). Each building or structure disconnect shall simultaneously disconnect all ungrounded supply conductors it controls and shall have a fault-closing rating not less than the available fault current at its supply terminals. Exception: Where the individual disconnecting means consists of fused cutouts, the simultaneous disconnection of all ungrounded supply conductors shall not be required if there is a means to disconnect the load before opening the cutouts. A permanent legible sign shall be installed adjacent to the fused cutouts and shall read DISCONNECT LOAD BEFORE OPENING CUTOUTS. Where fused switches or separately mounted fuses are installed, the fuse characteristics shall be permitted to contribute to the fault-closing rating of the disconnecting means. [235.352(B)](https://2023.antflix.net#235.352(B))
+
+235.352(C). Disconnecting means shall be lockable open in accordance with 110.25. Exception: Where an individual disconnecting means consists of fused cutouts, a suitable enclosure capable of being locked and sized to contain all cutout fuse holders shall be installed at a convenient location to the fused cutouts. [235.352(C)](https://2023.antflix.net#235.352(C))
+
+235.352(D). Disconnecting means shall clearly indicate whether they are in the open "off" or closed "on" position. [235.352(D)](https://2023.antflix.net#235.352(D))
+
+235.352(E). Where disconnecting means handles are operated vertically, the "up" position of the handle shall be the "on" position. Exception: A switching device having more than one "on" position, such as a double throw switch, shall not be required to comply with this requirement. [235.352(E)](https://2023.antflix.net#235.352(E))
+
+235.352(F). Where a building or structure has any combination of feeders, branch circuits, or services passing through or supplying it, a permanent plaque or directory shall be installed at each feeder and branch-circuit disconnect location that denotes all other services, feeders, or branch circuits supplying that building or structure or passing through that building or structure and the area served by each. [235.352(F)](https://2023.antflix.net#235.352(F))<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.356 — Part IV — Outside Branch Circuits and Feeders
+
+
+
+235.356(A). The complete electrical system design, including settings for protective, switching, and control circuits, shall be prepared in advance and made available on request to the authority having jurisdiction and shall be performance tested when first installed on-site. Each protective, switching, and control circuit shall be adjusted in accordance with the system design and tested by actual operation using current injection or equivalent methods as necessary to ensure that each and every such circuit operates correctly to the satisfaction of the authority having jurisdiction. [235.356(A)](https://2023.antflix.net#235.356(A))
+
+235.356(A)(1). All instrument transformers shall be tested to verify correct polarity and burden. [235.356(A)(1)](https://2023.antflix.net#235.356(A)(1))
+
+235.356(A)(2). Each protective relay shall be demonstrated to operate by injecting current or voltage, or both, at the associated instrument transformer output terminal and observing that the associated switching and signaling functions occur correctly and in proper time and sequence to accomplish the protective function intended. [235.356(A)(2)](https://2023.antflix.net#235.356(A)(2))
+
+235.356(A)(3). Each switching circuit shall be observed to operate the associated equipment being switched. [235.356(A)(3)](https://2023.antflix.net#235.356(A)(3))
+
+235.356(A)(4). Each control or signal circuit shall be observed to perform its proper control function or produce a correct signal output. [235.356(A)(4)](https://2023.antflix.net#235.356(A)(4))
+
+235.356(A)(5). All metering circuits shall be verified to operate correctly from voltage and current sources in a similar manner to protective relay circuits. [235.356(A)(5)](https://2023.antflix.net#235.356(A)(5))
+
+235.356(A)(6). Complete acceptance tests shall be performed, after the substation installation is completed, on all assemblies, equipment, conductors, and control and protective systems, as applicable, to verify the integrity of all the systems. [235.356(A)(6)](https://2023.antflix.net#235.356(A)(6))
+
+235.356(A)(7). All relays and metering that use phase differences for operation shall be verified by measuring phase angles at the relay under actual load conditions after operation commences. [235.356(A)(7)](https://2023.antflix.net#235.356(A)(7))
+
+235.356(B). A test report covering the results of the tests required in 235.356(A) shall be delivered to the authority having jurisdiction prior to energization. Informational Note: See ANSI/NETA ATS, Acceptance Testing Specifications for Electrical Power Distribution Equipment and Systems, for an example of acceptance specifications. [235.356(B)](https://2023.antflix.net#235.356(B))<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.360 — Part IV — Outside Branch Circuits and Feeders
+
+
+
+235.360(A). The clearances over roadways, walkways, rail, water, and open land for conductors and live parts up to 22 kV or less to ground shall be not less than the values shown in Table 235.360(A).Table 235.360(A) Clearances over Roadways, Walkways, Rail, Water, and Open Land    Location Clearance   m ft     Open land subject to vehicles, cultivation, or grazing 5.6 18.5   Roadways, driveways, parking lots, and alleys 5.6 18.5   Walkways 4.1 13.5   Rails 8.1 26.5   Spaces and ways for pedestrians and restricted traffic 4.4 14.5   Water areas not suitable for boating 5.2 17.0    [235.360(A)](https://2023.antflix.net#235.360(A))
+
+235.360(B). Clearances for the categories shown in Table 235.360(A) shall be increased by 10 mm (0.4 in.) per kV, or major fraction thereof, more than 22 kV. [235.360(B)](https://2023.antflix.net#235.360(B))
+
+235.360(C). For special cases, such as where crossings will be made over lakes, rivers, or areas using large vehicles such as mining operations, specific designs shall be engineered considering the special circumstances and shall be approved by the authority having jurisdiction. Informational Note: See ANSI/IEEE C2-2017, National Electrical Safety Code, for additional information. [235.360(C)](https://2023.antflix.net#235.360(C))<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.361 — Part IV — Outside Branch Circuits and Feeders
+
+
+
+235.361(A). The clearances over buildings and other structures for conductors and live parts up to 22 kV or less to ground shall be not less than the values shown in Table 235.361 (A).Table 235.361(A) Clearances over Buildings and Other Structures    Clearance from Conductors or Live Parts from: Horizontal Vertical   m ft m ft     Building walls, projections, and windows 2.3 7.5 - -   Balconies, catwalks, and similar areas accessible to people 2.3 7.5 4.1 13.5   Over or under roofs or projections not readily accessible to people - - 3.8 12.5  
+
+
+ Over roofs accessible to vehicles but not trucks 
+
+- 
+
+- 4.1 13.5  
+
+ Over roofs accessible to trucks 
+
+- - 5.6 18.5   
+
+Other structures 2.3 7.5 - -    [235.361(A)](https://2023.antflix.net#235.361(A))
+
+235.361(B). Clearances for the categories shown in Table 235.361(A) shall be increased by 10 mm (0.4 in.) per kV, or major fraction thereof, more than 22 kV. Informational Note: See ANSI/IEEE C2-2017, National Electrical Safety Code, for additional information. [235.361(B)](https://2023.antflix.net#235.361(B))<span class="src">NFPA 70 (2023), Article 235 Part IV — Outside Branch Circuits and Feeders — on-disk dataset, verbatim</span></div>
+<div class="code">235.401 — Part V — Services
+
+Part V covers requirements for service conductors and equipment used on circuits over 1000 volts ac and 1500 volts dc, nominal, shall comply with all of the applicable requirements in Parts I through VII of Article 230 and with Part V of this article, which supplements or modifies those requirements. In no case shall the provisions of Part V apply to equipment on the supply side of the service point.<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.402 — Part V — Services
+
+Service-entrance conductors to buildings or enclosures shall be installed to conform to 235.402(A) and (B).
+
+235.402(A). Service-entrance conductors shall not be smaller than 6 AWG unless in multiconductor cable. Multiconductor cable shall not be smaller than 8 AWG. [235.402(A)](https://2023.antflix.net#235.402(A))
+
+235.402(B). Service-entrance conductors shall be installed by one of the wiring methods covered in 305.3 and 305.15. [235.402(B)](https://2023.antflix.net#235.402(B))<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.404 — Part V — Services
+
+
+
+235.404(A). Where oil switches or air, oil, vacuum, or sulfur hexafluoride circuit breakers constitute the service disconnecting means, an isolating switch with visible break contacts shall be installed on the supply side of the disconnecting means and all associated service equipment. Exception: An isolating switch shall not be required where the circuit breaker or switch is mounted on removable truck panels or switchgear units where both of the following conditions apply: (1) Cannot be opened unless the circuit is disconnected (2) Where all energized parts are automatically disconnected when the circuit breaker or switch is removed from the normal operating position [235.404(A)](https://2023.antflix.net#235.404(A))
+
+235.404(B). Where fuses are of the type that can be operated as a disconnecting switch, a set of such fuses shall be permitted as the isolating switch. [235.404(B)](https://2023.antflix.net#235.404(B))
+
+235.404(C). The isolating switch shall be accessible to qualified persons only. [235.404(C)](https://2023.antflix.net#235.404(C))
+
+235.404(D). Isolating switches shall be provided with a means for readily connecting the load side conductors to a grounding electrode system, equipment ground busbar, or grounded steel structure when disconnected from the source of supply. A means for grounding the load side conductors to a grounding electrode system, equipment grounding busbar, or grounded structural steel shall not be required for any duplicate isolating switch installed and maintained by the electric supply company. [235.404(D)](https://2023.antflix.net#235.404(D))<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.405 — Part V — Services
+
+
+
+235.405(A). The service disconnecting means shall be located in accordance with 230.70. For either overhead or underground primary distribution systems on private property, the service disconnect shall be permitted to be located in a location that is not readily accessible, if the disconnecting means can be operated by mechanical linkage from a readily accessible point, or electronically in accordance with 235.405(C), where applicable. [235.405(A)](https://2023.antflix.net#235.405(A))
+
+235.405(B). Each service disconnect shall simultaneously disconnect all ungrounded service conductors that it controls and shall have a fault-closing rating that is not less than the available fault current at its supply terminals. Where fused switches or separately mounted fuses are installed, the fuse characteristics shall be permitted to contribute to the fault-closing rating of the disconnecting means. [235.405(B)](https://2023.antflix.net#235.405(B))
+
+235.405(C). For multibuilding, industrial installations under single management, the service disconnecting means shall be permitted to be located at a separate building or structure. In such cases, the service disconnecting means shall be permitted to be electrically operated by a readily accessible, remote-control device. [235.405(C)](https://2023.antflix.net#235.405(C))<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.406 — Part V — Services
+
+Where the circuit breaker or alternative for it, as specified in 235.408 for service overcurrent devices, meets the requirements specified in 235.405, it shall constitute the service disconnecting means.<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.408 — Part V — Services
+
+A short-circuit protective device shall be provided on the load side of, or as an integral part of, the service disconnect, and shall protect all ungrounded conductors that it supplies. The protective device shall be capable of detecting and interrupting all values of current, in excess of its trip setting or melting point, that can occur at its location. A fuse rated in continuous amperes not to exceed three times the ampacity of the conductor, or a circuit breaker with a trip setting of not more than six times the ampacity of the conductors, shall be considered as providing the required short-circuit protection. Informational Note: See Table 315.60(C)(1) through Table 315.60(C)(20) for ampacities of conductors rated 2001 volts to 35,000 volts. Overcurrent devices shall conform to 235.408(A) and (B).
+
+235.408(A). Equipment used to protect service-entrance conductors shall meet the requirements of Article 495, Part II. [235.408(A)](https://2023.antflix.net#235.408(A))
+
+235.408(B). The restriction to 80 percent of the rating for an enclosed overcurrent device for continuous loads shall not apply to overcurrent devices installed in systems operating at over 1000 volts. [235.408(B)](https://2023.antflix.net#235.408(B))<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.409 — Part V — Services
+
+Surge arresters installed in accordance with the requirements of Parts II and III of Article 242 shall be permitted on each ungrounded overhead service conductor. Informational Note: Surge arresters may be referred to as lightning arresters in older documents.<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.410 — Part V — Services
+
+Service equipment, including instrument transformers, shall conform to Part I of Article 495.<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.411 — Part V — Services
+
+Switchgear shall consist of a substantial metal structure and a sheet metal enclosure. Where installed over a combustible floor, suitable protection thereto shall be provided.<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.412 — Part V — Services
+
+Where the voltage exceeds 35,000 volts between conductors that enter a building, they shall terminate in a switchgear compartment or a vault conforming to the requirements of 450.41 through 450.48.<span class="src">NFPA 70 (2023), Article 235 Part V — Services — on-disk dataset, verbatim</span></div>
+<div class="code">235.5 — Part II — Branch Circuits
+
+
+
+235.5(A). The grounded conductor of a branch circuit shall be identified in accordance with 200.6. [235.5(A)](https://2023.antflix.net#235.5(A))
+
+235.5(B). The equipment grounding conductor shall be identified in accordance with 250.119. [235.5(B)](https://2023.antflix.net#235.5(B))
+
+235.5(C). Ungrounded conductors shall be identified in accordance with 235.5(C)(1) or (C)(2), as applicable. [235.5(C)](https://2023.antflix.net#235.5(C))
+
+235.5(C)(1). Where the premises wiring system has branch circuits supplied from more than one nominal voltage system, each ungrounded conductor of a branch circuit shall be identified by phase or line and by nominal system voltage at all termination, connection, and splice points in accordance with 235.5(C)(1)(a) and (C)(1)(b). Different systems within the same premises that have the same nominal voltage shall be permitted to use the same identification. Means of Identification. The means of identification shall be permitted to be by separate color coding, marking tape, tagging, or other approved means.Posting of Identification Means. The method used for conductors originating within each branch-circuit panelboard or similar branch-circuit distribution equipment shall be documented in a manner that is readily available or shall be permanently posted at each branch-circuit panelboard or similar branch-circuit distribution equipment. The label shall be of sufficient durability to withstand the environment involved and shall not be handwritten.Exception: In existing installations where a voltage system(s) already exists and a different voltage system is being added, it shall be permissible to mark only the new system voltage. Existing unidentified systems shall not be required to be identified at each termination, connection, and splice point in accordance with 235.5(C)(1)(a) and (C)(1)(b). Labeling shall be required at each voltage system distribution equipment to identify that only one voltage system has been marked for a new system(s). The new system label(s) shall include the words "other unidentified systems exist on the premises." [235.5(C)(1)](https://2023.antflix.net#235.5(C)(1))
+
+235.5(C)(2). Where a branch circuit is supplied from a dc system operating at more than 1500 volts, each ungrounded conductor of 4 AWG or larger shall be identified by polarity at all termination, connection, and splice points by marking tape, tagging, or other approved means and each ungrounded conductor of 6 AWG or smaller shall be identified by polarity at all termination, connection, and splice points in compliance with 235.5(C)(2)(a) and (C)(2)(b). The identification methods used for conductors originating within each branch-circuit panelboard or similar branch-circuit distribution equipment shall be documented in a manner that is readily available or be permanently posted at each branch-circuit panelboard or similar branch-circuit distribution equipment. Positive Polarity, Sizes 6 AWG or Smaller. Where the positive polarity of a dc system does not serve as the connection point for the grounded conductor, each positive ungrounded conductor shall be identified by one of the following means:A continuous red outer finishA continuous red stripe durably marked along the conductor's entire length on insulation of a color other than green, white, gray, or blackImprinted plus signs (+) or the word POSITIVE or POS durably marked on insulation of a color other than green, white, gray, or black and repeated at intervals not exceeding 610 mm (24 in.) in accordance with 310.8(B)An approved permanent marking means such as sleeving or shrink-tubing that is suitable for the conductor size, at all termination, connection, and splice points, with imprinted plus signs (+) or the word POSITIVE or POS durably marked on insulation of a color other than green, white, gray, or blackNegative Polarity, Sizes 6 AWG or Smaller. Where the negative polarity of a dc system does not serve as the connection point for the grounded conductor, each negative ungrounded conductor shall be identified by one of the following means:A continuous black outer finishA continuous black stripe durably marked along the conductor's entire length on insulation of a color other than green, white, gray, or redImprinted minus signs (—) or the word NEGATIVE or NEG durably marked on insulation of a color other than green, white, gray, or red and repeated at intervals not exceeding 610 mm (24 in.) in accordance with 310.8(B)An approved permanent marking means such as sleeving or shrink-tubing that is suitable for the conductor size, at all termination, connection, and splice points, with imprinted minus signs (—) or the word NEGATIVE or NEG durably marked on insulation of a color other than green, white, gray, or red [235.5(C)(2)](https://2023.antflix.net#235.5(C)(2))<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.6 — Part II — Branch Circuits
+
+Circuits exceeding 1000 volts ac or 1500 volts dc, nominal, between conductors shall be permitted to supply utilization equipment in installations where conditions of maintenance and supervision ensure that only qualified persons service the installation.<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.63 — Part II — Branch Circuits
+
+A 125-volt, single-phase, 15- or 20-ampere-rated receptacle outlet shall be installed at an accessible location within 7.5 m (25 ft) of the equipment as specified in 210.63(A) and (B). Informational Note: See 210.8(E) for requirements on GFCI protection.
+
+235.63(A). The required receptacle outlet shall be located on the same level as the heating, air-conditioning, and refrigeration equipment. The receptacle outlet shall not be connected to the load side of the equipment's branch-circuit disconnecting means. Exception: A receptacle outlet shall not be required at one- and two-family dwellings for the service of evaporative coolers. [235.63(A)](https://2023.antflix.net#235.63(A))
+
+235.63(B). In other than one- and two-family dwellings, a receptacle outlet shall be located as specified in 210.63(B)(1) and (B)(2). [235.63(B)](https://2023.antflix.net#235.63(B))
+
+235.63(B)(1). The required receptacle outlet shall be located within the same room or area as the service equipment. [235.63(B)(1)](https://2023.antflix.net#235.63(B)(1))
+
+235.63(B)(2). Where equipment, other than service equipment, requires dedicated equipment space as specified in 110.26(E), the required receptacle outlet shall be located within the same room or area as the electrical equipment and shall not be connected to the load side of the equipment's disconnecting means. [235.63(B)(2)](https://2023.antflix.net#235.63(B)(2))<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+<div class="code">235.9 — Part II — Branch Circuits
+
+Branch circuits shall not be derived from autotransformers unless the circuit supplied has a grounded conductor that is electrically connected to a grounded conductor of the system supplying the autotransformer.<span class="src">NFPA 70 (2023), Article 235 Part II — Branch Circuits — on-disk dataset, verbatim</span></div>
+
+
+  <h2>The 2017 source sections, verbatim (where the rules lived before)</h2>
+  <p class="sub">Reflowed and dehyphenated from the on-disk official 2017 NFPA scan. Disclosed OCR fixes (each machine-asserted): "permitied"→"permitted" (210.9, 210.18), line-break dehyphenation (conduc-tors, applica-ble, recep-tacles, noncontinu-ous, Feed-ers, provi-sions), and the 215.3 "915.4" running-footer misread (the scan prints "915.4" where the next section is 215.4 — an OCR digit error).</p>
+  <div class="code">210.9 Circuits Derived from Autotransformers. Branch circuits shall not be derived from autotransformers unless the circuit supplied has a grounded conductor that is electrically connected to a grounded conductor of the system supplying the autotransformer. Exception No. 1: An autotransformer shall be permitted without the connection to a grounded conductor where transforming from a nomt- nal 208 volts to a nominal 240-volt supply or similarly from 240 volts to 208 volts. Exception No. 2: In industrial occupancies, where conditions of main- lenance and supervision ensure that only qualified persons service the installation, autotransformers shall be permitted to supply nominal 600-volt loads from nominal 480-volt systems, and 480-volt loads from<span class="src">210.9 Circuits Derived from Autotransformers (2017 Art 210 Part I) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">210.18 Rating. Branch circuits recognized by this article shall be rated in accordance with the maximum permitted ampere rating or setting of the overcurrent device. The rating for other than individual branch circuits shall be 15, 20, 30, 40, and 50 amperes. Where conductors of higher ampacity are used for any reason, the ampere rating or setting of the specified over- current device shall determine the circuit rating. Exception: Multioutlet branch circuits greater than 50 amperes shall be permitted to supply nonlighting outlet loads on industrial premises where conditions of maintenance and supervision ensure that only qualified persons service the equipment.<span class="src">210.18 Rating (2017 Art 210 Part I) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">(B) Branch Circuits Over 600 Volts. The ampacity of conductors shall be in accordance with 310.15 and 310.60, as applicable. Branch-circuit conductors over 600 volts shall be sized in accordance with 210.19(B) (1) or (B) (2). (1) General. The ampacity of branch-circuit conductors shall not be less than 125 percent of the designed potential load of utilization equipment that will be operated simultaneously. (2) Supervised Installations. For supervised installations, branch-circuit conductor sizing shall be permitted to be deter- mined by qualified persons under engineering supervision. Supervised installations are defined as those portions of a facility where both of the following conditions are met: (1) Conditions of design and installation are provided under engineering supervision. (2) Qualified persons with documented training and experi- ence in over 600-volt systems provide maintenance, moni- toring, and servicing of the system.<span class="src">210.19(B) Branch Circuits Over 600 Volts (2017 Art 210 Part I) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">210.20 Overcurrent Protection. Branch-circuit conductors and equipment shall be protected by overcurrent protective devices that have a rating or setting that complies with 210.20(A) through (D). (A) Continuous and Noncontinuous Loads. Where a branch circuit supplies continuous loads or any combination of contin- uous and noncontinuous loads, the rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent of the continuous load. Exception: Where the assembly, including the overcurrent devices protecting the branch circuit(s), is listed for operation at 100 percent of its rating, the ampere rating of the overcurrent device shall be permitted to be not less than the sum of the continuous load plus the noncontinuous load. (B) Conductor Protection. Conductors shall be protected in accordance with 240.4. Flexible cords and fixture wires shall be protected in accordance with 240.5. (C) Equipment. The rating or setting of the overcurrent protective device shall not exceed that specified in the applica- ble articles referenced in Table 240.3 for equipment. (D) Outlet Devices. The rating or setting shall not exceed that specified in 210.21 for outlet devices.<span class="src">210.20 Overcurrent Protection (2017 Art 210 Part I) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">210.22 Permissible Loads, Individual Branch Circuits. An individual branch circuit shall be permitted to supply any load for which it is rated, but in no case shall the load exceed the branch-circuit ampere rating.<span class="src">210.22 Permissible Loads, Individual Branch Circuits (2017 Art 210 Part I) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">210.23 Permissible Loads, Multiple-Outlet Branch Circuits. In no case shall the load exceed the branch-circuit ampere rating. A branch circuit supplying two or more outlets or receptacles shall supply only the loads specified according to its size as specified in 210.23(A) through (D) and as summarized in 210.24 and Table 210.24. Table 210.21(B)(2) Maximum Cord-and-Plug-Connected Load to Receptacle Circuit Rating Receptacle Rating Maximum Load (Amperes) (Amperes) (Amperes) 15 or 20 15 12 20 20 16 30 30 24 Table 210.21(B)(3) Receptacle Ratings for Various Size Circuits Circuit Rating (Amperes) Receptacle Rating (Amperes) 15 Not over 15 20 15 or 20 30 30 40 40 or 50 50 50 210.50 (A) 15- and 20-Ampere Branch Circuits. A 15- or 20-ampere branch circuit shall be permitted to supply lighting units or other utilization equipment, or a combination of both, and shall comply with 210.23(A) (1) and (A) (2). Exception: The small-appliance branch circuits, laundry branch circuits, and bathroom branch circuits required in a dwelling unit(s) by 210.11(C)(1), (C)(2), and (C)(3) shall supply only the receptacle outlets specified in that section. (1) Cord-and-Plug-Connected Equipment Not Fastened in Place. The rating of any one cord-and-plug-connected utiliza- tion equipment not fastened in place shall not exceed 80 percent of the branch-circuit ampere rating. (2) Utilization Equipment Fastened in Place. The total rating of utilization equipment fastened in place, other than lumin- aires, shall] not exceed 50 percent of the branch-circuit ampere rating where lighting units, cord-and-plug-connected utilization equipment not fastened in place, or both, are also supplied. (B) 30-Ampere Branch Circuits. A 30-ampere branch circuit shall be permitted to supply fixed lighting units with heavy-duty lampholders in other than a dwelling unit(s) or utilization equipment in any occupancy. A rating of any one cord-and- plug-connected utilization equipment shall not exceed 80 percent of the branch-circuit ampere rating. (C) 40- and 50-Ampere Branch Circuits. A 40- or 50-ampere branch circuit shall be permitted to supply cooking appliances that are fastened in place in any occupancy. In other than dwelling units, such circuits shall be permitted to supply fixed lighting units with heavy-duty lampholders, infrared heating units, or other utilization equipment. (D) Branch Circuits Larger Than 50 Amperes. Branch circuits larger than 50 amperes shall supply only nonlighting outlet loads.<span class="src">210.23 Permissible Loads, Multiple-Outlet Branch Circuits (2017 Art 210 Part I) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">210.63 Heating, Air-Conditioning, and Refrigeration Equipment Outlet. A 125-volt, single-phase, 15- or 20-ampere-rated receptacle outlet shall be installed at an accessible location for the servicing of heating, air-conditioning, and refrigeration equipment. The receptacle shall be located on the same level and within 7.5 m (25 ft) of the heating, air-conditioning, and refrigeration equipment. The receptacle outlet shall not be connected to the load side of the equipment disconnecting means. Informational Note: See 210.8 for ground-fault circuit- interrupter requirements. Exception: A receptacle outlet shall not be required at one- and two- family dwellings for the service of evaporative coolers.<span class="src">210.63 Heating, Air-Conditioning, and Refrigeration Equipment Outlet (2017 Art 210 Part I) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">(B) Feeders over 600 Volts. The ampacity of conductors shall be in accordance with 310.15 and 310.60 as applicable. Where installed, the size of the feeder-circuit grounded conductor shall not be smaller than that required by 250.122, except that 250.122(F) shall not apply where grounded conductors are run in parallel. Feeder conductors over 600 volts shall be sized in accordance with 215.2(B) (1), (B) (2), or (B) (3). (1) Feeders Supplying Transformers. The ampacity of feeder conductors shall not be less than the sum of the nameplate ratings of the transformers supplied when only transformers are supplied. (2) Feeders Supplying Transformers and Utilization Equip- ment. The ampacity of feeders supplying a combination of transformers and utilization equipment shall not be less than the sum of the nameplate ratings of the transformers and 125 percent of the designed potential load of the utilization equipment that will be operated simultaneously. (3) Supervised Installations. For supervised installations, feeder conductor sizing shall be permitted to be determined by qualified persons under engineering supervision. Supervised installations are defined as those portions of a facility where all of the following conditions are met: (1) Conditions of design and installation are provided under engineering supervision. (2) Qualified persons with documented training and experi- ence in over 600-volt systems provide maintenance, moni- toring, and servicing of the system.<span class="src">215.2(B) Feeders Over 600 Volts (2017 Art 215) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">215.3 Overcurrent Protection. Feeders shall be protected against overcurrent in accordance with the provisions of Part I of Article 240. Where a feeder supplies continuous loads or any combination of continuous and noncontinuous loads, the rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent of the continuous load. Exception No. 1: Where the assembly, including the overcurrent devices protecting the feeder(s), is listed for operation at 100 percent of its rating, the ampere rating of the overcurrent device shall be permitted to be not less than the sum of the continuous load plus the noncontinuous load. Exception No. 2: Overcurrent protection for feeders between 600 and 1000 volts shall comply with Parts I through VII of Article 240. Feeders over 1000 volts, nominal, shall comply with Part IX of Article 240.<span class="src">215.3 Overcurrent Protection (2017 Art 215) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">215.5 Diagrams of Feeders. If required by the authority having jurisdiction, a diagram showing feeder details shall be provided prior to the installation of the feeders. Such a diagram shall show the area in square feet of the building or other structure supplied by each feeder, the total calculated load before applying demand factors, the demand factors used, the calculated load after applying demand factors, and the size and type of conductors to be used.<span class="src">215.5 Diagrams of Feeders (2017 Art 215) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">215.6 Feeder Equipment Grounding Conductor. Where a feeder supplies branch circuits in which equipment grounding conductors are required, the feeder shall include or provide an equipment grounding conductor in accordance with the provisions of 250.134, to which the equipment grounding conductors of the branch circuits shall be connected. Where the feeder supplies a separate building or structure, the require- ments of 250.32(B) shall apply.<span class="src">215.6 Feeder Equipment Grounding Conductor (2017 Art 215) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+<div class="code">230.200 General. Service conductors and equipment used on circuits exceeding 1000 volts, nominal, shall comply with all the applicable provisions of the preceding sections of this article and with the following sections that supplement or modify the preceding sections. In no case shall the provisions of Part VIII apply to equipment on the supply side of the service point. Informational Note: For clearances of conductors of over 1000 volts, nominal, see ANSI/IEEE C2-2012, National Electrical Safety Code.<span class="src">230.200 General (2017 Art 230 Part VIII — Services Exceeding 1000 Volts, Nominal) — on-disk official scan, verbatim (disclosed OCR fixes in Method)</span></div>
+
+
+  <h2>Ten machine-diffed 2017→2023 deltas</h2>
+  <p class="sub">Each delta below was machine-diffed against the on-disk 2017 scan and the on-disk 2023 dataset (both sides present). None is attributed to the Mike Holt 2023 summary (it has no 235.x entries — machine-counted).</p>
+  <table>
+    <thead><tr><th class="ctr">#</th><th>Delta</th><th>2017 (on-disk scan)</th><th>2023 (on-disk dataset)</th><th>What it means</th></tr></thead>
+    <tbody>
+<tr><td class="ctr">D1</td><td>Threshold reword</td><td>“600 volts” (2017 210.19(B)/215.2(B))</td><td>1000 volts ac or 1500 volts dc, nominal (2023 235.19/235.202)</td><td class="sub">The voltage boundary moved up from 600 V to 1000 V (carried through 2020 into 2023) and the dc side (1500 V) was added.</td></tr>
+<tr><td class="ctr">D2</td><td>Ampacity cross-refs</td><td>310.15 and 310.60 (2017)</td><td>310.14 and 315.60 (2023)</td><td class="sub">The ampacity table citations updated to the renumbered MV cable ampacity sections.</td></tr>
+<tr><td class="ctr">D3</td><td>OCPD scope</td><td>210.20(A)–(D): (B) 240.4/240.5, (D) 210.21 outlet devices (2017)</td><td>235.20(A)–(C): no 240.5 flexible-cord ref, no 210.21 outlet-device ref (2023)</td><td class="sub">The outlet-device and flexible-cord references are low-voltage concepts dropped in the MV article.</td></tr>
+<tr><td class="ctr">D4</td><td>Rating rule</td><td>210.18: “rating … 15, 20, 30, 40, and 50 amperes” + industrial exception (2017)</td><td>235.18: rating = OCPD, no fixed-ampere list, no industrial exception (2023)</td><td class="sub">The fixed 15/20/30/40/50 A list is a low-voltage concept removed in the MV article.</td></tr>
+<tr><td class="ctr">D5</td><td>Permissible loads re-anchor</td><td>210.23: “per its size as specified in 210.23(A)–(D) and as summarized in 210.24” (2017)</td><td>235.23: “per its size in accordance with 210.23(A) through (E) and as summarized in 210.24” (2023)</td><td class="sub">235.23 now points back to the low-voltage 210.23(A)–(E) summary (and (A)–(D)→(A)–(E)).</td></tr>
+<tr><td class="ctr">D6</td><td>Feeder EGC</td><td>215.6: “in accordance with the provisions of 250.134” + 250.32(B) (2017)</td><td>235.206: no 250.134 ref + 250.32 (2023)</td><td class="sub">The 250.134 EGC-installation citation and the 250.32(B) sub-letter dropped.</td></tr>
+<tr><td class="ctr">D7</td><td>Services renumber</td><td>230.200 (Part VIII, “Services Exceeding 1000 Volts, Nominal”) (2017)</td><td>235.401 (Part V, “over 1000 volts ac and 1500 volts dc, nominal”) (2023)</td><td class="sub">Part VIII of Article 230 became Part V of the new Article 235; “exceeding”→“over” and the dc value added.</td></tr>
+<tr><td class="ctr">D8</td><td>New cross-reference index</td><td>— (no such table in 2017)</td><td>NEW 235.3 + Table 235.3 (2023)</td><td class="sub">A brand-new table listing the Chapter 2–4 equipment/application sections that amend or supplement this article.</td></tr>
+<tr><td class="ctr">D9</td><td>Autotransformer exceptions</td><td>210.9 Exception No. 1 (208/240 V) + No. 2 (240/208 V) (2017)</td><td>235.9: no exceptions (2023)</td><td class="sub">The two low-voltage autotransformer exceptions dropped in the MV article.</td></tr>
+<tr><td class="ctr">D10</td><td>NESC version</td><td>ANSI/IEEE C2-2012 (2017 230.200 IN)</td><td>ANSI/IEEE C2-2017 (2023 235.1 IN)</td><td class="sub">The National Electrical Safety Code version re-cite updated.</td></tr>
+
+    </tbody>
+  </table>
+
+  <h2>Six core-computed worked examples (zero hand math)</h2>
+  <p class="sub">Every number below is computed by <code>compute_art66.js</code> under node from the shipped PanelWright cores (<code>nextStdBreaker</code>, <code>pickConductor31016</code>) or direct arithmetic on the on-disk rule values — no hand math. Table 310.16 picks are reference picks on the 75 °C copper column; an MV conductor would normally be sized from 310.14(B) (insulated MV cable) — stated so each example reads as a rule demo, not an MV design.</p>
+
+  <h3>EX1 — 235.19(A) + 235.20(A): a 480 V 3-phase branch circuit</h3>
+  <p>Designed potential load 18 kW (12 kW noncontinuous + 6 kW continuous) on a 480 V 3-phase system. Total load current 21.65 A (6 kW continuous = 7.22 A, 12 kW noncontinuous = 14.43 A).</p>
+  <table>
+    <thead><tr><th>Rule</th><th>Calculation</th><th class="ctr">Result</th></tr></thead>
+    <tbody>
+      <tr><td>235.19(A) ampacity floor (125% of designed potential load)</td><td>1.25 × 21.65 A</td><td class="ctr ok">27.06 A</td></tr>
+      <tr><td>235.20(A) OCPD floor (noncontinuous + 125% continuous)</td><td>14.43 + 1.25 × 7.22 = 14.43 + 9.03</td><td class="ctr ok">23.45 A</td></tr>
+      <tr><td>Next standard OCPD (240.6)</td><td>nextStdBreaker(23.45)</td><td class="ctr ok">25 A</td></tr>
+      <tr><td>Conductor (Table 310.16 @ 75 °C Cu, ≥ 27.06 A)</td><td>pickConductor31016(27.06, cu, 75)</td><td class="ctr ok">10 AWG</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX2 — 235.202(B): a feeder supplying a transformer + utilization equipment</h3>
+  <p>A 100 kVA 13.8/0.48 kV transformer plus 10 kW of utilization equipment on the 480 V secondary side. Transformer secondary nameplate current 120.28 A; utilization current 12.03 A.</p>
+  <table>
+    <thead><tr><th>Rule</th><th>Calculation</th><th class="ctr">Result</th></tr></thead>
+    <tbody>
+      <tr><td>235.202(B) feeder ampacity floor (transformer nameplate + 125% utilization)</td><td>120.28 + 1.25 × 12.03</td><td class="ctr ok">135.32 A</td></tr>
+      <tr><td>Next standard OCPD (240.6)</td><td>nextStdBreaker(135.32)</td><td class="ctr ok">150 A</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX3 — 235.202(A): a feeder supplying only transformers</h3>
+  <p>Two 100 kVA transformers at 480 V. Each nameplate current 120.28 A; sum 240.56 A.</p>
+  <table>
+    <thead><tr><th>Rule</th><th>Calculation</th><th class="ctr">Result</th></tr></thead>
+    <tbody>
+      <tr><td>235.202(A) feeder ampacity floor (sum of transformer nameplate ratings)</td><td>2 × 120.28 A</td><td class="ctr ok">240.56 A</td></tr>
+      <tr><td>Next standard OCPD (240.6)</td><td>nextStdBreaker(240.56)</td><td class="ctr ok">250 A</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX4 — 235.360(B): outside-wiring clearance increase above 22 kV</h3>
+  <p>At 35 kV (13 kV above the 22 kV base), clearances increase by 10 mm (0.4 in.) per kV, or major fraction, more than 22 kV. Increase = 0.13 m / 0.433 ft.</p>
+  <table>
+    <thead><tr><th>Location (Table 235.360(A) base @ 22 kV)</th><th class="ctr">Base (m / ft)</th><th class="ctr">@ 35 kV (m / ft)</th></tr></thead>
+    <tbody>
+      <tr><td>Open land (22 kV base)</td><td class="ctr">5.6 / 18.5</td><td class="ctr ok">5.73 / 18.93</td></tr>
+      <tr><td>Roadways (22 kV base)</td><td class="ctr">5.6 / 18.5</td><td class="ctr ok">5.73 / 18.93</td></tr>
+      <tr><td>Rails (22 kV base)</td><td class="ctr">8.1 / 26.5</td><td class="ctr ok">8.23 / 26.93</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EX5 — 235.11: minimum number of branch circuits</h3>
+  <p>A 400 A total load on 100 A branch circuits. Minimum number of circuits = ⌈400 / 100⌉ = <strong>4</strong>. A 100 A circuit conductor pick (Table 310.16 @ 75 °C Cu) = <strong>3 AWG</strong>.</p>
+
+  <h3>EX6 — 235.339: outside feeder/branch-circuit disconnect rating floor</h3>
+  <p>A 480 V feeder with a 150 A calculated load. The disconnect rating is not less than the calculated load → next standard = <strong>150 A</strong>.</p>
+
+  <h2>Where Article 235 fits</h2>
+  <ul>
+    <li><strong>Feeder relocation (the 215.2(B)→235.202 move)</strong> — <a href="nec-2152b-235202-feeder-relocation.html">Article 46</a>: the 215.2(B) over-600-V feeder rules and where every Article 215 section went 2017→2023. This article is the full 235 destination.</li>
+    <li><strong>MV equipment</strong> — <a href="nec-490-495-equipment-over-1000v.html">Article 63 (NEC 490 → 495)</a>: the equipment-over-1000-V article (235.314 points to 495.24 for clearances; 235.410 to 495 Part I for service equipment).</li>
+    <li><strong>MV overcurrent</strong> — <a href="nec-245-overcurrent-protection-over-1000v.html">Article 64 (NEC 245)</a>: the 2023 OCPD article (235.203 “Feeders shall be protected against overcurrent” is the short-circuit-protection hand-off to 245).</li>
+    <li><strong>MV grounding</strong> — <a href="nec-250180-250194-mv-grounding-part-x.html">Article 65 (NEC 250.180–250.194, Article 250 Part X)</a>: the neutral/equipment/substation grounding side.</li>
+    <li><strong>Feeder ampacity (low-voltage side)</strong> — <a href="nec-2152-feeder-ampacity.html">Article 12 (215.2)</a> and <a href="nec-2151-2153-feeder-overcurrent.html">215.1–215.3</a>: the ≤1000 V feeder core this article’s Part III mirrors.</li>
+    <li><strong>Branch circuits (low-voltage side)</strong> — <a href="nec-21023-permissible-loads.html">210.23</a> and <a href="nec-21019a-continuous-load.html">210.19(A)</a>: the ≤1000 V branch-circuit core this article’s Part II mirrors (235.23 re-anchors to 210.23(A)–(E)).</li>
+    <li><strong>EGC sizing table</strong> — <a href="nec-250122-egc-sizing.html">Article 40 (Table 250.122)</a>: the 235.202 grounded-conductor floor points to 250.122.</li>
+  </ul>
+  <p class="sub"><strong>Scope honesty:</strong> Article 235 sets the over-1000-V branch-circuit, feeder, and service rules. It does not cover working clearances (Table 495.24, article 63), OCPD interrupting ratings (Article 245, article 64), or the MV neutral/equipment/substation ground (250 Part X, article 65) — those are separate articles. The Table 310.16 picks in EX1–EX6 are reference picks on the 75 °C copper column; an MV conductor is normally sized from 310.14(B) (insulated MV cable) or 315.60 (MV feeder).</p>
+
+  <h2>Method, sources &amp; honesty notes</h2>
+  <div class="code" style="white-space:pre-line">
+<strong>2023 text:</strong> on-disk 2023 NEC dataset (art35_nec_csv.csv) — all 91 rows for the 40 Article 235 top-level sections, quoted as printed (the export’s run-together list rendering and embedded table text are as-is). The trailing “[235.x](url)” link artifacts were stripped (disclosed).
+<strong>2017 text:</strong> on-disk official NFPA 70 (2017) scan (210.9/18/19(B)/20/22/23/63, 215.2(B)/3/5/6, 230.200), reflowed + dehyphenated + furniture-stripped. Disclosed OCR fixes (each machine-asserted): “permitied”→“permitted” (210.9, 210.18), line-break dehyphenation (“conduc- tors”→“conductors”, “applica- ble”→“applicable”, “recep- tacles”→“receptacles”, “noncontinu- ous”→“noncontinuous”, “Feed- ers”→“Feeders”, “provi- sions”→“provisions”), the 215.3 “915.4” running-footer misread (the on-disk scan prints “915.4” where the next section is 215.4 — an OCR digit error, not a real 915.4).
+<strong>2020 text:</strong> on-disk 2020 scan (art46_2020_scan.txt) — 215.2(B) “Feeders over 1000 Volts” (the threshold was already 1000 V in 2020; the relocation to a standalone article happened in 2023). Establishes the two-step edition story.
+<strong>Edition provenance:</strong> on-disk ELR change log (art36_elr_1447_art235.txt) — “Article 235 is new in the 2023 NEC” + the Part I–V source mapping (Part II←Art 210, Part III←Art 215, Part IV←Art 225, Part V←Art 230 Part VIII) + the overreach/stability note.
+<strong>Diff:</strong> verify_art66.py reads the on-disk 2017 scan + the on-disk 2023 dataset + the on-disk 2020 scan + the on-disk ELR log + art66_numbers.json and asserts: all 91 on-disk 2023 rows present, all 40 top-level sections present, the 12 verbatim-2017 source sections present, the 10 delta pairs (both sides), the identity claims, the 6 worked-example values, core re-runs under node, cross-links, sitemap/index/README, and tag balance. 221 machine-verified checks — all 221 pass.
+<strong>Worked examples:</strong> compute_art66.js under node from the shipped cores: nextStdBreaker (240.6), pickConductor31016 (Table 310.16 @ 75 °C), direct arithmetic on the on-disk rule values (kW→A three-phase, kVA→A, the 125% floors, the 10 mm/0.4 in. per-kV clearance increase). Zero hand math.
+<strong>Edition-delta claims:</strong> no delta is attributed to the Mike Holt 2023 summary (it has no 235.x entries — machine-counted); all ten are direct on-disk word-level diffs.
+</div>
+
+  <footer>
+    <p>PanelWright · NEC content series · article 66 · written and verified by Radloff Bot (AI). Code text: NEC 2017 (NFPA 70) on-disk official scan (210.9/18/19(B)/20/22/23/63, 215.2(B)/3/5/6, 230.200 verbatim, disclosed OCR artifacts) + the on-disk 2023 NEC dataset (all 91 Article 235 rows / 40 sections — the brand-new medium-voltage article). The edition story in one line: <strong>2023 created Article 235 “Circuits Over 1000 V, Nominal” by consolidating the over-1000-V rules scattered through 2017 Articles 210, 215, 225, and 230 Part VIII (the threshold 600→1000 V had already moved in 2020) — ten machine-diffed 2017→2023 deltas, no numeric requirement changed</strong>. 221 machine-verified checks. Design aid — the adopted edition in your jurisdiction governs (the 235.x numbering is 2023-edition-specific; the ELR log flags it as possibly restructured in future cycles).</p>
+    <p><a href="../">← Back to the PanelWright calculator</a> · <a href="nec-2152b-235202-feeder-relocation.html">NEC 215.2(B) → 235.202 (the feeder move)</a> · <a href="nec-490-495-equipment-over-1000v.html">NEC 490 → 495 (the MV equipment side)</a> · <a href="nec-245-overcurrent-protection-over-1000v.html">NEC 245 (the MV overcurrent side)</a> · <a href="nec-250180-250194-mv-grounding-part-x.html">NEC 250.180–250.194 (the MV grounding side)</a> · <a href="https://github.com/RadloffBot/panelwright" rel="noopener">Source code (MIT)</a></p>
+  </footer>
+
+</div>
+</body>
+</html>
