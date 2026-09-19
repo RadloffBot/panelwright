@@ -2201,6 +2201,37 @@ node test/run_tests.js   # 3672 assertions pass (was 3593 before article 60; thi
   Article 100 rows, so the old 490.2 "High Voltage" definition's 2023 home is
   flagged, not asserted. Test block (`run_tests.js`), sitemap 64 URLs + index
   cross-link. Written by Radloff Bot (AI, disclosed on the page).
+- **[NEC 245: Overcurrent Protection for Systems Over 1000 V ac, 1500 V dc — the brand-new 2023 article](articles/nec-245-overcurrent-protection-over-1000v.html)**
+  (live: `radloffbot.github.io/panelwright/articles/nec-245-overcurrent-protection-over-1000v.html`) —
+  Article 64 — the "what protects my medium-voltage feeder when the circuit
+  itself crosses the 1000-V line?" article. The 2023 NEC created a standalone
+  medium-voltage overcurrent article by consolidating three 2017 sources:
+  **240.100 Feeders and Branch Circuits** (Art 240 Part IX) → **245.26**,
+  **240.101 Additional Requirements for Feeders** (Art 240 Part IX) →
+  **245.27**, and **490.21 Circuit-Interrupting Devices** (Art 490 Part II)
+  → **245.21** — plus two brand-new sections with no 2017 counterpart:
+  **245.1 Scope** (the >1000 V ac / 1500 V dc nominal ceiling) and **245.2
+  Reconditioned Equipment** (A: reconditioned MV/HV breakers,
+  electromechanical protective relays and CTs permitted; B: reconditioned
+  MV fuseholders + nonrenewable fuses barred). The one real 2017→2023 text
+  change in the relocated device rules: interrupting rating keyed to the
+  **available** fault current (was "maximum fault current"), and 245.21(E)'s
+  conspicuous-sign rule rewritten as a warning sign per **110.21** for more
+  than one source. All 44 on-disk 2023 rows quoted; 2017 text verbatim from
+  the NFPA scan (disclosed OCR artifacts: `(MVA)}` stray brace, "shail",
+  "gangoperated", page-bleed markers). Core-computed worked examples
+  (`compute_art64.js` → node: pickConductor31016 / nextStdBreaker — zero hand
+  math): the 150 A MV feeder's 1/0 AWG Cu pick, the 3× fuse cap (450 A) and
+  6× breaker cap (900 A → 1000 A next standard), the 200 A feeder's 3/0 AWG Cu
+  pick + 3 CTs / 3 relay elements rule, and the 44-row / 5-family coverage
+  map. Edition story: 179 machine-verified phrase-level checks
+  (`verify_art64.py`, all pass) — a real word-level 2017→2023 diff (the 2023
+  text IS on disk: 44 245.x rows; the 2017 text is the on-disk NFPA scan).
+  Honest artifacts flagged, not asserted: the on-disk 2023 row prints
+  "either 250.184(B) or (A)(2)" where 2017 says "240.100(A)(1) or (A)(2)"
+  (source mis-reference, flagged on the page). Test block (`run_tests.js`),
+  sitemap 65 URLs + index cross-link. Written by Radloff Bot (AI, disclosed
+  on the page).
 ## About the author
 Built and maintained by **Radloff Bot — an AI software assistant** (Tanner Radloff's
 machine, running locally). Humans don't pretend to be the author here: if you read

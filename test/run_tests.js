@@ -6564,5 +6564,91 @@ console.log('NEC 240.4(D) small-conductor caps — feature-article examples (Ses
 // === ART63_BLOCK_END ===
 
 
+// === ART64_BLOCK_BEGIN ===
+// Article 64 — NEC 245 (2023): Overcurrent Protection for Systems Over 1000 V
+// ac, 1500 V dc. The brand-new 2023 article that consolidates 2017 240.100 +
+// 240.101 (Art 240 Part IX) and 490.21 (Art 490 Part II). All 44 on-disk 2023
+// rows quoted; verbatim 2017 source; 5 machine-diffed 245.21 deltas; worked
+// examples core-computed (compute_art64.js -> art64_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-245-overcurrent-protection-over-1000v.html'), 'utf8');
+  const norm = art.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  const has = (s) => norm.includes(s.toLowerCase());
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art64_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-245-overcurrent-protection-over-1000v.html'), true, 'art64: present');
+  eq(art.includes('https://radloffbot.github.io/panelwright/articles/nec-245-overcurrent-protection-over-1000v.html'), true, 'art64: canonical set');
+  eq(art.includes('Radloff Bot, an AI software assistant'), true, 'art64: AI disclosure present');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art64: Article + FAQPage JSON-LD present');
+  eq(art.includes('Design aid only'), true, 'art64: design-aid disclaimer present');
+  eq(has('nec content series · article 64'), true, 'art64: footer marks article 64');
+  eq(has('179 machine-verified checks'), true, 'art64: 179 machine-verified checks claimed');
+  eq(has('all 179 pass'), true, 'art64: all 179 pass claimed');
+  // 16 verbatim quote blocks (heading present in a code div)
+  const BLOCKS = ['240.100 Feeders and Branch Circuits.', '240.101 Additional Requirements for Feeders.',
+    '490.21 (A) Circuit Breakers.', '490.21 (B) Power Fuses and Fuseholders.',
+    '490.21 (C) Distribution Cutouts and Fuse Links', '490.21 (D) Oil-Filled Cutouts.',
+    '490.21 (E) Load Interrupters.', '245.1 Scope.', '245.2 Reconditioned Equipment.',
+    '245.26 Feeders and Branch Circuits.', '245.27 Additional Requirements for Feeders.',
+    '245.21 (A) Circuit Breakers.', '245.21 (B) Power Fuses and Fuseholders.',
+    '245.21 (C) Distribution Cutouts.', '245.21 (D) Oil-Filled Cutouts.',
+    '245.21 (E) Load-Interrupter Switches.'];
+  for (const b of BLOCKS) {
+    eq(art.includes('class="code">' + b), true, 'art64: quote block ' + b.slice(0, 30));
+  }
+  eq((art.match(/class="code">/g) || []).length, 16, 'art64: exactly 16 quote blocks');
+  // relocation map (2017 -> 2023)
+  for (const n of ['245.1', '245.2', '245.21', '245.26', '245.27']) {
+    eq(art.includes(n), true, 'art64: 2023 section ' + n);
+  }
+  eq(has('240.100'), true, 'art64: 2017 240.100 old number');
+  eq(has('240.101'), true, 'art64: 2017 240.101 old number');
+  eq(has('490.21'), true, 'art64: 2017 490.21 old number');
+  // headline structural story
+  eq(has('reconditioned equipment'), true, 'art64: NEW 245.2 reconditioned');
+  eq(has('overcurrent protection requirements for systems over 1000 volts ac, 1500 volts dc, nominal'), true, 'art64: 245.1 scope quoted');
+  eq(has('the following reconditioned equipment shall be permitted'), true, 'art64: 245.2(A) permitted list');
+  eq(has('medium-voltage fuseholders and medium-voltage nonrenewable fuses shall not be permitted'), true, 'art64: 245.2(B) ban');
+  // the 5 machine-diffed 245.21 deltas (2017 max -> 2023 available fault current)
+  eq(has('shall not be less than the available fault current the circuit breaker will be required to interrupt'), true, 'art64: 245.21(A)(4) available FC delta');
+  eq(has('shall not be less than the available fault current the fuse is required to interrupt'), true, 'art64: 245.21(B)(2) available FC delta');
+  eq(has('shall not be less than the available fault current the cutout is required to interrupt'), true, 'art64: 245.21(C)(3) available FC delta');
+  eq(has('shall not be less than the available fault current the oil-filled cutout is required to interrupt'), true, 'art64: 245.21(D)(2) available FC delta');
+  eq(has('to interrupt available fault currents'), true, 'art64: 245.21(E) available FC delta');
+  eq(has('warning sign identifying the presence of more than one source'), true, 'art64: 245.21(E) warning-sign rewrite');
+  eq(has('each warning sign or label shall comply with 110.21'), true, 'art64: 245.21(E) 110.21 cite');
+  eq(has('conspicuous sign identifying this hazard'), true, 'art64: 2017 conspicuous sign quoted');
+  // unchanged 3x/6x caps (245.27)
+  eq(has('three times the ampacity'), true, 'art64: 3x fuse cap');
+  eq(has('six times the ampacity'), true, 'art64: 6x breaker cap');
+  eq(has('695.4(b)(2)'), true, 'art64: fire-pump ref');
+  // worked examples (core-computed, from art64_numbers.json: EX1/EX2/EX3)
+  eq(art.includes(String(nums.EX1.ampacity)), true, 'art64: EX1 ampacity ' + nums.EX1.ampacity + ' A');
+  eq(art.includes(nums.EX1.pick.label), true, 'art64: EX1 conductor pick ' + nums.EX1.pick.label);
+  eq(art.includes(String(nums.EX1.fuseMaxA)), true, 'art64: EX1 3x fuse max ' + nums.EX1.fuseMaxA + ' A');
+  eq(art.includes(String(nums.EX1.fuseStd)), true, 'art64: EX1 fuse standard ' + nums.EX1.fuseStd + ' A');
+  eq(art.includes(String(nums.EX1.breakerMaxA)), true, 'art64: EX1 6x breaker max ' + nums.EX1.breakerMaxA + ' A');
+  eq(art.includes(String(nums.EX1.breakerStd)), true, 'art64: EX1 next standard ' + nums.EX1.breakerStd + ' A');
+  eq(art.includes(String(nums.EX2.feederA)), true, 'art64: EX2 feeder ' + nums.EX2.feederA + ' A');
+  eq(art.includes(nums.EX2.pick.label), true, 'art64: EX2 conductor pick ' + nums.EX2.pick.label);
+  eq(has('minimum of three overcurrent relay elements operated from three current transformers'), true, 'art64: EX2 3x relay/CT rule');
+  eq(art.includes(String(nums.EX3.onDisk245Rows)), true, 'art64: EX3 44 on-disk rows');
+  // sitemap + index + README
+  const sitemap64 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap64.includes('articles/nec-245-overcurrent-protection-over-1000v.html'), true, 'art64: sitemap entry present');
+  eq((sitemap64.match(/<loc>/g) || []).length >= 65, true, 'art64: sitemap has >= 65 URLs (never-shrink; grows per article)');
+  const index64 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index64.includes('articles/nec-245-overcurrent-protection-over-1000v.html'), true, 'art64: index cross-link present');
+  const readme64 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme64.includes('articles/nec-245-overcurrent-protection-over-1000v.html'), true, 'art64: README entry present');
+  // tag balance (the quote-block </div> regression guard)
+  const divOpen = (art.match(/<div\b/g) || []).length;
+  const divClose = (art.match(/<\/div>/g) || []).length;
+  eq(divOpen, divClose, 'art64: div tags balanced (' + divOpen + '/' + divClose + ')');
+}
+// === ART64_BLOCK_END ===
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
