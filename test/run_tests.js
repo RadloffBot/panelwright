@@ -7046,5 +7046,153 @@ ok(p && p.size, j.EX1.conductor_75cu, 'EX1 conductor');
 
 
 
+
+// === ART68_BLOCK_START ===
+// Article 68 — NEC 406 Receptacles, Attachment Plugs, and Flanged Inlets (2017 vs 2023)
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-40601-40613-receptacles-attachment-plugs.html'), 'utf8');
+  const a = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const AN = a(art);
+  const has = (s) => a(s) !== '' && AN.includes(a(s));
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art68_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-40601-40613-receptacles-attachment-plugs.html'), true, 'art68: slug present');
+  eq(has('Radloff Bot, an AI software assistant'), true, 'art68: AI disclosure');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art68: Article+FAQPage JSON-LD');
+  eq(has('Design aid only'), true, 'art68: design-aid disclaimer');
+  eq(has('nec content series · article 68'), true, 'art68: footer marks article 68');
+  eq(has('172 machine-verified checks'), true, 'art68: 172 machine-verified checks');
+  eq(has('all 172 pass'), true, 'art68: all 172 pass');
+  eq(art.startsWith('<!DOCTYPE html>'), true, 'art68: doctype');
+  // all 67 on-disk 2023 rows present (CSV state machine; alpha-normalized first 32 alnum)
+  const csvTxt = fs.readFileSync(path.join(__dirname, '..', '..', 'art35_nec_csv.csv'), 'utf8');
+  const rowBodies = {};
+  {
+    let field = '', inQ = false, row = [], i = 0;
+    const commit = () => { if (row.length > 0) { row.pop(); const ref = (row[1] || '').trim(); if (/^406\./.test(ref)) rowBodies[ref] = (row[2] || '').replace(/\s*\[[^\[\]]*\]\([^()]*(?:\([^()]*\)[^()]*)*\)\s*$/, '').trim(); } row = []; field = ''; };
+    for (; i < csvTxt.length; i++) {
+      const c = csvTxt[i];
+      if (inQ) {
+        if (c === '"') { if (csvTxt[i+1] === '"') { field += '"'; i++; } else inQ = false; }
+        else field += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\r') { /* skip */ }
+        else if (c === '\n') { row.push(field); commit(); }
+        else field += c;
+      }
+    }
+    if (field || row.length) { row.push(field); commit(); }
+  }
+  let rowsPresent = 0, rowsMiss = 0;
+  for (const ref of Object.keys(rowBodies)) {
+    const body = (rowBodies[ref] || '').replace(/\s*\[[^\[\]]*\]\([^()]*(?:\([^()]*\)[^()]*)*\)\s*$/, '').trim();
+    const probe = a(body).slice(0, 32);
+    if (probe && AN.includes(probe)) rowsPresent++; else { rowsMiss++; if (rowsMiss <= 3) console.log('  MISS', ref, probe.slice(0,32)); }
+  }
+  eq(rowsMiss, 0, 'art68: all ' + rowsPresent + ' on-disk 2023 rows present (0 missing)');
+  eq(rowsPresent, 67, 'art68: exactly 67 on-disk 2023 rows');
+  // 12 on-disk 2017 sections displayed verbatim
+  const probes2017 = {
+    '406.1': 'thisarticlecoverstheratingtypean',
+    '406.2': 'childcarefacilityabuildingorstru',
+    '406.3': 'areceptaclesreceptaclesshallbeli',
+    '406.4': 'receptacleoutletsshallbelocatedi',
+    '406.5': 'receptaclesshallbemountedinident',
+    '406.6': 'receptaclefaceplatesshallbeinsta',
+    '406.7': 'allattachmentplugscordconnectors',
+    '406.8': 'receptaclescordconnectorsandatta',
+    '406.9': 'adamplocationsareceptacleinstall',
+    '406.10': 'agroundingpolesgroundingtyperece',
+    '406.11': 'theconnectionofthereceptaclegrou',
+    '406.12': 'all15and20ampere125and250voltnon'
+  };
+  for (const k of Object.keys(probes2017)) {
+    eq(AN.includes(probes2017[k]), true, 'art68: 2017 verbatim ' + k);
+  }
+  // 21 delta markers + key delta text
+  for (const d of ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10','D11','D12','D13','D14','D15','D16','D17','D18','D19','D20','D21']) eq(has(d), true, 'art68: delta marker ' + d);
+  eq(has('the whole section changed subject'), true, 'art68: D1 406.2 subject changed');
+  eq(has('reconditioned-equipment ban'), true, 'art68: D1 2023 reconditioned ban');
+  eq(has('not greater than 15-ampere branch circuits'), true, 'art68: D3 push-in 15 A branch cap');
+  eq(has('14 AWG solid copper wire only'), true, 'art68: D3 push-in 14 AWG wire');
+  eq(has('Figure 406.3(F)'), true, 'art68: D4 controlled marking renumber');
+  eq(has('210.21(B)(1) for single'), true, 'art68: D6 cite split');
+  eq(has('in accordance with 250.146'), true, 'art68: D7 re-anchored to 250.146');
+  eq(has('Ground-fault circuit interrupters shall be listed'), true, 'art68: D8 GFCI listed sentence');
+  eq(has('210.12(A), (B), or (C)'), true, 'art68: D9 AFCI extended to (C)');
+  eq(has('directly terminated on a CO/ALR receptacle, installed as replacement'), true, 'art68: D10 aluminum exception');
+  eq(has('Automatically controlled receptacles shall be replaced with equivalently controlled'), true, 'art68: D11 new (D)(7)');
+  eq(has('provided with GFPE where replacements are made'), true, 'art68: D12 new (D)(8) GFPE');
+  eq(has('food courts and waiting spaces of passenger transportation facilities'), true, 'art68: D13 new (G) floor receptacles');
+  eq(has('in the area below a sink'), true, 'art68: D14 new (G)(2) below-sink ban');
+  eq(has('rated 1 watt or less'), true, 'art68: D15 1 W faceplate limit');
+  eq(has('January 1, 2026'), true, 'art68: D15 2026 steel-screw exception');
+  eq(has('Hinged covers of outlet box hoods shall be able to open at least 90 degrees'), true, 'art68: D16 90-degree covers');
+  eq(has('ANSI/UL 514D-2016'), true, 'art68: D17 standard re-cite');
+  eq(has('900 mm (3 ft)'), true, 'art68: D18 zone horizontal');
+  eq(has('2.5 m (8 ft)'), true, 'art68: D18 zone vertical');
+  eq(has('electronic bidet seat'), true, 'art68: D18 bidet exception');
+  eq(has('other than connection to the equipment grounding conductor'), true, 'art68: D19 406.10(C) reword');
+  eq(has('residential care/assisted living facilities'), true, 'art68: D20 new TR locations');
+  eq(has('psychiatric hospitals'), true, 'art68: D20 psychiatric hospitals');
+  eq(has('agricultural buildings'), true, 'art68: D20 agricultural buildings');
+  eq(has('Single-pole separable connectors shall be listed and labeled'), true, 'art68: D21 new 406.13');
+  eq(has('ANSI-UL 1691-2014'), true, 'art68: D21 UL 1691 list ref');
+  // 2020 gap + MH silence + honesty
+  eq(has('no Article 406 body'), true, 'art68: 2020 gap disclosed');
+  eq(has('2020 edition gap'), true, 'art68: 2020 gap label');
+  eq(has('406.S(E) and 406.S(G)'), true, 'art68: 2020 cross-ref token (S for 5 OCR)');
+  eq(has('OCR'), true, 'art68: OCR disclosed');
+  eq(has('zero hand math'), true, 'art68: zero hand math');
+  eq(has('Machine-counted silence'), true, 'art68: MH silence stated');
+  // five MH entries quoted
+  eq(has('406.3 Receptacle Rating and Type'), true, 'art68: MH 406.3 entry');
+  eq(has('406.4 General Installation Requirements'), true, 'art68: MH 406.4 entry');
+  eq(has('406.6 Receptacle Faceplates'), true, 'art68: MH 406.6 entry');
+  eq(has('406.9 Receptacles in Damp or Wet Locations'), true, 'art68: MH 406.9 entry');
+  eq(has('406.12 Tamper-Resistant Receptacles'), true, 'art68: MH 406.12 entry');
+  // 6 worked examples (core-computed)
+  for (const t of ['EX1','EX2','EX3','EX4','EX5','EX6']) eq(has(t), true, 'art68: ' + t + ' present');
+  eq(has('14 AWG is rejected'), true, 'art68: EX1 14 AWG rejected');
+  eq(has('12 AWG Cu'), true, 'art68: EX1 12 AWG correct pick');
+  eq(has('the 15 A / 14 AWG pair is the legal maximum'), true, 'art68: EX2 caps coincide');
+  eq(has('FAILS (bars required)'), true, 'art68: EX3 480 V case fails');
+  eq(has('610 mm'), true, 'art68: EX4 inside-zone case');
+  eq(has('Equipment grounding conductor connection'), true, 'art68: EX5 sequence first step');
+  eq(has('7 required locations in 2017'), true, 'art68: EX6 count 7');
+  eq(has('10 in 2023'), true, 'art68: EX6 count 10');
+  eq(has('1.7 m'), true, 'art68: EX6 height seam');
+  // core re-run under node (values must match art68_numbers.json)
+  const r = require('child_process').spawnSync('node', ['-e',
+    'const core=require("./panelwright/app.js");const j=require("./art68_numbers.json");' +
+    'const out={naive:core.pickConductor31016(20,"cu",75).size,correct:core.pickConductor31016(20,"cu",60).size,cap14:core.smallConductorCap("14","cu"),cap12:core.smallConductorCap("12","cu"),pick15:core.pickConductor31016(15,"cu",75).size};' +
+    'const bad=[];if(out.naive!==j.EX1.naive_pick)bad.push("naive");if(out.correct!==j.EX1.conductor)bad.push("correct");if(out.cap14!==j.EX1.cap_14awg)bad.push("cap14");if(out.cap12!==j.EX1.cap_12awg)bad.push("cap12");if(out.pick15!==j.EX2.conductor)bad.push("pick15");' +
+    'if(bad.length){console.log("MISMATCH "+bad.join(","));process.exit(1);}'
+  ], {cwd: path.join(__dirname, '..', '..')});
+  eq(r.status === 0, true, 'art68: core re-run matches art68_numbers.json (no MISMATCH)');
+  eq((r.stdout || '') + (r.stderr || ''), '', 'art68: core re-run clean output');
+  // cross-links
+  for (const l of ['nec-40801-40858-switchboards-switchgear-panelboards.html', 'nec-21008-gfci-protection.html', 'nec-21012-afci-protection.html', 'nec-21011-branch-circuits.html', 'nec-250130-250148-egc-connections-box-continuity.html', 'nec-2406-standard-ampere-ratings.html', 'nec-31016-ampacity.html']) {
+    eq(art.includes(l), true, 'art68: cross-link ' + l.slice(0, 30));
+  }
+  // sitemap + index + README
+  const sitemap68 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap68.includes('articles/nec-40601-40613-receptacles-attachment-plugs.html'), true, 'art68: sitemap entry present');
+  eq((sitemap68.match(/<loc>/g) || []).length >= 69, true, 'art68: sitemap has >= 69 URLs (never-shrink; grows per article)');
+  const index68 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index68.includes('articles/nec-40601-40613-receptacles-attachment-plugs.html'), true, 'art68: index cross-link present');
+  const readme68 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme68.includes('articles/nec-40601-40613-receptacles-attachment-plugs.html'), true, 'art68: README entry present');
+  // tag balance (the quote-block </div> regression guard)
+  const divOpen = (art.match(/<div\b/g) || []).length;
+  const divClose = (art.match(/<\/div>/g) || []).length;
+  eq(divOpen, divClose, 'art68: div tags balanced (' + divOpen + '/' + divClose + ')');
+}
+// === ART68_BLOCK_END ===
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
