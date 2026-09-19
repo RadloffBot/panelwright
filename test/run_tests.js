@@ -6896,6 +6896,148 @@ ok(p && p.size, j.EX1.conductor_75cu, 'EX1 conductor');
   eq(divOpen, divClose, 'art66: div tags balanced (' + divOpen + '/' + divClose + ')');
 }
 // === ART66_BLOCK_END ===
+// === ART67_BLOCK_BEGIN (article 67 - NEC 408 Switchboards, Switchgear, and Panelboards) ===
+// All 60 on-disk 2023 rows of Article 408 (408.1-408.58) verbatim + all 27 on-disk
+// 2017 sections verbatim from the NFPA scan; 2017->2023 edition story scoped 2017<->2023
+// (the on-disk 2020 source carries no Article 408 body - cross-reference only, gap
+// disclosed); 17 machine-diffed 2017->2023 deltas (one number moved: 408.2); 6
+// core-computed worked examples (compute_art67.js -> art67_numbers.json).
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-40801-40858-switchboards-switchgear-panelboards.html'), 'utf8');
+  const a = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const AN = a(art);
+  const has = (s) => a(s) !== '' && AN.includes(a(s));
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art67_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-40801-40858-switchboards-switchgear-panelboards.html'), true, 'art67: slug present');
+  eq(has('Radloff Bot, an AI software assistant'), true, 'art67: AI disclosure');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art67: Article+FAQPage JSON-LD');
+  eq(has('Design aid'), true, 'art67: design-aid disclaimer');
+  eq(has('nec content series · article 67'), true, 'art67: footer marks article 67');
+  eq(has('193 machine-verified checks'), true, 'art67: 193 machine-verified checks');
+  eq(has('all 193 pass'), true, 'art67: all 193 pass');
+  eq(art.startsWith('<!DOCTYPE html>'), true, 'art67: doctype');
+  // all 60 on-disk 2023 rows present (CSV state machine; alpha-normalized first 32 alnum)
+  const csvTxt = fs.readFileSync(path.join(__dirname, '..', '..', 'art35_nec_csv.csv'), 'utf8');
+  const rowBodies = {};
+  {
+    let field = '', inQ = false, row = [], i = 0;
+    const commit = () => { if (row.length > 0) { row.pop(); const ref = (row[1] || '').trim(); if (/^408\./.test(ref)) rowBodies[ref] = (row[2] || '').replace(/\s*\[[^\]]+\]\([^)]+\)\s*$/, '').trim(); } row = []; field = ''; };
+    for (; i < csvTxt.length; i++) {
+      const c = csvTxt[i];
+      if (inQ) {
+        if (c === '"') { if (csvTxt[i+1] === '"') { field += '"'; i++; } else inQ = false; }
+        else field += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\r') { /* skip */ }
+        else if (c === '\n') { row.push(field); commit(); }
+        else field += c;
+      }
+    }
+    if (field || row.length) { row.push(field); commit(); }
+  }
+  let rowsPresent = 0, rowsMiss = 0;
+  for (const ref of Object.keys(rowBodies)) {
+    const body = (rowBodies[ref] || '').replace(/\s*\[[^\]]+\]\([^)]+\)\s*$/, '').trim();
+    const probe = a(body).slice(0, 32);
+    if (probe && AN.includes(probe)) rowsPresent++; else { rowsMiss++; if (rowsMiss <= 3) console.log('  MISS', ref, probe.slice(0,32)); }
+  }
+  eq(rowsMiss, 0, 'art67: all ' + rowsPresent + ' on-disk 2023 rows present (0 missing)');
+  eq(rowsPresent, 60, 'art67: exactly 60 on-disk 2023 rows');
+  // 25 on-disk 2017 sections displayed verbatim (408.18/408.55 restructured in 2023; their 2017 leads are covered by the delta probes below)
+  const probes2017 = {
+    '408.1': 'thisarticlecoversswitchboardss',
+    '408.2': 'switchescircuitbreakersandover',
+    '408.3': 'aconductorsandbusbarsonaswitch',
+    '408.4': 'acircuitdirectoryorcircuitiden',
+    '408.5': 'whereconduitsorotherracewaysen',
+    '408.7': 'unusedopeningsforcircuitbreake',
+    '408.16': 'switchboardsandswitchgearindam',
+    '408.17': 'switchboardsandswitchgearshall',
+    '408.19': 'aninsulatedconductorusedwithin',
+    '408.20': 'switchboardsandswitchgearthath',
+    '408.22': 'instrumentsrelaysmetersandinst',
+    '408.30': 'allpanelboardsshallhavearating',
+    '408.36': 'inadditiontotherequirementof40',
+    '408.37': 'panelboardsindamporwetlocation',
+    '408.38': 'panelboardsshallbemountedincab',
+    '408.39': 'inpanelboardsfusesofanytypesha',
+    '408.40': 'panelboardcabinetsandpanelboar',
+    '408.41': 'eachgroundedconductorshallterm',
+    '408.50': 'thepanelsofswitchboardsandswit',
+    '408.51': 'insulatedorbarebusbarsshallber',
+    '408.52': 'instrumentspilotlightsvoltagep',
+    '408.53': 'switchesfusesandfuseholdersuse',
+    '408.54': 'apanelboardshallbeprovidedwith',
+    '408.56': 'thedistancebetweenbaremetalpar',
+    '408.58': 'panelboardsshallbedurablymarke'
+  };
+  for (const k of Object.keys(probes2017)) {
+    eq(AN.includes(probes2017[k]), true, 'art67: 2017 verbatim ' + k);
+  }
+  // 17 delta markers + key delta text
+  for (const d of ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10','D11','D12','D13','D14','D15','D16','D17']) eq(has(d), true, 'art67: delta marker ' + d);
+  eq(has('the whole section changed subject'), true, 'art67: D1 408.2 subject changed');
+  eq(has('reconditioned-equipment section'), true, 'art67: D1 2023 reconditioned-equipment section');
+  eq(has('Same Vertical Section'), true, 'art67: D3 2023 408.3(A)(2) text');
+  eq(has('230.62(c)/215.15'), true, 'art67: D2 barrier rule new home');
+  eq(has('face-up or face-down'), true, 'art67: D16 new 408.43');
+  eq(has('10,000 amperes'), true, 'art67: D4 408.9 10,000 A seam');
+  eq(has('uninsulated metal parts'), true, 'art67: D14 408.56 2023 wording');
+  eq(has('312.101(a)'), true, 'art67: D14 408.56 footnote re-cite');
+  eq(has('panelboard rating'), true, 'art67: D17 408.36(D) panelboard reword');
+  // 2020 gap honesty
+  eq(has('no article 408 body'), true, 'art67: 2020 gap disclosed');
+  eq(has('2020 edition gap'), true, 'art67: 2020 gap label');
+  eq(has('ocr'), true, 'art67: OCR disclosed');
+  eq(has('zero hand math'), true, 'art67: zero hand math');
+  // 6 worked examples (core-computed)
+  for (const t of ['EX1','EX2','EX3','EX4','EX5','EX6']) eq(has(t), true, 'art67: ' + t + ' present');
+  const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  eq(art.includes(String(nums.EX1.panel_rating_A)), true, 'art67: EX1 panel rating ' + nums.EX1.panel_rating_A);
+  eq(art.includes(fmt(nums.EX2.afc_threshold_A)), true, 'art67: EX2 threshold ' + fmt(nums.EX2.afc_threshold_A));
+  eq(art.includes(String(nums.EX3.counted)), true, 'art67: EX3 counted ' + nums.EX3.counted);
+  eq(art.includes(String(nums.EX3.cap)), true, 'art67: EX3 cap ' + nums.EX3.cap);
+  eq(art.includes(String(nums.EX4.load_A)), true, 'art67: EX4 load ' + nums.EX4.load_A);
+  eq(art.includes(String(nums.EX5.oc_max_A)), true, 'art67: EX5 OCPD ' + nums.EX5.oc_max_A);
+  eq(art.includes(String(nums.EX6.opposite_polarity_same_surface_mm)), true, 'art67: EX6 same-surface mm ' + nums.EX6.opposite_polarity_same_surface_mm);
+  eq(art.includes(String(nums.EX6.opposite_polarity_free_air_in)), true, 'art67: EX6 free-air in ' + nums.EX6.opposite_polarity_free_air_in);
+  // core re-run under node (5 examples re-derived from the shipped core)
+  const r = require('child_process').spawnSync('node', ['-e', 'const core=require("./panelwright/app.js");const j=require("./art67_numbers.json");'
+    +'const bad=(m)=>{console.log("MISMATCH "+m);process.exit(1)};'
+    +'const p1=core.pickConductor31016(j.EX1.feeder_load_A,"cu",75);if(p1.size!==j.EX1.supply_conductor_cu75)bad("EX1 conductor");'
+    +'if(core.nextStdBreaker(j.EX1.oc_max_A)!==j.EX1.panel_rating_A)bad("EX1 std");'
+    +'if(core.nextStdBreaker(j.EX4.load_A)!==j.EX4.oc_A)bad("EX4 std");'
+    +'if(core.nextStdBreaker(j.EX5.load_A)!==j.EX5.oc_max_A)bad("EX5 std");'
+    +'const p5=core.pickConductor31016(j.EX5.load_A,"cu",60);if(p5.size!==j.EX5.conductor_cu60)bad("EX5 conductor");'
+    +'if(core.smallConductorCap("12","cu")!==j.EX4.oc_cap_12awg_cu)bad("EX4 cap12");'
+    +'if(core.smallConductorCap("10","cu")!==j.EX4.oc_cap_10awg_cu)bad("EX4 cap10");'
+  ], { cwd: path.join(__dirname, '..', '..'), encoding: 'utf8' });
+  eq(r.status === 0, true, 'art67: core re-run matches art67_numbers.json (no MISMATCH)');
+  eq((r.stdout || '') + (r.stderr || ''), '', 'art67: core re-run clean output');
+  // cross-links
+  for (const l of ['nec-4083-busbars-phase-identification.html', 'nec-2152-feeder-ampacity.html', 'nec-23079-service-disconnecting-means.html', 'nec-23042-service-conductor-sizing.html', 'nec-2406-standard-ampere-ratings.html', 'nec-250102-main-bonding-jumper.html', 'nec-31016-ampacity.html']) {
+    eq(art.includes(l), true, 'art67: cross-link ' + l.slice(0, 30));
+  }
+  // sitemap + index + README
+  const sitemap67 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap67.includes('articles/nec-40801-40858-switchboards-switchgear-panelboards.html'), true, 'art67: sitemap entry present');
+  eq((sitemap67.match(/<loc>/g) || []).length >= 68, true, 'art67: sitemap has >= 68 URLs (never-shrink; grows per article)');
+  const index67 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index67.includes('articles/nec-40801-40858-switchboards-switchgear-panelboards.html'), true, 'art67: index cross-link present');
+  const readme67 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme67.includes('articles/nec-40801-40858-switchboards-switchgear-panelboards.html'), true, 'art67: README entry present');
+  // tag balance (the quote-block </div> regression guard)
+  const divOpen = (art.match(/<div\b/g) || []).length;
+  const divClose = (art.match(/<\/div>/g) || []).length;
+  eq(divOpen, divClose, 'art67: div tags balanced (' + divOpen + '/' + divClose + ')');
+}
+// === ART67_BLOCK_END ===
+
 
 
 
