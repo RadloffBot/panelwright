@@ -7194,5 +7194,154 @@ ok(p && p.size, j.EX1.conductor_75cu, 'EX1 conductor');
 }
 // === ART68_BLOCK_END ===
 
+
+
+
+
+// === ART69_BLOCK_START ===
+// Article 69 — NEC 404 Switches (2017 vs 2023)
+{
+  const fs = require('fs');
+  const path = require('path');
+  const art = fs.readFileSync(path.join(__dirname, '..', 'articles', 'nec-40401-40430-switches-2017-2023.html'), 'utf8');
+  const a = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const AN = a(art);
+  const has = (s) => a(s) !== '' && AN.includes(a(s));
+  const nums = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'art69_numbers.json'), 'utf8'));
+  // meta
+  eq(art.includes('nec-40401-40430-switches-2017-2023.html'), true, 'art69: slug present');
+  eq(has('Radloff Bot, an AI software assistant'), true, 'art69: AI disclosure');
+  eq(art.includes('"@type": "Article"') && art.includes('"@type": "FAQPage"'), true, 'art69: Article+FAQPage JSON-LD');
+  eq(has('Design aid only'), true, 'art69: design-aid disclaimer');
+  eq(has('nec content series · article 69'), true, 'art69: footer marks article 69');
+  eq(has('168 machine-verified checks'), true, 'art69: 168 machine-verified checks');
+  eq(has('all 168 pass'), true, 'art69: all 168 pass');
+  eq(art.startsWith('<!DOCTYPE html>'), true, 'art69: doctype');
+  // all 47 on-disk 2023 rows present (CSV state machine; alpha-normalized first 32 alnum)
+  const csvTxt = fs.readFileSync(path.join(__dirname, '..', '..', 'art35_nec_csv.csv'), 'utf8');
+  const rowBodies = {};
+  {
+    let field = '', inQ = false, row = [], i = 0;
+    const commit = () => { if (row.length > 0) { row.pop(); const ref = (row[1] || '').trim(); if (/^404\./.test(ref)) rowBodies[ref] = (row[2] || '').replace(/\s*\[[^\]]+\]\([^)]+\)\s*$/, '').trim(); } row = []; field = ''; };
+    for (; i < csvTxt.length; i++) {
+      const c = csvTxt[i];
+      if (inQ) {
+        if (c === '"') { if (csvTxt[i+1] === '"') { field += '"'; i++; } else inQ = false; }
+        else field += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\r') { /* skip */ }
+        else if (c === '\n') { row.push(field); commit(); }
+        else field += c;
+      }
+    }
+    if (field || row.length) { row.push(field); commit(); }
+  }
+  let rowsPresent = 0, rowsMiss = 0;
+  for (const ref of Object.keys(rowBodies)) {
+    const body = (rowBodies[ref] || '').replace(/\s*\[[^\]]+\]\([^)]+\)\s*$/, '').trim();
+    const probe = a(body).slice(0, 32);
+    if (probe && AN.includes(probe)) rowsPresent++; else { rowsMiss++; if (rowsMiss <= 3) console.log('  MISS', ref, probe.slice(0,32)); }
+  }
+  eq(rowsMiss, 0, 'art69: all ' + rowsPresent + ' on-disk 2023 rows present (0 missing)');
+  eq(rowsPresent, 47, 'art69: exactly 47 on-disk 2023 rows');
+  // 19 on-disk 2017 sections displayed verbatim (probes computed from the cleaned section bodies)
+  const probes2017 = {
+    '404.1': 'theprovisionsofthisarticleapplyt',
+    '404.2': 'athreewayandfourwayswitchesthree',
+    '404.3': 'ageneralswitchesandcircuitbreake',
+    '404.4': 'asurfacemountedswitchorcircuitbr',
+    '404.5': 'timeswitchesflashersandsimilarde',
+    '404.6': 'asinglethrowknifeswitchessinglet',
+    '404.7': 'generaluseandmotorcircuitswitche',
+    '404.8': 'alocationallswitchesandcircuitbr',
+    '404.9': 'afaceplatesfaceplatesprovidedfor',
+    '404.10': 'asurfacetypesnapswitchesusedwith',
+    '404.11': 'ahandoperablecircuitbreakerequip',
+    '404.12': 'metalenclosuresforswitchesorcirc',
+    '404.13': 'aisolatingswitchesknifeswitchesr',
+    '404.14': 'switchesshallbeusedwithintheirra',
+    '404.20': 'switchesshallbemarkedwiththecur',
+    '404.22': 'electroniclightingcontrolswitche',
+    '404.26': 'auxiliarycontactsofarenewableorq',
+    '404.27': 'afusedswitchshallnothavefusesinp',
+    '404.28': 'thewirebendingspacerequiredby404'
+  };
+  for (const k of Object.keys(probes2017)) {
+    eq(AN.includes(probes2017[k]), true, 'art69: 2017 verbatim ' + k);
+  }
+  // 29 delta markers + key delta text
+  for (const d of ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10','D11','D12','D13','D14','D15','D16','D17','D18','D19','D20','D21','D22','D23','D24','D25','D26','D27','D28','D29']) eq(has(d), true, 'art69: delta marker ' + d);
+  eq(has('wireless control equipment to which circuit conductors are not connected'), true, 'art69: D1 404.1 wireless carve-out');
+  eq(has('habitable rooms or occupiable spaces'), true, 'art69: D2 404.2(C) location list');
+  eq(has('shall become effective on January 1, 2020'), true, 'art69: D3 2017 effective-date sentence shown');
+  eq(has('accessible for the installation of an additional or replacement cable'), true, 'art69: D4 deleted 2017 condition (2) shown');
+  eq(has('within tub or shower spaces'), true, 'art69: D6 2023 tub');
+  eq(has('in a location that is visible when accessing the external operating means'), true, 'art69: D9 404.7 visible location');
+  eq(has('except as follows'), true, 'art69: D11 404.8(A) list form');
+  eq(has('Metal faceplates shall be bonded to the equipment grounding conductor'), true, 'art69: D14 404.9(B) bonded');
+  eq(has('designed such that no metallic faceplate replaces the one provided'), true, 'art69: D15 redesigned faceplate');
+  eq(has('they shall comply with 314.3, Exception No. 1 or No. 2'), true, 'art69: D18 404.12 314.3 cite');
+  eq(has('Switches shall be listed and marked with their ratings'), true, 'art69: D20 404.14 lead');
+  eq(has('Electric discharge lamp loads not exceeding the marked ampere and voltage rating of the switch'), true, 'art69: D21 404.14(A) lamps');
+  eq(has('not greater than 15-ampere branch circuits'), true, 'art69: D23 push-in 15 A branch cap');
+  eq(has('14 AWG solid copper wire only'), true, 'art69: D23 push-in 14 AWG wire');
+  eq(has('copper-clad aluminum conductors only'), true, 'art69: D23 CO/ALR copper-clad rule');
+  eq(has('dimmer switches and electronic control switches, such as timing switches and occupancy sensors'), true, 'art69: D25 404.14(F) scope');
+  eq(has('Reconditioned snap switches of any type shall not be permitted'), true, 'art69: D26 new 404.16');
+  eq(has('specifically evaluated by its manufacturer or a qualified testing laboratory'), true, 'art69: D26 404.16(C) evaluation');
+  eq(has('Electronic control switches shall be listed'), true, 'art69: D27 404.22 reword');
+  eq(has('Table 312.6(B)(2)'), true, 'art69: D28 404.28 table cite');
+  eq(has('access to the switch interior is restricted'), true, 'art69: D29 new 404.30');
+  // 2020 gap + MH silence + honesty
+  eq(has('no Article 404 body'), true, 'art69: 2020 gap disclosed');
+  eq(has('2020 edition gap'), true, 'art69: 2020 gap label');
+  eq(has('404 Part I. Part II.'), true, 'art69: 2020 TOC token');
+  eq(has('Articles 312,314,404,408,450,490'), true, 'art69: 2020 code-making panel token');
+  eq(has('OCR'), true, 'art69: OCR disclosed');
+  eq(has('zero hand math'), true, 'art69: zero hand math');
+  eq(has('Machine-counted silence'), true, 'art69: MH silence stated');
+  // two MH entries quoted
+  eq(has('404.1 Scope'), true, 'art69: MH 404.1 entry');
+  eq(has('404.14 Rating and Use of Switches'), true, 'art69: MH 404.14 entry');
+  // 6 worked examples (core-computed)
+  for (const t of ['EX1','EX2','EX3','EX4','EX5','EX6']) eq(has(t), true, 'art69: ' + t + ' present');
+  eq(has('cannot</em> use a push-in snap switch at all'.replace('</em>','')), true, 'art69: EX1 20 A cannot use push-in');
+  eq(has('the 15 A / 14 AWG pair is the legal maximum'), true, 'art69: EX1 caps coincide');
+  eq(has('80 percent of the ampere rating'), true, 'art69: EX2 80% motor cap');
+  eq(has('50 percent'), true, 'art69: EX2 50% inductive cap');
+  eq(has('= switch rating floor (404.14(G))'), true, 'art69: EX3 404.14(G) floor');
+  eq(has('300 V (404.8(B), on-disk value)'), true, 'art69: EX5 300 V limit');
+  eq(has('FAILS (bars required)'), true, 'art69: EX5 failing case');
+  eq(has('13 mm = 0.512 in.'), true, 'art69: EX6 13 mm conversion');
+  // core re-run under node (values must match art69_numbers.json)
+  const r = require('child_process').spawnSync('node', ['-e',
+    'const core=require("./panelwright/app.js");const j=require("./art69_numbers.json");' +
+    'const out={oc15:core.nextStdBreaker(15),pick15:core.pickConductor31016(15,"cu",75).size,pick20:core.pickConductor31016(20,"cu",75).size,correct20:core.pickConductor31016(20,"cu",60).size,cap14:core.smallConductorCap("14","cu"),cap12:core.smallConductorCap("12","cu")};' +
+    'const bad=[];if(out.oc15!==j.EX1.oc)bad.push("oc15");if(out.pick15!==j.EX1.pick)bad.push("pick15");if(out.pick20!==j.EX1.pick20)bad.push("pick20");if(out.correct20!==j.EX1.correct20)bad.push("correct20");if(out.cap14!==j.EX1.cap14)bad.push("cap14");if(out.cap12!==j.EX1.cap12)bad.push("cap12");' +
+    'if(bad.length){console.log("MISMATCH "+bad.join(","));process.exit(1);}'
+  ], {cwd: path.join(__dirname, '..', '..')});
+  eq(r.status === 0, true, 'art69: core re-run matches art69_numbers.json (no MISMATCH)');
+  eq((r.stdout || '') + (r.stderr || ''), '', 'art69: core re-run clean output');
+  // cross-links
+  for (const l of ['nec-40601-40613-receptacles-attachment-plugs.html', 'nec-40801-40858-switchboards-switchgear-panelboards.html', 'nec-2406-standard-ampere-ratings.html', 'nec-2404d-small-conductors.html', 'nec-31016-ampacity.html', 'nec-250130-250148-egc-connections-box-continuity.html', 'github.com/RadloffBot/panelwright']) {
+    eq(art.includes(l), true, 'art69: cross-link ' + l.slice(0, 30));
+  }
+  // sitemap + index + README
+  const sitemap69 = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
+  eq(sitemap69.includes('articles/nec-40401-40430-switches-2017-2023.html'), true, 'art69: sitemap entry present');
+  eq((sitemap69.match(/<loc>/g) || []).length >= 70, true, 'art69: sitemap has >= 70 URLs (never-shrink; grows per article)');
+  const index69 = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  eq(index69.includes('articles/nec-40401-40430-switches-2017-2023.html'), true, 'art69: index cross-link present');
+  const readme69 = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
+  eq(readme69.includes('articles/nec-40401-40430-switches-2017-2023.html'), true, 'art69: README entry present');
+  // tag balance (the quote-block </div> regression guard)
+  const divOpen = (art.match(/<div\b/g) || []).length;
+  const divClose = (art.match(/<\/div>/g) || []).length;
+  eq(divOpen, divClose, 'art69: div tags balanced (' + divOpen + '/' + divClose + ')');
+}
+// === ART69_BLOCK_END ===
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
